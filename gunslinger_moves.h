@@ -388,6 +388,15 @@ namespace GunslingerMoves
 		const static int EXPLOSION_TIME = 1;
 		const static int COST = 4;
 	};
+
+	class BrassKnuckles : public SimpleAttackMove
+	{
+	public:
+		BrassKnuckles();
+
+		const static int DAMAGE = 12;
+		const static int COST = 1;
+	};
 }
 
 #endif

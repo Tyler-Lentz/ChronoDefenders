@@ -18,6 +18,7 @@
 
 Game::Game(VirtualWindow* virWin)
 {
+	score = 0;
 	vwin = virWin;
 	gameWin = false;
 	skipToNextChapter = false;
@@ -39,7 +40,6 @@ Game::Game(VirtualWindow* virWin)
 		gameWorld.push_back(new Zone(this, i));
 	}
 
-	score = 0;
 }
 
 Game::~Game()

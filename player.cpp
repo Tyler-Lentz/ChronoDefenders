@@ -70,7 +70,7 @@ void Player::tradeExperience()
 		vwin->putcen(getStatLine(), ddutil::BOTTOM_TEXT_LINE);
 
 		// set up the Menu to choose what type of move to learn
-		vwin->put(ColorString("Learn new move? (use XP before seeing moves)", ddutil::TEXT_COLOR), menuCoord);
+		vwin->put(ColorString("Learn new move? (uses XP)", ddutil::TEXT_COLOR), menuCoord);
 		menuCoord.y++;
 		std::vector<ColorString> options;
 		options.push_back(
@@ -88,7 +88,6 @@ void Player::tradeExperience()
 		options.push_back(ColorString("Save Experience", ddutil::BROWN));
 		Menu moveTypeMenu(vwin, options, menuCoord, false);
 		menuCoord.y--;
-
 		// interpret the player input
 		switch (moveTypeMenu.getResponse())
 		{
@@ -505,9 +504,9 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 
 	if (str == Strength::Moderate)
 	{
-		for (int i = 0; i < MOVES_TO_CHOOSE_FROM; i++)
+		for (int i : ddutil::uniqueRandom(1, 9, MOVES_TO_CHOOSE_FROM))
 		{
-			switch (ddutil::random(1, 9))
+			switch (i)
 			{
 			case 1:
 				newMoves.push_back(new SamuraiMoves::PerilousStrike());
@@ -541,9 +540,9 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i = 0; i < MOVES_TO_CHOOSE_FROM; i++)
+		for (int i : ddutil::uniqueRandom(1, 10, MOVES_TO_CHOOSE_FROM))
 		{
-			switch (ddutil::random(1, 10))
+			switch (i)
 			{
 			case 1:
 				newMoves.push_back(new SamuraiMoves::DragonSlice());
@@ -580,9 +579,9 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i = 0; i < MOVES_TO_CHOOSE_FROM; i++)
+		for (int i : ddutil::uniqueRandom(1, 6, MOVES_TO_CHOOSE_FROM))
 		{
-			switch (ddutil::random(1, 6))
+			switch (i)
 			{
 			case 1:
 				newMoves.push_back(new SamuraiMoves::BlindingFury());
@@ -635,13 +634,13 @@ Gunslinger::Gunslinger(Game* game)
 std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 {
 	std::vector<Move*> newMoves;
-	const int MOVES_TO_CHOOSE_FROM = 3;
+	const unsigned MOVES_TO_CHOOSE_FROM = 3;
 
 	if (str == Strength::Moderate)
 	{
-		for (int i = 0; i < MOVES_TO_CHOOSE_FROM; i++)
+		for (int i : ddutil::uniqueRandom(1,8,MOVES_TO_CHOOSE_FROM))
 		{
-			switch (ddutil::random(1, 8))
+			switch (i)
 			{
 			case 1:
 				newMoves.push_back(new GunslingerMoves::Revolver());
@@ -689,9 +688,9 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i = 0; i < MOVES_TO_CHOOSE_FROM; i++)
+		for (int i : ddutil::uniqueRandom(1, 9, MOVES_TO_CHOOSE_FROM))
 		{
-			switch (ddutil::random(1, 9))
+			switch (i)
 			{
 			case 1:
 				newMoves.push_back(new GunslingerMoves::PumpShotgun());
@@ -725,9 +724,9 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i = 0; i < MOVES_TO_CHOOSE_FROM; i++)
+		for (int i : ddutil::uniqueRandom(1, 8, MOVES_TO_CHOOSE_FROM))
 		{
-			switch (ddutil::random(1, 7))
+			switch (i)
 			{
 			case 1:
 				newMoves.push_back(new GunslingerMoves::SharpsRifle());
@@ -746,6 +745,9 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 				break;
 			case 6:
 				newMoves.push_back(new GunslingerMoves::BrewToxins());
+				break;
+			case 7:
+				newMoves.push_back(new GunslingerMoves::BrassKnuckles());
 				break;
 			default:
 				int randomNum = ddutil::random(1, 4);
@@ -830,13 +832,13 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 {
 
 	std::vector<Move*> newMoves;
-	const int MOVES_TO_CHOOSE_FROM = 3;
+	const unsigned MOVES_TO_CHOOSE_FROM = 3;
 
 	if (str == Strength::Moderate)
 	{
-		for (int i = 0; i < MOVES_TO_CHOOSE_FROM; i++)
+		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
 		{
-			switch (ddutil::random(1, 11))
+			switch (i)
 			{
 			case 1:
 				newMoves.push_back(new SorcererMoves::BlinkStrike());
@@ -876,9 +878,9 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i = 0; i < MOVES_TO_CHOOSE_FROM; i++)
+		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
 		{
-			switch (ddutil::random(1, 10))
+			switch (i)
 			{
 			case 1:
 				newMoves.push_back(new SorcererMoves::FairySummon(getGamePtr()));
@@ -918,9 +920,9 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i = 0; i < MOVES_TO_CHOOSE_FROM; i++)
+		for (int i : ddutil::uniqueRandom(1, 6, MOVES_TO_CHOOSE_FROM))
 		{
-			switch (ddutil::random(1, 6))
+			switch (i)
 			{
 			case 1:
 				newMoves.push_back(new SorcererMoves::CleansingAura());

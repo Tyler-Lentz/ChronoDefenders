@@ -468,3 +468,8 @@ ColorString GunslingerMoves::BrewToxins::doAction(Creature* self, Creature* othe
 		ColorString("'s attacks will now apply " + std::to_string(POISON) + " additional ", ddutil::TEXT_COLOR) +
 		ColorString("Poison", PoisonedStatus::COLOR);
 }
+
+GunslingerMoves::BrassKnuckles::BrassKnuckles()
+	:SimpleAttackMove(DAMAGE, false, COST, "Brass Knuckles", Strength::Mythical, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}

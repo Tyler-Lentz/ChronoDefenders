@@ -627,7 +627,7 @@ Gunslinger::Gunslinger(Game* game)
 	moves.push_back(new GunslingerMoves::Peashooter());
 	moves.push_back(new GunslingerMoves::Peashooter());
 	moves.push_back(new GunslingerMoves::Peashooter());
-	moves.push_back(new GunslingerMoves::Peashooter());
+	moves.push_back(new GunslingerMoves::Dodge());
 	moves.push_back(new GunslingerMoves::MakeBullets());
 }
 
@@ -836,7 +836,7 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 
 	if (str == Strength::Moderate)
 	{
-		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 12, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -873,12 +873,15 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 			case 11:
 				newMoves.push_back(new SorcererMoves::Levitate());
 				break;
+			case 12:
+				newMoves.push_back(new SorcererMoves::ElectricShock());
+				break;
 			}
 		}
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 12, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -915,12 +918,15 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 			case 11:
 				newMoves.push_back(new SorcererMoves::MirrorImage());
 				break;
+			case 12:
+				newMoves.push_back(new SorcererMoves::LightningStrike());
+				break;
 			}
 		}
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 6, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 7, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -941,6 +947,9 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 				break;
 			case 6:
 				newMoves.push_back(new SorcererMoves::SpiritCall(getGamePtr()));
+				break;
+			case 7:
+				newMoves.push_back(new SorcererMoves::ChainLightning());
 				break;
 			}
 		}

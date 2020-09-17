@@ -33,6 +33,7 @@ enum class ArtifactID
 	WarriorHelm,
 	Shuriken,
 	PotentPowder,
+	ElectricOrb,
 
 	// Mythical
 	PoisonVial,
@@ -205,6 +206,15 @@ public:
 	void equipAction(Player* player) override;
 
 	const static int FBURN_TURNS = 1;
+};
+
+class ElectricOrb : public PowerfulArtifact
+{
+public:
+	ElectricOrb(Game* game);
+
+	void equipAction(Player* player) override;
+	const static int ZAPPED_TURNS = 1;
 };
 
 class QuailFeather : public PowerfulArtifact

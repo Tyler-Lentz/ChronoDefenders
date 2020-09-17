@@ -67,6 +67,16 @@ namespace SorcererMoves
 
 	// Moderate
 
+	class ElectricShock : public StatusAttackMove
+	{
+	public:
+		ElectricShock();
+
+		const static int ZAPPED_LENGTH = 1;
+		const static int DAMAGE = 4;
+		const static int COST = 2;
+	};
+
 	class Levitate : public SelfBlockMove
 	{
 	public:
@@ -167,7 +177,7 @@ namespace SorcererMoves
 	};
 
 	// Powerful
-	
+
 	class MirrorImage : public SelfBlockMove
 	{
 	public:
@@ -223,6 +233,16 @@ namespace SorcererMoves
 		const static int COST = 4;
 	};
 
+	class LightningStrike : public StatusAttackMove
+	{
+	public:
+		LightningStrike();
+
+		const static int BASE_DAMAGE = 18;
+		const static int COST = 5;
+		const static int ZAPPED_LENGTH = 4;
+	};
+
 	class PlasmaSword : public SimpleAttackMove
 	{
 	public:
@@ -257,7 +277,7 @@ namespace SorcererMoves
 		ColorString doAction(Creature* self, Creature* other) override;
 
 		const static int DAM_PER_BURN = 5;
-		const static int COST = 3;
+		const static int COST = 5;
 	};
 
 	class Freeze : public Move
@@ -267,10 +287,19 @@ namespace SorcererMoves
 		ColorString doAction(Creature* self, Creature* other) override;
 
 		const static int DAM_PER_FBURN = 5;
-		const static int COST = 3;
+		const static int COST = 5;
 	};
 
 	// Mythical
+
+	class ChainLightning : public Move
+	{
+	public:
+		ChainLightning();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int COST = 8;
+	};
 
 	class CleansingAura : public Move
 	{
@@ -298,7 +327,7 @@ namespace SorcererMoves
 	public:
 		EtherealBlade();
 
-		const static int DAMAGE = 21;
+		const static int DAMAGE = 20;
 		const static int COST = 4;
 	};
 

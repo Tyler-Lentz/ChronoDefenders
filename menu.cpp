@@ -67,9 +67,6 @@ Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vect
 	// start with the first one selected
 	int currentSelection = 0;
 
-	// how much time to buffer inputs
-	const int SLEEP_TIME = 150;
-
 	// input loop, waiting for enter press
 	while (true)
 	{
@@ -79,7 +76,7 @@ Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vect
 			clearIndicators(bracketSlots[currentSelection], theTopLeft.y + currentSelection);
 			currentSelection--;
 			drawIndicators(bracketSlots[currentSelection], theTopLeft.y + currentSelection);
-			Sleep(SLEEP_TIME);
+			Sleep(ddutil::BUFFER_TIME);
 		}
 		if (ddutil::keypress(VK_DOWN) && currentSelection != theOptions.size() - 1)
 		{
@@ -87,13 +84,13 @@ Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vect
 			clearIndicators(bracketSlots[currentSelection], theTopLeft.y + currentSelection);
 			currentSelection++;
 			drawIndicators(bracketSlots[currentSelection], theTopLeft.y + currentSelection);
-			Sleep(SLEEP_TIME);
+			Sleep(ddutil::BUFFER_TIME);
 		}
 		if (ddutil::keypress(VK_RETURN))
 		{
 			playSound(WavFile("menuselect", false, true));
 			response = currentSelection;
-			Sleep(SLEEP_TIME);
+			Sleep(ddutil::BUFFER_TIME);
 			return;
 		}
 		for (int i : otherInput)
@@ -102,7 +99,7 @@ Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vect
 			{
 				playSound(WavFile("menumove2", false, true));
 				response = i;
-				Sleep(SLEEP_TIME);
+				Sleep(ddutil::BUFFER_TIME);
 				return;
 			}
 		}

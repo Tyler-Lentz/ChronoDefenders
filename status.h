@@ -25,7 +25,8 @@ enum class StatusID
     Bleeding,
     Poisoned,
     Thorns,
-    Hexed
+    Hexed,
+    Zapped
 };
 
 class Status
@@ -157,6 +158,19 @@ public:
     const static int COLOR = ddutil::LIGHTMAGENTA;
 };
 
+class ZappedStatus : public NormalStatus
+{
+public:
+    ZappedStatus();
+    Status* makeCopy() override;
+
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    const static int COLOR = ddutil::YELLOW;
+};
+
+
+
 // card status
 
 class CardStatus : public Status
@@ -241,6 +255,8 @@ public:
 
     const static int COLOR = ddutil::LIGHTRED;
 };
+
+
 
 
 // Unchanging status

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "colorstring.h"
+#include "utilities.h"
 
 class Game;
 class Enemy;
@@ -59,8 +60,8 @@ public:
 
 	void playRoom() override;
 
-	static const int EXPERIENCE_GAIN = 20;
-	static const int HEALTH_GAIN = 8;
+	static const int EXPERIENCE_GAIN = ddutil::MODERATE_COST * 2;
+	static const int HEALTH_GAIN = FireRoom::FIRE_HEAL;
 };
 
 class BrokenMirrorEvent : public EventRoom

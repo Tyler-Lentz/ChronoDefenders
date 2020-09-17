@@ -279,6 +279,24 @@ void FrozenOrb::equipAction(Player* player)
 	player->addAttackStatus(new FrostBurntStatus(), FBURN_TURNS);
 }
 
+ElectricOrb::ElectricOrb(Game* game)
+	:PowerfulArtifact(
+		"Electric Orb",
+		ColorString("Applies ", ddutil::TEXT_COLOR) +
+			ColorString("Zapped", ZappedStatus::COLOR) +
+			ColorString(" on every attack", ddutil::TEXT_COLOR),
+		ArtifactID::ElectricOrb,
+		game
+	)
+{
+}
+
+void ElectricOrb::equipAction(Player* player)
+{
+	player->addAttackStatus(new ZappedStatus(), ZAPPED_TURNS);
+}
+
+
 QuailFeather::QuailFeather(Game* game)
 	:PowerfulArtifact(
 		"Quail Feather",
@@ -461,8 +479,8 @@ AncientWand::AncientWand(Game* game)
 	:MythicalArtifact(
 		"Ancient Wand",
 		ColorString("Applies ", ddutil::TEXT_COLOR) +
-			ColorString("Frostburnt ", FrostBurntStatus::COLOR) + 
-			ColorString(" and ", ddutil::TEXT_COLOR) +
+		ColorString("Frostburnt, ", FrostBurntStatus::COLOR) +
+			ColorString("Zapped, ", ZappedStatus::COLOR) + ColorString("and ", ddutil::TEXT_COLOR) +
 			ColorString("Burnt ", BurntStatus::COLOR) +
 			ColorString("on every attack", ddutil::TEXT_COLOR),
 		ArtifactID::AncientWand,
@@ -475,6 +493,7 @@ void AncientWand::equipAction(Player* player)
 {
 	player->addAttackStatus(new BurntStatus(), STATUS_AMOUNT);
 	player->addAttackStatus(new FrostBurntStatus(), STATUS_AMOUNT);
+	player->addAttackStatus(new ZappedStatus(), STATUS_AMOUNT);
 }
 
 EternalSeed::EternalSeed(Game* game)

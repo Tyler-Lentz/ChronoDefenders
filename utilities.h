@@ -70,7 +70,7 @@ namespace ddutil
     const int VICTORY_SCORE = 300;
     const int SCORE_PER_ALIVE_PLAYER = 100;
 
-
+    const int BUFFER_TIME = 225;
 
     const char MAP_BOSS = 'B'; // 234
     const char MAP_EVENT = '?';
@@ -142,6 +142,8 @@ namespace ddutil
     bool keypress(int key);
 
     bool keyrelease(int key);
+
+    bool keyhold(int key); // like keypress but doesnt wait time after confirming the keypress to prevent double presses
 
     void waitForKeyPress(int key);
 

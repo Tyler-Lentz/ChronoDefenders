@@ -183,7 +183,7 @@ PowerfulArtifact* ZoneEnvironment::getPowArtifact()
 {
 	game->changeScore(ddutil::POW_ARTIFACT_SCORE);
 	PowerfulArtifact* newArtifact = nullptr;
-	switch (ddutil::random(1, 9))
+	switch (ddutil::random(1, 10))
 	{
 	case 1:
 		newArtifact = new SpectralAmulet(game);
@@ -211,6 +211,9 @@ PowerfulArtifact* ZoneEnvironment::getPowArtifact()
 		break;
 	case 9:
 		newArtifact = new PotentPowder(game);
+		break;
+	case 10:
+		newArtifact = new ElectricOrb(game);
 		break;
 	}
 	newArtifact->playFindSound();

@@ -114,7 +114,7 @@ void VirtualWindow::putcenSlowScroll(ColorString colstr, unsigned int line, bool
     for (auto i : colstr)
     {
         put(i, coord);
-        if (!ddutil::keypress(VK_RETURN))
+        if (!ddutil::keyhold(VK_RETURN))
         {
             Sleep(WAIT_TIME);
         }

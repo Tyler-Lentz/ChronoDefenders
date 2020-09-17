@@ -3,6 +3,8 @@
 #include "colorstring.h"
 #include "creature.h"
 #include "player.h"
+
+#include <Windows.h>
 Status::Status(StatusID theID, ColorString theName, bool uni, bool ablethrow, bool shouldTotalRemove, bool unchange)
 {
 	id = theID;
@@ -209,6 +211,27 @@ ColorString PoisonedStatus::applyEndTurnEffect(Creature* target, int stackAmount
 		ColorString(" from the ", ddutil::TEXT_COLOR) + ColorString("Poison", COLOR);
 }
 
+
+ZappedStatus::ZappedStatus()
+	:NormalStatus(StatusID::Zapped, ColorString("Zapped", COLOR))
+{
+}
+
+Status* ZappedStatus::makeCopy()
+{
+	return new ZappedStatus();
+}
+
+ColorString ZappedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	int damage = target->getNumberOfStatuses() / 2;
+	ddutil::DamageReport damRep = target->reduceHealth(damage, nullptr);
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
+		ColorString(" loses " + std::to_string(damRep.getDamageTaken()) + " health due to being ", ddutil::TEXT_COLOR) +
+		getName();
+}
+
 // Card Statuses
 
 CardStatus::CardStatus(StatusID theID, ColorString name, int num)
@@ -322,12 +345,16 @@ ColorString Dynamite::applyEndTurnEffect(Creature* target, int stackAmount)
 	if (stackAmount == 1)
 	{
 		ddutil::DamageReport damage = target->reduceHealth(DAMAGE, nullptr);
+		playSound(WavFile("explosion", false, false));
 		return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() + ColorString(" takes ", ddutil::TEXT_COLOR) +
 			ddutil::genericDamageAlert(damage) + ColorString(" from the ", ddutil::TEXT_COLOR) + getName() +
 			ColorString(" explosion", ddutil::TEXT_COLOR);
 	}
 	else
 	{
+		playSound(WavFile("bombfuse", true, true));
+		Sleep(2000);
+		stopSound(SoundType::WAV);
 		return ColorString("The ", ddutil::TEXT_COLOR) + getName() + ColorString(" attached to The ", ddutil::TEXT_COLOR) +
 			target->getColorString() + ColorString(" is one turn closer to detonating", ddutil::TEXT_COLOR);
 	}
@@ -356,6 +383,9 @@ ColorString BleedingStatus::applyEndTurnEffect(Creature* target, int stackAmount
 		ColorString(" loses ", ddutil::TEXT_COLOR) + ColorString(std::to_string(damRep.getDamageTaken()) + " health", ddutil::DAMAGE_COLOR) +
 		ColorString(" from the ", ddutil::TEXT_COLOR) + ColorString("Bleed", COLOR);
 }
+
+
+
 
 UnchangingStatus::UnchangingStatus(StatusID id, ColorString name)
 	:Status(id, name, false, false, false, true)
@@ -392,3 +422,5 @@ ColorString HexedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
 	return ColorString();
 }
+
+

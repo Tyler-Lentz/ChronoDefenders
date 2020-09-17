@@ -76,6 +76,11 @@ SorcererMoves::Heal::Heal()
 
 // Moderate
 
+SorcererMoves::ElectricShock::ElectricShock()
+	:StatusAttackMove(DAMAGE, new ZappedStatus(), ZAPPED_LENGTH, COST, "Electric Shock", Strength::Moderate, WavFile("electricattack1", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
 SorcererMoves::MirrorImage::MirrorImage()
 	:SelfBlockMove(BLOCK, COST, "Mirror Image", Strength::Powerful, WavFile("magicspell2", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
@@ -236,6 +241,11 @@ ColorString SorcererMoves::Freeze::doAction(Creature* self, Creature* other)
 		ColorString(" for ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep);
 }
 
+SorcererMoves::LightningStrike::LightningStrike()
+	:StatusAttackMove(BASE_DAMAGE, new ZappedStatus(), ZAPPED_LENGTH, COST, "Lightning Strike", Strength::Powerful, WavFile("lightning", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
 
 // Mythical
 
@@ -333,3 +343,22 @@ ColorString SorcererMoves::CastInvulnerability::doAction(Creature* self, Creatur
 	return ColorString("The ", ddutil::TEXT_COLOR) + other->getColorString() + ColorString(" will be invulnerable this turn", ddutil::TEXT_COLOR);
 }
 
+SorcererMoves::ChainLightning::ChainLightning()
+	:Move(
+		"Doubles the amount of Zapped on an enemy",
+		"Chain Lightning", COST, Strength::Mythical, true, WavFile("electricattack2", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SorcererMoves::ChainLightning::doAction(Creature* self, Creature* other)
+{
+	int zappedAmount = other->getNumberOfStatuses(StatusID::Zapped);
+	other->applyStatus(new ZappedStatus(), zappedAmount);
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" doubles the ", ddutil::TEXT_COLOR) +
+		other->getColorString() + ColorString("'s ", ddutil::TEXT_COLOR) +
+		ColorString("Zapped ", ZappedStatus::COLOR) + ColorString("to ", ddutil::TEXT_COLOR) +
+		ColorString(std::to_string(zappedAmount * 2), ZappedStatus::COLOR);
+}

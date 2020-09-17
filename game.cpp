@@ -401,6 +401,7 @@ void Game::battle(Enemy* enemy)
 					Menu menu(vwin, options, Coordinate(0, PLAYER_TEXT_LINE + 1), true);
 					if (menu.getResponse() == 1)
 					{
+						activePlayer->addVitality(selectedMove->getCost());
 						break;
 					}
 					clearBottomDivider();

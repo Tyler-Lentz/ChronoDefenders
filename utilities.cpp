@@ -235,6 +235,20 @@ namespace ddutil
         return true;
     }
 
+    bool keyhold(int key)
+    {
+        if (!(GetAsyncKeyState(key) < 0)) // if its not pressed
+        {
+            return false;
+        }
+
+        if (GetConsoleWindow() != GetForegroundWindow()) // if the window is not active (i.e. looking at something else)
+        {
+            return false;
+        }
+        return true;
+    }
+
     void waitForKeyPress(int key)
     {
         while (!keypress(key))

@@ -67,6 +67,11 @@ Picture Creature::getPicture()
 	return picture;
 }
 
+void Creature::changePicture(Picture picture)
+{
+	this->picture = picture;
+}
+
 ColorString Creature::getColorString()
 {
 	return ColorString(name, color);
@@ -227,6 +232,10 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 	}
 
 	if (hasStatus(StatusID::Vulnerable))
+	{
+		amount = static_cast<int>(static_cast<double>(amount) * 1.5);
+	}
+	if (attacker != nullptr && attacker->hasStatus(StatusID::Dragon)) 
 	{
 		amount = static_cast<int>(static_cast<double>(amount) * 1.5);
 	}

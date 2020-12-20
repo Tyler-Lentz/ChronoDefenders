@@ -51,6 +51,8 @@ public:
 	std::vector<Move*> getMoves();
 
 	Picture getPicture();
+	void changePicture(Picture picture);
+	virtual void resetPicture() {} // overridden by creatures which may change their picture
 
 	ColorString getColorString();
 

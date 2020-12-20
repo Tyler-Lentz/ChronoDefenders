@@ -32,7 +32,6 @@ public:
 	void adjustVitalityGainTemp(int amount); // add "amount" to vitalityGainAdjustment
 	void resetTempStatAdjustments();
 
-
 	int gainExperience(double amount); // returns amount of experience gained
 	bool loseExperience(int amount); // returns true if amount <= experience, and subtracts the amount. Returns false and does nothing if amount > experience
 
@@ -84,6 +83,8 @@ class Samurai : public Player
 public:
 	Samurai(Game* game);
 	std::vector<Move*> getRandomMoves(Strength str) override;
+	
+	void resetPicture() override;
 
 	Creature* makeCopy() override;
 
@@ -100,6 +101,7 @@ public:
 	Gunslinger(Game* game);
 	std::vector<Move*> getRandomMoves(Strength str) override;
 
+	void resetPicture() override;
 	Creature* makeCopy() override;
 
 	int getReserveBullets();
@@ -126,6 +128,7 @@ public:
 	Sorcerer(Game* game);
 	std::vector<Move*> getRandomMoves(Strength str) override;
 
+	void resetPicture() override;
 	Creature* makeCopy() override;
 
 	static const int STARTING_VITALITY = 10;

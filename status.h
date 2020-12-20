@@ -26,7 +26,8 @@ enum class StatusID
     Poisoned,
     Thorns,
     Hexed,
-    Zapped
+    Zapped,
+    Dragon
 };
 
 class Status
@@ -276,4 +277,16 @@ public:
 
     const static int COLOR = ddutil::YELLOW;
 };
+
+class DragonStatus : public NormalStatus 
+{
+public:
+    DragonStatus();
+
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    const static int COLOR = ddutil::RED;
+};
+
 #endif

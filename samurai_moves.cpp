@@ -354,3 +354,21 @@ SamuraiMoves::Caltrops::Caltrops()
 		WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
+
+SamuraiMoves::DragonForm::DragonForm()
+	:Move("Applies a buff which increases damage by 50% for " + std::to_string(DURATION) + " turns", "Dragon Form", COST,
+		Strength::Mythical, false, WavFile("dragonform", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
+ColorString SamuraiMoves::DragonForm::doAction(Creature* self, Creature* other)
+{
+	DragonStatus* newStatus = new DragonStatus();
+	ColorString statusName = newStatus->getName();
+	self->applyStatus(newStatus, DURATION);
+	self->changePicture(Art::getDragonSamurai());
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" enters ", ddutil::TEXT_COLOR) + statusName +
+		ColorString(" for " + std::to_string(DURATION) + " turns", ddutil::TEXT_COLOR);
+}

@@ -281,6 +281,16 @@ namespace SamuraiMoves
 
 	// Mythical
 
+	class DragonForm : public Move
+	{
+	public:
+		DragonForm();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int DURATION = 4;
+		const static int COST = 9;
+	};
+
 	class Caltrops : public SimpleStatusMove
 	{
 	public:

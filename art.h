@@ -30,6 +30,7 @@ public:
 	static Picture getIceDragon();
 	static Picture getSpiritKnight();
 	static Picture getSamurai();
+	static Picture getDragonSamurai();
 	static Picture getWhiteBackgroundSamurai();
 	static Picture getCampfire();
 	static Picture getGhost();

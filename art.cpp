@@ -348,6 +348,37 @@ Picture Art::getSamurai()
 	return samurai;
 }
 
+Picture Art::getDragonSamurai()
+{
+	Picture samurai;
+	int color1 = ddutil::DARKGRAY;
+	int color2 = ddutil::LIGHTRED;
+	samurai.push_back(ColorString(R"(                                    /))", color1));
+	samurai.push_back(ColorString(R"(                                   // )", color2));
+	samurai.push_back(ColorString(R"(                 __*_             //  )", color1));
+	samurai.push_back(ColorString(R"(              /-(____)           //   )", color2));
+	samurai.push_back(ColorString(R"(             ////- -|\          //    )", color1));
+	samurai.push_back(ColorString(R"(          ,____o% -,_          //     )", color2));
+	samurai.push_back(ColorString(R"(         /  \\   |||  ;       //      )", color1));
+	samurai.push_back(ColorString(R"(        /____\....::./\      //       )", color2));
+	samurai.push_back(ColorString(R"(       _/__/#\_ _,,_/--\    //        )", color1));
+	samurai.push_back(ColorString(R"(       /___/######## \/""-(\</        )", color2));
+	samurai.push_back(ColorString(R"(      _/__/ '#######  ""^(/</         )", color1));
+	samurai.push_back(ColorString(R"(    __/ /   ,)))=:=(,    //.          )", color2));
+	samurai.push_back(ColorString(R"(   |,--\   /Q...... /.  (/            )", color1));
+	samurai.push_back(ColorString(R"(   /       .Q....../..\               )", color2));
+	samurai.push_back(ColorString(R"(          /.Q ..../...\               )", color1));
+	samurai.push_back(ColorString(R"(         /......./.....\              )", color2));
+	samurai.push_back(ColorString(R"(         /...../  \.....\             )", color1));
+	samurai.push_back(ColorString(R"(         /_.._./   \..._\             )", color2));
+	samurai.push_back(ColorString(R"(          (` )      (` )              )", color1));
+	samurai.push_back(ColorString(R"(          | /        \ |              )", color2));
+	samurai.push_back(ColorString(R"(          '(          )'              )", color1));
+	samurai.push_back(ColorString(R"(         /+|          |+\             )", color2));
+	samurai.push_back(ColorString(R"(         |,/          \,/             )", color1));
+	return samurai;
+}
+
 Picture Art::getWhiteBackgroundSamurai()
 {
 	Picture samurai;

@@ -423,4 +423,22 @@ ColorString HexedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 	return ColorString();
 }
 
+DragonStatus::DragonStatus()
+	:NormalStatus(StatusID::Dragon, ColorString("Dragon Form", COLOR))
+{
+}
 
+Status* DragonStatus::makeCopy()
+{
+	return new DragonStatus();
+}
+
+ColorString DragonStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	// reset the picture back to normal if the status is over
+	if (stackAmount == 1)
+	{
+		target->resetPicture();
+	}
+	return ColorString();
+}

@@ -322,6 +322,7 @@ void Player::adjustVitalityGainTemp(int amount)
 void Player::resetTempStatAdjustments()
 {
 	vitalityGainAdjustment = 0;
+	resetPicture();
 }
 
 int Player::gainExperience(double amount)
@@ -585,7 +586,7 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 8, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 9, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -613,10 +614,18 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 			case 8:
 				newMoves.push_back(new SamuraiMoves::Caltrops());
 				break;
+			case 9:
+				newMoves.push_back(new SamuraiMoves::DragonForm());
+				break;
 			}
 		}
 	}
 	return newMoves;
+}
+
+void Samurai::resetPicture()
+{
+	this->changePicture(Art::getSamurai());
 }
 
 Creature* Samurai::makeCopy()
@@ -784,6 +793,11 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 		}
 	}
 	return newMoves;
+}
+
+void Gunslinger::resetPicture()
+{
+	this->changePicture(Art::getGunslinger());
 }
 
 Creature* Gunslinger::makeCopy()
@@ -969,6 +983,11 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 	return newMoves;
 }
 
+
+void Sorcerer::resetPicture()
+{
+	this->changePicture(Art::getSorcerer());
+}
 
 Creature* Sorcerer::makeCopy()
 {

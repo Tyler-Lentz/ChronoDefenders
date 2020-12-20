@@ -44,7 +44,7 @@ namespace MinionMoves
 	public:
 		SpiritStrike();
 
-		const static int DAMAGE = 30;
+		const static int DAMAGE = 20;
 		const static int COST = 2;
 	};
 
@@ -53,7 +53,7 @@ namespace MinionMoves
 	public:
 		SpiritProjection();
 
-		const static int BLOCK_AMOUNT = 20;
+		const static int BLOCK_AMOUNT = 15;
 		const static int COST = 2;
 	};
 }

@@ -19,6 +19,7 @@ public:
 	const static int TITLE_COLOR = ddutil::CYAN;
 	static Picture getPaladin();
 	static Picture getGunslinger();
+	static Picture getJesterGunslinger();
 	static Picture getWhiteBackgroundGunslinger();
 	static Picture getSorcerer();
 	static Picture getWhiteBackgroundSorcerer();

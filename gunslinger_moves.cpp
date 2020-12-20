@@ -473,3 +473,21 @@ GunslingerMoves::BrassKnuckles::BrassKnuckles()
 	:SimpleAttackMove(DAMAGE, false, COST, "Brass Knuckles", Strength::Mythical, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
+
+GunslingerMoves::JesterForm::JesterForm()
+	:Move("Applies a buff which gives a random face card " + std::to_string(DURATION) + " turns", "Jester Form", COST,
+		Strength::Mythical, false, WavFile("laugh", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
+ColorString GunslingerMoves::JesterForm::doAction(Creature* self, Creature* other)
+{	
+	JesterStatus* newStatus = new JesterStatus();
+	ColorString statusName = newStatus->getName();
+	self->applyStatus(newStatus, DURATION);
+	self->changePicture(Art::getJesterGunslinger());
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" enters ", ddutil::TEXT_COLOR) + statusName +
+		ColorString(" for " + std::to_string(DURATION) + " turns", ddutil::TEXT_COLOR);
+}

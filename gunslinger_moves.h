@@ -4,6 +4,7 @@
 #include "move.h"
 #include "colorstring.h"
 #include "utilities.h"
+#include "player.h"
 
 #include <string>
 
@@ -396,6 +397,16 @@ namespace GunslingerMoves
 
 		const static int DAMAGE = 12;
 		const static int COST = 1;
+	};
+
+	class JesterForm : public Move
+	{
+	public:
+		JesterForm();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int COST = 6;
+		const static int DURATION = 4;
 	};
 }
 

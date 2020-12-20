@@ -88,6 +88,30 @@ Picture Art::getGunslinger()
 	return gunslinger;
 }
 
+Picture Art::getJesterGunslinger()
+{
+	Picture gunslinger;
+	int color = ddutil::GREEN;
+	gunslinger.push_back(ColorString(R"(    \______          )", color));
+	gunslinger.push_back(ColorString(R"(   __\o___|__        )", color));
+	gunslinger.push_back(ColorString(R"(    ///  -.          )", color));
+	gunslinger.push_back(ColorString(R"(    _/ \_c/          )", color));
+	gunslinger.push_back(ColorString(R"(   /= \/             )", color));
+	gunslinger.push_back(ColorString(R"(   \ ^|\     ______. )", color));
+	gunslinger.push_back(ColorString(R"(   )\  \___~(_]---'  )", color));
+	gunslinger.push_back(ColorString(R"(  _\_\,__o//_)       )", color));
+	gunslinger.push_back(ColorString(R"( (x_\_:M             )", color));
+	gunslinger.push_back(ColorString(R"(   \ *\ \            )", color));
+	gunslinger.push_back(ColorString(R"(    \ *\ \           )", color));
+	gunslinger.push_back(ColorString(R"(     \,/ `)          )", color));
+	gunslinger.push_back(ColorString(R"(    / (   |          )", color));
+	gunslinger.push_back(ColorString(R"(   ,- <___(          )", color));
+	gunslinger.push_back(ColorString(R"(   (o \|  |          )", color));
+	gunslinger.push_back(ColorString(R"(   [_,_(o \__        )", color));
+	gunslinger.push_back(ColorString(R"(       \_,___]       )", color));
+	return gunslinger;
+}
+
 Picture Art::getWhiteBackgroundGunslinger()
 {
 	Picture gunslinger;

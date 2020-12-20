@@ -27,7 +27,8 @@ enum class StatusID
     Thorns,
     Hexed,
     Zapped,
-    Dragon
+    Dragon,
+    Jester
 };
 
 class Status
@@ -287,6 +288,17 @@ public:
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
     const static int COLOR = ddutil::RED;
+};
+
+class JesterStatus : public NormalStatus
+{
+public:
+    JesterStatus();
+
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    const static int COLOR = ddutil::GREEN;
 };
 
 #endif

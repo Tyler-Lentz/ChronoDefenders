@@ -504,7 +504,7 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 
 	if (str == Strength::Moderate)
 	{
-		for (int i : ddutil::uniqueRandom(1, 9, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 10, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -535,12 +535,15 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 			case 9:
 				newMoves.push_back(new SamuraiMoves::BodySlam());
 				break;
+			case 10:
+				newMoves.push_back(new SamuraiMoves::ThrowingKnives());
+				break;
 			}
 		}
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i : ddutil::uniqueRandom(1, 10, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -574,12 +577,15 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 			case 10:
 				newMoves.push_back(new SamuraiMoves::EyeOfTheStorm());
 				break;
+			case 11:
+				newMoves.push_back(new SamuraiMoves::Shuriken());
+				break;
 			}
 		}
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 6, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 7, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -600,6 +606,9 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 				break;
 			case 6:
 				newMoves.push_back(new SamuraiMoves::DualingDragons());
+				break;
+			case 7:
+				newMoves.push_back(new SamuraiMoves::TippedKunai());
 				break;
 			}
 		}

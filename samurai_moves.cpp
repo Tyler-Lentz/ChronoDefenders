@@ -115,6 +115,12 @@ SamuraiMoves::Deflect::Deflect()
 
 // Moderate
 
+SamuraiMoves::ThrowingKnives::ThrowingKnives()
+	:StatusAttackMove(DAMAGE, new BleedingStatus(), BLEED_AMOUNT, COST, "Throwing Knives",
+		Strength::Moderate, WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
 SamuraiMoves::PerilousStrike::PerilousStrike()
 	:SelfDamageAttackMove(DAMAGE, false, SELF_DAMAGE, COST, "Perilous Strike", Strength::Moderate, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
@@ -185,6 +191,12 @@ SamuraiMoves::BodySlam::BodySlam()
 }
 
 // Powerful
+
+SamuraiMoves::Shuriken::Shuriken()
+	:StatusAttackMove(DAMAGE, new BleedingStatus(), BLEED_AMOUNT, COST, "Shuriken", Strength::Powerful,
+		WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
 
 SamuraiMoves::Typhoon::Typhoon()
 	:StormMove(TARGET_STORM_LEVEL, OTHER_STORM_LEVEL, true, COST, "Typhoon", Strength::Powerful, WavFile("wind", ddutil::SF_LOOP, ddutil::SF_ASYNC))
@@ -262,6 +274,14 @@ ColorString SamuraiMoves::EyeOfTheStorm::doAction(Creature* self, Creature* othe
 
 	SelfBlockMove tempMove(blockAmount, 0, "TEMP", Strength::Powerful, sound);
 	return tempMove.doAction(other, other);
+}
+
+// Mythical
+
+SamuraiMoves::TippedKunai::TippedKunai()
+	:StatusAttackMove(DAMAGE, new PoisonedStatus(), POISON_AMOUNT, COST, "Tipped Kunai", Strength::Mythical,
+		WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
 }
 
 SamuraiMoves::BlindingFury::BlindingFury()

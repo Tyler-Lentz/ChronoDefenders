@@ -64,6 +64,16 @@ namespace SamuraiMoves
 
 	// Moderate
 
+	class ThrowingKnives : public StatusAttackMove
+	{
+	public:
+		ThrowingKnives();
+
+		const static int DAMAGE = 3;
+		const static int BLEED_AMOUNT = 3;
+		const static int COST = 1;
+	};
+
 	class PerilousStrike : public SelfDamageAttackMove
 	{
 	public:
@@ -152,6 +162,16 @@ namespace SamuraiMoves
 	};
 
 	// Powerful
+
+	class Shuriken: public StatusAttackMove
+	{
+	public:
+		Shuriken();
+
+		const static int DAMAGE = 8;
+		const static int BLEED_AMOUNT = 4;
+		const static int COST = 1;
+	};
 
 	class Typhoon : public StormMove
 	{
@@ -260,6 +280,16 @@ namespace SamuraiMoves
 	};
 
 	// Mythical
+
+	class TippedKunai : public StatusAttackMove 
+	{
+	public:
+		TippedKunai();
+
+		const static int DAMAGE = 8;
+		const static int POISON_AMOUNT = 3;
+		const static int COST = 1;
+	};
 
 	class BlindingFury : public SimpleAttackMove
 	{

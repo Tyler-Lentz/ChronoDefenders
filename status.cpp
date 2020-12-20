@@ -393,7 +393,7 @@ UnchangingStatus::UnchangingStatus(StatusID id, ColorString name)
 }
 
 ThornsStatus::ThornsStatus()
-	:UnchangingStatus(StatusID::Thorns, ColorString("Thorns", COLOR))
+	:UnchangingStatus(StatusID::Thorns, ColorString("Thorned", COLOR))
 {
 }
 

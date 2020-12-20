@@ -348,3 +348,9 @@ ColorString SamuraiMoves::DualingDragons::doAction(Creature* self, Creature* oth
 	MultiAttackMove tempMove(DAMAGE, TIMES, 0, "TEMP", Strength::Mythical, sound);
 	return tempMove.doAction(self, other);
 }
+
+SamuraiMoves::Caltrops::Caltrops()
+	:SimpleStatusMove(new ThornsStatus(), THORNS_AMOUNT, true, COST, "Caltrops", Strength::Mythical,
+		WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}

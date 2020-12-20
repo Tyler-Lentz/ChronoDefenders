@@ -281,6 +281,15 @@ namespace SamuraiMoves
 
 	// Mythical
 
+	class Caltrops : public SimpleStatusMove
+	{
+	public:
+		Caltrops();
+
+		const static int THORNS_AMOUNT = 5;
+		const static int COST = 1;
+	};
+
 	class TippedKunai : public StatusAttackMove 
 	{
 	public:

@@ -1065,6 +1065,7 @@ FireDragon::FireDragon(Game* game)
 	:PlayerMinion(game, 2, 4, 2, 20, 1, "Fire Dragon", ddutil::RED, Art::getFireDragon())
 {
 	moves.push_back(new MinionMoves::FireBreath());
+	moves.push_back(new MinionMoves::FireBreath());
 	count = 0;
 }
 
@@ -1079,6 +1080,7 @@ Creature* FireDragon::makeCopy()
 IceDragon::IceDragon(Game* game)
 	: PlayerMinion(game, 2, 4, 2, 20, 1, "Ice Dragon", ddutil::LIGHTCYAN, Art::getIceDragon())
 {
+	moves.push_back(new MinionMoves::IceBreath());
 	moves.push_back(new MinionMoves::IceBreath());
 	count = 0;
 }

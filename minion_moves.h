@@ -25,7 +25,7 @@ namespace MinionMoves
 		FireBreath();
 
 		const static int DAMAGE = 10;
-		const static int COST = 4;
+		const static int COST = 2;
 		const static int BURN_TIMES = 2;
 	};
 
@@ -35,7 +35,7 @@ namespace MinionMoves
 		IceBreath();
 
 		const static int DAMAGE = 10;
-		const static int COST = 4;
+		const static int COST = 2;
 		const static int FBURN_TIMES = 2;
 	};
 

@@ -164,6 +164,35 @@ Picture Art::getSorcerer()
 	return sorcerer;
 }
 
+Picture Art::getElementalSorceress()
+{
+	Picture sorcerer;
+	int color = ddutil::LIGHTMAGENTA;
+	sorcerer.push_back(ColorString(R"(              \'/    )", color));
+	sorcerer.push_back(ColorString(R"(            -= * =-  )", color));
+	sorcerer.push_back(ColorString(R"(        .-"-. / #,_  )", color));
+	sorcerer.push_back(ColorString(R"(       / /\_ \  `#|\ )", color));
+	sorcerer.push_back(ColorString(R"(      / /')'\ \  /#/ )", color));
+	sorcerer.push_back(ColorString(R"(     (  \ = /  )/\/# )", color));
+	sorcerer.push_back(ColorString(R"(      )  ) (  (/  \  )", color));
+	sorcerer.push_back(ColorString(R"(     (_.;`"`;._)  |  )", color));
+	sorcerer.push_back(ColorString(R"(    / (  \|/  )   |  )", color));
+	sorcerer.push_back(ColorString(R"(   /  /\-'^'-/\   |  )", color));
+	sorcerer.push_back(ColorString(R"(  |  \| )=@=(  \_/   )", color));
+	sorcerer.push_back(ColorString(R"(  |  /\/     \       )", color));
+	sorcerer.push_back(ColorString(R"(  | /\ \      ;      )", color));
+	sorcerer.push_back(ColorString(R"(  \(// /'     |      )", color));
+	sorcerer.push_back(ColorString(R"(     \/       |      )", color));
+	sorcerer.push_back(ColorString(R"(      |     / /      )", color));
+	sorcerer.push_back(ColorString(R"(      | ___/\_\      )", color));
+	sorcerer.push_back(ColorString(R"(      |/ / \ \|      )", color));
+	sorcerer.push_back(ColorString(R"(     / | | | | \     )", color));
+	sorcerer.push_back(ColorString(R"(     \_|/   \|_/     )", color));
+	sorcerer.push_back(ColorString(R"(      / \`-'/ \      )", color));
+	sorcerer.push_back(ColorString(R"(      `-'   '-`      )", color));
+	return sorcerer;
+}
+
 Picture Art::getWhiteBackgroundSorcerer()
 {
 	Picture sorcerer;

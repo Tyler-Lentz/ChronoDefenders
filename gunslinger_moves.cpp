@@ -475,7 +475,7 @@ GunslingerMoves::BrassKnuckles::BrassKnuckles()
 }
 
 GunslingerMoves::JesterForm::JesterForm()
-	:Move("Applies a buff which gives a random face card " + std::to_string(DURATION) + " turns", "Jester Form", COST,
+	:Move("Applies a buff which gives a random face card for " + std::to_string(DURATION) + " turns", "Jester Form", COST,
 		Strength::Mythical, false, WavFile("laugh", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }

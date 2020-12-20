@@ -358,6 +358,15 @@ namespace SorcererMoves
 		const static int COST = 10;
 	};
 
+	class ElementalForm: public Move
+	{
+	public:
+		ElementalForm();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int COST = 20;
+		const static int DURATION = 4;
+	};
 }
 
 #endif

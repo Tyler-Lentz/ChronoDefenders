@@ -362,3 +362,22 @@ ColorString SorcererMoves::ChainLightning::doAction(Creature* self, Creature* ot
 		ColorString("Zapped ", ZappedStatus::COLOR) + ColorString("to ", ddutil::TEXT_COLOR) +
 		ColorString(std::to_string(zappedAmount * 2), ZappedStatus::COLOR);
 }
+
+SorcererMoves::ElementalForm::ElementalForm()
+	:Move("Makes every attack apply Zapped " + std::to_string(ElementalStatus::ZAP_AMOUNT) +  " for " + std::to_string(DURATION) + " turns",
+		"Elemental Form", COST, Strength::Mythical,
+		false, WavFile("lightning", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
+ColorString SorcererMoves::ElementalForm::doAction(Creature* self, Creature* other)
+{
+	ElementalStatus* newStatus = new ElementalStatus();
+	ColorString statusName = newStatus->getName();
+	self->applyStatus(newStatus, DURATION);
+	self->changePicture(Art::getElementalSorceress());
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" enters ", ddutil::TEXT_COLOR) + statusName +
+		ColorString(" for " + std::to_string(DURATION) + " turns", ddutil::TEXT_COLOR);
+}

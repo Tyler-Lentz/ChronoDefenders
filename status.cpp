@@ -482,3 +482,18 @@ ColorString JesterStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 		ColorString(" gets a ", ddutil::TEXT_COLOR) + status->getName() +
 		ColorString(" because of ", ddutil::TEXT_COLOR) + this->getName();
 }
+
+ElementalStatus::ElementalStatus()
+	:NormalStatus(StatusID::Elemental, ColorString("Elemental Form", COLOR))
+{
+}
+
+Status* ElementalStatus::makeCopy()
+{
+	return new ElementalStatus();
+}
+
+ColorString ElementalStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	return ColorString();
+}

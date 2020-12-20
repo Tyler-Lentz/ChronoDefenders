@@ -239,6 +239,10 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 	{
 		amount = static_cast<int>(static_cast<double>(amount) * 1.5);
 	}
+	if (attacker != nullptr && attacker->hasStatus(StatusID::Elemental))
+	{
+		applyStatus(new ZappedStatus(), ElementalStatus::ZAP_AMOUNT);
+	}
 
 	if (attacker != nullptr) // not a status effect or non-creature damage source
 	{

@@ -22,6 +22,7 @@ public:
 	static Picture getJesterGunslinger();
 	static Picture getWhiteBackgroundGunslinger();
 	static Picture getSorcerer();
+	static Picture getElementalSorceress();
 	static Picture getWhiteBackgroundSorcerer();
 	static Picture getMinotaur();
 	static Picture getFireImp();

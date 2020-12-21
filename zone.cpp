@@ -386,14 +386,14 @@ Enemy* CatacombsEnvironment::generateEnemy(ddutil::EnemyType type)
 Room* CatacombsEnvironment::generateEventRoom()
 {
 	int randomNum = ddutil::random(1, 4);
-	static int uniqueCounter = ddutil::random(1, 3);
+	static int uniqueCounter = ddutil::random(1, 5);
 	// 50% unique event
 	// 25% - normal enemy
 	// 25% generic event
 	if (randomNum <= 2) // unique event
 	{
 		uniqueCounter++;
-		if (uniqueCounter > 3)
+		if (uniqueCounter >= 6)
 		{
 			uniqueCounter = 1;
 		}
@@ -404,6 +404,14 @@ Room* CatacombsEnvironment::generateEventRoom()
 		else if (uniqueCounter == 2)
 		{
 			return new MysteriousKnightEvent(game);
+		}
+		else if (uniqueCounter == 3)
+		{
+			return new BloodAltarEvent(game);
+		}
+		else if (uniqueCounter == 4)
+		{
+			return new SpiderEvent(game);
 		}
 		else
 		{

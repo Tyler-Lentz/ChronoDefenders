@@ -616,7 +616,6 @@ void PortalEvent::playRoom()
 
 	line += 2;
 
-
 	vwin->putcenSlowScroll(ColorString("You come across a Time Portal that exudes powerful energy", ddutil::TEXT_COLOR), line);
 	Menu::oneOptionMenu(vwin, ColorString("...", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
 	vwin->clearLine(line); vwin->clearLine(line + 1);
@@ -711,5 +710,129 @@ void PortalEvent::playRoom()
 		temp.playRoom();
 	}
 	
+	game->clearCenterScreen();
+}
+
+BloodAltarEvent::BloodAltarEvent(Game* game)
+	:EventRoom(game)
+{
+}
+
+void BloodAltarEvent::playRoom()
+{
+	VirtualWindow* vwin = game->getVWin();
+	game->clearCenterScreen();
+
+	int line = ddutil::EVENT_PICTURE_LINE;
+	vwin->printArtFromBottom(Art::getBloodAltar(), Coordinate(0, line), true);
+
+	line += 2;
+	vwin->putcenSlowScroll(ColorString("You stumble across an ancient blood altar", ddutil::TEXT_COLOR), line);
+	Menu::oneOptionMenu(vwin, ColorString("One person may trade " + std::to_string(NET_HEALTH_LOSS) +
+		" health for " + std::to_string(MAX_HEALTH_GAIN)+ " max health.",ddutil::TEXT_COLOR),
+		Coordinate(0, line + 1), true);
+
+	vwin->clearLine(line);
+	vwin->clearLine(line + 1);
+
+	std::vector<ColorString> options;
+	options.push_back(ColorString("Skip", ddutil::TEXT_COLOR));
+	for (Player* p : game->getPlayerParty())
+	{
+		options.push_back(p->getColorString());
+	}
+
+	Menu menu(vwin, options, Coordinate(0, line), true);
+
+	Player* selectedPlayer = nullptr;
+	int response = menu.getResponse();
+	if (response > 0) // update to non nullptr if the player chose a person
+	{
+		selectedPlayer = game->getPlayerParty()[menu.getResponse()-1];
+	}
+
+	ColorString output;
+	if (selectedPlayer == nullptr)
+	{
+		output = ColorString("You continue without using the shrine", ddutil::TEXT_COLOR);
+	}
+	else
+	{			
+		selectedPlayer->increaseMaxHealth(MAX_HEALTH_GAIN);
+		ddutil::DamageReport damRep = selectedPlayer->reduceHealth(MAX_HEALTH_GAIN+NET_HEALTH_LOSS, nullptr, false);
+
+		// need to get the name of the player before they possibly are deleted
+		output = ColorString("The ", ddutil::TEXT_COLOR) + selectedPlayer->getColorString() +
+			ColorString(" gains " + std::to_string(MAX_HEALTH_GAIN) + " max health ", ddutil::TEXT_COLOR) +
+			ColorString("but loses " + std::to_string(NET_HEALTH_LOSS) + " current health.", ddutil::TEXT_COLOR);
+	}
+
+	game->clearCenterScreen();
+	game->displayInfo();
+
+	vwin->putcen(output, line);
+
+	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
+
+	game->clearCenterScreen();
+}
+
+SpiderEvent::SpiderEvent(Game* game)
+	:EventRoom(game)
+{
+}
+
+void SpiderEvent::playRoom()
+{
+	VirtualWindow* vwin = game->getVWin();
+
+	game->clearCenterScreen();
+
+	int line = ddutil::EVENT_PICTURE_LINE;
+
+	vwin->printArtFromBottom(Art::getSpider(), Coordinate(0, line), true);
+
+	line += 2;
+	vwin->putcenSlowScroll(ColorString("A ", ddutil::TEXT_COLOR) + ColorString("Giant Spider", Art::SPIDER_COLOR) +
+		ColorString(" descends from the ceiling!", ddutil::TEXT_COLOR), line++);
+
+	std::vector<ColorString> options = {
+		ColorString("Fight", ddutil::DAMAGE_COLOR),
+		ColorString("Attempt Escape ("+std::to_string(ESCAPE_CHANCE)+"% success; " + 
+		            std::to_string(100 - ESCAPE_CHANCE) + "% failure and everyone takes " +
+					std::to_string(INITIAL_DAMAGE) + " damage)", ddutil::YELLOW)
+	};
+	Menu menu(vwin, options, Coordinate(0, line), true);
+
+	bool fight = false;
+	int response = menu.getResponse();
+	// Check if they are able to escape, if not then set fight to true
+	if (response == 1)
+	{
+		fight = (ddutil::random(1, 100) > ESCAPE_CHANCE);
+		if (fight)
+		{
+			for (Player* p : game->getPlayerParty())
+			{
+				p->reduceHealth(INITIAL_DAMAGE, nullptr);
+			}
+		}
+		else
+		{
+			game->clearCenterScreen();
+			game->clearBottomDivider();
+			game->displayInfo();
+			ColorString output = ColorString("You escape the spider without taking any damage", ddutil::TEXT_COLOR);
+			vwin->putcen(output, line);
+			Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
+		}
+	}
+	if (response == 0 || fight)
+	{
+		EnemyRoom temp(game, new Spider(game));
+		temp.playRoom();
+	}
+
+	game->clearBottomDivider();
 	game->clearCenterScreen();
 }

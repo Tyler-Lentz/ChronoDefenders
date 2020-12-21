@@ -191,15 +191,15 @@ void Game::battle(Enemy* enemy)
 					doStatusDecrementionAndPrintInfo(p);
 					vwin->clearArt(p->getPicture(), PLAYER_COORD);
 				}
-				if (checkForPlayerDeaths())
-				{
-					return;
-				}
 			}
 			if (checkForEnemyDeath(enemy))
 			{
 				return;
 			}
+		}
+		if (checkForPlayerDeaths())
+		{
+			return;
 		}
 		
 		// reset block & dodgeChance for players
@@ -241,6 +241,11 @@ void Game::battle(Enemy* enemy)
 				if (activePlayer->hasStatus(StatusID::Hexed))
 				{
 					options.push_back(ColorString("Hexed", HexedStatus::COLOR));
+					continue;
+				}
+				else if (activePlayer->hasStatus(StatusID::Strangled))
+				{
+					options.push_back(ColorString("Strangled", StrangledStatus::COLOR));
 					continue;
 				}
 
@@ -318,15 +323,13 @@ void Game::battle(Enemy* enemy)
 			default: // corresponds to an index of the player's moves
 				Move* selectedMove = activeMoves[moveMenu.getResponse()];
 
-				if (activePlayer->hasStatus(StatusID::Hexed))
+				if (activePlayer->hasStatus(StatusID::Hexed) || activePlayer->hasStatus(StatusID::Strangled))
 				{
 					clearBottomDivider();
 					vwin->putcen(
 						ColorString("The ", ddutil::TEXT_COLOR) +
 						activePlayer->getColorString() +
-						ColorString(" is ", ddutil::TEXT_COLOR) +
-						ColorString("Hexed", HexedStatus::COLOR) + 
-						ColorString(" for this turn", ddutil::TEXT_COLOR),
+						ColorString(" cannot attack this turn", ddutil::TEXT_COLOR), 
 						PLAYER_TEXT_LINE
 					);
 					Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, PLAYER_TEXT_LINE + 1), true);

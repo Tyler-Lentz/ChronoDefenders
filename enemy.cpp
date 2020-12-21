@@ -572,6 +572,69 @@ Creature* MysteriousKnight::makeCopy()
 	return new MysteriousKnight(game);
 }
 
+Spider::Spider(Game* game)
+	:IntenseEnemy(game, HEALTH, "Giant Spider", Art::SPIDER_COLOR, Art::getSpider(), 
+		std::vector<ColorString> {ColorString("The Spider's roar sends shivers down your spine", Art::SPIDER_COLOR)})
+{
+	turnCounter = 0;
+	moves.push_back(new EnemyMoves::CreateShield(BASE_BLOCK, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SimpleStatusMove(new StrangledStatus(), STRANGLED_LENGTH, true, 0, "Strangle", Strength::Powerful,
+		WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::Strike(STRIKE_DAMAGE, WavFile("attack2", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn Spider::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	switch (turnCounter)
+	{
+	case 0:
+		chosenMove = moves[0];
+		targets.push_back(this);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to create a shield of webs", ddutil::TEXT_COLOR);
+		break;
+	case 1:
+	{
+		chosenMove = moves[1];
+		Creature* target = ddutil::getHighestHealthPlayer(players);
+		targets.push_back(target);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to strangle the ", ddutil::TEXT_COLOR) +
+			target->getColorString();
+		break;
+	}
+	case 2:
+	case 3:
+	{
+		chosenMove = moves[2];
+		Creature* target = players[ddutil::random(0, players.size() - 1)];
+		targets.push_back(target);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to strike the ", ddutil::TEXT_COLOR) +
+			target->getColorString() + ColorString(" for ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(STRIKE_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	}
+
+	}
+	turnCounter++;
+	if (turnCounter > 3)
+	{
+		turnCounter = 1;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* Spider::makeCopy()
+{
+	return new Spider(game);
+}
+
 Minion::Minion(Game* game)
 	:NormalEnemy(game, HEALTH, "Minion", Art::MINION_COLOR, Art::getMinion())
 {
@@ -1634,4 +1697,5 @@ void TruePatriarch::deathScene()
 	game->setGameWin();
 
 }
+
 

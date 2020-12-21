@@ -29,7 +29,8 @@ enum class StatusID
     Zapped,
     Dragon,
     Jester,
-    Elemental
+    Elemental,
+    Strangled
 };
 
 class Status
@@ -159,6 +160,16 @@ public:
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
     const static int COLOR = ddutil::LIGHTMAGENTA;
+};
+
+class StrangledStatus : public NormalStatus
+{
+public:
+    StrangledStatus();
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+    const static int COLOR = ddutil::WHITE;
+    const static int STRANGLE_DAMAGE = 2;
 };
 
 class ZappedStatus : public NormalStatus

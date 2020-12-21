@@ -255,7 +255,7 @@ private:
 	int turnCounter;
 };
 
-// enemies with the intense music (chapter 3 and beyond + mysterious knight in chapter 1)
+// enemies with the intense music (chapter 3 and beyond + early event fights in chapter 1)
 class IntenseEnemy : public Enemy
 {
 public:
@@ -280,6 +280,21 @@ public:
 	const static int BLOCK = 3;
 private:
 	bool firstTurn;
+};
+
+class Spider : public IntenseEnemy
+{
+public:
+	Spider(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 125;
+	const static int STRANGLED_LENGTH = 2;
+	const static int STRIKE_DAMAGE = 15;
+	const static int BASE_BLOCK = 6;
+private:
+	int turnCounter;
 };
 
 class SentientMouth : public IntenseEnemy

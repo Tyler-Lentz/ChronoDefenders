@@ -1255,6 +1255,49 @@ Picture Art::getAncientBird()
 	return ancientBird;
 }
 
+Picture Art::getBloodAltar()
+{
+	Picture altar;
+	int color = BLOOD_ALTAR_COLOR;
+	altar.push_back(ColorString(R"(       .       )", color));
+	altar.push_back(ColorString(R"(       |       )", color));
+	altar.push_back(ColorString(R"(  .   ]#[   .  )", color));
+	altar.push_back(ColorString(R"(   \_______/   )", color));
+	altar.push_back(ColorString(R"(.    ]###[    .)", color));
+	altar.push_back(ColorString(R"( \__]#.-.#[__/ )", color));
+	altar.push_back(ColorString(R"(  |___| |___|  )", color));
+	altar.push_back(ColorString(R"(  |___|_|___|  )", color));
+	altar.push_back(ColorString(R"(  ####/_\####  )", color));
+	altar.push_back(ColorString(R"(     |___|     )", color));
+	altar.push_back(ColorString(R"(    /_____\    )", color));
+	return altar;
+}
+
+Picture Art::getSpider()
+{
+	Picture spider;
+	int color = Art::SPIDER_COLOR;
+	spider.push_back(ColorString(R"(    ____                      ,      )", color));
+	spider.push_back(ColorString(R"(   /---.'.__             ____//      )", color));
+	spider.push_back(ColorString(R"(        '--.\           /.---'       )", color));
+	spider.push_back(ColorString(R"(   _______  \\         //            )", color));
+	spider.push_back(ColorString(R"(  /.------.\  \|      .'/  ______    )", color));
+	spider.push_back(ColorString(R"( //  ___  \ \ ||/|\  //  _/_----.\__ )", color));
+	spider.push_back(ColorString(R"(|/  /.-.\  \ \:|< >|// _/.'..\   '--')", color));
+	spider.push_back(ColorString(R"(   //   \'. | \'.|.'/ /_/ /  \\      )", color));
+	spider.push_back(ColorString(R"(  //     \ \_\/" ' ~\-'.-'    \\     )", color));
+	spider.push_back(ColorString(R"( //       '-._| :H: |'-.__     \\    )", color));
+	spider.push_back(ColorString(R"(//           (/'==='\)'-._\     ||   )", color));
+	spider.push_back(ColorString(R"(||                        \\    \|   )", color));
+	spider.push_back(ColorString(R"(||                         \\    '   )", color));
+	spider.push_back(ColorString(R"(|/                          \\       )", color));
+	spider.push_back(ColorString(R"(                             ||      )", color));
+	spider.push_back(ColorString(R"(                             ||      )", color));
+	spider.push_back(ColorString(R"(                             \\      )", color));
+	spider.push_back(ColorString(R"(                              '      )", color));
+	return spider;
+}
+
 Picture Art::getGiantSnail()
 {
 	Picture giantSnail;

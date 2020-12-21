@@ -91,6 +91,30 @@ public:
 	const static int EXPERIENCE_GAIN = 40;
 };
 
+// Enter a room, become surrounded by giant spiders, either can attempt escape
+// for a 50% chance to leave, 50% chance everyone takes 5 damage then fight. Or 
+// can just choose to fight from the begining
+class SpiderEvent : public EventRoom
+{
+public:
+	SpiderEvent(Game* game);
+
+	void playRoom() override;
+	const static int INITIAL_DAMAGE = 5;
+	const static int ESCAPE_CHANCE = 50;
+};
+
+// For a blood price, one character can gain additional max health
+class BloodAltarEvent : public EventRoom
+{
+public:
+	BloodAltarEvent(Game* game);
+
+	void playRoom() override;
+	const static int NET_HEALTH_LOSS = 20;
+	const static int MAX_HEALTH_GAIN = 10;
+};
+
 class TreasureEvent : public EventRoom
 {
 public:

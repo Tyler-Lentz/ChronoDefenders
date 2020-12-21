@@ -116,6 +116,12 @@ public:
 	
 	static Picture getAncientBird();
 	const static int ANC_BIRD_COLOR = ddutil::GREEN;
+
+	static Picture getBloodAltar();
+	const static int BLOOD_ALTAR_COLOR = ddutil::LIGHTRED;
+
+	static Picture getSpider();
+	const static int SPIDER_COLOR = ddutil::BROWN;
 };
 
 

@@ -423,6 +423,25 @@ ColorString HexedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 	return ColorString();
 }
 
+StrangledStatus::StrangledStatus()
+	:NormalStatus(StatusID::Strangled, ColorString("Strangled", ddutil::WHITE))
+{
+}
+
+Status* StrangledStatus::makeCopy()
+{
+	return new StrangledStatus();	
+}
+
+ColorString StrangledStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{	
+	ddutil::DamageReport dam= target->reduceHealth(STRANGLE_DAMAGE, nullptr, true);
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
+		ColorString(" loses " + std::to_string(dam.getDamageTaken()) + " health due to being ", ddutil::TEXT_COLOR) +
+		getName();
+}
+
 DragonStatus::DragonStatus()
 	:NormalStatus(StatusID::Dragon, ColorString("Dragon Form", COLOR))
 {

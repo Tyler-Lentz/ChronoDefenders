@@ -1745,7 +1745,7 @@ VampireBatVariant::VampireBatVariant(Game* game)
 {
 	turnCounter = 0;
 	moves.push_back(new EnemyMoves::Strike(SWIPE_DAMAGE, WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(SPIT_DAMAGE, new BurntStatus(), BURN_LENGTH, 0, "Spit", Strength::Moderate,
+	moves.push_back(new StatusAttackMove(SPIT_DAMAGE, new FrostBurntStatus(), FBURN_LENGTH, 0, "Spit", Strength::Moderate,
 		WavFile("attack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::HealStrike(LIFESTEAL_BITE_DAMAGE, LIFESTEAL_AMOUNT, WavFile("attack5", ddutil::SF_LOOP,
 		ddutil::SF_ASYNC)));

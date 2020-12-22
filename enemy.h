@@ -145,7 +145,7 @@ public:
 	const static int HEALTH = 72;
 	const static int SWIPE_DAMAGE = 5;// (multi attack on everyone)
 	const static int SPIT_DAMAGE = 8;
-	const static int BURN_LENGTH = 3;
+	const static int FBURN_LENGTH = 3;
 	const static int LIFESTEAL_BITE_DAMAGE = 6;
 	const static int LIFESTEAL_AMOUNT = 6;
 private:

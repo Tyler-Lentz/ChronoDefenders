@@ -531,8 +531,10 @@ ZoneMap AbyssEnvironment::generateRooms()
 
 Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 {
-	static int strCounter = ddutil::random(1, 2);
-	static int normCounter = ddutil::random(1, 4);
+	const int NUM_NORM_ENEMIES = 7;
+	const int NUM_STR_ENEMIES = 2;
+	static int strCounter = ddutil::random(1, NUM_STR_ENEMIES);
+	static int normCounter = ddutil::random(1, NUM_NORM_ENEMIES);
 
 	if (type == ddutil::EnemyType::Boss)
 	{
@@ -541,7 +543,7 @@ Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 	else if (type == ddutil::EnemyType::Strong)
 	{
 		strCounter++;
-		if (strCounter > 2)
+		if (strCounter > NUM_STR_ENEMIES)
 		{
 			strCounter = 1;
 		}
@@ -553,7 +555,7 @@ Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 	else // Normal
 	{
 		normCounter++;
-		if (normCounter > 4)
+		if (normCounter > NUM_NORM_ENEMIES)
 		{
 			normCounter = 1;
 		}
@@ -565,8 +567,14 @@ Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 			return new MinionAlt(game);
 		case 3:
 			return new GiantLizard(game);
-		default:
+		case 4:
 			return new AltGiantLizard(game);
+		case 5:
+			return new FireBat(game);
+		case 6:
+			return new FireBatVariant(game);
+		case 7:
+			return new FirePlatypus(game);
 		}
 	}
 }

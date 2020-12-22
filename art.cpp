@@ -1404,6 +1404,66 @@ Picture Art::getAncientLizard()
 	return ancientLizard;
 }
 
+Picture Art::getFireBat()
+{
+	Picture fireBat;
+	int color = FIRE_BAT_COLOR;
+	fireBat.push_back(ColorString(R"(     ,*-~"`^"*u_                                _u*"^`"~-*,     )", color));
+	fireBat.push_back(ColorString(R"(  p!^       /  jPw                            w9j \        ^!p  )", color));
+	fireBat.push_back(ColorString(R"(w^.._      /      "\_                      _/"     \        _.^w)", color));
+	fireBat.push_back(ColorString(R"(     *_   /          \_      _    _      _/         \     _*    )", color));
+	fireBat.push_back(ColorString(R"(       q /           / \q   ( `--` )   p/ \          \   p      )", color));
+	fireBat.push_back(ColorString(R"(       jj5****._    /    ^\_) o  o (_/^    \    _.****6jj       )", color));
+	fireBat.push_back(ColorString(R"(               *_ /      "==) ;; (=="      \ _*                 )", color));
+	fireBat.push_back(ColorString(R"(                 `/.w***,   /(    )\   ,***w.\"                 )", color));
+	fireBat.push_back(ColorString(R"(                  ^ ilmk ^c/ )    ( \c^      ^                  )", color));
+	fireBat.push_back(ColorString(R"(                          'V')_)(_('V'                          )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	return fireBat;
+}
+
+Picture Art::getFireBatVariant()
+{
+	Picture fireBat;
+	int color = FIRE_BAT_VARIANT_COLOR;
+	fireBat.push_back(ColorString(R"(     ,*-~"`^"*u_                                _u*"^`"~-*,     )", color));
+	fireBat.push_back(ColorString(R"(  p!^       /  jPw                            w9j \        ^!p  )", color));
+	fireBat.push_back(ColorString(R"(w^.._      /      "\_                      _/"     \        _.^w)", color));
+	fireBat.push_back(ColorString(R"(     *_   /          \_      _    _      _/         \     _*    )", color));
+	fireBat.push_back(ColorString(R"(       q /           / \q   ( `--` )   p/ \          \   p      )", color));
+	fireBat.push_back(ColorString(R"(       jj5****._    /    ^\_) o  o (_/^    \    _.****6jj       )", color));
+	fireBat.push_back(ColorString(R"(               *_ /      "==) ;; (=="      \ _*                 )", color));
+	fireBat.push_back(ColorString(R"(                 `/.w***,   /(    )\   ,***w.\"                 )", color));
+	fireBat.push_back(ColorString(R"(                  ^ ilmk ^c/ )    ( \c^      ^                  )", color));
+	fireBat.push_back(ColorString(R"(                          'V')_)(_('V'                          )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	fireBat.push_back(ColorString(R"(                                                                )", color));
+	return fireBat;
+}
+
+Picture Art::getFirePlatypus()
+{
+	Picture firePlatypus;
+	int color = FIRE_PLATYPUS_COLOR;
+	firePlatypus.push_back(ColorString(R"(           _.- ~~^^^'~- _ __ .,.- ~ ~ ~  ~  -. _              )", color));
+	firePlatypus.push_back(ColorString(R"( ________,'       ::.                       _,-  ~ -.         )", color));
+	firePlatypus.push_back(ColorString(R"(((      ~_\   -s-  ::                     ,'          ;,      )", color));
+	firePlatypus.push_back(ColorString(R"( \\       <.._ .;;;`                     ;           }  `',   )", color));
+	firePlatypus.push_back(ColorString(R"(  ``======='    _ _- _ (   }             `,          ,'\,  `, )", color));
+	firePlatypus.push_back(ColorString(R"(               ((/ _ _,i   ! _ ~ - -- - _ _'_-_,_,,,'    \,  ;)", color));
+	firePlatypus.push_back(ColorString(R"(                  ((((____/            (,(,(, ____>        \,')", color));
+	return firePlatypus;
+}
+
 Picture Art::getGiantSnail()
 {
 	Picture giantSnail;

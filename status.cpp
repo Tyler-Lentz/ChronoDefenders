@@ -542,3 +542,25 @@ ColorString ElementalStatus::applyEndTurnEffect(Creature* target, int stackAmoun
 {
 	return ColorString();
 }
+
+ScorchedStatus::ScorchedStatus()
+	:NormalStatus(StatusID::Scorched, ColorString("Scorched", COLOR))
+{
+}
+
+Status* ScorchedStatus::makeCopy()
+{
+	return new ScorchedStatus();
+}
+
+ColorString ScorchedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	// Deals DAMAGE_PER_BURN * number of burns the target has
+	int damage = target->getNumberOfStatuses(StatusID::Burnt) * DAMAGE_PER_BURN;
+
+	ddutil::DamageReport dam = target->reduceHealth(damage, nullptr, true);
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
+		ColorString(" loses " + std::to_string(dam.getDamageTaken()) + " health due to being ", ddutil::TEXT_COLOR) +
+		getName();
+}

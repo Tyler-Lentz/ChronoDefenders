@@ -239,6 +239,61 @@ private:
 	int target; // integer representing the index of the player to attack, is incremented every turn and resets to 0 when too high
 };
 
+class FireBat : public NormalEnemy
+{
+public:
+	FireBat(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 150;
+	const static int WHIRLWIND_DAMAGE = 8; // multi attack
+	const static int WHIRLWIND_BURN_LENGTH = 4;
+	const static int SCORCH_LENGTH = 1; // attack that applies scorched on an enemy
+	const static int STRIKE_DAMAGE = 10; // single attack/block
+	const static int STRIKE_BLOCK = 20;
+	const static int BITE_DAMAGE = 6; // double attack
+	const static int BITE_TIMES = 2;
+
+private:
+	int turnCounter;
+};
+
+class FireBatVariant : public NormalEnemy
+{
+public:
+	FireBatVariant(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 150;
+	const static int BASE_BLOCK = 8; // One time gets base block enveloping in shield of fire
+	const static int BURN_LENGTH = 6; // Single target high burn attack
+	const static int BURN_DAMAGE = 10;
+	const static int SCORCHED_LENGTH = 1; // Attack that just applies scorched
+private:
+	int turnCounter;
+	Creature* previousPerson;
+};
+
+class FirePlatypus : public NormalEnemy
+{
+public:
+	FirePlatypus(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 180;
+	const static int STRIKE_DAMAGE = 10; // attack that also gives block
+	const static int STRIKE_BLOCK = 25;
+	const static int FLAMETHROWER_DAMAGE = 8; // multitarget flame attack
+	const static int FLAMETHROWER_BURN_LENGTH = 3;
+	const static int BODY_SLAM_DAMAGE = 9; // Multitarget stun attack
+	const static int STUN_LENGTH = 2;
+	const static int HEAL_AMOUNT = 20; // heal move
+private:
+	int turnCounter;
+};
 
 class HardEnemy : public Enemy
 {

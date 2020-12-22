@@ -1917,3 +1917,211 @@ Creature* AncientLizard::makeCopy()
 {
 	return new AncientLizard(game);
 }
+
+FireBat::FireBat(Game* game)
+	:NormalEnemy(game, HEALTH, "Fire Bat", Art::FIRE_BAT_COLOR, Art::getFireBat())
+{
+	turnCounter = 0;
+	if (ddutil::random(1, 2))
+	{
+		turnCounter = 2;
+	}
+	moves.push_back(new StatusAttackMove(WHIRLWIND_DAMAGE, new BurntStatus(), WHIRLWIND_BURN_LENGTH,
+		0, "Fire Whirlwind", Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SimpleStatusMove(new ScorchedStatus(), SCORCH_LENGTH, false, 0, "Scorched",
+		Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new AttackAndBlockMove(STRIKE_DAMAGE, STRIKE_BLOCK, false, 0, "Block-Strike",
+		Strength::Powerful, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new MultiAttackMove(BITE_DAMAGE, BITE_TIMES, 0, "Dual Bite", Strength::Powerful,
+		WavFile("dualattack", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+
+}
+
+EnemyTurn FireBat::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	switch (turnCounter)
+	{
+	case 0: // multiattack burn thing
+		chosenMove = moves[0];
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to engulf everyone in a ", ddutil::TEXT_COLOR) +
+			ColorString("Fire Maelstrom", BurntStatus::COLOR) + ColorString(" for ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(WHIRLWIND_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	case 1: // apply scorched
+		chosenMove = moves[1];
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" will ", ddutil::TEXT_COLOR) + ColorString("Scorch", ScorchedStatus::COLOR) +
+			ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString();
+		break;
+	case 2: // either dual attack or block strike
+		if (ddutil::random(1, 2) == 1)
+		{
+			chosenMove = moves[2];
+			targets.push_back(ddutil::getHighestHealthPlayer(players));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to Strike the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+				ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(STRIKE_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) +
+				ColorString(" and block ", ddutil::TEXT_COLOR) + ColorString(std::to_string(STRIKE_BLOCK) + " damage", ddutil::TEXT_COLOR);
+		}
+		else
+		{
+			chosenMove = moves[3];
+			targets.push_back(ddutil::getLowestHealthPlayer(players));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to Bite the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+				ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BITE_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) + 
+				ColorString(std::to_string(BITE_TIMES) + " times", ddutil::TEXT_COLOR);
+		}
+		break;
+	}
+
+	turnCounter++;
+	if (turnCounter > 2)
+	{
+		turnCounter = 0;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* FireBat::makeCopy()
+{
+	return new FireBat(game);
+}
+
+FireBatVariant::FireBatVariant(Game* game)
+	:NormalEnemy(game, HEALTH, "Fire Bat", Art::FIRE_BAT_VARIANT_COLOR, Art::getFireBatVariant())
+{
+	turnCounter = 0;
+	previousPerson = nullptr;
+	moves.push_back(new EnemyMoves::CreateShield(BASE_BLOCK, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(BURN_DAMAGE, new BurntStatus(), BURN_LENGTH, 0, "Flamethrower",
+		Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SimpleStatusMove(new ScorchedStatus(), SCORCHED_LENGTH, false, 0, "Scorch", Strength::Powerful,
+		WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn FireBatVariant::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	switch (turnCounter)
+	{
+	case 0: // flame shield move
+		chosenMove = moves[0];
+		targets.push_back(this);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" is enveloping itself in ", ddutil::TEXT_COLOR) +
+			ColorString(" Flames", Art::FIRE_BAT_VARIANT_COLOR);
+		break;
+	case 1: // burn dood
+		chosenMove = moves[1];
+		previousPerson = ddutil::getHighestHealthPlayer(players);
+		targets.push_back(previousPerson);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to ", ddutil::TEXT_COLOR) + ColorString("Burn", Art::FIRE_BAT_VARIANT_COLOR) +
+			ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" for ", ddutil::TEXT_COLOR) + 
+			ColorString(std::to_string(BURN_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	case 2: // scorch dood
+		chosenMove = moves[2];
+		if (previousPerson == nullptr)
+		{
+			previousPerson = ddutil::getHighestHealthPlayer(players);
+		}
+		targets.push_back(previousPerson);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" will ", ddutil::TEXT_COLOR) + ColorString("Scorch", ScorchedStatus::COLOR) +
+			ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString();
+		break;
+	}
+
+	turnCounter++;
+	if (turnCounter > 2)
+	{
+		turnCounter = 1;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* FireBatVariant::makeCopy()
+{
+	return new FireBatVariant(game);
+}
+
+FirePlatypus::FirePlatypus(Game* game)
+	:NormalEnemy(game, HEALTH, "Magma Platypus", Art::FIRE_PLATYPUS_COLOR, Art::getFirePlatypus())
+{
+	turnCounter = 0;
+	moves.push_back(new AttackAndBlockMove(STRIKE_DAMAGE, STRIKE_BLOCK, false, 0,
+		"Strike-Block", Strength::Powerful, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(FLAMETHROWER_DAMAGE, new BurntStatus(), FLAMETHROWER_BURN_LENGTH, 0,
+		"Flamethrower", Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(BODY_SLAM_DAMAGE, new StunnedStatus(), STUN_LENGTH, 0,
+		"Body Slam", Strength::Powerful, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::Heal(HEAL_AMOUNT));
+}
+
+EnemyTurn FirePlatypus::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	switch (turnCounter)
+	{
+	case 0:
+		chosenMove = moves[0];
+		targets.push_back(ddutil::getLowestHealthPlayer(players));
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to Strike the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(STRIKE_DAMAGE) + " damage and ", ddutil::DAMAGE_COLOR) +
+			ColorString(" block ", ddutil::BLOCK_COLOR) + ColorString(std::to_string(STRIKE_BLOCK) + " damage", ddutil::BLOCK_COLOR);
+		break;
+	case 1:
+		chosenMove = moves[1];
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to shoot a ", ddutil::TEXT_COLOR) +
+			ColorString("Flamethrower", BurntStatus::COLOR) + ColorString(" at everybody for ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(FLAMETHROWER_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	case 2:
+		chosenMove = moves[2];
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to Body Slam into everybody for ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(BODY_SLAM_DAMAGE) + " damage", ddutil::TEXT_COLOR);
+		break;
+	case 3:
+		chosenMove = moves[3];
+		targets.push_back(this);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to ", ddutil::TEXT_COLOR) + ColorString("Heal", ddutil::HEAL_COLOR) +
+			ColorString(" for " + std::to_string(HEAL_AMOUNT) + " health", ddutil::TEXT_COLOR);
+		break;
+	}
+	turnCounter++;
+	if (turnCounter > 3)
+	{
+		turnCounter = 0;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* FirePlatypus::makeCopy()
+{
+	return new FirePlatypus(game);
+}

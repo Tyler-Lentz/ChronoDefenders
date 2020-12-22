@@ -134,6 +134,15 @@ public:
 
 	static Picture getAncientLizard();
 	const static int ANC_LIZARD_COLOR = ddutil::LIGHTGREEN;
+
+	static Picture getFireBat();
+	const static int FIRE_BAT_COLOR = ddutil::YELLOW;
+
+	static Picture getFireBatVariant();
+	const static int FIRE_BAT_VARIANT_COLOR = ddutil::CYAN;
+
+	static Picture getFirePlatypus();
+	const static int FIRE_PLATYPUS_COLOR = ddutil::DARKGRAY;
 };
 
 

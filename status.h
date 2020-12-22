@@ -31,7 +31,8 @@ enum class StatusID
     Jester,
     Elemental,
     Strangled,
-    Stunned
+    Stunned,
+    Scorched
 };
 
 class Status
@@ -82,6 +83,17 @@ public:
 
     static const int BURN_DAMAGE = 2;
     static const int COLOR = ddutil::RED;
+};
+
+class ScorchedStatus : public NormalStatus
+{
+public:
+    ScorchedStatus();
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    static const int DAMAGE_PER_BURN = 2;
+    static const int COLOR = ddutil::YELLOW;
 };
 
 class FrostBurntStatus : public NormalStatus

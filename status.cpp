@@ -420,7 +420,18 @@ Status* HexedStatus::makeCopy()
 
 ColorString HexedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
-	return ColorString();
+	Player* player = dynamic_cast<Player*>(target);
+	if (player != nullptr)
+	{
+		int vitLoss = player->stealVitality(HexedStatus::VITALITY_LOSS);
+		return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
+			ColorString(" loses ", ddutil::TEXT_COLOR) + ColorString(std::to_string(vitLoss) + " vitality ", ddutil::VITALITY_COLOR) +
+			ColorString("due to being ", ddutil::TEXT_COLOR) + getName();
+	}
+	else
+	{
+		return ColorString();
+	}
 }
 
 StrangledStatus::StrangledStatus()
@@ -440,6 +451,21 @@ ColorString StrangledStatus::applyEndTurnEffect(Creature* target, int stackAmoun
 	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
 		ColorString(" loses " + std::to_string(dam.getDamageTaken()) + " health due to being ", ddutil::TEXT_COLOR) +
 		getName();
+}
+
+StunnedStatus::StunnedStatus()
+	:NormalStatus(StatusID::Stunned, ColorString("Stunned", COLOR))
+{
+}
+
+Status* StunnedStatus::makeCopy()
+{
+	return new StunnedStatus();
+}
+
+ColorString StunnedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	return ColorString();
 }
 
 DragonStatus::DragonStatus()

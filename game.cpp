@@ -248,6 +248,11 @@ void Game::battle(Enemy* enemy)
 					options.push_back(ColorString("Strangled", StrangledStatus::COLOR));
 					continue;
 				}
+				else if (activePlayer->hasStatus(StatusID::Stunned))
+				{
+					options.push_back(ColorString("Stunned", StunnedStatus::COLOR));
+					continue;
+				}
 
 				if (std::find(usedMoves.begin(), usedMoves.end(), i) == usedMoves.end()) // the move hasnt been used
 				{
@@ -323,7 +328,9 @@ void Game::battle(Enemy* enemy)
 			default: // corresponds to an index of the player's moves
 				Move* selectedMove = activeMoves[moveMenu.getResponse()];
 
-				if (activePlayer->hasStatus(StatusID::Hexed) || activePlayer->hasStatus(StatusID::Strangled))
+				if (activePlayer->hasStatus(StatusID::Hexed) || 
+					activePlayer->hasStatus(StatusID::Strangled) ||
+					activePlayer->hasStatus(StatusID::Stunned))
 				{
 					clearBottomDivider();
 					vwin->putcen(

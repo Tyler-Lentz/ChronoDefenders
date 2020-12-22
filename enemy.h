@@ -121,6 +121,64 @@ public:
 	const static int LOW_HP_DAMAGE = 14;
 };
 
+class VampireBat : public NormalEnemy
+{
+public:
+	VampireBat(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 66;
+	const static int STRIKE_DAMAGE = 10;
+	const static int LIFESTEAL_AMOUNT = 8;
+private:
+	int turnCounter;
+};
+
+class VampireBatVariant : public NormalEnemy
+{
+public:
+	VampireBatVariant(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 72;
+	const static int SWIPE_DAMAGE = 5;// (multi attack on everyone)
+	const static int SPIT_DAMAGE = 8;
+	const static int BURN_LENGTH = 3;
+	const static int LIFESTEAL_BITE_DAMAGE = 6;
+	const static int LIFESTEAL_AMOUNT = 6;
+private:
+	int turnCounter;
+};
+
+class CaveBat : public NormalEnemy
+{
+public:
+	CaveBat(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 70;
+	const static int DIVEBOMB_THRESHOLD = 35; // hp at which will do suicide attack
+	const static int WING_ATTACK_DAMAGE = 9;
+	const static int DIVEBOMB_DAMAGE = 20; // dies after doing this move
+};
+
+class CaveBatVariant : public NormalEnemy
+{
+public:
+	CaveBatVariant(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 80;
+	const static int POISON_SPRAY_AMOUNT = 2;
+	const static int POISON_BITE_AMOUNT = 5;
+	const static int POISON_BITE_DAMAGE = 2;
+
+};
+
 class Minion : public NormalEnemy
 {
 public:
@@ -218,6 +276,22 @@ public:
 	const static int BASE_DAMAGE = 4;
 	const static int DAMAGE_INCREASE = 3;
 
+};
+
+class AncientLizard : public HardEnemy 
+{
+public:
+	AncientLizard(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 133;
+	const static int STOMP_DAMAGE = 10;
+	const static int CHARGE_DAMAGE = 10;
+	const static int STUNNED_LENGTH = 3;
+	const static int HEAL_AMOUNT = 20;
+private:
+	int turnCounter;
 };
 
 class AbyssBeast : public HardEnemy

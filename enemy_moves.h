@@ -19,6 +19,22 @@ namespace EnemyMoves
 		int strength; // how much damage it deals
 	};
 
+	class SuicideStrike : public Strike 
+	{
+	public:
+		SuicideStrike(int theDamage, WavFile theSound);
+		ColorString doAction(Creature* self, Creature* other) override;
+	};
+
+	class HealStrike : public Strike
+	{
+	public:
+		HealStrike(int theDamage, int theHeal, WavFile theSound);
+		ColorString doAction(Creature* self, Creature* other) override;
+	private:
+		int healAmount;
+	};
+
 	class DualStrike : public MultiAttackMove
 	{
 	public:

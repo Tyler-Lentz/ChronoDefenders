@@ -345,13 +345,15 @@ ZoneMap CatacombsEnvironment::generateRooms()
 
 Enemy* CatacombsEnvironment::generateEnemy(ddutil::EnemyType type)
 {
-	static int normCount = ddutil::random(1, 4);
-	static int strCount = ddutil::random(1, 2);
+	const int NUM_NORM_ENEMIES = 8;
+	const int NUM_STR_ENEMIES = 3;
+	static int normCount = ddutil::random(1, NUM_NORM_ENEMIES);
+	static int strCount = ddutil::random(1, NUM_STR_ENEMIES);
 	switch (type)
 	{
 	case ddutil::EnemyType::Normal:
 		normCount++;
-		if (normCount > 4)
+		if (normCount > NUM_NORM_ENEMIES)
 		{
 			normCount = 1;
 		}
@@ -365,17 +367,27 @@ Enemy* CatacombsEnvironment::generateEnemy(ddutil::EnemyType type)
 			return new Ghost(game);
 		case 4:
 			return new GhostVariant(game);
+		case 5:
+			return new VampireBat(game);
+		case 6:
+			return new VampireBatVariant(game);
+		case 7:
+			return new CaveBat(game);
+		case 8:
+			return new CaveBatVariant(game);
 		}
 	case ddutil::EnemyType::Strong:
 		strCount++;
-		if (strCount > 2)
+		if (strCount > NUM_STR_ENEMIES)
 		{
 			strCount = 1;
 		}
 		if (strCount == 1)
 			return new Brute(game);
-		else
+		else if (strCount == 2)
 			return new Minotaur(game);
+		else
+			return new AncientLizard(game);
 	case ddutil::EnemyType::Boss:
 		return new TheMessenger(game);
 	}

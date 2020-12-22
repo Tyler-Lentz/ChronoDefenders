@@ -73,9 +73,6 @@ public:
 	static Picture getCollector();
 	const static int COLLECTOR_COLOR = ddutil::MAGENTA;
 
-	static Picture getVampireBat();
-	const static int VAMP_BAT_COLOR = ddutil::DARKGRAY;
-
 	static Picture getAbyssBeast();
 	const static int ABYSS_BEAST_COLOR = ddutil::DARKGRAY;
 
@@ -122,6 +119,21 @@ public:
 
 	static Picture getSpider();
 	const static int SPIDER_COLOR = ddutil::BROWN;
+
+	static Picture getVampireBat();
+	const static int VAMP_BAT_COLOR = ddutil::LIGHTRED;
+
+	static Picture getVampireBatAlt();
+	const static int VAMP_BAT_ALT_COLOR = ddutil::RED;
+
+	static Picture getCaveBat();
+	const static int CAVEBAT_COLOR = ddutil::DARKGRAY;
+
+	static Picture getCaveBatAlt();
+	const static int CAVEBATALT_COLOR = ddutil::LIGHTGRAY;
+
+	static Picture getAncientLizard();
+	const static int ANC_LIZARD_COLOR = ddutil::LIGHTGREEN;
 };
 
 

@@ -888,6 +888,31 @@ Picture Art::getVampireBat()
 	return bat;
 }
 
+Picture Art::getVampireBatAlt()
+{
+	Picture bat;
+	int color = Art::VAMP_BAT_ALT_COLOR;
+	bat.push_back(ColorString(R"(,_                    _,)", color));
+	bat.push_back(ColorString(R"() '-._  ,_    _,  _.-' ()", color));
+	bat.push_back(ColorString(R"()  _.-'.|\\--//|.'-._  ()", color));
+	bat.push_back(ColorString(R"( )'   .'\/o\/o\/'.   `( )", color));
+	bat.push_back(ColorString(R"(  ) .' . \====/ . '. (  )", color));
+	bat.push_back(ColorString(R"(   )  / <<    >> \  (   )", color));
+	bat.push_back(ColorString(R"(    '-._/``  ``\_.-'    )", color));
+	bat.push_back(ColorString(R"(      __\\'--'//__      )", color));
+	bat.push_back(ColorString(R"(     (((""`  `"")))     )", color));
+	bat.push_back(ColorString(R"(                        )", color));
+	bat.push_back(ColorString(R"(                        )", color));
+	bat.push_back(ColorString(R"(                        )", color));
+	bat.push_back(ColorString(R"(                        )", color));
+	bat.push_back(ColorString(R"(                        )", color));
+	bat.push_back(ColorString(R"(                        )", color));
+	bat.push_back(ColorString(R"(                        )", color));
+	bat.push_back(ColorString(R"(                        )", color));
+	bat.push_back(ColorString(R"(                        )", color));
+	return bat;
+}
+
 Picture Art::getAbyssBeast()
 {
 	Picture beast;
@@ -1296,6 +1321,87 @@ Picture Art::getSpider()
 	spider.push_back(ColorString(R"(                             \\      )", color));
 	spider.push_back(ColorString(R"(                              '      )", color));
 	return spider;
+}
+
+Picture Art::getCaveBat()
+{
+	Picture cavebat;
+	int color = Art::CAVEBAT_COLOR;
+	cavebat.push_back(ColorString(R"(....._                                            )", color));
+	cavebat.push_back(ColorString(R"( `.   ``-.                               .-----.._)", color));
+	cavebat.push_back(ColorString(R"(   `,     `-.                          .:      /` )", color));
+	cavebat.push_back(ColorString(R"(     :       `"..                 ..-``       :   )", color));
+	cavebat.push_back(ColorString(R"(     /   ...--:::`n            n.`::...       :   )", color));
+	cavebat.push_back(ColorString(R"(     `:``      .` ::          /  `.     ``---..:. )", color));
+	cavebat.push_back(ColorString(R"(       `\    .`  ._:   .-:   ::    `.     .-``    )", color));
+	cavebat.push_back(ColorString(R"(         :  :    :_\\_/: :  .::      `.  /        )", color));
+	cavebat.push_back(ColorString(R"(         : /      \-../:/_.`-`         \ :        )", color));
+	cavebat.push_back(ColorString(R"(         :: _.._  q` p ` /`             \|        )", color));
+	cavebat.push_back(ColorString(R"(         :-`    ``(_. ..-----hh``````/-._:        )", color));
+	cavebat.push_back(ColorString(R"(                     `:      ``     /     `       )", color));
+	cavebat.push_back(ColorString(R"(                     E:            /              )", color));
+	cavebat.push_back(ColorString(R"(                      :          _/               )", color));
+	cavebat.push_back(ColorString(R"(                      :    _..-``                 )", color));
+	cavebat.push_back(ColorString(R"(                      l--``                       )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	return cavebat;
+}
+
+Picture Art::getCaveBatAlt()
+{
+	Picture cavebat;
+	int color = Art::CAVEBATALT_COLOR;
+	cavebat.push_back(ColorString(R"(....._                                            )", color));
+	cavebat.push_back(ColorString(R"( `.   ``-.                               .-----.._)", color));
+	cavebat.push_back(ColorString(R"(   `,     `-.                          .:      /` )", color));
+	cavebat.push_back(ColorString(R"(     :       `"..                 ..-``       :   )", color));
+	cavebat.push_back(ColorString(R"(     /   ...--:::`n            n.`::...       :   )", color));
+	cavebat.push_back(ColorString(R"(     `:``      .` ::          /  `.     ``---..:. )", color));
+	cavebat.push_back(ColorString(R"(       `\    .`  ._:   .-:   ::    `.     .-``    )", color));
+	cavebat.push_back(ColorString(R"(         :  :    :_\\_/: :  .::      `.  /        )", color));
+	cavebat.push_back(ColorString(R"(         : /      \-../:/_.`-`         \ :        )", color));
+	cavebat.push_back(ColorString(R"(         :: _.._  q` p ` /`             \|        )", color));
+	cavebat.push_back(ColorString(R"(         :-`    ``(_. ..-----hh``````/-._:        )", color));
+	cavebat.push_back(ColorString(R"(                     `:      ``     /     `       )", color));
+	cavebat.push_back(ColorString(R"(                     E:            /              )", color));
+	cavebat.push_back(ColorString(R"(                      :          _/               )", color));
+	cavebat.push_back(ColorString(R"(                      :    _..-``                 )", color));
+	cavebat.push_back(ColorString(R"(                      l--``                       )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	cavebat.push_back(ColorString(R"(                                                  )", color));
+	return cavebat;
+}
+
+Picture Art::getAncientLizard()
+{
+	Picture ancientLizard;
+	int color = ANC_LIZARD_COLOR;
+	ancientLizard.push_back(ColorString(R"(                     /\/\/\/\/\/\               )", color));
+	ancientLizard.push_back(ColorString(R"(                    /|||||||||||||\             )", color));
+	ancientLizard.push_back(ColorString(R"(                  _/|||||||||||||||:_=---.._    )", color));
+	ancientLizard.push_back(ColorString(R"(                  | |||||||:'''':||  '~-._  '-. )", color));
+	ancientLizard.push_back(ColorString(R"(                _/| ||||'         '-._   _:    ;)", color));
+	ancientLizard.push_back(ColorString(R"(                | | ||'               '~~     _;)", color));
+	ancientLizard.push_back(ColorString(R"(                | '                _.=._    _-~ )", color));
+	ancientLizard.push_back(ColorString(R"(             _.~                  {     '-_'    )", color));
+	ancientLizard.push_back(ColorString(R"(     _.--=.-~       _.._          {_       }    )", color));
+	ancientLizard.push_back(ColorString(R"( _.-~   @-,        {    '-._     _. '~==+  |    )", color));
+	ancientLizard.push_back(ColorString(R"(('          }       \_      \_.=~       |  |    )", color));
+	ancientLizard.push_back(ColorString(R"(`======='  /_         ~-_    )         <_oo_>   )", color));
+	ancientLizard.push_back(ColorString(R"(  `-----~~/ /'===...===' +   /                  )", color));
+	ancientLizard.push_back(ColorString(R"(         <_oo_>         /  //                   )", color));
+	ancientLizard.push_back(ColorString(R"(                       /  //                    )", color));
+	ancientLizard.push_back(ColorString(R"(                      <_oo_>                    )", color));
+	return ancientLizard;
 }
 
 Picture Art::getGiantSnail()

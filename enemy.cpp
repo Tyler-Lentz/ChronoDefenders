@@ -1698,4 +1698,222 @@ void TruePatriarch::deathScene()
 
 }
 
+VampireBat::VampireBat(Game* game)
+	:NormalEnemy(game, HEALTH, "Vampire Bat", Art::VAMP_BAT_COLOR, Art::getVampireBat())
+{
+	turnCounter = 0;
+	moves.push_back(new EnemyMoves::Strike(STRIKE_DAMAGE, WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::HealStrike(LIFESTEAL_AMOUNT, LIFESTEAL_AMOUNT,
+		WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
 
+EnemyTurn VampireBat::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	chosenMove = moves[turnCounter];
+	switch (turnCounter)
+	{
+	case 0: // non lifesteal strike
+		targets.push_back(players[ddutil::random(0, players.size()-1)]);
+		intent = ddutil::genericDamageIntent(STRIKE_DAMAGE, getColorString(), "Strike", targets);
+		break;
+	case 1: // lifesteal strike
+		targets.push_back(ddutil::getHighestHealthPlayer(players));
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to suck " + std::to_string(LIFESTEAL_AMOUNT) + " health points out of the ", ddutil::TEXT_COLOR) +
+			targets.front()->getColorString();
+		break;
+	}
+	turnCounter++;
+	if (turnCounter > 1)
+	{
+		turnCounter = 0;
+	}
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* VampireBat::makeCopy()
+{
+	return new VampireBat(game);
+}
+
+VampireBatVariant::VampireBatVariant(Game* game)
+	:NormalEnemy(game, HEALTH, "Vampire Bat", Art::VAMP_BAT_ALT_COLOR, Art::getVampireBatAlt())
+{
+	turnCounter = 0;
+	moves.push_back(new EnemyMoves::Strike(SWIPE_DAMAGE, WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(SPIT_DAMAGE, new BurntStatus(), BURN_LENGTH, 0, "Spit", Strength::Moderate,
+		WavFile("attack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::HealStrike(LIFESTEAL_BITE_DAMAGE, LIFESTEAL_AMOUNT, WavFile("attack5", ddutil::SF_LOOP,
+		ddutil::SF_ASYNC)));
+}
+
+EnemyTurn VampireBatVariant::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	chosenMove = moves[turnCounter];
+	switch (turnCounter)
+	{
+	case 0: // Swipe attack	
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to swipe everybody for ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(SWIPE_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	case 1:
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to spit on the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(SPIT_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	case 2:
+		targets.push_back(ddutil::getLowestHealthPlayer(players));
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to suck " + std::to_string(LIFESTEAL_AMOUNT) + " health points out of the ", ddutil::TEXT_COLOR) +
+			targets.front()->getColorString();
+		break;
+	}
+	turnCounter += ddutil::random(1, 2);
+	if (turnCounter > 2)
+	{
+		turnCounter = 0;
+	}
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* VampireBatVariant::makeCopy()
+{
+	return new VampireBatVariant(game);
+}
+
+CaveBat::CaveBat(Game* game)
+	:NormalEnemy(game, HEALTH, "Cave Bat", Art::CAVEBAT_COLOR, Art::getCaveBat())
+{
+	moves.push_back(new EnemyMoves::Strike(WING_ATTACK_DAMAGE, WavFile("attack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::SuicideStrike(DIVEBOMB_DAMAGE, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn CaveBat::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	if (getHealth() > DIVEBOMB_THRESHOLD)
+	{
+		targets.push_back(ddutil::getLowestHealthPlayer(players));
+		chosenMove = moves[0];
+		intent = ddutil::genericDamageIntent(WING_ATTACK_DAMAGE, getColorString(), "Wing Strike", targets);
+	}
+	else
+	{
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		chosenMove = moves[1];
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to divebomb the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(DIVEBOMB_DAMAGE) + " damage", ddutil::DAMAGE_COLOR) +
+			ColorString(", killing itself", ddutil::TEXT_COLOR);
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* CaveBat::makeCopy()
+{
+	return new CaveBat(game);
+}
+
+CaveBatVariant::CaveBatVariant(Game* game)
+	:NormalEnemy(game, HEALTH, "Cave Bat", Art::CAVEBATALT_COLOR, Art::getCaveBatAlt())
+{
+	moves.push_back(new SimpleStatusMove(new PoisonedStatus(), POISON_SPRAY_AMOUNT, true, 0, "Poison Spray",
+		Strength::Powerful, WavFile("electricattack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(POISON_BITE_DAMAGE, new PoisonedStatus(), POISON_BITE_AMOUNT, 0, "Poison Bite",
+		Strength::Moderate, WavFile("attack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn CaveBatVariant::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	if (ddutil::random(1,2) == 1)
+	{
+		targets = players;
+		chosenMove = moves[0];
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to spray ", ddutil::TEXT_COLOR) +
+			ColorString("poison (" + std::to_string(POISON_SPRAY_AMOUNT) + ")", PoisonedStatus::COLOR) +
+			ColorString(" on everybody", ddutil::TEXT_COLOR);
+	}
+	else
+	{
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		chosenMove = moves[1];
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to bite ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(POISON_BITE_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) +
+			ColorString(" and ", ddutil::TEXT_COLOR) + ColorString(std::to_string(POISON_BITE_AMOUNT) + " poison", PoisonedStatus::COLOR);
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* CaveBatVariant::makeCopy()
+{
+	return new CaveBatVariant(game);
+}
+
+AncientLizard::AncientLizard(Game* game)
+	: HardEnemy(game, HEALTH, "Ancient Lizard", Art::ANC_LIZARD_COLOR, Art::getAncientLizard())
+{
+	turnCounter = 0;
+	moves.push_back(new EnemyMoves::Strike(STOMP_DAMAGE, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(CHARGE_DAMAGE, new StunnedStatus(), STUNNED_LENGTH, 0, "Charge",
+		Strength::Powerful, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::Heal(HEAL_AMOUNT));
+}
+
+EnemyTurn AncientLizard::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	chosenMove = moves[turnCounter];
+	switch (turnCounter)
+	{
+	case 0: // Stomp
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		intent = ddutil::genericDamageIntent(STOMP_DAMAGE, getColorString(), "Stomp on", targets);
+		break;
+	case 1: // Charge --> stun
+		targets.push_back(ddutil::getLowestHealthPlayer(players));
+		intent = ddutil::genericDamageIntent(CHARGE_DAMAGE, getColorString(), "Charge into and stun", targets);
+		break;
+	case 2: // self heal
+		targets.push_back(this);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" is shedding its skin", ddutil::HEAL_COLOR);
+		break;
+	}
+	turnCounter++;
+	if (turnCounter > 2)
+	{
+		turnCounter = 0;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* AncientLizard::makeCopy()
+{
+	return new AncientLizard(game);
+}

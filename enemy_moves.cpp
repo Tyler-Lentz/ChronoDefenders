@@ -201,3 +201,32 @@ ColorString EnemyMoves::TakeVitality::doAction(Creature* self, Creature* other)
 			ColorString(" by " + std::to_string(amountStolen), ddutil::TEXT_COLOR);
 	}
 }
+
+EnemyMoves::SuicideStrike::SuicideStrike(int theDamage, WavFile theSound)
+	:EnemyMoves::Strike(theDamage, theSound)
+{
+}
+
+ColorString EnemyMoves::SuicideStrike::doAction(Creature* self, Creature* other)
+{
+	self->reduceHealth(9999, nullptr, true);
+	ColorString output = EnemyMoves::Strike::doAction(self, other);
+	output += ColorString(" and dies in the process", ddutil::TEXT_COLOR);
+	return output;
+}
+
+EnemyMoves::HealStrike::HealStrike(int theDamage, int theHeal, WavFile theSound)
+	:Strike(theDamage, theSound)
+{
+	healAmount = theHeal;
+}
+
+ColorString EnemyMoves::HealStrike::doAction(Creature* self, Creature* other)
+{
+	int targetStartingHealth = other->getHealth();
+	ColorString output = Strike::doAction(self, other);
+	int healAmount = targetStartingHealth - other->getHealth();
+	int netHeal = self->increaseHealth(healAmount);
+	output += ColorString(" and heals ", ddutil::TEXT_COLOR) + ColorString(std::to_string(netHeal) + " HP", ddutil::HEAL_COLOR);
+	return output;
+}

@@ -685,7 +685,7 @@ public:
 	const static int BEAM_DAMAGE = 20; // multitarget beam
 	const static int BIG_BLOCK = 66;
 	
-	const static int BLOCK_BREAK_DAMAGE = 18;
+	const static int BLOCK_BREAK_DAMAGE = 20;
 	const static int BLOCK_BREAK_MULT = 2;
 
 	const static int DESPERATION_THRESHOLD = 20; // at less than 10% of max hp go to desperation mode

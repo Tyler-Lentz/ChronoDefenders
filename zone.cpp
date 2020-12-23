@@ -577,6 +577,8 @@ Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 			return new FirePlatypus(game);
 		}
 	}
+	ddutil::errorMessage("INVALID ENEMY GENERATION IN ABYSS", __LINE__, __FILE__);
+	return nullptr;
 }
 
 Room* AbyssEnvironment::generateEventRoom()
@@ -697,8 +699,10 @@ ZoneMap VoidEnvironment::generateRooms()
 
 Enemy* VoidEnvironment::generateEnemy(ddutil::EnemyType type)
 {
-	static int normCounter = ddutil::random(1, 4);
-	static int strCounter = ddutil::random(1, 2);
+	const int NUM_NORM_ENCOUNTERS = 6;
+	const int NUM_STR_ENCOUNTERS = 3;
+	static int normCounter = ddutil::random(1, NUM_NORM_ENCOUNTERS);
+	static int strCounter = ddutil::random(1, NUM_STR_ENCOUNTERS);
 
 	if (type == ddutil::EnemyType::Boss)
 	{
@@ -707,7 +711,7 @@ Enemy* VoidEnvironment::generateEnemy(ddutil::EnemyType type)
 	else if (type == ddutil::EnemyType::Strong)
 	{
 		strCounter++;
-		if (strCounter > 2)
+		if (strCounter > NUM_STR_ENCOUNTERS)
 		{
 			strCounter = 1;
 		}
@@ -715,15 +719,19 @@ Enemy* VoidEnvironment::generateEnemy(ddutil::EnemyType type)
 		{
 			return new HyperBeast(game);
 		}
-		else
+		else if (strCounter == 2)
 		{
 			return new AncientBird(game);
+		}
+		else
+		{
+			return new CorruptedDisciple(game);
 		}
 	}
 	else // normal
 	{
 		normCounter++;
-		if (normCounter > 4)
+		if (normCounter > NUM_NORM_ENCOUNTERS)
 		{
 			normCounter = 1;
 		}
@@ -735,10 +743,16 @@ Enemy* VoidEnvironment::generateEnemy(ddutil::EnemyType type)
 			return new DevilishMask(game);
 		case 3:
 			return new SentientMouth(game);
-		default:
+		case 4:
 			return new PossessedMace(game);
+		case 5:
+			return new Sniffer(game);
+		case 6:
+			return new SnifferVariant(game);
 		}
 	}
+	ddutil::errorMessage("INVALID ENEMY GENERATION IN VOID", __LINE__, __FILE__);
+	return nullptr;
 }
 
 Room* VoidEnvironment::generateEventRoom()

@@ -143,6 +143,15 @@ public:
 
 	static Picture getFirePlatypus();
 	const static int FIRE_PLATYPUS_COLOR = ddutil::DARKGRAY;
+
+	static Picture getSniffer();
+	const static int SNIFFER_COLOR = ddutil::BLUE;
+
+	static Picture getSnifferVariant();
+	const static int SNIFFER_VARIANT_COLOR = ddutil::LIGHTCYAN;
+
+	static Picture getCorruptedDisciple();
+	const static int CORRUPTED_DISCIPLE_COLOR = ddutil::MAGENTA;
 };
 
 

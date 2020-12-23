@@ -2057,7 +2057,7 @@ EnemyTurn FireBatVariant::getTurn(std::vector<Creature*> players)
 
 Creature* FireBatVariant::makeCopy()
 {
-	return new FireBatVariant(game);
+return new FireBatVariant(game);
 }
 
 FirePlatypus::FirePlatypus(Game* game)
@@ -2124,4 +2124,191 @@ EnemyTurn FirePlatypus::getTurn(std::vector<Creature*> players)
 Creature* FirePlatypus::makeCopy()
 {
 	return new FirePlatypus(game);
+}
+
+Sniffer::Sniffer(Game* game)
+	:IntenseEnemy(game, HEALTH, "Sniffer", Art::SNIFFER_COLOR, Art::getSniffer(),
+		std::vector<ColorString> {
+			ColorString("The Sniffer howls loudly into the void", Art::SNIFFER_COLOR)
+		}
+	)
+{
+	turnCounter = 0;
+	moves.push_back(new StatusAttackMove(RAVAGE_DAMAGE, new VulnerableStatus(), RAVAGE_VULNERABLE_LENGTH,
+		0, "Ravage", Strength::Mythical, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(STRANGLE_DAMAGE, new StrangledStatus(), STRANGLE_LENGTH,
+		0, "Strangle", Strength::Mythical, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::HealStrike(LIFE_STEAL_AMOUNT, LIFE_STEAL_AMOUNT,
+		WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn Sniffer::getTurn(std::vector<Creature*> players)
+{
+
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	chosenMove = moves[turnCounter];
+	switch (turnCounter)
+	{
+	case 0:
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		intent = ddutil::genericDamageIntent(RAVAGE_DAMAGE, getColorString(), "Ravage", targets);
+		break;
+	case 1:
+		for (Creature* p : players)
+		{
+			if (p->hasStatus(StatusID::Vulnerable))
+			{
+				targets.push_back(p);
+				break;
+			}
+		}
+		if (targets.empty())// nobody is currently vulnerable so just attack a random person
+		{
+			targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		}
+		intent = ddutil::genericDamageIntent(STRANGLE_DAMAGE, getColorString(), "Strangle", targets);
+		break;
+	case 2:
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to suck ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(LIFE_STEAL_AMOUNT), ddutil::DAMAGE_COLOR) +
+			ColorString(" health ", ddutil::HEAL_COLOR) + ColorString("from everybody", ddutil::TEXT_COLOR);
+		break;
+	}
+	// Keep generating random turn until it generates not the same turn two turns in a row
+	int previous = turnCounter;
+	do
+	{
+		turnCounter = ddutil::random(0, 2);
+	} while (turnCounter == previous);
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* Sniffer::makeCopy()
+{
+	return new Sniffer(game);
+}
+
+SnifferVariant::SnifferVariant(Game* game)
+	:IntenseEnemy(game, HEALTH, "Sniffer", Art::SNIFFER_VARIANT_COLOR, Art::getSnifferVariant(),
+		std::vector<ColorString> {
+			ColorString("The Sniffer howls loudly into the void", Art::SNIFFER_VARIANT_COLOR)
+		}
+	)
+{
+	previousMove = -1;
+	moves.push_back(new StatusAttackMove(FROST_BREATH_DAMAGE, new FrostBurntStatus(), FROST_BURN_LENGTH, 0,
+		"Frost Breath", Strength::Powerful, WavFile("freeze", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SelfBlockMove(BIG_BLOCK_AMOUNT, 0, "beeg block", Strength::Powerful, WavFile("gainblock",
+		ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new AttackAndBlockMove(BLOCK_ATTACK_DAMAGE, BLOCK_ATTACK_BLOCK, false, 0, "attack-block",
+		Strength::Powerful, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn SnifferVariant::getTurn(std::vector<Creature*> players)
+{
+	ColorString intent;
+	std::vector<Creature*> targets;
+	Move* chosenMove = nullptr;
+
+	int moveNum = previousMove;
+	do
+	{
+		// keep trying to pick a move until it doesn't pick the same move two times in a row
+		moveNum = ddutil::random(0, 2);
+	} while (moveNum == previousMove);
+	previousMove = moveNum;
+
+	chosenMove = moves[moveNum];
+	switch (moveNum)
+	{
+	case 0:
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to ", ddutil::TEXT_COLOR) + ColorString("Freeze", FrostBurntStatus::COLOR) +
+			ColorString(" everybody for ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(FROST_BREATH_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	case 1:
+		targets.push_back(this);
+		intent = ddutil::genericBlockIntent(BIG_BLOCK_AMOUNT, getColorString());
+		break;
+	case 2:
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to attack the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BLOCK_ATTACK_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) +
+			ColorString("and", ddutil::TEXT_COLOR) + ColorString(" block " + std::to_string(BLOCK_ATTACK_BLOCK) + " damage", ddutil::BLOCK_COLOR);
+		break;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* SnifferVariant::makeCopy()
+{
+	return new SnifferVariant(game);
+}
+
+CorruptedDisciple::CorruptedDisciple(Game* game)
+	:IntenseHardEnemy(game, HEALTH, "Corrupted Disciple", Art::CORRUPTED_DISCIPLE_COLOR, Art::getCorruptedDisciple(),
+		std::vector<ColorString> {
+			ColorString("The Disciple mumbles a strange hymn...", Art::CORRUPTED_DISCIPLE_COLOR)
+		}
+	)
+{
+	turnCounter = 0;
+	moves.push_back(new StatusAttackMove(HEX_DAMAGE, new HexedStatus(), HEXED_LENGTH,
+		0, "Hex", Strength::Powerful, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(LIGHTNING_STRIKE_DAMAGE, new ZappedStatus(), ZAPPED_AMOUNT,
+		0, "Smite", Strength::Mythical, WavFile("lightning", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::Heal(HEAL_AMOUNT));
+}
+
+EnemyTurn CorruptedDisciple::getTurn(std::vector<Creature*> players)
+{
+	ColorString intent;
+	std::vector<Creature*> targets;
+	Move* chosenMove = moves[turnCounter];
+
+	switch (turnCounter)
+	{
+	case 0: // hex 
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to ", ddutil::TEXT_COLOR) + ColorString("Hex", HexedStatus::COLOR) +
+			ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" for ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(HEX_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR);
+		break;
+	case 1: // lightning strike
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" intends to ", ddutil::TEXT_COLOR) + ColorString("Smite", ZappedStatus::COLOR) +
+			ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(LIGHTNING_STRIKE_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	case 2: // heal
+		targets.push_back(this);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" is reciting a strange prayer", ddutil::TEXT_COLOR);
+		break;
+	}
+	turnCounter++;
+	if (turnCounter > 2)
+	{
+		turnCounter = 0;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* CorruptedDisciple::makeCopy()
+{
+	return new CorruptedDisciple(game);
 }

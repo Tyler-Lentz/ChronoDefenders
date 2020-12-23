@@ -494,11 +494,62 @@ public:
 	const static int MT_DAMAGE = 12; // multi target damage
 };
 
+class Sniffer : public IntenseEnemy
+{
+public:
+	Sniffer(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 250;
+	const static int RAVAGE_DAMAGE = 18; // Single target attack
+	const static int RAVAGE_VULNERABLE_LENGTH = 3;
+	const static int STRANGLE_DAMAGE = 14; // Single target attack
+	const static int STRANGLE_LENGTH = 2;
+	const static int LIFE_STEAL_AMOUNT = 10; // Multi target lifesteal attack
+private:
+	int turnCounter;
+};
+
+class SnifferVariant : public IntenseEnemy
+{
+public:
+	SnifferVariant(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 280;
+	const static int FROST_BREATH_DAMAGE = 10; // Multitarget frostburn attack
+	const static int FROST_BURN_LENGTH = 2;
+	const static int BIG_BLOCK_AMOUNT = 40; // blocks a lot in one turn
+	const static int BLOCK_ATTACK_DAMAGE = 18; // blocks and attacks in one turn
+	const static int BLOCK_ATTACK_BLOCK = 18;
+private:
+	int previousMove;
+};
+
 class IntenseHardEnemy : public Enemy
 {
 public:
 	IntenseHardEnemy(Game* game, int maxHp, std::string name, int color, Picture pic, std::vector<ColorString> intro);
 	void deathScene() override;
+};
+
+class CorruptedDisciple : public IntenseHardEnemy
+{
+public:
+	CorruptedDisciple(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+
+	const static int HEALTH = 375;
+	const static int HEXED_LENGTH = 3; // single target hex attack
+	const static int HEX_DAMAGE = 10;
+	const static int LIGHTNING_STRIKE_DAMAGE = 22; // single target lightning strike
+	const static int ZAPPED_AMOUNT = 6;
+	const static int HEAL_AMOUNT = 30;
+private:
+	int turnCounter;
 };
 
 class HyperBeast : public IntenseHardEnemy

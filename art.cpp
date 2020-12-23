@@ -1464,6 +1464,74 @@ Picture Art::getFirePlatypus()
 	return firePlatypus;
 }
 
+Picture Art::getSniffer()
+{
+	Picture sniffer;
+	int color = Art::SNIFFER_COLOR;
+	sniffer.push_back(ColorString(R"(                     _,-"^\ )", color));
+	sniffer.push_back(ColorString(R"(                 _,-"   ,\ ))", color));
+	sniffer.push_back(ColorString(R"(        __,,__,-"     ,'  d')", color));
+	sniffer.push_back(ColorString(R"(    _,-"      "-,_  ,'      )", color));
+	sniffer.push_back(ColorString(R"(  ,"              "<,       )", color));
+	sniffer.push_back(ColorString(R"( /                   \      )", color));
+	sniffer.push_back(ColorString(R"( |                    \     )", color));
+	sniffer.push_back(ColorString(R"( ;     ,     ,         \    )", color));
+	sniffer.push_back(ColorString(R"(  \   ( "--,/           \   )", color));
+	sniffer.push_back(ColorString(R"(   \   \   /  /\   (\/)\ \  )", color));
+	sniffer.push_back(ColorString(R"(    |  )  {  /  \     } \ \ )", color));
+	sniffer.push_back(ColorString(R"(   /  /   | |    |   =|  | })", color));
+	sniffer.push_back(ColorString(R"(  |  /    / |     ~\  |  | \)", color));
+	sniffer.push_back(ColorString(R"(  J \     J \,      (_o ,/ L)", color));
+	sniffer.push_back(ColorString(R"(   "'      '"             "')", color));
+	return sniffer;
+}
+
+Picture Art::getSnifferVariant()
+{
+	Picture sniffer;
+	int color = Art::SNIFFER_VARIANT_COLOR;
+	sniffer.push_back(ColorString(R"(        __,,__              )", color));
+	sniffer.push_back(ColorString(R"(    _,-"      "-,_          )", color));
+	sniffer.push_back(ColorString(R"(  ,"              "-,       )", color));
+	sniffer.push_back(ColorString(R"( /                   ",     )", color));
+	sniffer.push_back(ColorString(R"( |                     \    )", color));
+	sniffer.push_back(ColorString(R"( ;     ,    ,,          \   )", color));
+	sniffer.push_back(ColorString(R"(  \   ( "-,/             \  )", color));
+	sniffer.push_back(ColorString(R"(   \   \ \/  /~\   (\/)\  \ )", color));
+	sniffer.push_back(ColorString(R"(    |  ) {  / ) \     } \  ;)", color));
+	sniffer.push_back(ColorString(R"(   /  /  | | /   |   =|  | })", color));
+	sniffer.push_back(ColorString(R"(  |  /   / |/     ~\  |  | \)", color));
+	sniffer.push_back(ColorString(R"(  J \    J \,       (_o ,/ L)", color));
+	sniffer.push_back(ColorString(R"(   "'     '"             "' )", color));
+	return sniffer;
+}
+
+Picture Art::getCorruptedDisciple()
+{
+	Picture cdisciple;
+	int color = Art::CORRUPTED_DISCIPLE_COLOR;
+	cdisciple.push_back(ColorString(R"(.                                       ,)", color));
+	cdisciple.push_back(ColorString(R"()).                                   ,(()", color));
+	cdisciple.push_back(ColorString(R"())).                                 ,((()", color));
+	cdisciple.push_back(ColorString(R"())))).            .:::.           ,(((((()", color));
+	cdisciple.push_back(ColorString(R"())))))))).        :   :        ,((((((((')", color));
+	cdisciple.push_back(ColorString(R"(`))))))))))).     :   :    ,(((((((((((( )", color));
+	cdisciple.push_back(ColorString(R"( ))))))))))))))))_:' ':_(((((((((((((((' )", color));
+	cdisciple.push_back(ColorString(R"( `)))))))))))).-' \___/ '-._(((((((((((  )", color));
+	cdisciple.push_back(ColorString(R"(  `))))_._.-' __)(     )(_  '-._._(((('  )", color));
+	cdisciple.push_back(ColorString(R"(   `))'---)___)))'\_ _/'((((__(---'(('   )", color));
+	cdisciple.push_back(ColorString(R"(     `))))))))))))|' '|(((((((((((('     )", color));
+	cdisciple.push_back(ColorString(R"(       `)))))))))/'   '\((((((((('       )", color));
+	cdisciple.push_back(ColorString(R"(         `)))))))|     |((((((('         )", color));
+	cdisciple.push_back(ColorString(R"(          `))))))|     |(((((('          )", color));
+	cdisciple.push_back(ColorString(R"(                /'     '\                )", color));
+	cdisciple.push_back(ColorString(R"(               /'       '\               )", color));
+	cdisciple.push_back(ColorString(R"(              /'         '\              )", color));
+	cdisciple.push_back(ColorString(R"(             /'           '\             )", color));
+	cdisciple.push_back(ColorString(R"(             '---..___..---'             )", color));
+	return cdisciple;
+}
+
 Picture Art::getGiantSnail()
 {
 	Picture giantSnail;

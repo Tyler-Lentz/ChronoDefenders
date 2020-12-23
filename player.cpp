@@ -671,7 +671,7 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 
 	if (str == Strength::Moderate)
 	{
-		for (int i : ddutil::uniqueRandom(1,8,MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1,10,MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -688,6 +688,7 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 				newMoves.push_back(new GunslingerMoves::CraftBullets());
 				break;
 			case 5:
+			case 6:
 			{
 				int randomNum = ddutil::random(1, 4);
 				if (randomNum == 1)
@@ -707,11 +708,14 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 					newMoves.push_back(new GunslingerMoves::DrawHeart());
 				}
 			}
-			case 6:
+			case 7:
 				newMoves.push_back(new GunslingerMoves::Punch());
 				break;
-			case 7:
+			case 8:
 				newMoves.push_back(new GunslingerMoves::Backflip());
+				break;
+			case 9:
+				newMoves.push_back(new GunslingerMoves::Dropkick());
 				break;
 			default:
 				newMoves.push_back(new GunslingerMoves::BottleStrike());
@@ -721,7 +725,7 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i : ddutil::uniqueRandom(1, 9, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -748,6 +752,12 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 				break;
 			case 8:
 				newMoves.push_back(new GunslingerMoves::Leap());
+				break;
+			case 9:
+				newMoves.push_back(new GunslingerMoves::HeavyRevolver());
+				break;
+			case 10:
+				newMoves.push_back(new GunslingerMoves::DoubleKick());
 				break;
 			default:
 				newMoves.push_back(new GunslingerMoves::ExplosiveShot());
@@ -777,12 +787,9 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 				newMoves.push_back(new GunslingerMoves::BlackDynamite());
 				break;
 			case 6:
-				newMoves.push_back(new GunslingerMoves::BrewToxins());
-				break;
-			case 7:
 				newMoves.push_back(new GunslingerMoves::BrassKnuckles());
 				break;
-			case 8:
+			case 7:
 				newMoves.push_back(new GunslingerMoves::JesterForm());
 				break;
 			default:

@@ -198,7 +198,7 @@ ColorString SimpleHealMove::doAction(Creature* self, Creature* other)
 }
 
 MultiAttackMove::MultiAttackMove(int damagePerHit, int numHits, int cost, std::string name, Strength str, WavFile theSound)
-	:Move("Deals " + std::to_string(damagePerHit) + " damage " + std::to_string(numHits) + " times", name, cost, Strength::Moderate, true, theSound)
+	:Move("Deals " + std::to_string(damagePerHit) + " damage " + std::to_string(numHits) + " times", name, cost, str, true, theSound)
 {
 	damage = damagePerHit;
 	times = numHits;

@@ -151,6 +151,11 @@ GunslingerMoves::MakeBullets::MakeBullets()
 
 // Moderate
 
+GunslingerMoves::Dropkick::Dropkick()
+	:SimpleAttackMove(DAMAGE, false, COST, "Dropkick", Strength::Moderate, WavFile("attack2", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
 GunslingerMoves::Backflip::Backflip()
 	:SelfBlockMove(BLOCK_AMOUNT, COST, "Backflip", Strength::Moderate, WavFile("jump", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
@@ -233,6 +238,8 @@ GunslingerMoves::BottleStrike::BottleStrike()
 
 
 // Powerful
+
+
 
 GunslingerMoves::Leap::Leap()
 	:SelfBlockMove(BLOCK_AMOUNT, COST, "Leap", Strength::Powerful, WavFile("jump", ddutil::SF_LOOP, ddutil::SF_ASYNC))
@@ -361,6 +368,15 @@ GunslingerMoves::Uppercut::Uppercut()
 {
 }
 
+GunslingerMoves::DoubleKick::DoubleKick()
+	:MultiAttackMove(KICK_DAMAGE, KICK_TIMES, COST, "Double Kick", Strength::Powerful, WavFile("dualattack", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
+GunslingerMoves::HeavyRevolver::HeavyRevolver()
+	:GunMove(DAMAGE, BULLET_USE, COST, "Heavy Revolver", Strength::Powerful, WavFile("shot3", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
 
 // Mythical
 
@@ -449,25 +465,6 @@ ColorString GunslingerMoves::ExplosiveShot::doAction(Creature* self, Creature* o
 	}
 }
 
-GunslingerMoves::BrewToxins::BrewToxins()
-	:Move(
-		"Makes all attacks apply "+std::to_string(POISON)+" Poison",
-		"Brew Toxins",
-		COST,
-		Strength::Mythical,
-		false,
-		WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)
-	)
-{
-}
-
-ColorString GunslingerMoves::BrewToxins::doAction(Creature* self, Creature* other)
-{
-	self->addAttackStatus(new PoisonedStatus(), POISON);
-	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
-		ColorString("'s attacks will now apply " + std::to_string(POISON) + " additional ", ddutil::TEXT_COLOR) +
-		ColorString("Poison", PoisonedStatus::COLOR);
-}
 
 GunslingerMoves::BrassKnuckles::BrassKnuckles()
 	:SimpleAttackMove(DAMAGE, false, COST, "Brass Knuckles", Strength::Mythical, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC))

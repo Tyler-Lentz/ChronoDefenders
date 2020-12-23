@@ -94,6 +94,15 @@ namespace GunslingerMoves
 
 	// Moderate
 	
+	class Dropkick : public SimpleAttackMove
+	{
+	public:
+		Dropkick();
+
+		const static int COST = 2;
+		const static int DAMAGE = 10;
+	};
+
 	class BottleStrike : public SimpleStatusMove
 	{
 	public:
@@ -200,6 +209,26 @@ namespace GunslingerMoves
 
 	// Powerful
 
+	class DoubleKick : public MultiAttackMove
+	{
+	public:
+		DoubleKick();
+
+		const static int KICK_DAMAGE = 8;
+		const static int KICK_TIMES = 2;
+		const static int COST = 2;
+	};
+
+	class HeavyRevolver : public GunMove
+	{
+	public:
+		HeavyRevolver();
+
+		const static int DAMAGE = 9;
+		const static int COST = 0;
+		const static int BULLET_USE = 1;
+	};
+
 	class ExplosiveShot : public Move
 	{
 	public:
@@ -292,16 +321,6 @@ namespace GunslingerMoves
 
 	// Mythical
 
-	class BrewToxins : public Move
-	{
-	public:
-		BrewToxins();
-		ColorString doAction(Creature* self, Creature* other) override;
-
-		const static int POISON = 1;
-		const static int COST = 2;
-	};
-
 	class SuckerPunch : public StatusAttackMove
 	{
 	public:
@@ -326,7 +345,7 @@ namespace GunslingerMoves
 	public:
 		SharpsRifle();
 
-		const static int DAMAGE = 20;
+		const static int DAMAGE = 25;
 		const static int BULLET_AMOUNT = 1;
 		const static int COST = 2;
 	};
@@ -336,7 +355,7 @@ namespace GunslingerMoves
 	public:
 		ColtWalker();
 
-		const static int DAMAGE = 9;
+		const static int DAMAGE = 12;
 		const static int BULLET_AMOUNT = 1;
 		const static int COST = 0;
 	};

@@ -57,8 +57,12 @@ public:
 	void increaseMovesetLimit(int amount);
 
 	void deathScene() override;
+
+	void increaseMovesToChooseFrom(int amount);
 protected:
 	std::vector<Artifact*> artifacts;
+
+	int movesToChooseFrom; // how many moves this person may select from when taking a new move
 
 	std::vector<std::pair<Status*, int>> selfStartingStatuses; // statuses that are applied to self at start of battle
 	std::vector<std::pair<Status*, int>> enemyStartingStatuses; // statuses that are applied to enemy at start of battle

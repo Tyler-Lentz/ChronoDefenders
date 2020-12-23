@@ -605,6 +605,11 @@ void Game::intro()
 		clearBottomDivider();
 		artifactSelectionMenu(line, gameWorld[currentZoneIndex]->getRandomArtifact(Strength::Moderate));
 	}
+	
+	for (Player* p : getPlayerParty())
+	{
+		p->tradeExperience();
+	}
 
 	vwin->clearScreen();
 }

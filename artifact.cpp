@@ -195,6 +195,16 @@ void Chainmail::equipAction(Player* player)
 	player->increaseBaseBlock(BLOCK_GAIN);
 }
 
+SmellingSalts::SmellingSalts(Game* game)
+	:ModerateArtifact("Smelling Salts", ColorString("Allows holder to select from one more move", ddutil::TEXT_COLOR),
+		ArtifactID::SmellingSalts, game)
+{
+}
+
+void SmellingSalts::equipAction(Player* player)
+{
+	player->increaseMovesToChooseFrom(CARD_CHOICE_GAIN);
+}
 
 void AncientBook::equipAction(Player* player)
 {
@@ -701,5 +711,3 @@ void BattleStandard::equipAction(Player* player)
 	player->increaseVitalityPerTurn(VIT_PER_TURN_GAIN);
 	player->addSelfStartingStatus(new VulnerableStatus(), VULN_TURNS);
 }
-
-

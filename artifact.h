@@ -20,6 +20,7 @@ enum class ArtifactID
 	MagicPowder,
 	AncientBook,
 	Chainmail,
+	SmellingSalts,
 
 	// Powerful
 	SpectralAmulet,
@@ -161,6 +162,15 @@ public:
 	void equipAction(Player* player) override;
 
 	const static int BLOCK_GAIN = 2;
+};
+
+class SmellingSalts : public ModerateArtifact
+{
+public:
+	SmellingSalts(Game* game);
+	void equipAction(Player* player) override;
+
+	const static int CARD_CHOICE_GAIN = 1;
 };
 
 class PowerfulArtifact : public Artifact

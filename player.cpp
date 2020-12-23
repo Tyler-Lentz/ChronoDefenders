@@ -27,6 +27,7 @@ Player::Player(Game* game, int svit, int maxVit, int vitGain, int maxHp, int mov
 	minion = min;
 	vitalityGainAdjustment = 0;
 	percentXPBoost = 0;
+	movesToChooseFrom = 3;
 }
 
 Player::~Player()
@@ -486,12 +487,17 @@ void Player::deathScene()
 	game->clearCenterScreen();
 }
 
+void Player::increaseMovesToChooseFrom(int amount)
+{
+	movesToChooseFrom += amount;
+}
+
 // Samurai
 Samurai::Samurai(Game* game)
 	:Player(game, Samurai::STARTING_VITALITY, Samurai::MAX_VITALITY, Samurai::VITALITY_GAIN, Samurai::MAX_HP,
 		Samurai::MAX_MOVES, "Samurai", ddutil::SAMURAI_COLOR, Art::getSamurai(), false)
 {
-	moves.push_back(new SamuraiMoves::DragonBreath());
+	moves.push_back(new SamuraiMoves::Slice());
 	moves.push_back(new SamuraiMoves::Slice());
 	moves.push_back(new SamuraiMoves::Slice());
 	moves.push_back(new SamuraiMoves::Deflect());
@@ -501,7 +507,7 @@ Samurai::Samurai(Game* game)
 std::vector<Move*> Samurai::getRandomMoves(Strength str)
 {
 	std::vector<Move*> newMoves;
-	const int MOVES_TO_CHOOSE_FROM = 3;
+	const unsigned MOVES_TO_CHOOSE_FROM = movesToChooseFrom;
 
 	if (str == Strength::Moderate)
 	{
@@ -661,7 +667,7 @@ Gunslinger::Gunslinger(Game* game)
 std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 {
 	std::vector<Move*> newMoves;
-	const unsigned MOVES_TO_CHOOSE_FROM = 3;
+	const unsigned MOVES_TO_CHOOSE_FROM = static_cast<unsigned>(movesToChooseFrom);
 
 	if (str == Strength::Moderate)
 	{
@@ -865,9 +871,8 @@ Sorcerer::Sorcerer(Game* game)
 
 std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 {
-
 	std::vector<Move*> newMoves;
-	const unsigned MOVES_TO_CHOOSE_FROM = 3;
+	const unsigned MOVES_TO_CHOOSE_FROM = static_cast<unsigned>(movesToChooseFrom);
 
 	if (str == Strength::Moderate)
 	{

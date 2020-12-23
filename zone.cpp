@@ -154,7 +154,7 @@ ModerateArtifact* ZoneEnvironment::getModArtifact()
 {
 	game->changeScore(ddutil::MOD_ARTIFACT_SCORE);
 	ModerateArtifact* newArtifact = nullptr;
-	switch (ddutil::random(1, 6))
+	switch (ddutil::random(1, 7))
 	{
 	case 1:
 		newArtifact = new PurpleAmulet(game);
@@ -173,6 +173,9 @@ ModerateArtifact* ZoneEnvironment::getModArtifact()
 		break;
 	case 6:
 		newArtifact = new Chainmail(game);
+		break;
+	case 7:
+		newArtifact = new SmellingSalts(game);
 		break;
 	}
 	newArtifact->playFindSound();

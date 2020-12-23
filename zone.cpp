@@ -754,13 +754,13 @@ Enemy* VoidEnvironment::generateEnemy(ddutil::EnemyType type)
 
 Room* VoidEnvironment::generateEventRoom()
 {
-	static int uniqueCounter = ddutil::random(1, 2);
+	static int uniqueCounter = ddutil::random(1, 3);
 
 	int randomNum = ddutil::random(1, 5);
 	if (randomNum == 1) // unique event 20%
 	{
 		uniqueCounter++;
-		if (uniqueCounter > 2)
+		if (uniqueCounter > 3)
 		{
 			uniqueCounter = 1;
 		}
@@ -768,9 +768,13 @@ Room* VoidEnvironment::generateEventRoom()
 		{
 			return new MirrorEvent(game);
 		}
-		else
+		else if (uniqueCounter == 2)
 		{
 			return new PortalEvent(game);
+		}
+		else
+		{
+			return new GoldAltarEvent(game);
 		}
 	}
 	else if (randomNum == 2 || randomNum == 3) // enemy fight 40%

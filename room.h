@@ -174,4 +174,12 @@ public:
 	void playRoom() override;
 };
 
+class GoldAltarEvent : public EventRoom
+{
+public:
+	GoldAltarEvent(Game* game);
+
+	void playRoom() override;
+};
+
 #endif

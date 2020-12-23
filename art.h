@@ -117,6 +117,9 @@ public:
 	static Picture getBloodAltar();
 	const static int BLOOD_ALTAR_COLOR = ddutil::LIGHTRED;
 
+	static Picture getGoldAltar();
+	const static int GOLD_ALTAR_COLOR = ddutil::YELLOW;
+
 	static Picture getSpider();
 	const static int SPIDER_COLOR = ddutil::BROWN;
 

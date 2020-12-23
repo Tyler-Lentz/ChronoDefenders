@@ -1298,6 +1298,24 @@ Picture Art::getBloodAltar()
 	return altar;
 }
 
+Picture Art::getGoldAltar()
+{
+	Picture altar;
+	int color = GOLD_ALTAR_COLOR;
+	altar.push_back(ColorString(R"(       .       )", color));
+	altar.push_back(ColorString(R"(       |       )", color));
+	altar.push_back(ColorString(R"(  .   ]#[   .  )", color));
+	altar.push_back(ColorString(R"(   \_______/   )", color));
+	altar.push_back(ColorString(R"(.    ]###[    .)", color));
+	altar.push_back(ColorString(R"( \__]#.-.#[__/ )", color));
+	altar.push_back(ColorString(R"(  |___| |___|  )", color));
+	altar.push_back(ColorString(R"(  |___|_|___|  )", color));
+	altar.push_back(ColorString(R"(  ####/_\####  )", color));
+	altar.push_back(ColorString(R"(     |___|     )", color));
+	altar.push_back(ColorString(R"(    /_____\    )", color));
+	return altar;
+}
+
 Picture Art::getSpider()
 {
 	Picture spider;

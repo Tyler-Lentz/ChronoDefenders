@@ -920,3 +920,65 @@ void MaskEvent::playRoom()
 	game->clearCenterScreen();
 
 }
+
+GoldAltarEvent::GoldAltarEvent(Game* game)
+	:EventRoom(game)
+{
+}
+
+void GoldAltarEvent::playRoom()
+{
+	VirtualWindow* vwin = game->getVWin();
+	game->clearCenterScreen();
+
+	int line = ddutil::EVENT_PICTURE_LINE;
+	vwin->printArtFromBottom(Art::getGoldAltar(), Coordinate(0, line), true);
+
+	line += 2;
+	vwin->putcenSlowScroll(ColorString("You stumble across an ancient golden altar", ddutil::TEXT_COLOR), line);
+	Menu::oneOptionMenu(vwin, ColorString("One person may receive a full heal", ddutil::HEAL_COLOR),
+		Coordinate(0, line + 1), true);
+
+	vwin->clearLine(line);
+	vwin->clearLine(line + 1);
+
+	std::vector<ColorString> options;
+	options.push_back(ColorString("Skip", ddutil::TEXT_COLOR));
+	for (Player* p : game->getPlayerParty())
+	{
+		options.push_back(p->getColorString());
+	}
+
+	Menu menu(vwin, options, Coordinate(0, line), true);
+
+	Player* selectedPlayer = nullptr;
+	int response = menu.getResponse();
+	if (response > 0) // update to non nullptr if the player chose a person
+	{
+		selectedPlayer = game->getPlayerParty()[menu.getResponse()-1];
+	}
+
+	ColorString output;
+	if (selectedPlayer == nullptr)
+	{
+		output = ColorString("You continue without using the shrine", ddutil::TEXT_COLOR);
+	}
+	else
+	{			
+		int healthIncrease = selectedPlayer->increaseHealth(selectedPlayer->getMaxHealth(100));
+
+		output = ColorString("The ", ddutil::TEXT_COLOR) + selectedPlayer->getColorString() +
+			ColorString(" gains " + std::to_string(healthIncrease) + " health ", ddutil::HEAL_COLOR);
+	}
+
+	game->clearCenterScreen();
+	game->displayInfo();
+
+	vwin->putcen(output, line);
+
+	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
+
+	game->clearCenterScreen();
+}
+
+

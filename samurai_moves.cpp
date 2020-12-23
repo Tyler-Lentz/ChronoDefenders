@@ -192,6 +192,22 @@ SamuraiMoves::BodySlam::BodySlam()
 
 // Powerful
 
+SamuraiMoves::ShadowStep::ShadowStep()
+	:Move("Blocks " + std::to_string(BLOCK) + " damage, but applies Hexed " + std::to_string(HEXED_LENGTH),
+		"Shadow Step", COST, Strength::Powerful, false, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
+ColorString SamuraiMoves::ShadowStep::doAction(Creature* self, Creature* other)
+{
+	self->applyBlock(BLOCK);
+	self->applyStatus(new HexedStatus(), HEXED_LENGTH);
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" will ", ddutil::TEXT_COLOR) + ColorString("block " + std::to_string(BLOCK) + " damage", ddutil::BLOCK_COLOR) +
+		ColorString(", but is now ", ddutil::TEXT_COLOR) + ColorString("Hexed", HexedStatus::COLOR) +
+		ColorString(" for " + std::to_string(HEXED_LENGTH) + " turns", ddutil::TEXT_COLOR);
+}
+
 SamuraiMoves::Shuriken::Shuriken()
 	:StatusAttackMove(DAMAGE, new BleedingStatus(), BLEED_AMOUNT, COST, "Shuriken", Strength::Powerful,
 		WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC))
@@ -371,4 +387,10 @@ ColorString SamuraiMoves::DragonForm::doAction(Creature* self, Creature* other)
 	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
 		ColorString(" enters ", ddutil::TEXT_COLOR) + statusName +
 		ColorString(" for " + std::to_string(DURATION) + " turns", ddutil::TEXT_COLOR);
+}
+
+SamuraiMoves::DragonBreath::DragonBreath()
+	:StatusAttackMove(DAMAGE, new ScorchedStatus(), SCORCH_LENGTH, COST, "Dragon's Breath",
+		Strength::Mythical, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
 }

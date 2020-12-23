@@ -491,7 +491,7 @@ Samurai::Samurai(Game* game)
 	:Player(game, Samurai::STARTING_VITALITY, Samurai::MAX_VITALITY, Samurai::VITALITY_GAIN, Samurai::MAX_HP,
 		Samurai::MAX_MOVES, "Samurai", ddutil::SAMURAI_COLOR, Art::getSamurai(), false)
 {
-	moves.push_back(new SamuraiMoves::Slice());
+	moves.push_back(new SamuraiMoves::DragonBreath());
 	moves.push_back(new SamuraiMoves::Slice());
 	moves.push_back(new SamuraiMoves::Slice());
 	moves.push_back(new SamuraiMoves::Deflect());
@@ -544,7 +544,7 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 12, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -581,12 +581,15 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 			case 11:
 				newMoves.push_back(new SamuraiMoves::Shuriken());
 				break;
+			case 12:
+				newMoves.push_back(new SamuraiMoves::ShadowStep());
+				break;
 			}
 		}
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 9, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 10, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -616,6 +619,9 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 				break;
 			case 9:
 				newMoves.push_back(new SamuraiMoves::DragonForm());
+				break;
+			case 10:
+				newMoves.push_back(new SamuraiMoves::DragonBreath());
 				break;
 			}
 		}

@@ -279,6 +279,17 @@ namespace SamuraiMoves
 		const static int COST = 2;
 	};
 
+	class ShadowStep : public Move
+	{
+	public:
+		ShadowStep();
+
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int BLOCK = 20;
+		const static int COST = 1;
+		const static int HEXED_LENGTH = 2;
+	};
+
 	// Mythical
 
 	class DragonForm : public Move
@@ -374,6 +385,16 @@ namespace SamuraiMoves
 		const static int TIMES = 2;
 		const static int BURN_AMOUNT = 2;
 		const static int COST = 1;
+	};
+
+	class DragonBreath : public StatusAttackMove
+	{
+	public:
+		DragonBreath();
+		
+		const static int DAMAGE = 10;
+		const static int COST = 1;
+		const static int SCORCH_LENGTH = 1;
 	};
 }
 

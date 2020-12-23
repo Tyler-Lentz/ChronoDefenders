@@ -242,6 +242,8 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 	if (attacker != nullptr && attacker->hasStatus(StatusID::Elemental))
 	{
 		applyStatus(new ZappedStatus(), ElementalStatus::ZAP_AMOUNT);
+		applyStatus(new BurntStatus(), ElementalStatus::BURN_AMOUNT);
+		applyStatus(new FrostBurntStatus(), ElementalStatus::FBURN_AMOUNT);
 	}
 
 	if (attacker != nullptr) // not a status effect or non-creature damage source

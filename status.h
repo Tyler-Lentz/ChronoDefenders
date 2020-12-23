@@ -346,6 +346,8 @@ public:
     
     const static int COLOR = ddutil::LIGHTMAGENTA;
     const static int ZAP_AMOUNT = 5;
+    const static int BURN_AMOUNT = 2;
+    const static int FBURN_AMOUNT = 2;
 };
 
 #endif

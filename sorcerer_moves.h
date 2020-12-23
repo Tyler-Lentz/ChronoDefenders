@@ -364,7 +364,7 @@ namespace SorcererMoves
 		ElementalForm();
 		ColorString doAction(Creature* self, Creature* other) override;
 
-		const static int COST = 20;
+		const static int COST = 15;
 		const static int DURATION = 4;
 	};
 }

@@ -1858,7 +1858,7 @@ EnemyTurn CaveBatVariant::getTurn(std::vector<Creature*> players)
 		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
 		chosenMove = moves[1];
 		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-			ColorString(" intends to bite ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" intends to bite the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
 			ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(POISON_BITE_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) +
 			ColorString(" and ", ddutil::TEXT_COLOR) + ColorString(std::to_string(POISON_BITE_AMOUNT) + " poison", PoisonedStatus::COLOR);
 	}

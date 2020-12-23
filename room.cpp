@@ -632,8 +632,9 @@ void PortalEvent::playRoom()
 	Menu menu(vwin, options, Coordinate(0, line), true);
 	if (menu.getResponse() == 0)
 	{
+		// 23 --> 34
 		Enemy* enemy = nullptr;
-		switch (ddutil::random(1, 23))
+		switch (ddutil::random(1, 34))
 		{
 		case 1:
 			enemy = new GiantSnail(game);
@@ -703,6 +704,39 @@ void PortalEvent::playRoom()
 			break;
 		case 23:
 			enemy = new MysteriousKnight(game);
+			break;
+		case 24:
+			enemy = new Spider(game);
+			break;
+		case 25:
+			enemy = new CaveBat(game);
+			break;
+		case 26:
+			enemy = new CaveBatVariant(game);
+			break;
+		case 27:
+			enemy = new VampireBat(game);
+			break;
+		case 28:
+			enemy = new VampireBatVariant(game);
+			break;
+		case 29:
+			enemy = new FireBat(game);
+			break;
+		case 30:
+			enemy = new FireBatVariant(game);
+			break;
+		case 31:
+			enemy = new FirePlatypus(game);
+			break;
+		case 32:
+			enemy = new Sniffer(game);
+			break;
+		case 33:
+			enemy = new SnifferVariant(game);
+			break;
+		case 34:
+			enemy = new CorruptedDisciple(game);
 			break;
 		}
 		game->clearCenterScreen();

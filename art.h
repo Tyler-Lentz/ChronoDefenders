@@ -152,6 +152,9 @@ public:
 
 	static Picture getCorruptedDisciple();
 	const static int CORRUPTED_DISCIPLE_COLOR = ddutil::MAGENTA;
+
+	static Picture getAncientMask();
+	const static int ANCIENT_MASK_COLOR = ddutil::DARKGRAY;
 };
 
 

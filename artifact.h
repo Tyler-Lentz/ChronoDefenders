@@ -12,7 +12,7 @@ class Player;
 enum class ArtifactID
 {
 	// Moderate
-	RustyDagger,
+	RustyDagger, // event
 
 	PurpleAmulet,
 	SwiftnessBracelet,
@@ -35,6 +35,8 @@ enum class ArtifactID
 	PotentPowder,
 	ElectricOrb,
 
+	AncientMask, // event
+
 	// Mythical
 	PoisonVial,
 	Katana,
@@ -45,7 +47,7 @@ enum class ArtifactID
 	AdamantiteShield,
 	VitalStone,
 
-	EtherealDagger,
+	EtherealDagger, // event
 	
 	
 	// Boss Artifacts ( give vitality per turn but have downsides)
@@ -280,6 +282,16 @@ public:
 	void equipAction(Player* player) override;
 
 	const static int S_VIT_GAIN = 2;
+};
+
+class AncientMask : public PowerfulArtifact
+{
+public:
+	AncientMask(Game* game);
+	void equipAction(Player* player) override;
+
+	const static int STUN_LENGTH = 1;
+	const static int S_VIT_GAIN = 3;
 };
 
 class MythicalArtifact : public Artifact

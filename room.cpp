@@ -870,3 +870,53 @@ void SpiderEvent::playRoom()
 	game->clearBottomDivider();
 	game->clearCenterScreen();
 }
+
+MaskEvent::MaskEvent(Game* game)
+	:EventRoom(game)
+{
+}
+
+void MaskEvent::playRoom()
+{
+	VirtualWindow* vwin = game->getVWin();
+
+	game->clearCenterScreen();
+
+	int line = ddutil::EVENT_PICTURE_LINE;
+
+	vwin->printArtFromBottom(Art::getAncientMask(), Coordinate(0, line), true);
+
+	line += 2;
+
+	AncientMask* mask = new AncientMask(game);
+
+	vwin->putcenSlowScroll(ColorString("You notice something buried in the ash. Upon closer inspection, you find an ", ddutil::TEXT_COLOR) +
+		mask->getName(), line++);
+
+	std::vector<ColorString> options = {
+		ColorString("Take the ", ddutil::TEXT_COLOR) + mask->getFullInformation(),
+		ColorString("Leave it", ddutil::TEXT_COLOR)
+	};
+
+	Menu menu(vwin, options, Coordinate(0, line), true);
+
+	vwin->clearLine(line - 1);
+	vwin->clearLine(line);
+	vwin->clearLine(line + 1);
+	line--;
+
+	if (menu.getResponse() == 0) // take the mask 
+	{
+		game->artifactSelectionMenu(line, mask);
+
+	}
+	else // leave the dagger
+	{
+		delete mask;
+		vwin->putcen(ColorString("You choose to leave the mask", ddutil::TEXT_COLOR), line++);
+		Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line), true);
+	}
+
+	game->clearCenterScreen();
+
+}

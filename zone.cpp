@@ -583,13 +583,13 @@ Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 
 Room* AbyssEnvironment::generateEventRoom()
 {
-	static int uniqueCounter = ddutil::random(1, 2);
-	int randomNum = ddutil::random(1, 3);
+	static int uniqueCounter = ddutil::random(1, 3);
+	int randomNum = ddutil::random(1, 4);
 
-	if (randomNum == 1) // unique event
+	if (randomNum <= 2) // unique event
 	{
 		uniqueCounter++;
-		if (uniqueCounter > 2)
+		if (uniqueCounter > 3)
 		{
 			uniqueCounter = 1;
 		}
@@ -597,25 +597,22 @@ Room* AbyssEnvironment::generateEventRoom()
 		{
 			return new LavaBeastEvent(game);
 		}
-		else
+		else if (uniqueCounter == 2)
 		{
 			return new GoblinEvent(game);
 		}
+		else
+		{
+			return new MaskEvent(game);
+		}
 	}
-	else if (randomNum == 2) // enemy fight
+	else if (randomNum == 3) // enemy fight
 	{
 		return new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Normal));
 	}
 	else // generic Event
 	{
-		if (ddutil::random(1, 2) == 1)
-		{
-			return new DeadAdventurerEvent(game);
-		}
-		else
-		{
-			return new TreasureEvent(game);
-		}
+		return new TreasureEvent(game);
 	}
 }
 

@@ -150,6 +150,14 @@ public:
 	const static int HEALTH_DECREASE = 7;
 };
 
+class MaskEvent : public EventRoom
+{
+public:
+	MaskEvent(Game* game);
+
+	void playRoom() override;
+};
+
 class MirrorEvent : public EventRoom
 {
 public:

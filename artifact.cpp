@@ -412,8 +412,22 @@ void PotentPowder::equipAction(Player* player)
 	player->increaseStartingVitality(S_VIT_GAIN);
 }
 
+AncientMask::AncientMask(Game* game)
+	:PowerfulArtifact("Ancient Mask",
+		ColorString("Stuns", StunnedStatus::COLOR) +
+		ColorString(" the wearer for "+std::to_string(STUN_LENGTH)+" turn, but increases ", ddutil::TEXT_COLOR) + 
+		ColorString("starting vitality by " + std::to_string(S_VIT_GAIN), ddutil::VITALITY_COLOR),
+		ArtifactID::AncientMask, game)
+{
+}
 
+void AncientMask::equipAction(Player* player)
+{
+	player->increaseStartingVitality(S_VIT_GAIN);
+	player->addSelfStartingStatus(new StunnedStatus(), STUN_LENGTH);
+}
 
+// Mythical
 
 MythicalArtifact::MythicalArtifact(std::string name, ColorString description, ArtifactID theID, Game* theGame)
 	:Artifact(name, description, theID, Strength::Mythical, ddutil::MYTHICAL_COLOR, theGame)
@@ -687,4 +701,5 @@ void BattleStandard::equipAction(Player* player)
 	player->increaseVitalityPerTurn(VIT_PER_TURN_GAIN);
 	player->addSelfStartingStatus(new VulnerableStatus(), VULN_TURNS);
 }
+
 

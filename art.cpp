@@ -1532,6 +1532,24 @@ Picture Art::getCorruptedDisciple()
 	return cdisciple;
 }
 
+Picture Art::getAncientMask()
+{
+	Picture mask;
+	int color = ANCIENT_MASK_COLOR;
+	mask.push_back(ColorString(R"(         .,ad88888ba,.    )", color));
+	mask.push_back(ColorString(R"(     .,ad8888888888888a,  )", color));
+	mask.push_back(ColorString(R"(    d8P"""98888P"""98888b,)", color));
+	mask.push_back(ColorString(R"(    9b    d8888,    `9888B)", color));
+	mask.push_back(ColorString(R"(  ,d88aaa8888888b,,,d888P')", color));
+	mask.push_back(ColorString(R"( d8888888888888888888888b )", color));
+	mask.push_back(ColorString(R"(d888888P""98888888888888P )", color));
+	mask.push_back(ColorString(R"(88888P'    9888888888888  )", color));
+	mask.push_back(ColorString(R"(`98P'       9888888888P'  )", color));
+	mask.push_back(ColorString(R"(             `"9888P"'    )", color));
+	mask.push_back(ColorString(R"(                `"'       )", color));
+	return mask;
+}
+
 Picture Art::getGiantSnail()
 {
 	Picture giantSnail;

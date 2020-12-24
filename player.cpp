@@ -648,7 +648,7 @@ Creature* Samurai::makeCopy()
 // Gunslinger
 
 Gunslinger::Gunslinger(Game* game)
-	:Player(game, Gunslinger::STARTING_VITALITY, Gunslinger::MAX_VITALITY, Gunslinger::VITALITY_GAIN + 5, Gunslinger::MAX_HP,
+	:Player(game, Gunslinger::STARTING_VITALITY, Gunslinger::MAX_VITALITY, Gunslinger::VITALITY_GAIN, Gunslinger::MAX_HP,
 		Gunslinger::MAX_MOVES, "Gunslinger", ddutil::GUNSLINGER_COLOR, Art::getGunslinger(), false)
 {
 	

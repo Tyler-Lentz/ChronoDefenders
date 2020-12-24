@@ -701,7 +701,8 @@ public:
 	const static int BLOCK_BREAK_DAMAGE = 20;
 	const static int BLOCK_BREAK_MULT = 2;
 
-	const static int DESPERATION_THRESHOLD = 20; // at less than 10% of max hp go to desperation mode
+	const static int DESPERATION_THRESHOLD = 20; // at less than 20% of max hp go to desperation mode
+	
 	const static int INVULN_LENGTH = 2;
 	const static int DESPERATION_BEAM_DAM = 40; // solo target
 private:

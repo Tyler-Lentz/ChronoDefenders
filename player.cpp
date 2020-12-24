@@ -595,7 +595,7 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 10, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -628,6 +628,9 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 				break;
 			case 10:
 				newMoves.push_back(new SamuraiMoves::DragonBreath());
+				break;
+			case 11:
+				newMoves.push_back(new SamuraiMoves::Tornado());
 				break;
 			}
 		}
@@ -973,7 +976,7 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 8, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 9, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1000,6 +1003,9 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 				break;
 			case 8:
 				newMoves.push_back(new SorcererMoves::ElementalForm());
+				break;
+			case 9:
+				newMoves.push_back(new SorcererMoves::ElementalBarrier());
 				break;
 			}
 		}

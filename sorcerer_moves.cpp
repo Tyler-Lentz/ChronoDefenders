@@ -381,3 +381,8 @@ ColorString SorcererMoves::ElementalForm::doAction(Creature* self, Creature* oth
 		ColorString(" enters ", ddutil::TEXT_COLOR) + statusName +
 		ColorString(" for " + std::to_string(DURATION) + " turns", ddutil::TEXT_COLOR);
 }
+
+SorcererMoves::ElementalBarrier::ElementalBarrier()
+	:MakeBarrierMove(BLOCK, COST, "Elemental Barrier", Strength::Powerful)
+{
+}

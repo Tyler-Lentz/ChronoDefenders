@@ -108,7 +108,7 @@ ColorString SimpleAttackMove::doAction(Creature* self, Creature* other)
 }
 
 SimpleStatusMove::SimpleStatusMove(Status* stat, int statAmount, bool chooseTarget, int cost, std::string name, Strength str, WavFile theSound)
-	:Move("Applies " + stat->getName().getString() + " to " + ( chooseTarget ? "the target" : "the user"),
+	:Move("Applies " + stat->getName().getString() + "("+std::to_string(statAmount)+")" + " to " + ( chooseTarget ? "the target" : "the user"),
 		name, cost, str, chooseTarget, theSound)
 {
 	status = stat;

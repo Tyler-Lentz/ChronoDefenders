@@ -118,7 +118,7 @@ namespace SamuraiMoves
 		Storm();
 
 		const static int STORM_LEVEL = 1;
-		const static int COST = 3;
+		const static int COST = 2;
 	};
 
 	class LightningRod : public Move
@@ -180,7 +180,7 @@ namespace SamuraiMoves
 
 		const static int TARGET_STORM_LEVEL = 2;
 		const static int OTHER_STORM_LEVEL = 1;
-		const static int COST = 3;
+		const static int COST = 2;
 	};
 
 	class DragonSlice : public StatusAttackMove
@@ -395,6 +395,15 @@ namespace SamuraiMoves
 		const static int DAMAGE = 10;
 		const static int COST = 1;
 		const static int SCORCH_LENGTH = 1;
+	};
+
+	class Tornado : public SimpleStatusMove
+	{
+	public:
+		Tornado();
+
+		const static int STORM_LENGTH = 2;
+		const static int COST = 2;
 	};
 }
 

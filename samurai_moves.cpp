@@ -395,3 +395,9 @@ SamuraiMoves::DragonBreath::DragonBreath()
 		Strength::Mythical, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
+
+SamuraiMoves::Tornado::Tornado()
+	:SimpleStatusMove(new StormStatus(), STORM_LENGTH, true, COST, "Tornado", 
+		Strength::Mythical, WavFile("wind", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}

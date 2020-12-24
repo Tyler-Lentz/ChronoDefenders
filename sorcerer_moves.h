@@ -367,6 +367,14 @@ namespace SorcererMoves
 		const static int COST = 15;
 		const static int DURATION = 4;
 	};
+
+	class ElementalBarrier : public MakeBarrierMove 
+	{
+	public:
+		ElementalBarrier();
+		const static int COST = 3;
+		const static int BLOCK = 18;
+	};
 }
 
 #endif

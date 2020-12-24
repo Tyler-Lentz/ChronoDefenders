@@ -434,9 +434,7 @@ EnemyTurn GiantHead::getTurn(std::vector<Creature*> players)
 	{
 		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
 		chosenMove = moves[0];
-		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to ", ddutil::TEXT_COLOR) +
-			ColorString("Stun", StunnedStatus::COLOR) + ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
-			ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(scalingAttack->getStrength()) + " damage", ddutil::DAMAGE_COLOR);
+		intent = ddutil::genericDamageIntent(STUN_DAMAGE, getColorString(), "Maul", targets);
 	}
 	else
 	{

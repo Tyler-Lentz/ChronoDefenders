@@ -299,7 +299,7 @@ namespace SamuraiMoves
 		ColorString doAction(Creature* self, Creature* other) override;
 
 		const static int DURATION = 4;
-		const static int COST = 9;
+		const static int COST = 8;
 	};
 
 	class Caltrops : public SimpleStatusMove

@@ -70,19 +70,35 @@ Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vect
 	// input loop, waiting for enter press
 	while (true)
 	{
-		if (ddutil::keypress(VK_UP) && currentSelection != 0)
+		if (ddutil::keypress(VK_UP))
 		{
 			playSound(WavFile("menumove", false, true));
 			clearIndicators(bracketSlots[currentSelection], theTopLeft.y + currentSelection);
-			currentSelection--;
+			if (currentSelection != 0)
+			{
+				currentSelection--;
+			}
+			else
+			{
+				currentSelection = theOptions.size() - 1;
+			}
+
 			drawIndicators(bracketSlots[currentSelection], theTopLeft.y + currentSelection);
 			Sleep(ddutil::BUFFER_TIME);
 		}
-		if (ddutil::keypress(VK_DOWN) && currentSelection != theOptions.size() - 1)
+		if (ddutil::keypress(VK_DOWN))
 		{
 			playSound(WavFile("menumove", false, true));
 			clearIndicators(bracketSlots[currentSelection], theTopLeft.y + currentSelection);
-			currentSelection++;
+			if (currentSelection != theOptions.size() - 1)
+			{
+				currentSelection++;
+			}
+			else
+			{
+				currentSelection = 0;
+			}
+
 			drawIndicators(bracketSlots[currentSelection], theTopLeft.y + currentSelection);
 			Sleep(ddutil::BUFFER_TIME);
 		}

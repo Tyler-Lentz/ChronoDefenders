@@ -127,6 +127,13 @@ ColorString GunslingerMoves::CardDrawMove::doAction(Creature* self, Creature* ot
 
 	ColorString cardName = card->getName();
 	self->applyStatus(card);
+
+	if (self->hasStatus(StatusID::Jester))
+	{
+		Status* dupedCard = card->makeCopy();
+		self->applyStatus(dupedCard);
+	}
+
 	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
 		ColorString(" draws the ", ddutil::TEXT_COLOR) + cardName;
 }
@@ -472,7 +479,7 @@ GunslingerMoves::BrassKnuckles::BrassKnuckles()
 }
 
 GunslingerMoves::JesterForm::JesterForm()
-	:Move("Applies a buff which gives a random face card for " + std::to_string(DURATION) + " turns", "Jester Form", COST,
+	:Move("Applies a buff which doubles the effects of card draw moves for " + std::to_string(DURATION) + " turns", "Jester Form", COST,
 		Strength::Mythical, false, WavFile("laugh", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }

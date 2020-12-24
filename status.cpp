@@ -504,28 +504,8 @@ ColorString JesterStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 	{
 		target->resetPicture();
 	}
-	int cardValue = ddutil::random(11, 14);
-	CardStatus* status = nullptr;
-	switch (ddutil::random(0, 3))
-	{
-	case 0:
-		status = new SpadeStatus(cardValue);
-		break;
-	case 1:
-		status = new ClubStatus(cardValue);
-		break;
-	case 2:
-		status = new DiamondStatus(cardValue);
-		break;
-	default:
-		status = new HeartStatus(cardValue);
-		break;
-	}
-	target->applyStatus(status);
 
-	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
-		ColorString(" gets a ", ddutil::TEXT_COLOR) + status->getName() +
-		ColorString(" because of ", ddutil::TEXT_COLOR) + this->getName();
+	return ColorString();
 }
 
 ElementalStatus::ElementalStatus()
@@ -540,6 +520,10 @@ Status* ElementalStatus::makeCopy()
 
 ColorString ElementalStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
+	if (stackAmount == 1)
+	{
+		target->resetPicture();
+	}
 	return ColorString();
 }
 

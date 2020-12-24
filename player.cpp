@@ -648,7 +648,7 @@ Creature* Samurai::makeCopy()
 // Gunslinger
 
 Gunslinger::Gunslinger(Game* game)
-	:Player(game, Gunslinger::STARTING_VITALITY, Gunslinger::MAX_VITALITY, Gunslinger::VITALITY_GAIN, Gunslinger::MAX_HP,
+	:Player(game, Gunslinger::STARTING_VITALITY, Gunslinger::MAX_VITALITY, Gunslinger::VITALITY_GAIN + 5, Gunslinger::MAX_HP,
 		Gunslinger::MAX_MOVES, "Gunslinger", ddutil::GUNSLINGER_COLOR, Art::getGunslinger(), false)
 {
 	
@@ -656,10 +656,10 @@ Gunslinger::Gunslinger(Game* game)
 	reserveBullets = Gunslinger::STARTING_BULLETS;
 
 	// Starting moves
-	moves.push_back(new GunslingerMoves::Peashooter());
-	moves.push_back(new GunslingerMoves::Peashooter());
-	moves.push_back(new GunslingerMoves::Peashooter());
-	moves.push_back(new GunslingerMoves::Peashooter());
+	moves.push_back(new GunslingerMoves::DrawSpade());
+	moves.push_back(new GunslingerMoves::DrawHeart());
+	moves.push_back(new GunslingerMoves::FaceOfHearts());
+	moves.push_back(new GunslingerMoves::JesterForm());
 	moves.push_back(new GunslingerMoves::Dodge());
 	moves.push_back(new GunslingerMoves::MakeBullets());
 }

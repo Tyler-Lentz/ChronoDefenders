@@ -1502,7 +1502,8 @@ EnemyTurn TheProtector::getTurn(std::vector<Creature*> players)
 			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
 				ColorString(" will ", ddutil::TEXT_COLOR) + ColorString("Hex", HexedStatus::COLOR) +
 				ColorString(" The ", ddutil::TEXT_COLOR) + targets[0]->getColorString() +
-				ColorString(" for "+ std::to_string(HEX_LENGTH) + " turns", ddutil::TEXT_COLOR);
+				ColorString(" for " + std::to_string(HEX_LENGTH) + " turns, dealing ", ddutil::TEXT_COLOR) +
+				ColorString(std::to_string(HEX_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
 			break;
 		case 2:
 			if (shieldCounter < 3)

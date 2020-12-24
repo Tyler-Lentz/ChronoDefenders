@@ -320,15 +320,11 @@ ZoneMap CatacombsEnvironment::generateRooms()
 		else if (col < middleCol && col > 1) // if not first two rooms but still not middle
 		{
 			int randomNum = ddutil::random(1, 100);
-			if (randomNum <= 40) // 40% chance for normal enemy
+			if (randomNum <= 65) // 65% chance for normal enemy
 			{
 				map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Normal));
 			}
-			else if (randomNum <= 70) // 30% chance for strong
-			{
-				map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Strong));
-			}
-			else if (randomNum <= 95) // 25% chance for event
+			else if (randomNum <= 95) // 30% chance for event
 			{
 				map[row][col] = generateEventRoom();
 			}
@@ -482,11 +478,11 @@ ZoneMap AbyssEnvironment::generateRooms()
 		else if (col < numCols - 2 && col > middleCol) // second half of the map 
 		{
 			int randomNum = ddutil::random(1, 100);
-			if (randomNum <= 40) // 40% chance to spawn a strong enemy
+			if (randomNum <= 45) // 45% chance to spawn a strong enemy
 			{
 				map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Strong));
 			}
-			else if (randomNum <= 70) // 30% chance to spawn an event room
+			else if (randomNum <= 70) // 25% chance to spawn an event room
 			{
 				map[row][col] = generateEventRoom();
 			}
@@ -506,13 +502,9 @@ ZoneMap AbyssEnvironment::generateRooms()
 		else if (col < middleCol && col > 0) // if not first room but still not middle
 		{
 			int randomNum = ddutil::random(1, 100);
-			if (randomNum <= 45) // 45% chance for normal enemy
+			if (randomNum <= 70) // 70% chance for normal enemy
 			{
 				map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Normal));
-			}
-			else if (randomNum <= 70) // 25% chance for strong
-			{
-				map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Strong));
 			}
 			else if (randomNum <= 95) // 25% chance for event
 			{
@@ -657,11 +649,11 @@ ZoneMap VoidEnvironment::generateRooms()
 		else if (col < numCols - 2 && col > middleCol) // second half of the map 
 		{
 			int randomNum = ddutil::random(1, 100);
-			if (randomNum <= 40) // 40% chance to spawn a strong enemy
+			if (randomNum <= 50) // 50% chance to spawn a strong enemy
 			{
 				map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Strong));
 			}
-			else if (randomNum <= 70) // 30% chance to spawn an event room
+			else if (randomNum <= 70) // 20% chance to spawn an event room
 			{
 				map[row][col] = generateEventRoom();
 			}
@@ -677,13 +669,9 @@ ZoneMap VoidEnvironment::generateRooms()
 		else if (col < middleCol && col > 0) // if not first room but still not middle
 		{
 			int randomNum = ddutil::random(1, 100);
-			if (randomNum <= 45) // 45% chance for normal enemy
+			if (randomNum <= 75) // 75% chance for normal enemy
 			{
 				map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Normal));
-			}
-			else if (randomNum <= 75) // 30% chance for strong
-			{
-				map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Strong));
 			}
 			else // 25% chance for event
 			{

@@ -401,3 +401,20 @@ SamuraiMoves::Tornado::Tornado()
 		Strength::Mythical, WavFile("wind", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
+
+SamuraiMoves::ShinobiTactics::ShinobiTactics()
+	:Move("Blocks " + std::to_string(BLOCK) + " damage and applies "+std::to_string(BLEED_AMOUNT)+" Bleeding to the target",
+		"Shinobi Tactics", COST, Strength::Mythical, true, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
+ColorString SamuraiMoves::ShinobiTactics::doAction(Creature* self, Creature* other)
+{
+	self->applyBlock(BLOCK);
+	other->applyStatus(new BleedingStatus(), BLEED_AMOUNT);
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" blocks " + std::to_string(BLOCK) + " damage ", ddutil::BLOCK_COLOR) +
+		ColorString("and applies ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BLEED_AMOUNT) + " Bleeding ", BleedingStatus::COLOR) +
+		ColorString(" to the ", ddutil::TEXT_COLOR) + other->getColorString();
+}

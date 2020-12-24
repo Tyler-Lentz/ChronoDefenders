@@ -595,7 +595,7 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 12, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -631,6 +631,9 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 				break;
 			case 11:
 				newMoves.push_back(new SamuraiMoves::Tornado());
+				break;
+			case 12:
+				newMoves.push_back(new SamuraiMoves::ShinobiTactics());
 				break;
 			}
 		}

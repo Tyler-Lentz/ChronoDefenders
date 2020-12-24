@@ -334,6 +334,7 @@ ColorString SamuraiMoves::LeavesFromTheVine::doAction(Creature* self, Creature* 
 {
 	int blockAmount = BLOCK_PER_STATUS * other->getNumberOfStatuses();
 	other->clearAllStatuses();
+	other->resetPicture();
 	other->applyBlock(blockAmount);
 	return ColorString("The ", ddutil::TEXT_COLOR) + other->getColorString() + ColorString(" is cleansed of all their statuses and will block ", ddutil::TEXT_COLOR) +
 		ddutil::genericBlockAlert(blockAmount);

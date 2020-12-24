@@ -383,6 +383,6 @@ ColorString SorcererMoves::ElementalForm::doAction(Creature* self, Creature* oth
 }
 
 SorcererMoves::ElementalBarrier::ElementalBarrier()
-	:MakeBarrierMove(BLOCK, COST, "Elemental Barrier", Strength::Powerful)
+	:MakeBarrierMove(BLOCK, COST, "Elemental Barrier", Strength::Mythical)
 {
 }

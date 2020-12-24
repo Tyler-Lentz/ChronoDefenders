@@ -100,7 +100,7 @@ public:
 
 	const static int HEALTH = 60;
 	const static int SINGLE_TARGET_DAMAGE = 10;
-	const static int MULTI_TARGET_DAMAGE = 4;
+	const static int MULTI_TARGET_DAMAGE = 6;
 	const static int BLOCK = 20;
 	const static int BLOCK_PER_ATTACK = 5;
 private:
@@ -117,7 +117,7 @@ public:
 	Creature* makeCopy() override;
 
 	const static int HEALTH = 72;
-	const static int HIGH_HP_DAMAGE = 8;
+	const static int HIGH_HP_DAMAGE = 10;
 	const static int LOW_HP_DAMAGE = 14;
 };
 
@@ -129,8 +129,8 @@ public:
 	Creature* makeCopy() override;
 
 	const static int HEALTH = 66;
-	const static int STRIKE_DAMAGE = 10;
-	const static int LIFESTEAL_AMOUNT = 8;
+	const static int STRIKE_DAMAGE = 11;
+	const static int LIFESTEAL_AMOUNT = 9;
 private:
 	int turnCounter;
 };
@@ -143,11 +143,11 @@ public:
 	Creature* makeCopy() override;
 
 	const static int HEALTH = 72;
-	const static int SWIPE_DAMAGE = 5;// (multi attack on everyone)
-	const static int SPIT_DAMAGE = 8;
+	const static int SWIPE_DAMAGE = 8;// (multi attack on everyone)
+	const static int SPIT_DAMAGE = 10;
 	const static int FBURN_LENGTH = 3;
-	const static int LIFESTEAL_BITE_DAMAGE = 6;
-	const static int LIFESTEAL_AMOUNT = 6;
+	const static int LIFESTEAL_BITE_DAMAGE = 8;
+	const static int LIFESTEAL_AMOUNT = 8;
 private:
 	int turnCounter;
 };
@@ -160,9 +160,9 @@ public:
 	Creature* makeCopy() override;
 
 	const static int HEALTH = 70;
-	const static int DIVEBOMB_THRESHOLD = 35; // hp at which will do suicide attack
-	const static int WING_ATTACK_DAMAGE = 9;
-	const static int DIVEBOMB_DAMAGE = 20; // dies after doing this move
+	const static int DIVEBOMB_THRESHOLD = 30; // hp at which will do suicide attack
+	const static int WING_ATTACK_DAMAGE = 10;
+	const static int DIVEBOMB_DAMAGE = 22; // dies after doing this move
 };
 
 class CaveBatVariant : public NormalEnemy
@@ -174,8 +174,8 @@ public:
 
 	const static int HEALTH = 80;
 	const static int POISON_SPRAY_AMOUNT = 2;
-	const static int POISON_BITE_AMOUNT = 5;
-	const static int POISON_BITE_DAMAGE = 2;
+	const static int POISON_BITE_AMOUNT = 4;
+	const static int POISON_BITE_DAMAGE = 4;
 
 };
 
@@ -247,7 +247,7 @@ public:
 	Creature* makeCopy() override;
 
 	const static int HEALTH = 150;
-	const static int WHIRLWIND_DAMAGE = 8; // multi attack
+	const static int WHIRLWIND_DAMAGE = 10; // multi attack
 	const static int WHIRLWIND_BURN_LENGTH = 4;
 	const static int SCORCH_LENGTH = 1; // attack that applies scorched on an enemy
 	const static int STRIKE_DAMAGE = 10; // single attack/block
@@ -286,7 +286,7 @@ public:
 	const static int HEALTH = 180;
 	const static int STRIKE_DAMAGE = 10; // attack that also gives block
 	const static int STRIKE_BLOCK = 25;
-	const static int FLAMETHROWER_DAMAGE = 8; // multitarget flame attack
+	const static int FLAMETHROWER_DAMAGE = 10; // multitarget flame attack
 	const static int FLAMETHROWER_BURN_LENGTH = 3;
 	const static int BODY_SLAM_DAMAGE = 9; // Multitarget stun attack
 	const static int STUN_LENGTH = 2;
@@ -312,8 +312,8 @@ public:
 	Creature* makeCopy() override;
 
 	const static int STRIKE_DAMAGE = 15;
-	const static int MULTI_TARGET_DAMAGE = 7;
-	const static int BLOCK_PER_ATTACK = 4;
+	const static int MULTI_TARGET_DAMAGE = 9;
+	const static int BLOCK_PER_ATTACK = 5;
 	const static int HEALTH = 100;
 };
 
@@ -359,7 +359,7 @@ public:
 
 	const static int HEALTH = 260;
 	const static int ATTACK_DAMAGE = 22;
-	const static int SELF_DAMAGE = 8;
+	const static int SELF_DAMAGE = 6;
 	const static int VITALITY_CHANGE = -1;
 private:
 	bool firstTurn;
@@ -377,7 +377,7 @@ public:
 	const static int HEALTH = 220;
 	const static int HEXED_LENGTH = 3;
 	const static int POISON_AMOUNT = 5;
-	const static int STRANGLE_DAMAGE = 18;
+	const static int STRANGLE_DAMAGE = 19;
 
 private:
 	int turnCounter;
@@ -389,8 +389,8 @@ public:
 	GiantHead(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
-	const static int HEALTH = 270;
-	const static int STUN_DAMAGE = 20;
+	const static int HEALTH = 300;
+	const static int STUN_DAMAGE = 16;
 	const static int STRENGTH_INCREASE = 4;
 private:
 	bool attackTurn;
@@ -451,7 +451,7 @@ public:
 	const static int LICK_DAMAGE = 18;
 	const static int LICK_HEX_LENGTH = 1;
 	const static int FROSTBURN_LENGTH = 2;
-	const static int FROSTBURN_DAMAGE = 12;
+	const static int FROSTBURN_DAMAGE = 15;
 private:
 	int turnCounter;
 };
@@ -467,7 +467,7 @@ public:
 
 	const static int VULN_LENGTH = 10;
 	const static int HEX_LENGTH = 4; // one time long hex length
-	const static int HEX_DAMAGE = 8;
+	const static int HEX_DAMAGE = 12;
 	
 	const static int HEAD_BUTT_DAM = 18; // single target headbutt
 	const static int HEAD_BUTT_BLOCK = 10;

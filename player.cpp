@@ -656,10 +656,10 @@ Gunslinger::Gunslinger(Game* game)
 	reserveBullets = Gunslinger::STARTING_BULLETS;
 
 	// Starting moves
-	moves.push_back(new GunslingerMoves::DrawSpade());
-	moves.push_back(new GunslingerMoves::DrawHeart());
-	moves.push_back(new GunslingerMoves::FaceOfHearts());
-	moves.push_back(new GunslingerMoves::JesterForm());
+	moves.push_back(new GunslingerMoves::Peashooter());
+	moves.push_back(new GunslingerMoves::Peashooter());
+	moves.push_back(new GunslingerMoves::Peashooter());
+	moves.push_back(new GunslingerMoves::Peashooter());
 	moves.push_back(new GunslingerMoves::Dodge());
 	moves.push_back(new GunslingerMoves::MakeBullets());
 }

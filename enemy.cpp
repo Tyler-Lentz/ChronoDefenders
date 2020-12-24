@@ -401,7 +401,7 @@ EnemyTurn Brute::getTurn(std::vector<Creature*> players)
 		scalingAttack->increaseStrength(DAMAGE_INCREASE);
 	}
 
-	targets.push_back(ddutil::getHighestHealthPlayer(players));
+	targets.push_back(players[ddutil::random(0, players.size() - 1)]);
 	chosenMove = moves[0];
 	intent = ddutil::genericDamageIntent(scalingAttack->getStrength(), getColorString(), "Strike", targets);
 

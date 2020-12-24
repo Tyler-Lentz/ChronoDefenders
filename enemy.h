@@ -327,8 +327,7 @@ public:
 	Creature* makeCopy() override;
 
 	const static int HEALTH = 130;
-	const static int VULNERABLE_LENGTH = 2;
-	const static int BASE_DAMAGE = 4;
+	const static int BASE_DAMAGE = 5;
 	const static int DAMAGE_INCREASE = 3;
 
 };

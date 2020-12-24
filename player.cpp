@@ -69,9 +69,14 @@ void Player::tradeExperience()
 		// Print the character's art and stats
 		vwin->printArtFromBottom(getPicture(), baseCoord, false);
 		vwin->putcen(getStatLine(), ddutil::BOTTOM_TEXT_LINE);
+		int movesLine = ddutil::BOTTOM_TEXT_LINE + 1;
+		for (Move* m : moves)
+		{
+			vwin->putcen(m->getFullInformation(), movesLine++);
+		}
 
 		// set up the Menu to choose what type of move to learn
-		vwin->put(ColorString("Learn new move? (uses XP)", ddutil::TEXT_COLOR), menuCoord);
+		vwin->put(ColorString("Spend XP to view " + std::to_string(movesToChooseFrom) + " new moves?", ddutil::TEXT_COLOR), menuCoord);
 		menuCoord.y++;
 		std::vector<ColorString> options;
 		options.push_back(

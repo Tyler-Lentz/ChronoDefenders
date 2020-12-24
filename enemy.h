@@ -574,7 +574,7 @@ public:
 	Creature* makeCopy() override;
 
 	const static int HEALTH = 400;
-	const static int HYPER_BEAM_DAM = 45;
+	const static int HYPER_BEAM_DAM = 40;
 	const static int VIT_CHANGE = -1;
 	const static int FROSTBURN_LENGTH = 3;
 	const static int HEAL_AMOUNT = 40;
@@ -704,7 +704,7 @@ public:
 	const static int DESPERATION_THRESHOLD = 20; // at less than 20% of max hp go to desperation mode
 	
 	const static int INVULN_LENGTH = 2;
-	const static int DESPERATION_BEAM_DAM = 40; // solo target
+	const static int DESPERATION_BEAM_DAM = 45; // solo target
 private:
 	int turnCounter;
 	bool desperation;

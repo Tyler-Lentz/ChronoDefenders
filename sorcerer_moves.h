@@ -192,7 +192,7 @@ namespace SorcererMoves
 	public:
 		FairySummon(Game* game);
 
-		const static int COST = 11;
+		const static int COST = 10;
 	};
 
 	class SummonFireDragon : public SummonMove

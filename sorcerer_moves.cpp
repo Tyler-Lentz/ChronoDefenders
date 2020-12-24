@@ -364,7 +364,7 @@ ColorString SorcererMoves::ChainLightning::doAction(Creature* self, Creature* ot
 }
 
 SorcererMoves::ElementalForm::ElementalForm()
-	:Move("Makes every attack apply Zapped " + std::to_string(ElementalStatus::ZAP_AMOUNT) +  " for " + std::to_string(DURATION) + " turns",
+	:Move("Makes every attack apply Zapped, Burnt, and Frostburnt",
 		"Elemental Form", COST, Strength::Mythical,
 		false, WavFile("lightning", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {

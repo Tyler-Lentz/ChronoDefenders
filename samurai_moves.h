@@ -337,7 +337,7 @@ namespace SamuraiMoves
 
 		ColorString doAction(Creature* self, Creature* other) override;
 
-		const static int DAMAGE = 20;
+		const static int DAMAGE = 30;
 		const static int COST = 3;
 		const static int VITALITY_MULTIPLIER = 2;
 		const static int VITALITY_LEVEL = Samurai::MAX_VITALITY - COST;

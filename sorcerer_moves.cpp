@@ -257,7 +257,7 @@ SorcererMoves::CleansingAura::CleansingAura()
 
 ColorString SorcererMoves::CleansingAura::doAction(Creature* self, Creature* other)
 {
-	int healAmount = BASE_HEAL + (BONUS_HEAL * other->getNumberOfStatuses());
+	int healAmount = BASE_HEAL + (BONUS_HEAL * other->getNumberOfStatusTypes());
 
 	int actualHealAmount = other->increaseHealth(healAmount);
 

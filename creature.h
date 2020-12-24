@@ -38,6 +38,7 @@ public:
 	int getNumberOfStatuses(); // returns the number of statuses the creature has (burn (2) counts as 2, frostburn (1) counts as 1 etc...)
 	int getNumberOfStatuses(StatusID id); // returns the number of statuses of this specific type
 	void removeStatus(StatusID status); // removes all instances of the status passed through without applying any effects
+	int getNumberOfStatusTypes();
 
 	virtual Creature* makeCopy() = 0;
 	

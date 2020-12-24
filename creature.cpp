@@ -461,6 +461,11 @@ void Creature::removeStatus(StatusID statusID)
 	}
 }
 
+int Creature::getNumberOfStatusTypes()
+{
+	return currentStatuses.size();
+}
+
 void Creature::increaseDodgeChance(int percentage)
 {
 	dodgeChance += percentage;

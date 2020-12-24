@@ -384,6 +384,19 @@ private:
 	int turnCounter;
 };
 
+class GiantHead : public HardEnemy
+{
+public:
+	GiantHead(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+	const static int HEALTH = 270;
+	const static int STUN_DAMAGE = 20;
+	const static int STRENGTH_INCREASE = 4;
+private:
+	bool attackTurn;
+};
+
 // enemies with the intense music (chapter 3 and beyond + early event fights in chapter 1)
 class IntenseEnemy : public Enemy
 {

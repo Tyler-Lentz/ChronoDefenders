@@ -158,6 +158,9 @@ public:
 
 	static Picture getAncientMask();
 	const static int ANCIENT_MASK_COLOR = ddutil::DARKGRAY;
+	
+	static Picture getGiantHead();
+	const static int GIANT_HEAD_COLOR = ddutil::LIGHTGRAY;
 };
 
 

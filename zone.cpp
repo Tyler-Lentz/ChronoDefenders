@@ -535,7 +535,7 @@ ZoneMap AbyssEnvironment::generateRooms()
 Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 {
 	const int NUM_NORM_ENEMIES = 7;
-	const int NUM_STR_ENEMIES = 2;
+	const int NUM_STR_ENEMIES = 3;
 	static int strCounter = ddutil::random(1, NUM_STR_ENEMIES);
 	static int normCounter = ddutil::random(1, NUM_NORM_ENEMIES);
 
@@ -552,8 +552,10 @@ Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 		}
 		if (strCounter == 1)
 			return new Basilisk(game);
-		else
+		else if (strCounter == 2)
 			return new AbyssBeast(game);
+		else
+			return new GiantHead(game);
 	}
 	else // Normal
 	{

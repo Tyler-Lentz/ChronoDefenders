@@ -415,6 +415,49 @@ Creature* Brute::makeCopy()
 	return new Brute(game);
 }
 
+GiantHead::GiantHead(Game* game)
+	:HardEnemy(game, HEALTH, "Giant Head", Art::GIANT_HEAD_COLOR, Art::getGiantHead())
+{
+	attackTurn = true;
+	moves.push_back(new EnemyMoves::Strike(STUN_DAMAGE, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn GiantHead::getTurn(std::vector<Creature*> players)
+{
+
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	auto scalingAttack = dynamic_cast<EnemyMoves::Strike*>(moves[0]);
+	if (attackTurn)
+	{
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
+		chosenMove = moves[0];
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to ", ddutil::TEXT_COLOR) +
+			ColorString("Stun", StunnedStatus::COLOR) + ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+			ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(scalingAttack->getStrength()) + " damage", ddutil::DAMAGE_COLOR);
+	}
+	else
+	{
+		if (scalingAttack != nullptr)
+		{
+			scalingAttack->increaseStrength(STRENGTH_INCREASE);
+		}
+		chosenMove = nullptr;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" is recharging this turn", ddutil::TEXT_COLOR);
+	}	
+
+	attackTurn = !attackTurn;
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* GiantHead::makeCopy()
+{
+	return new GiantHead(game);
+}
 
 
 BossEnemy::BossEnemy(Game* game, int maxHp, std::string name, int color, Picture pic, std::vector<ColorString> intro)

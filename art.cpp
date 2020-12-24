@@ -1568,6 +1568,34 @@ Picture Art::getAncientMask()
 	return mask;
 }
 
+Picture Art::getGiantHead()
+{
+	Picture head;
+	int color = GIANT_HEAD_COLOR;
+	head.push_back(ColorString(R"(        _.---**""**-.       )", color));
+	head.push_back(ColorString(R"(._   .-'           /|`.     )", color));
+	head.push_back(ColorString(R"( \`.'             / |  `.   )", color));
+	head.push_back(ColorString(R"(  V              (  ;    \  )", color));
+	head.push_back(ColorString(R"(  L       _.-  -. `'      \ )", color));
+	head.push_back(ColorString(R"( / `-. _.'       \         ;)", color));
+	head.push_back(ColorString(R"(:            __   ;    _   |)", color));
+	head.push_back(ColorString(R"(:`-.___.+-*"': `  ;  .' `. |)", color));
+	head.push_back(ColorString(R"(|`-/     `--*'   /  /  /`.\|)", color));
+	head.push_back(ColorString(R"(: :              \    :`.| ;)", color));
+	head.push_back(ColorString(R"(| |   .           ;/ .' ' / )", color));
+	head.push_back(ColorString(R"(: :  / `             :__.'  )", color));
+	head.push_back(ColorString(R"( \`._.-'       /     |      )", color));
+	head.push_back(ColorString(R"(  : )         :      ;      )", color));
+	head.push_back(ColorString(R"(  :----.._    |     /       )", color));
+	head.push_back(ColorString(R"( : .-.    `.       /        )", color));
+	head.push_back(ColorString(R"(  \     `._       /         )", color));
+	head.push_back(ColorString(R"(  /`-            /          )", color));
+	head.push_back(ColorString(R"( :             .'           )", color));
+	head.push_back(ColorString(R"(  \ )       .-'             )", color));
+	head.push_back(ColorString(R"(   `-----*"'                )", color));
+	return head;
+}
+
 Picture Art::getGiantSnail()
 {
 	Picture giantSnail;

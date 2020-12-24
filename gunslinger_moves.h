@@ -278,17 +278,6 @@ namespace GunslingerMoves
 		const static int BULLET_AMOUNT = 5;
 		const static int COST = 3;
 	};
-	
-	class SupressiveFire : public Move
-	{
-	public:
-		SupressiveFire();
-
-		ColorString doAction(Creature* self, Creature* other) override;
-
-		const static int DODGE_PER_BULLET = 25;
-		const static int COST = 1;
-	};
 
 	class QuickDynamite : public ThrowDynamiteMove
 	{
@@ -320,6 +309,17 @@ namespace GunslingerMoves
 	};
 
 	// Mythical
+
+	class SupressiveFire : public Move
+	{
+	public:
+		SupressiveFire();
+
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int DODGE_PER_BULLET = 15;
+		const static int COST = 2;
+	};
 
 	class SuckerPunch : public StatusAttackMove
 	{

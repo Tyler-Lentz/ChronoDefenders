@@ -736,7 +736,7 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i : ddutil::uniqueRandom(1, 11, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 10, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -750,24 +750,21 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 				newMoves.push_back(new GunslingerMoves::QuickDynamite());
 				break;
 			case 4:
-				newMoves.push_back(new GunslingerMoves::SupressiveFire());
-				break;
-			case 5:
 				newMoves.push_back(new GunslingerMoves::DrinkWhiskey());
 				break;
-			case 6:
+			case 5:
 				newMoves.push_back(new GunslingerMoves::CardFlurry());
 				break;
-			case 7:
+			case 6:
 				newMoves.push_back(new GunslingerMoves::Uppercut());
 				break;
-			case 8:
+			case 7:
 				newMoves.push_back(new GunslingerMoves::Leap());
 				break;
-			case 9:
+			case 8:
 				newMoves.push_back(new GunslingerMoves::HeavyRevolver());
 				break;
-			case 10:
+			case 9:
 				newMoves.push_back(new GunslingerMoves::DoubleKick());
 				break;
 			default:
@@ -778,7 +775,7 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 9, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 10, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -802,6 +799,9 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 				break;
 			case 7:
 				newMoves.push_back(new GunslingerMoves::JesterForm());
+				break;
+			case 8:
+				newMoves.push_back(new GunslingerMoves::SupressiveFire());
 				break;
 			default:
 				int randomNum = ddutil::random(1, 4);

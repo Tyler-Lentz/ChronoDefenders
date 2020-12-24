@@ -265,40 +265,6 @@ GunslingerMoves::ForgeBullets::ForgeBullets()
 	
 }
 
-GunslingerMoves::SupressiveFire::SupressiveFire()
-	:Move("Shoot all your bullets; Each bullet increases dodge chance by 25%",
-		"Suppressive Fire", COST, Strength::Powerful, false, WavFile("shot2", ddutil::SF_LOOP, ddutil::SF_ASYNC))
-{
-}
-
-ColorString GunslingerMoves::SupressiveFire::doAction(Creature* self, Creature* other)
-{
-	Gunslinger* gunslinger = dynamic_cast<Gunslinger*>(self);
-
-	if (gunslinger == nullptr)
-	{
-		return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() + ColorString(" cannot use bullet attacks", ddutil::TEXT_COLOR);
-	}
-
-	int dodgeChance = 0;
-	int bulletsShot = 0;
-	while (gunslinger->useBullet(1))
-	{
-		dodgeChance += DODGE_PER_BULLET;
-		bulletsShot++;
-	}
-	if (dodgeChance > 100)
-	{
-		dodgeChance = 100;
-	}
-
-	self->increaseDodgeChance(dodgeChance);
-
-	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() + 
-		ColorString(" shoots " + std::to_string(bulletsShot) + " bullets for a "  +
-		std::to_string(self->getDodgeChance()) + "% chance to dodge the next attack this turn", ddutil::TEXT_COLOR);
-}
-
 GunslingerMoves::QuickDynamite::QuickDynamite()
 	:ThrowDynamiteMove(EXPLOSION_TIME, COST, "Quick Dynamite", Strength::Powerful)
 {
@@ -387,6 +353,40 @@ GunslingerMoves::HeavyRevolver::HeavyRevolver()
 
 // Mythical
 
+GunslingerMoves::SupressiveFire::SupressiveFire()
+	:Move("Shoot all your bullets; Each bullet increases dodge chance by "+std::to_string(DODGE_PER_BULLET)+"%",
+		"Suppressive Fire", COST, Strength::Mythical, false, WavFile("jump", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
+ColorString GunslingerMoves::SupressiveFire::doAction(Creature* self, Creature* other)
+{
+	Gunslinger* gunslinger = dynamic_cast<Gunslinger*>(self);
+
+	if (gunslinger == nullptr)
+	{
+		return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() + ColorString(" cannot use bullet attacks", ddutil::TEXT_COLOR);
+	}
+
+	int dodgeChance = 0;
+	int bulletsShot = 0;
+	while (gunslinger->useBullet(1))
+	{
+		playSound(WavFile("shot2", false, false));
+		dodgeChance += DODGE_PER_BULLET;
+		bulletsShot++;
+	}
+	if (dodgeChance > 100)
+	{
+		dodgeChance = 100;
+	}
+
+	self->increaseDodgeChance(dodgeChance);
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() + 
+		ColorString(" shoots " + std::to_string(bulletsShot) + " bullets for a "  +
+		std::to_string(self->getDodgeChance()) + "% chance to dodge the next attack this turn", ddutil::TEXT_COLOR);
+}
 GunslingerMoves::SuckerPunch::SuckerPunch()
 	:StatusAttackMove(DAMAGE, new VulnerableStatus(), VULN_LENGTH, COST, "Sucker Punch",
 		Strength::Mythical, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC))

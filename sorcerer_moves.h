@@ -336,7 +336,7 @@ namespace SorcererMoves
 	public:
 		SpiritCall(Game* game);
 
-		const static int COST = 20;
+		const static int COST = 18;
 	};
 
 	class Supernova : public Move

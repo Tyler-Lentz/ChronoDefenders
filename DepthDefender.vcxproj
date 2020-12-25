@@ -142,6 +142,7 @@
     <ClCompile Include="art.cpp" />
     <ClCompile Include="artifact.cpp" />
     <ClCompile Include="colorstring.cpp" />
+    <ClCompile Include="compendium.cpp" />
     <ClCompile Include="coordinate.cpp" />
     <ClCompile Include="creature.cpp" />
     <ClCompile Include="enemy.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="art.h" />
     <ClInclude Include="artifact.h" />
     <ClInclude Include="colorstring.h" />
+    <ClInclude Include="compendium.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="coordinate.h" />
     <ClInclude Include="creature.h" />

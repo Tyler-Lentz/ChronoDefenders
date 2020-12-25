@@ -38,7 +38,7 @@ enum class StatusID
 class Status
 {
 public:
-    Status(StatusID theID, ColorString name, bool uni, bool ablethrow, bool totalRemove, bool unchange);
+    Status(StatusID theID, ColorString name, std::string description, bool uni, bool ablethrow, bool totalRemove, bool unchange);
 
     virtual ColorString applyEndTurnEffect(Creature* target, int stackAmount) = 0;
     
@@ -49,6 +49,8 @@ public:
 
     StatusID getID();
     ColorString getName();
+    std::string getDescription();
+    ColorString getFullInformation();
 
     virtual Status* makeCopy() = 0;;
 private:
@@ -58,12 +60,13 @@ private:
     bool throwable; // tells 
     StatusID id;
     ColorString name;
+    std::string description;
 };
 
 class NormalStatus : public Status
 {
 public:
-    NormalStatus(StatusID theID, ColorString name);
+    NormalStatus(StatusID theID, ColorString name, std::string description);
 };
 
 class OffBalanceStatus : public NormalStatus
@@ -105,6 +108,7 @@ public:
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
     static const int COLOR = ddutil::LIGHTCYAN;
+    static const int DAMAGE_PROP = 6; // 6% of health per turn
 };
 
 class ZenStatus : public NormalStatus
@@ -151,6 +155,7 @@ public:
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
     const static int COLOR = ddutil::LIGHTRED;
+    const static int PERCENT_DAM_INC = 50;
 };
 
 class PoisonedStatus : public NormalStatus
@@ -213,7 +218,7 @@ public:
 class CardStatus : public Status
 {
 public:
-    CardStatus(StatusID theID, ColorString name, int num);
+    CardStatus(StatusID theID, ColorString name, std::string description, int num);
 
 protected:
     int number; // 2-10, 11 = jack, 12 = queen, 13 = king, 14 = ace
@@ -262,7 +267,7 @@ public:
 class UniqueStatus : public Status
 {
 public:
-    UniqueStatus(StatusID theID, ColorString name);
+    UniqueStatus(StatusID theID, ColorString name, std::string description);
 };
 
 class Dynamite : public UniqueStatus
@@ -279,7 +284,7 @@ public:
 class TotalRemoveStatus : public Status
 {
 public:
-    TotalRemoveStatus(StatusID id, ColorString name);
+    TotalRemoveStatus(StatusID id, ColorString name, std::string description);
 };
 
 // deals 1 damage per stack level, then at the end of the turn the entire stack is removed
@@ -300,7 +305,7 @@ public:
 class UnchangingStatus : public Status
 {
 public:
-    UnchangingStatus(StatusID id, ColorString name);
+    UnchangingStatus(StatusID id, ColorString name, std::string description);
 };
 
 class ThornsStatus : public UnchangingStatus
@@ -323,6 +328,7 @@ public:
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
     const static int COLOR = ddutil::RED;
+    const static int PERCENT_DAM_INC = 50;
 };
 
 class JesterStatus : public NormalStatus

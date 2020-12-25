@@ -154,7 +154,7 @@ namespace ddutil
             return "Ace";
             
         default:
-            return "???";
+            return "?";
         }
 	}
 
@@ -273,6 +273,28 @@ namespace ddutil
             }
         }
         return hasCoords;
+    }
+
+	std::string padString(std::string str, int size)
+	{
+        while (str.size() < size)
+        {
+            str = " " + str;
+            str += " ";
+        }
+        str = str.substr(0, size);
+        return str;
+	}
+    ColorString padString(ColorString str, int size)
+    {
+        std::string regStr = str.getString();
+        std::string paddedStr = padString(regStr, size);
+        std::vector<int> colors = str.getColors();
+        if (paddedStr.size() != str.getColors().size())
+        {
+            colors.resize(paddedStr.size());
+        }
+        return ColorString(padString(regStr, size), colors);
     }
 }
 

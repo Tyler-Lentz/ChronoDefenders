@@ -15,6 +15,7 @@ class Zone;
 class Creature;
 class Artifact;
 class ZoneEnvironment;
+class Compendium;
 
 class Game
 {
@@ -67,6 +68,8 @@ public:
 	void changeScore(int amount);
 	int getScore();
 private:
+	Compendium* compendium;
+
 	int score;
 
 	// Major Functions

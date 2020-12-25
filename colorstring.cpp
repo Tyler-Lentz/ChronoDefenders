@@ -75,6 +75,16 @@ std::string ColorString::getString() const
     return str;
 }
 
+std::vector<int> ColorString::getColors() const
+{
+    std::vector<int> colors;
+    for (int i = 0; i < this->size(); i++)
+    {
+        colors.push_back(this->at(i).color);
+    }
+    return colors;
+}
+
 ColorString ColorString::operator+(const ColorString& other)
 {
     ColorString colstr(*this);

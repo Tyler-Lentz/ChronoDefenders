@@ -11,6 +11,7 @@
 #include "move.h"
 #include "soundfile.h"
 #include "coordinate.h"
+#include "compendium.h"
 
 #include <Windows.h>
 #include <string>
@@ -20,6 +21,7 @@ Game::Game(VirtualWindow* virWin)
 {
 	score = 0;
 	vwin = virWin;
+	compendium = new Compendium(vwin);
 	gameWin = false;
 	skipToNextChapter = false;
 
@@ -58,6 +60,8 @@ Game::~Game()
 	{
 		delete deadPlayers[i];
 	}
+
+	delete compendium;
 }
 
 ddutil::GameStatus Game::run()
@@ -530,27 +534,41 @@ void Game::titleScreen()
 
 	Sleep(500);
 
-	vwin->printArt(Art::getTitle(), Coordinate(0, 5), true);
-
 	std::vector<ColorString> options;
-	options.push_back(ColorString("Press Enter to start", ddutil::TEXT_COLOR));
-	//options.push_back(ColorString("Quit", ddutil::TEXT_COLOR));
+	options.push_back(ColorString("New Game", ddutil::TEXT_COLOR));
+	options.push_back(ColorString("View Compendium", ddutil::TEXT_COLOR));
+	options.push_back(ColorString("Exit", ddutil::TEXT_COLOR));
 
 	std::vector<int> otherInput = { VK_ESCAPE };
-	Menu menu(vwin, options, otherInput, Coordinate(0, 25), true);
-	int response = menu.getResponse();
-
-	switch (response)
+	
+	bool exit = false;
+	while (!exit)
 	{
-	case 0: // start
-		status = ddutil::GameStatus::CONTINUE;
-		break;
-	case VK_ESCAPE: // quit
-		status = ddutil::GameStatus::EXIT;
-		break;
+		vwin->printArt(Art::getTitle(), Coordinate(0, 5), true);
+		Menu menu(vwin, options, otherInput, Coordinate(0, 25), true);
+		int response = menu.getResponse();
+
+		switch (response)
+		{
+		case 0: // start
+			status = ddutil::GameStatus::CONTINUE;
+			exit = true;
+			break;
+
+		case 1:
+			compendium->display();
+			break;
+
+		case 2:
+		case VK_ESCAPE: // quit
+			status = ddutil::GameStatus::EXIT;
+			exit = true;
+			break;
+		}
+		vwin->clearScreen();
 	}
 
-	vwin->clearScreen();
+
 }
 
 void Game::intro()

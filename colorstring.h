@@ -30,6 +30,9 @@ struct ColorString : public std::vector<ColorChar>
     // Returns an std::string of all of the characters stored in the vector
     std::string getString()const;
 
+    // Returns a vector of integers which represent the color at each position
+    std::vector<int> getColors() const;
+
     // Returns a colorstring that has the right colorstring appended onto this
     ColorString operator+(const ColorString& other);
 

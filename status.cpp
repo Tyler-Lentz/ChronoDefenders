@@ -5,7 +5,7 @@
 #include "player.h"
 
 #include <Windows.h>
-Status::Status(StatusID theID, ColorString theName, bool uni, bool ablethrow, bool shouldTotalRemove, bool unchange)
+Status::Status(StatusID theID, ColorString theName, std::string description, bool uni, bool ablethrow, bool shouldTotalRemove, bool unchange)
 {
 	id = theID;
 	name = theName;
@@ -13,6 +13,7 @@ Status::Status(StatusID theID, ColorString theName, bool uni, bool ablethrow, bo
 	throwable = ablethrow;
 	totalRemove = shouldTotalRemove;
 	unchanging = unchange;
+	this->description = description;
 }
 
 bool Status::isThrowable()
@@ -45,18 +46,28 @@ ColorString Status::getName()
 	return name;
 }
 
+std::string Status::getDescription()
+{
+	return description;
+}
+
+ColorString Status::getFullInformation()
+{
+	return getName() + ColorString(": " + getDescription(), ddutil::TEXT_COLOR);
+}
+
 
 
 // Normal Statuses
 
-NormalStatus::NormalStatus(StatusID theID, ColorString name)
-	:Status(theID, name, false, false, false, false)
+NormalStatus::NormalStatus(StatusID theID, ColorString name, std::string description)
+	:Status(theID, name, description, false, false, false, false)
 {
 }
 
 
 OffBalanceStatus::OffBalanceStatus()
-	:NormalStatus(StatusID::OffBalance, ColorString("Off Balance", ddutil::TEXT_COLOR))
+	:NormalStatus(StatusID::OffBalance, ColorString("Off Balance", ddutil::TEXT_COLOR), "unused")
 {
 }
 
@@ -74,7 +85,7 @@ ColorString OffBalanceStatus::applyEndTurnEffect(Creature* target, int stackAmou
 // Burnt
 
 BurntStatus::BurntStatus()
-	:NormalStatus(StatusID::Burnt, ColorString("Burnt", COLOR))
+	:NormalStatus(StatusID::Burnt, ColorString("Burnt", COLOR), "Deals " + std::to_string(BURN_DAMAGE) + " damage per turn")
 {
 }
 
@@ -96,7 +107,8 @@ ColorString BurntStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 // FrostBurnt 
 
 FrostBurntStatus::FrostBurntStatus()
-	:NormalStatus(StatusID::Frostburnt, ColorString("Frostburnt", COLOR))
+	:NormalStatus(StatusID::Frostburnt, ColorString("Frostburnt", COLOR),
+		"Deals damage equal to " + std::to_string(DAMAGE_PROP) +"% of the target's HP every turn")
 {
 }
 
@@ -108,7 +120,8 @@ Status* FrostBurntStatus::makeCopy()
 // reduces health by 6% of current health every turn
 ColorString FrostBurntStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
-	int damage = static_cast<int>(0.06 * target->getHealth());
+	double percentage = (DAMAGE_PROP / 100.0);
+	int damage = static_cast<int>(percentage * target->getHealth());
 	if (damage < 1)
 	{
 		damage = 1;
@@ -122,7 +135,8 @@ ColorString FrostBurntStatus::applyEndTurnEffect(Creature* target, int stackAmou
 }
 
 ZenStatus::ZenStatus()
-	:NormalStatus(StatusID::Zen, ColorString("Zen", COLOR))
+	:NormalStatus(StatusID::Zen, ColorString("Zen", COLOR), 
+		"Heals HP equal to the status's stack amount every turn")
 {
 }
 
@@ -141,7 +155,7 @@ ColorString ZenStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 }
 
 StormStatus::StormStatus()
-	:NormalStatus(StatusID::Storm, ColorString("Storm", COLOR))
+	:NormalStatus(StatusID::Storm, ColorString("Storm", COLOR), "Deals damage equal to the target's block every turn")
 {
 }
 
@@ -162,7 +176,7 @@ ColorString StormStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 
 
 InvulnerableStatus::InvulnerableStatus()
-	:NormalStatus(StatusID::Invulnerable, ColorString("Invulnerable", COLOR))
+	:NormalStatus(StatusID::Invulnerable, ColorString("Invulnerable", COLOR), "The target cannot take damage while active")
 {
 }
 
@@ -179,7 +193,8 @@ ColorString InvulnerableStatus::applyEndTurnEffect(Creature* target, int stackAm
 
 
 VulnerableStatus::VulnerableStatus()
-	:NormalStatus(StatusID::Vulnerable, ColorString("Vulnerable", COLOR))
+	:NormalStatus(StatusID::Vulnerable, ColorString("Vulnerable", COLOR), 
+		"Makes the target take " + std::to_string(PERCENT_DAM_INC) +"% more damage")
 {
 }
 
@@ -194,7 +209,8 @@ ColorString VulnerableStatus::applyEndTurnEffect(Creature* target, int stackAmou
 }
 
 PoisonedStatus::PoisonedStatus()
-	:NormalStatus(StatusID::Poisoned, ColorString("Poisoned", COLOR))
+	:NormalStatus(StatusID::Poisoned, ColorString("Poisoned", COLOR),
+		"Deals damage equal to the status's stack amount every turn")
 {
 }
 
@@ -213,7 +229,8 @@ ColorString PoisonedStatus::applyEndTurnEffect(Creature* target, int stackAmount
 
 
 ZappedStatus::ZappedStatus()
-	:NormalStatus(StatusID::Zapped, ColorString("Zapped", COLOR))
+	:NormalStatus(StatusID::Zapped, ColorString("Zapped", COLOR),
+		"Deals damage equal to half its total number of status stacks every turn")
 {
 }
 
@@ -234,14 +251,15 @@ ColorString ZappedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 
 // Card Statuses
 
-CardStatus::CardStatus(StatusID theID, ColorString name, int num)
-	:Status(theID, name, true, true, false, false)
+CardStatus::CardStatus(StatusID theID, ColorString name, std::string description, int num)
+	:Status(theID, name, description, true, true, false, false)
 {
 	number = num;
 }
 
 SpadeStatus::SpadeStatus(int num)
-	:CardStatus(StatusID::Spade, ColorString(ddutil::cardNumToString(num) + " of Spades", ddutil::BLACK_CARD_COLOR), num)
+	:CardStatus(StatusID::Spade, ColorString(ddutil::cardNumToString(num) + " of Spades", ddutil::BLACK_CARD_COLOR),
+		"Deals damage equal to the card's value", num)
 {
 }
 
@@ -260,7 +278,8 @@ ColorString SpadeStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 }
 
 HeartStatus::HeartStatus(int num)
-	:CardStatus(StatusID::Heart, ColorString(ddutil::cardNumToString(num) + " of Hearts", ddutil::RED_CARD_COLOR), num)
+	:CardStatus(StatusID::Heart, ColorString(ddutil::cardNumToString(num) + " of Hearts", ddutil::RED_CARD_COLOR),
+		"Heals HP equal to the card's value", num)
 {
 }
 
@@ -279,7 +298,8 @@ ColorString HeartStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 }
 
 ClubStatus::ClubStatus(int num)
-	:CardStatus(StatusID::Club, ColorString(ddutil::cardNumToString(num) + " of Clubs", ddutil::BLACK_CARD_COLOR), num)
+	:CardStatus(StatusID::Club, ColorString(ddutil::cardNumToString(num) + " of Clubs", ddutil::BLACK_CARD_COLOR),
+		"Deals damage equal to the card's value", num)
 {
 }
 
@@ -298,7 +318,8 @@ ColorString ClubStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 }
 
 DiamondStatus::DiamondStatus(int num)
-	:CardStatus(StatusID::Diamond, ColorString(ddutil::cardNumToString(num) + " of Diamonds", ddutil::RED_CARD_COLOR), num)
+	:CardStatus(StatusID::Diamond, ColorString(ddutil::cardNumToString(num) + " of Diamonds", ddutil::RED_CARD_COLOR),
+		"Gives XP equal to the card's value", num)
 {
 }
 
@@ -324,13 +345,14 @@ ColorString DiamondStatus::applyEndTurnEffect(Creature* target, int stackAmounts
 	}
 }
 
-UniqueStatus::UniqueStatus(StatusID theID, ColorString name)
-	:Status(theID, name, true, false, false, false)
+UniqueStatus::UniqueStatus(StatusID theID, ColorString name, std::string description)
+	:Status(theID, name, description, true, false, false, false)
 {
 }
 
 Dynamite::Dynamite()
-	:UniqueStatus(StatusID::Dynamite, ColorString("Dynamite", COLOR))
+	:UniqueStatus(StatusID::Dynamite, ColorString("Dynamite", COLOR), 
+		"Once the status stack reaches 0, the target takes " + std::to_string(DAMAGE) + " damage")
 {
 }
 
@@ -360,14 +382,15 @@ ColorString Dynamite::applyEndTurnEffect(Creature* target, int stackAmount)
 	}
 }
 
-TotalRemoveStatus::TotalRemoveStatus(StatusID id, ColorString name)
-	:Status(id, name, false, false, true, false)
+TotalRemoveStatus::TotalRemoveStatus(StatusID id, ColorString name, std::string desc)
+	:Status(id, name, desc, false, false, true, false)
 {
 
 }
 
 BleedingStatus::BleedingStatus()
-	:TotalRemoveStatus(StatusID::Bleeding, ColorString("Bleeding", COLOR))
+	:TotalRemoveStatus(StatusID::Bleeding, ColorString("Bleeding", COLOR),
+		"Deals damage equal to the status's stack amount, then is removed completely")
 {
 }
 
@@ -387,13 +410,14 @@ ColorString BleedingStatus::applyEndTurnEffect(Creature* target, int stackAmount
 
 
 
-UnchangingStatus::UnchangingStatus(StatusID id, ColorString name)
-	:Status(id, name, false, false, false, true)
+UnchangingStatus::UnchangingStatus(StatusID id, ColorString name, std::string desc)
+	:Status(id, name, desc, false, false, false, true)
 {
 }
 
 ThornsStatus::ThornsStatus()
-	:UnchangingStatus(StatusID::Thorns, ColorString("Thorned", COLOR))
+	:UnchangingStatus(StatusID::Thorns, ColorString("Thorned", COLOR),
+		"Every time the target is attacked, the attacker takes damage equal to the status stack")
 {
 }
 
@@ -409,7 +433,8 @@ ColorString ThornsStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 }
 
 HexedStatus::HexedStatus()
-	:NormalStatus(StatusID::Hexed, ColorString("Hexed", COLOR))
+	:NormalStatus(StatusID::Hexed, ColorString("Hexed", COLOR), 
+		"The target cannot attack while active and loses " + std::to_string(VITALITY_LOSS) + " vitality each turn")
 {
 }
 
@@ -435,7 +460,8 @@ ColorString HexedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 }
 
 StrangledStatus::StrangledStatus()
-	:NormalStatus(StatusID::Strangled, ColorString("Strangled", ddutil::WHITE))
+	:NormalStatus(StatusID::Strangled, ColorString("Strangled", ddutil::WHITE),
+		"The target cannot attack while active and loses " + std::to_string(STRANGLE_DAMAGE) + " health per turn")
 {
 }
 
@@ -454,7 +480,7 @@ ColorString StrangledStatus::applyEndTurnEffect(Creature* target, int stackAmoun
 }
 
 StunnedStatus::StunnedStatus()
-	:NormalStatus(StatusID::Stunned, ColorString("Stunned", COLOR))
+	:NormalStatus(StatusID::Stunned, ColorString("Stunned", COLOR), "The target cannot attack while active")
 {
 }
 
@@ -469,7 +495,8 @@ ColorString StunnedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 }
 
 DragonStatus::DragonStatus()
-	:NormalStatus(StatusID::Dragon, ColorString("Dragon Form", COLOR))
+	:NormalStatus(StatusID::Dragon, ColorString("Dragon Form", COLOR), 
+		"Makes every attack deal " + std::to_string(PERCENT_DAM_INC) + "% more damage ")
 {
 }
 
@@ -489,7 +516,8 @@ ColorString DragonStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 }
 
 JesterStatus::JesterStatus()
-	:NormalStatus(StatusID::Jester, ColorString("Jester Form", COLOR))
+	:NormalStatus(StatusID::Jester, ColorString("Jester Form", COLOR),
+		"The effects of card draw moves are doubled")
 {
 }
 
@@ -509,7 +537,9 @@ ColorString JesterStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 }
 
 ElementalStatus::ElementalStatus()
-	:NormalStatus(StatusID::Elemental, ColorString("Elemental Form", COLOR))
+	:NormalStatus(StatusID::Elemental, ColorString("Elemental Form", COLOR),
+		"Makes every attack apply " + std::to_string(ZAP_AMOUNT) + " Zapped, " + std::to_string(BURN_AMOUNT) + " Burn," +
+		" and " + std::to_string(FBURN_AMOUNT) + " Frostburn")
 {
 }
 
@@ -528,7 +558,8 @@ ColorString ElementalStatus::applyEndTurnEffect(Creature* target, int stackAmoun
 }
 
 ScorchedStatus::ScorchedStatus()
-	:NormalStatus(StatusID::Scorched, ColorString("Scorched", COLOR))
+	:NormalStatus(StatusID::Scorched, ColorString("Scorched", COLOR),
+		"Deals damage equal to " + std::to_string(DAMAGE_PER_BURN) +" times the number of burns the target has every turn")
 {
 }
 

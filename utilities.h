@@ -204,5 +204,9 @@ namespace ddutil
     // utility function used in generating the map
     // returns true if the coordinate is already in the vector of coordinates
     bool hasCoords(Coordinate coord, std::vector<Coordinate> coords);
+
+    // makes the string the desired length by adding an equal amount of spaces before and after the string
+    std::string padString(std::string str, int size);
+    ColorString padString(ColorString str, int size);
 }
 #endif

@@ -233,11 +233,13 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 
 	if (hasStatus(StatusID::Vulnerable))
 	{
-		amount = static_cast<int>(static_cast<double>(amount) * 1.5);
+		double mult = 1 + (VulnerableStatus::PERCENT_DAM_INC / 100.0);
+		amount = static_cast<int>(static_cast<double>(amount) * mult);
 	}
 	if (attacker != nullptr && attacker->hasStatus(StatusID::Dragon)) 
 	{
-		amount = static_cast<int>(static_cast<double>(amount) * 1.5);
+		double mult = 1 + (DragonStatus::PERCENT_DAM_INC / 100.0);
+		amount = static_cast<int>(static_cast<double>(amount) * mult);
 	}
 	if (attacker != nullptr && attacker->hasStatus(StatusID::Elemental))
 	{

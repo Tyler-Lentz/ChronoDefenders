@@ -217,7 +217,7 @@ namespace SorcererMoves
 		Blizzard();
 		ColorString doAction(Creature* self, Creature* other) override;
 
-		const static int BASE_DAMAGE = 10;
+		const static int BASE_DAMAGE = 13;
 		const static int MULTIPLIER = 2;
 		const static int COST = 4;
 	};
@@ -228,7 +228,7 @@ namespace SorcererMoves
 		Cataclysm();
 		ColorString doAction(Creature* self, Creature* other) override;
 
-		const static int BASE_DAMAGE = 10;
+		const static int BASE_DAMAGE = 13;
 		const static int MULTIPLIER = 2;
 		const static int COST = 4;
 	};

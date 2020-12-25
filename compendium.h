@@ -25,6 +25,7 @@ private:
 	int lastPage; // stores the last page the player was on so the compendium returns to the page you left off on
 
 	// Private helper functions
+	void makeTitlePage();
 	void makeSamuraiList(); // add list of samurai moves
 	void makeGunslingerList(); // add list of gunslinger moves
 	void makeSorceressList(); // add list of sorceress moves

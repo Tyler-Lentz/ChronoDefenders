@@ -9,6 +9,7 @@ Compendium::Compendium(VirtualWindow* vwin)
 	this->vwin = vwin;
 	lastPage = 0; // start on the first page
 	borderString = std::string(ddutil::CONSOLEX, '=');
+	makeTitlePage();
 	makeSamuraiList();
 	makeGunslingerList();
 	makeSorceressList();
@@ -56,6 +57,26 @@ void Compendium::display()
 			lastPage = 0;
 		}
 	}
+}
+
+void Compendium::makeTitlePage()
+{
+	Picture page;
+	int color = ddutil::COMPENDIUM_COLOR;
+	int size = ddutil::CONSOLEX;
+	page.push_back(ColorString(borderString, color));
+	page.push_back(ColorString(ddutil::padString("<- The Compendium ->", size), color));	
+	page.push_back(ColorString(borderString, color));
+	page.push_back(ColorString());
+	page.push_back(ColorString("This is the Compendium, an ancient book which contains vast knowledge", ddutil::TEXT_COLOR));
+	page.push_back(ColorString());
+	page.push_back(ColorString("Here, you can find information about all the moves each class can learn, alongside ", ddutil::TEXT_COLOR));
+	page.push_back(ColorString("information about status ailments you may find on your journey", ddutil::TEXT_COLOR));
+	page.push_back(ColorString());
+	page.push_back(ColorString("Controls:", ddutil::TEXT_COLOR));
+	page.push_back(ColorString("Left/Right arrows: navegate through the book", ddutil::TEXT_COLOR));
+	page.push_back(ColorString("Spacebar: exit the Compendium", ddutil::TEXT_COLOR));
+	compendium.push_back(page);
 }
 
 void Compendium::makeSamuraiList()

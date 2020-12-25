@@ -153,85 +153,100 @@ void Player::tradeExperience()
 	} 
 	while (!successfulSelection);
 
-	// Print the character's art and (updated) stats
-	game->clearCenterScreen();
-	game->clearBottomDivider();
-
-	// Print the player's current moves in the bottom divider
-	int currentMovesLine = ddutil::BOTTOM_TEXT_LINE;
-	ColorString moveSetLimit = ColorString("(" + std::to_string(moves.size()) + "/" + std::to_string(movesetLimit) + ")", ddutil::TEXT_COLOR);
-	vwin->putcen(moveSetLimit + ColorString(" Current Moves:", ddutil::EXPERIENCE_COLOR), currentMovesLine++);
-	for (Move* m : getMoves())
-	{
-		vwin->putcen(m->getFullInformation(), currentMovesLine++);
-	}
-
 	// generate the moves to select from based upon the player input
 	std::vector<Move*> randomMoves = getRandomMoves(str);
 
-	// prepare the colorstrings to represent the possible moves that the player can add to their moveset
-	std::vector<ColorString> moveSelectionOptions;
-	moveSelectionOptions.push_back(ColorString("Skip (still lose XP)", ddutil::BROWN));
-	for (Move* m : randomMoves)
+	bool exit = false;
+	while (!exit)
 	{
-		moveSelectionOptions.push_back(m->getFullInformation());
-	}
-	// an element in moveSelectionOptions at index i will correspond to index i - 1 in randomMoves
-
-	// Display menu and get user input
-	Coordinate baseMenuCoord = Coordinate(0, ddutil::DIVIDER_LINE3 / 2);
-	Coordinate newMoveMenuCoord = baseMenuCoord;
-	vwin->putcen(ColorString("Choose one new move:", ddutil::EXPERIENCE_COLOR), newMoveMenuCoord.y++);
-	Menu newMoveSelectionMenu(vwin, moveSelectionOptions, newMoveMenuCoord, true);
-	
-	
-
-	// interpret the user input
-	int userInput = newMoveSelectionMenu.getResponse();
-	if (userInput != 0) // the player chose one of the moves, and userInput is one greater than the index of the correct move in the randomMoves vector
-	{
+		// Print the character's art and (updated) stats
 		game->clearCenterScreen();
 		game->clearBottomDivider();
 
-		int newMoveIndex = userInput - 1;
-
-		Move* newMove = randomMoves[newMoveIndex];
-
-		// remove selected move from the random moves vector so that it is not deleted afterwards
-		auto selectedMoveIt = randomMoves.begin() + newMoveIndex;
-		randomMoves.erase(selectedMoveIt);
-
-		if (moves.size() >= static_cast<unsigned int>(movesetLimit))
+		// Print the player's current moves in the bottom divider
+		int currentMovesLine = ddutil::BOTTOM_TEXT_LINE;
+		ColorString moveSetLimit = ColorString("(" + std::to_string(moves.size()) + "/" + std::to_string(movesetLimit) + ")", ddutil::TEXT_COLOR);
+		vwin->putcen(moveSetLimit + ColorString(" Current Moves:", ddutil::EXPERIENCE_COLOR), currentMovesLine++);
+		for (Move* m : getMoves())
 		{
-
-			// display new move in the bottom of the screen
-			vwin->putcen(ColorString("New Move:", ddutil::TEXT_COLOR), ddutil::BOTTOM_TEXT_LINE);
-			vwin->putcen(newMove->getFullInformation(), ddutil::BOTTOM_TEXT_LINE + 1);
-
-			// display the old moves in the center of the screen and have the player choose one to remove in order to make room for the new move
-			Coordinate oldMoveMenuCoord = baseMenuCoord;
-			vwin->putcen(ColorString("Choose move to remove:", ddutil::EXPERIENCE_COLOR), oldMoveMenuCoord.y++);
-			std::vector<ColorString> oldMoveOptions;
-			for (Move* m : getMoves())
-			{
-				oldMoveOptions.push_back(m->getFullInformation());
-			}
-
-			Menu oldMoveMenu(vwin, oldMoveOptions, oldMoveMenuCoord, true);
-			// the input from the menu will equal the index of the old move that should be removed
-			int removeIndex = oldMoveMenu.getResponse();
-
-
-			// remove the old move from the player's moves
-			Move* moveToDelete = moves[removeIndex];
-			auto eraseIt = moves.begin() + removeIndex;
-			moves.erase(eraseIt);
-			delete moveToDelete;
+			vwin->putcen(m->getFullInformation(), currentMovesLine++);
 		}
+
+		// prepare the colorstrings to represent the possible moves that the player can add to their moveset
+		std::vector<ColorString> moveSelectionOptions;
+		moveSelectionOptions.push_back(ColorString("Skip (still lose XP)", ddutil::BROWN));
+		moveSelectionOptions.push_back(ColorString("View Compendium", ddutil::COMPENDIUM_COLOR));
+		for (Move* m : randomMoves)
+		{
+			moveSelectionOptions.push_back(m->getFullInformation());
+		}
+		// an element in moveSelectionOptions at index i will correspond to index i - 2 in randomMoves
+
+		// Display menu and get user input
+		Coordinate baseMenuCoord = Coordinate(0, ddutil::DIVIDER_LINE3 / 2);
+		Coordinate newMoveMenuCoord = baseMenuCoord;
+		vwin->putcen(ColorString("Choose one new move:", ddutil::EXPERIENCE_COLOR), newMoveMenuCoord.y++);
+		Menu newMoveSelectionMenu(vwin, moveSelectionOptions, newMoveMenuCoord, true);
+		
 		
 
-		// add the new move into the player's moves
-		moves.push_back(newMove);
+		// interpret the user input
+		int userInput = newMoveSelectionMenu.getResponse();
+		if (userInput > 1) // the player chose one of the moves, and userInput is one greater than the index of the correct move in the randomMoves vector
+		{
+			game->clearCenterScreen();
+			game->clearBottomDivider();
+
+			int newMoveIndex = userInput - 2;
+
+			Move* newMove = randomMoves[newMoveIndex];
+
+			// remove selected move from the random moves vector so that it is not deleted afterwards
+			auto selectedMoveIt = randomMoves.begin() + newMoveIndex;
+			randomMoves.erase(selectedMoveIt);
+
+			if (moves.size() >= static_cast<unsigned int>(movesetLimit))
+			{
+
+				// display new move in the bottom of the screen
+				vwin->putcen(ColorString("New Move:", ddutil::TEXT_COLOR), ddutil::BOTTOM_TEXT_LINE);
+				vwin->putcen(newMove->getFullInformation(), ddutil::BOTTOM_TEXT_LINE + 1);
+
+				// display the old moves in the center of the screen and have the player choose one to remove in order to make room for the new move
+				Coordinate oldMoveMenuCoord = baseMenuCoord;
+				vwin->putcen(ColorString("Choose move to remove:", ddutil::EXPERIENCE_COLOR), oldMoveMenuCoord.y++);
+				std::vector<ColorString> oldMoveOptions;
+				for (Move* m : getMoves())
+				{
+					oldMoveOptions.push_back(m->getFullInformation());
+				}
+
+				Menu oldMoveMenu(vwin, oldMoveOptions, oldMoveMenuCoord, true);
+				// the input from the menu will equal the index of the old move that should be removed
+				int removeIndex = oldMoveMenu.getResponse();
+
+
+				// remove the old move from the player's moves
+				Move* moveToDelete = moves[removeIndex];
+				auto eraseIt = moves.begin() + removeIndex;
+				moves.erase(eraseIt);
+				delete moveToDelete;
+			}
+			
+
+			// add the new move into the player's moves
+			moves.push_back(newMove);
+
+			exit = true;
+		}
+		else if (userInput == 0) // skip
+		{
+			exit = true;
+		}
+		else if (userInput == 1) // the user wants to view the compendium
+		{
+			game->viewCompendium();
+		}
 	}
 
 	game->clearCenterScreen();

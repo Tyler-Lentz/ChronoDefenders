@@ -42,6 +42,11 @@ void EnemyRoom::playRoom()
 	}
 }
 
+int EnemyRoom::getRoomId()
+{
+	return enemy->getRoomId();
+}
+
 // Fire Room
 
 FireRoom::FireRoom(Game* theGame)
@@ -87,6 +92,11 @@ void FireRoom::playRoom()
 	vwin->putcen(output, ddutil::CENTER_TEXT_LINE);
 	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, ddutil::CENTER_TEXT_LINE + 1), true);
 	game->clearCenterScreen();
+}
+
+int FireRoom::getRoomId()
+{
+	return RoomId::Fire;
 }
 
 EventRoom::EventRoom(Game* game)
@@ -157,6 +167,11 @@ void DeadAdventurerEvent::playRoom()
 	game->clearCenterScreen();
 }
 
+int DeadAdventurerEvent::getRoomId()
+{
+	return RoomId::DeadAdventurer;
+}
+
 BrokenMirrorEvent::BrokenMirrorEvent(Game* game)
 	:EventRoom(game)
 {
@@ -204,6 +219,11 @@ void BrokenMirrorEvent::playRoom()
 	}
 
 	game->clearCenterScreen();
+}
+
+int BrokenMirrorEvent::getRoomId()
+{
+	return RoomId::BrokenMirror;
 }
 
 MysteriousKnightEvent::MysteriousKnightEvent(Game* game)
@@ -278,6 +298,11 @@ void MysteriousKnightEvent::playRoom()
 	game->clearBottomDivider();
 	game->clearCenterScreen();
 
+}
+
+int MysteriousKnightEvent::getRoomId()
+{
+	return RoomId::MysteriousKnightEventFight;
 }
 
 DynamiteEvent::DynamiteEvent(Game* game)
@@ -359,6 +384,11 @@ void DynamiteEvent::playRoom()
 	
 }
 
+int DynamiteEvent::getRoomId()
+{
+	return RoomId::Dynamite;
+}
+
 ColorChar Room::getMapChar()
 {
 	return mapChar;
@@ -367,6 +397,11 @@ ColorChar Room::getMapChar()
 void Room::setCharEmpty()
 {
 	mapChar = ColorChar('*', ddutil::LIGHTGRAY);
+}
+
+void Room::setChar(ColorChar cchar)
+{
+	mapChar = cchar;
 }
 
 TreasureEvent::TreasureEvent(Game* game)
@@ -388,6 +423,11 @@ void TreasureEvent::playRoom()
 	game->artifactSelectionMenu(line, game->getActiveZone()->getRandomArtifact());
 
 	game->clearCenterScreen();
+}
+
+int TreasureEvent::getRoomId()
+{
+	return RoomId::Treasure;
 }
 
 LavaBeastEvent::LavaBeastEvent(Game* game)
@@ -485,6 +525,11 @@ void LavaBeastEvent::playRoom()
 	game->clearCenterScreen();
 }
 
+int LavaBeastEvent::getRoomId()
+{
+	return RoomId::LavaBeast;
+}
+
 GoblinEvent::GoblinEvent(Game* game)
 	:EventRoom(game)
 {
@@ -535,6 +580,11 @@ void GoblinEvent::playRoom()
 	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
 
 	game->clearCenterScreen();
+}
+
+int GoblinEvent::getRoomId()
+{
+	return RoomId::Goblin;
 }
 
 MirrorEvent::MirrorEvent(Game* game)
@@ -597,6 +647,11 @@ void MirrorEvent::playRoom()
 		game->artifactSelectionMenu(line, a);
 	}
 	game->clearCenterScreen();
+}
+
+int MirrorEvent::getRoomId()
+{
+	return RoomId::Mirror;
 }
 
 PortalEvent::PortalEvent(Game* game)
@@ -747,6 +802,11 @@ void PortalEvent::playRoom()
 	game->clearCenterScreen();
 }
 
+int PortalEvent::getRoomId()
+{
+	return RoomId::Portal;
+}
+
 BloodAltarEvent::BloodAltarEvent(Game* game)
 	:EventRoom(game)
 {
@@ -811,6 +871,11 @@ void BloodAltarEvent::playRoom()
 	game->clearCenterScreen();
 }
 
+int BloodAltarEvent::getRoomId()
+{
+	return RoomId::BloodAltar;
+}
+
 SpiderEvent::SpiderEvent(Game* game)
 	:EventRoom(game)
 {
@@ -871,6 +936,11 @@ void SpiderEvent::playRoom()
 	game->clearCenterScreen();
 }
 
+int SpiderEvent::getRoomId()
+{
+	return RoomId::SpiderEventFight;
+}
+
 MaskEvent::MaskEvent(Game* game)
 	:EventRoom(game)
 {
@@ -919,6 +989,11 @@ void MaskEvent::playRoom()
 
 	game->clearCenterScreen();
 
+}
+
+int MaskEvent::getRoomId()
+{
+	return RoomId::Mask;
 }
 
 GoldAltarEvent::GoldAltarEvent(Game* game)
@@ -979,6 +1054,11 @@ void GoldAltarEvent::playRoom()
 	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
 
 	game->clearCenterScreen();
+}
+
+int GoldAltarEvent::getRoomId()
+{
+	return RoomId::GoldAltar;
 }
 
 

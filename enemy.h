@@ -33,6 +33,8 @@ public:
 
 	virtual ColorString getStatLine();
 
+	virtual int getRoomId() = 0;
+
 	const Mp3File& getMusic() const;
 
 	const std::vector<ColorString>& getIntroText() const;
@@ -61,6 +63,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 70;
 	const static int BURN_AMOUNT = 4;
@@ -80,6 +83,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 90;
 	const static int FBURN_AMOUNT = 3;
@@ -97,6 +101,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 60;
 	const static int SINGLE_TARGET_DAMAGE = 10;
@@ -115,6 +120,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 72;
 	const static int HIGH_HP_DAMAGE = 10;
@@ -127,6 +133,7 @@ public:
 	VampireBat(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 66;
 	const static int STRIKE_DAMAGE = 11;
@@ -141,6 +148,7 @@ public:
 	VampireBatVariant(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 72;
 	const static int SWIPE_DAMAGE = 8;// (multi attack on everyone)
@@ -158,6 +166,7 @@ public:
 	CaveBat(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 70;
 	const static int DIVEBOMB_THRESHOLD = 30; // hp at which will do suicide attack
@@ -171,6 +180,7 @@ public:
 	CaveBatVariant(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 80;
 	const static int POISON_SPRAY_AMOUNT = 2;
@@ -185,6 +195,7 @@ public:
 	Minion(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 150;
 	const static int DUAL_STRIKE_DAMAGE = 9;
@@ -201,6 +212,7 @@ public:
 	MinionAlt(Game* game);
 	EnemyTurn getTurn(std::vector <Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 180;
 	const static int DUAL_STRIKE_DAMAGE = 10;
@@ -214,6 +226,7 @@ public:
 	GiantLizard(Game* game);
 	EnemyTurn getTurn(std::vector <Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 168;
 	const static int FLAME_DAMAGE = 11;
@@ -229,6 +242,7 @@ public:
 	AltGiantLizard(Game* game);
 	EnemyTurn getTurn(std::vector <Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 168;
 	const static int KICK_DAMAGE = 16;
@@ -245,6 +259,7 @@ public:
 	FireBat(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 150;
 	const static int WHIRLWIND_DAMAGE = 10; // multi attack
@@ -265,6 +280,7 @@ public:
 	FireBatVariant(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 150;
 	const static int BASE_BLOCK = 8; // One time gets base block enveloping in shield of fire
@@ -282,6 +298,7 @@ public:
 	FirePlatypus(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 180;
 	const static int STRIKE_DAMAGE = 10; // attack that also gives block
@@ -310,6 +327,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int STRIKE_DAMAGE = 15;
 	const static int MULTI_TARGET_DAMAGE = 9;
@@ -325,6 +343,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 130;
 	const static int BASE_DAMAGE = 5;
@@ -338,6 +357,7 @@ public:
 	AncientLizard(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 133;
 	const static int STOMP_DAMAGE = 10;
@@ -356,6 +376,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 260;
 	const static int ATTACK_DAMAGE = 22;
@@ -373,6 +394,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 220;
 	const static int HEXED_LENGTH = 3;
@@ -389,6 +411,7 @@ public:
 	GiantHead(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 	const static int HEALTH = 300;
 	const static int STUN_DAMAGE = 16;
 	const static int STRENGTH_INCREASE = 4;
@@ -414,6 +437,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 240;
 	const static int VULNERABLE_LENGTH = 99;
@@ -429,6 +453,7 @@ public:
 	Spider(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 125;
 	const static int STRANGLED_LENGTH = 2;
@@ -444,6 +469,7 @@ public:
 	SentientMouth(Game* game);
 	EnemyTurn getTurn(std::vector <Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 250;
 	const static int HEX_LENGTH = 2;
@@ -462,6 +488,7 @@ public:
 	LaughingMask(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 280;
 
@@ -481,6 +508,7 @@ public:
 	DevilishMask(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 300;
 
@@ -496,6 +524,7 @@ public:
 	PossessedMace(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 280;
 	const static int THORNS = 4;
@@ -512,6 +541,7 @@ public:
 	Sniffer(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 250;
 	const static int RAVAGE_DAMAGE = 18; // Single target attack
@@ -529,6 +559,7 @@ public:
 	SnifferVariant(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 280;
 	const static int FROST_BREATH_DAMAGE = 12; // Multitarget frostburn attack
@@ -553,6 +584,7 @@ public:
 	CorruptedDisciple(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 375;
 	const static int HEXED_LENGTH = 3; // single target hex attack
@@ -571,6 +603,7 @@ public:
 	HyperBeast(Game* game);
 	EnemyTurn getTurn(std::vector <Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 400;
 	const static int HYPER_BEAM_DAM = 40;
@@ -589,6 +622,7 @@ public:
 	AncientBird(Game* game);
 	EnemyTurn getTurn(std::vector <Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 400;
 	const static int VITALITY_STEAL = 6; // takes away vitality
@@ -615,6 +649,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 230;
 	const static int VULNERABLE_LENGTH = 3;
@@ -634,6 +669,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 400;
 	const static int SHIELD_BLOCK = 8;
@@ -657,6 +693,7 @@ public:
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 
 	Creature* makeCopy() override;
+	int getRoomId() override;
 
 	const static int HEALTH = 700;
 	void deathScene() override;
@@ -689,6 +726,7 @@ public:
 	TruePatriarch(Game* game);
 	EnemyTurn getTurn(std::vector<Creature*> players) override;
 	Creature* makeCopy() override;
+	int getRoomId() override;
 	void deathScene() override;
 
 	const static int HEALTH = 800;

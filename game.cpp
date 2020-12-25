@@ -12,6 +12,7 @@
 #include "soundfile.h"
 #include "coordinate.h"
 #include "compendium.h"
+#include "savefile.h"
 
 #include <Windows.h>
 #include <string>
@@ -41,7 +42,6 @@ Game::Game(VirtualWindow* virWin)
 	{
 		gameWorld.push_back(new Zone(this, i));
 	}
-
 }
 
 Game::~Game()
@@ -544,6 +544,7 @@ void Game::titleScreen()
 
 	std::vector<ColorString> options;
 	options.push_back(ColorString("New Game", ddutil::TEXT_COLOR));
+	options.push_back(ColorString("Load Game", ddutil::TEXT_COLOR));
 	options.push_back(ColorString("View Compendium", ddutil::TEXT_COLOR));
 	options.push_back(ColorString("Exit", ddutil::TEXT_COLOR));
 
@@ -562,12 +563,21 @@ void Game::titleScreen()
 			status = ddutil::GameStatus::CONTINUE;
 			exit = true;
 			break;
+			
+		case 1: // load game
+		{
+			status = ddutil::GameStatus::CONTINUE;
+			exit = true;
+			Savefile save(this, "save.txt");
+			save.loadFromFile(this);
+			break;
+		}
 
-		case 1:
+		case 2:
 			compendium->display();
 			break;
 
-		case 2:
+		case 3:
 		case VK_ESCAPE: // quit
 			status = ddutil::GameStatus::EXIT;
 			exit = true;

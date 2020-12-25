@@ -4,6 +4,7 @@
 #include "coordinate.h"
 #include "utilities.h"
 #include "art.h"
+#include "savefile.h"
 
 #include <vector>
 
@@ -108,7 +109,7 @@ private:
 	Enemy* currentEnemy;
 
 
-
+	friend class Savefile;
 };
 
 #endif GAME_H

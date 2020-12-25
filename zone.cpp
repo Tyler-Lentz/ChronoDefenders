@@ -12,6 +12,7 @@
 #include "coordinate.h"
 
 #include <algorithm>
+#include <sstream>
 
 // Zone Environment
 
@@ -342,6 +343,11 @@ ZoneMap CatacombsEnvironment::generateRooms()
 	return map;
 }
 
+int CatacombsEnvironment::getSaveChunkIdentifier()
+{
+	return ZoneEnvId::Catacombs;
+}
+
 Enemy* CatacombsEnvironment::generateEnemy(ddutil::EnemyType type)
 {
 	const int NUM_NORM_ENEMIES = 8;
@@ -524,6 +530,11 @@ ZoneMap AbyssEnvironment::generateRooms()
 	return map;
 }
 
+int AbyssEnvironment::getSaveChunkIdentifier()
+{
+	return ZoneEnvId::Abyss;
+}
+
 Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 {
 	const int NUM_NORM_ENEMIES = 7;
@@ -687,6 +698,11 @@ ZoneMap VoidEnvironment::generateRooms()
 	return map;
 }
 
+int VoidEnvironment::getSaveChunkIdentifier()
+{
+	return ZoneEnvId::Void;
+}
+
 Enemy* VoidEnvironment::generateEnemy(ddutil::EnemyType type)
 {
 	const int NUM_NORM_ENCOUNTERS = 6;
@@ -819,6 +835,11 @@ ZoneMap PalaceEnvironment::generateRooms()
 	return map;
 }
 
+int PalaceEnvironment::getSaveChunkIdentifier()
+{
+	return ZoneEnvId::Palace;
+}
+
 Enemy* PalaceEnvironment::generateEnemy(ddutil::EnemyType type)
 {
 	return new TruePatriarch(game);
@@ -837,27 +858,55 @@ Zone::Zone(Game* theGame, int num)
 	zoneNumber = num;
 	game = theGame;
 
-	if (num == 1)
-	{
-		environment = new CatacombsEnvironment(game);
-	}
-	else if (num == 2)
-	{
-		environment = new AbyssEnvironment(game);
-	}
-	else if (num == 3)
-	{
-		environment = new VoidEnvironment(game);
-	}
-	else // num == 4
-	{
-		environment = new PalaceEnvironment(game);
-	}
+	setEnvironment();
 
 	map = environment->generateRooms();
 	currentCol = -1;
 	currentRow = -1;
 }
+
+// should receive a savechunk without the ZONE START and ZONE END markers
+Zone::Zone(Game* theGame, Savechunk data)
+{
+	game = theGame;
+	currentCol = std::stoi(data.at(0));
+	currentRow = std::stoi(data.at(1));
+	zoneNumber = std::stoi(data.at(2));
+	setEnvironment();
+
+	if (data.at(3) != "ZONE MAP START")
+	{
+		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+	}
+	int numRows = std::stoi(data.at(4));
+	int numCols = std::stoi(data.at(5));
+	Savechunk coordChunk;
+	Savechunk roomChunk;
+	if (data.at(6) != "ROOM COORDS START")
+	{
+		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+	}
+	int i = 7;
+	for (; data.at(i) != "ROOM COORDS END"; i++)
+	{
+		coordChunk.add(data.at(i));
+	}
+	if (data.at(++i) != "ROOM 2D VECTOR START")
+	{
+		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+	}
+	i++;
+	for (; data.at(i) != "ROOM 2D VECTOR END"; i++)
+	{
+		roomChunk.add(data.at(i));
+	}
+	map = ZoneMap(game, coordChunk, roomChunk, numRows, numCols);
+}
+
+// col
+// row
+// num
+// map
 
 Zone::~Zone()
 {
@@ -1039,6 +1088,38 @@ Room* Zone::chooseRoom()
 	return map[finalCoord.y][finalCoord.x];
 }
 
+Savechunk Zone::makeSaveChunk()
+{
+	Savechunk chunk;
+	chunk.add("ZONE START");
+	chunk.add(currentCol);
+	chunk.add(currentRow);
+	chunk.add(zoneNumber);
+	chunk.add(map.makeSaveChunk());
+	chunk.add("ZONE END");
+	return chunk;
+}
+
+void Zone::setEnvironment()
+{
+	if (zoneNumber == 1)
+	{
+		environment = new CatacombsEnvironment(game);
+	}
+	else if (zoneNumber == 2)
+	{
+		environment = new AbyssEnvironment(game);
+	}
+	else if (zoneNumber == 3)
+	{
+		environment = new VoidEnvironment(game);
+	}
+	else // num == 4
+	{
+		environment = new PalaceEnvironment(game);
+	}
+}
+
 // makes the 2d vector the right size and adds coordinates to rooms which should be filled in by the environment generation function
 ZoneMap::ZoneMap(int numPaths, int numRows, int numCols)
 {
@@ -1075,6 +1156,208 @@ ZoneMap::ZoneMap(int numPaths, int numRows, int numCols)
 	}
 }
 
+ZoneMap::ZoneMap(Game* game, Savechunk coordinates, Savechunk rooms, int numRows, int numCols)
+{
+	for (std::string str : coordinates)
+	{
+		std::stringstream ss(str);
+		std::string buff;
+		std::vector<std::string> tokens;
+		while (std::getline(ss, buff, ' '))
+		{
+			tokens.push_back(buff);
+		}
+		if (tokens.size() != 2)
+		{
+			ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+		}
+		Coordinate c;
+		c.x = std::stoi(tokens.front());
+		c.y = std::stoi(tokens.back());
+		roomCoords.push_back(c);
+	}
+	for (int i = 0; i < numRows; i++)
+	{
+		push_back(std::vector<Room*>(numCols, nullptr));
+	}
+	int coordIndex = 0;
+	std::vector<Coordinate> usedCoords;
+	for (std::string str : rooms)
+	{	
+		std::stringstream ss(str);
+		std::string buff;
+		std::vector<std::string> tokens;
+		while (std::getline(ss, buff, ' '))
+		{
+			tokens.push_back(buff);
+		}
+		if (tokens.size() != 5)
+		{
+			ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+		}
+		int roomId = std::stoi(tokens.at(0));
+		char roomChar = tokens.at(1).front();
+		int roomColor = std::stoi(tokens.at(2));
+		int roomRow = std::stoi(tokens.at(3));
+		int roomCol = std::stoi(tokens.at(4));
+		ColorChar roomColorChar = ColorChar(roomChar, roomColor);
+		Room* room = nullptr;
+		switch (roomId)
+		{
+		case RoomId::AbyssBeastEnemy:
+			room = new EnemyRoom(game, new AbyssBeast(game));
+			break;
+		case RoomId::AncientBirdEnemy:
+			room = new EnemyRoom(game, new AncientBird(game));
+			break;
+		case RoomId::AncientLizardEnemy:
+			room = new EnemyRoom(game, new AncientLizard(game));
+			break;
+		case RoomId::BasiliskEnemy:
+			room = new EnemyRoom(game, new Basilisk(game));
+			break;
+		case RoomId::BloodAltar:
+			room = new BloodAltarEvent(game);
+			break;
+		case RoomId::BrokenMirror:
+			room = new BrokenMirrorEvent(game);
+			break;
+		case RoomId::BruteEnemy:
+			room = new EnemyRoom(game, new Brute(game));
+			break;
+		case RoomId::CaveBatEnemy:
+			room = new EnemyRoom(game, new CaveBat(game));
+			break;
+		case RoomId::CaveBatVariantEnemy:
+			room = new EnemyRoom(game, new CaveBatVariant(game));
+			break;
+		case RoomId::CorruptedDiscipleEnemy:
+			room = new EnemyRoom(game, new CorruptedDisciple(game));
+			break;
+		case RoomId::DeadAdventurer:
+			room = new DeadAdventurerEvent(game);
+			break;
+		case RoomId::DevilishMaskEnemy:
+			room = new EnemyRoom(game, new DevilishMask(game));
+			break;
+		case RoomId::Dynamite:
+			room = new DynamiteEvent(game);
+			break;
+		case RoomId::Fire:
+			room = new FireRoom(game);
+			break;
+		case RoomId::FireBatEnemy:
+			room = new EnemyRoom(game, new FireBat(game));
+			break;
+		case RoomId::FireBatVariantEnemy:
+			room = new EnemyRoom(game, new FireBatVariant(game));
+			break;
+		case RoomId::FirePlatypusEnemy:
+			room = new EnemyRoom(game, new FirePlatypus(game));
+			break;
+		case RoomId::GhostEnemy:
+			room = new EnemyRoom(game, new Ghost(game));
+			break;
+		case RoomId::GhostVariantEnemy:
+			room = new EnemyRoom(game, new GhostVariant(game));
+			break;
+		case RoomId::GiantHeadEnemy:
+			room = new EnemyRoom(game, new GiantHead(game));
+			break;
+		case RoomId::GiantLizardEnemy:
+			room = new EnemyRoom(game, new GiantLizard(game));
+			break;
+		case RoomId::GiantLizardVariantEnemy:
+			room = new EnemyRoom(game, new AltGiantLizard(game));
+			break;
+		case RoomId::GiantSnailEnemy:
+			room = new EnemyRoom(game, new GiantSnail(game));
+			break;
+		case RoomId::GiantSnailVariantEnemy:
+			room = new EnemyRoom(game, new GiantSnailVariant(game));
+			break;
+		case RoomId::Goblin:
+			room = new GoblinEvent(game);
+			break;
+		case RoomId::GoldAltar:
+			room = new GoldAltarEvent(game);
+			break;
+		case RoomId::HyperBeastEnemy:
+			room = new EnemyRoom(game, new HyperBeast(game));
+			break;
+		case RoomId::LaughingMaskEnemy:
+			room = new EnemyRoom(game, new LaughingMask(game));
+			break;
+		case RoomId::LavaBeast:
+			room = new LavaBeastEvent(game);
+			break;
+		case RoomId::Mask:
+			room = new MaskEvent(game);
+			break;
+		case RoomId::MinionEnemy:
+			room = new EnemyRoom(game, new Minion(game));
+			break;
+		case RoomId::MinionVariantEnemy:
+			room = new EnemyRoom(game, new MinionAlt(game));
+			break;
+		case RoomId::MinotaurEnemy:
+			room = new EnemyRoom(game, new Minotaur(game));
+			break;
+		case RoomId::Mirror:
+			room = new MirrorEvent(game);
+			break;
+		case RoomId::MysteriousKnightEventFight:
+			room = new MysteriousKnightEvent(game);
+			break;
+		case RoomId::Portal:
+			room = new PortalEvent(game);
+			break;
+		case RoomId::PossessedMaceEnemy:
+			room = new EnemyRoom(game, new PossessedMace(game));
+			break;
+		case RoomId::SentientMouthEnemy:
+			room = new EnemyRoom(game, new SentientMouth(game));
+			break;
+		case RoomId::SnifferEnemy:
+			room = new EnemyRoom(game, new Sniffer(game));
+			break;
+		case RoomId::SnifferVariantEnemy:
+			room = new EnemyRoom(game, new SnifferVariant(game));
+			break;
+		case RoomId::SpiderEventFight:
+			room = new SpiderEvent(game);
+			break;
+		case RoomId::TheCollectorEnemy:
+			room = new EnemyRoom(game, new TheCollector(game));
+			break;
+		case RoomId::TheMessengerEnemy:
+			room = new EnemyRoom(game, new TheMessenger(game));
+			break;
+		case RoomId::TheProtectorEnemy:
+			room = new EnemyRoom(game, new TheProtector(game));
+			break;
+		case RoomId::Treasure:
+			room = new TreasureEvent(game);
+			break;
+		case RoomId::TruePatriarchEnemy:
+			room = new EnemyRoom(game, new TruePatriarch(game));
+			break;
+		case RoomId::VampireBatEnemy:
+			room = new EnemyRoom(game, new VampireBat(game));
+			break;
+		case RoomId::VampireBatVariantEnemy:
+			room = new EnemyRoom(game, new VampireBatVariant(game));
+			break;
+		default:
+			ddutil::errorMessage("Invalid Room Id in save file", __LINE__, __FILE__);
+			break;
+		}
+		room->setChar(roomColorChar);
+		Coordinate c = Coordinate(roomCol, roomRow);
+		this->operator[](c.y).operator[](c.x) = room;
+	}
+}
+
 int ZoneMap::getNumRows()
 {
 	return size();
@@ -1086,10 +1369,44 @@ int ZoneMap::getNumCols()
 	{
 		return 0;
 	}
-	return this[0].size();
+	return this->operator[](0).size();
 }
 
 std::vector<Coordinate> ZoneMap::getRoomCoords()
 {
 	return roomCoords;
+}
+
+Savechunk ZoneMap::makeSaveChunk()
+{
+	Savechunk chunk;
+	chunk.add("ZONE MAP START");
+	chunk.add(getNumRows());
+	chunk.add(getNumCols());
+	chunk.add("ROOM COORDS START");
+	for (Coordinate c : roomCoords)
+	{
+		chunk.add(std::to_string(c.x) + " " + std::to_string(c.y));
+	}
+	chunk.add("ROOM COORDS END");
+
+	chunk.add("ROOM 2D VECTOR START");
+	for (int i = 0; i < getNumRows(); i++)
+	{
+		for (int j = 0; j < getNumCols(); j++)
+		{
+			Room* r = this->at(i).at(j);
+			if (r != nullptr)
+			{
+				chunk.add(std::to_string(r->getRoomId()) + " " +
+					r->getMapChar().character + " " +
+					std::to_string(r->getMapChar().color) + " " +
+					std::to_string(i) + " " + std::to_string(j));
+			}
+		}
+	}
+	chunk.add("ROOM 2D VECTOR END");
+
+	chunk.add("ZONE MAP END");
+	return chunk;
 }

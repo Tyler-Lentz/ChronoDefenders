@@ -11,6 +11,7 @@
 #include "menu.h"
 #include "zone.h"
 #include "sorcerer_moves.h"
+#include "room.h"
 
 #include <vector>
 #include <string>
@@ -191,6 +192,11 @@ Creature* Ghost::makeCopy()
 	return new Ghost(game);
 }
 
+int Ghost::getRoomId()
+{
+	return RoomId::GhostEnemy;
+}
+
 GhostVariant::GhostVariant(Game* game) 
 	: NormalEnemy(game, HEALTH, "Ghost", ddutil::BLUE, Art::getBlueGhost())
 {
@@ -243,6 +249,11 @@ Creature* GhostVariant::makeCopy()
 	return new GhostVariant(game);
 }
 
+int GhostVariant::getRoomId()
+{
+	return RoomId::GhostVariantEnemy;
+}
+
 
 GiantSnail::GiantSnail(Game* game)
 	:NormalEnemy(game, HEALTH, "Giant Snail", Art::GIANT_SNAIL_COLOR, Art::getGiantSnail())
@@ -287,6 +298,11 @@ Creature* GiantSnail::makeCopy()
 	return new GiantSnail(game);
 }
 
+int GiantSnail::getRoomId()
+{
+	return RoomId::GiantSnailEnemy;
+}
+
 GiantSnailVariant::GiantSnailVariant(Game* game)
 	:NormalEnemy(game, HEALTH, "Giant Snail", ddutil::YELLOW, Art::getYellowGiantSnail())
 {
@@ -318,6 +334,11 @@ EnemyTurn GiantSnailVariant::getTurn(std::vector<Creature*> players)
 Creature* GiantSnailVariant::makeCopy()
 {
 	return new GiantSnailVariant(game);
+}
+
+int GiantSnailVariant::getRoomId()
+{
+	return RoomId::GiantSnailVariantEnemy;
 }
 
 
@@ -382,6 +403,11 @@ Creature* Minotaur::makeCopy()
 	return new Minotaur(getGamePtr());
 }
 
+int Minotaur::getRoomId()
+{
+	return RoomId::MinotaurEnemy;
+}
+
 Brute::Brute(Game* game)
 	:HardEnemy(game, HEALTH, "Brute", ddutil::DARKGRAY, Art::getBrute())
 {
@@ -413,6 +439,11 @@ EnemyTurn Brute::getTurn(std::vector<Creature*> players)
 Creature* Brute::makeCopy()
 {
 	return new Brute(game);
+}
+
+int Brute::getRoomId()
+{
+	return RoomId::BruteEnemy;
 }
 
 GiantHead::GiantHead(Game* game)
@@ -455,6 +486,11 @@ EnemyTurn GiantHead::getTurn(std::vector<Creature*> players)
 Creature* GiantHead::makeCopy()
 {
 	return new GiantHead(game);
+}
+
+int GiantHead::getRoomId()
+{
+	return RoomId::GiantHeadEnemy;
 }
 
 
@@ -570,6 +606,11 @@ Creature* TheMessenger::makeCopy()
 	return new TheMessenger(game);
 }
 
+int TheMessenger::getRoomId()
+{
+	return RoomId::TheMessengerEnemy;
+}
+
 
 MysteriousKnight::MysteriousKnight(Game* game)
 	:IntenseEnemy(game, HEALTH, "Mysterious Knight", Art::MYSTERIOUS_KNIGHT_COLOR, Art::getMysteriousKnight(),
@@ -611,6 +652,11 @@ EnemyTurn MysteriousKnight::getTurn(std::vector<Creature*> players)
 Creature* MysteriousKnight::makeCopy()
 {
 	return new MysteriousKnight(game);
+}
+
+int MysteriousKnight::getRoomId()
+{
+	return RoomId::MysteriousKnightEventFight;
 }
 
 Spider::Spider(Game* game)
@@ -676,6 +722,11 @@ Creature* Spider::makeCopy()
 	return new Spider(game);
 }
 
+int Spider::getRoomId()
+{
+	return RoomId::SpiderEventFight;
+}
+
 Minion::Minion(Game* game)
 	:NormalEnemy(game, HEALTH, "Minion", Art::MINION_COLOR, Art::getMinion())
 {
@@ -732,6 +783,11 @@ Creature* Minion::makeCopy()
 	return new Minion(game);
 }
 
+int Minion::getRoomId()
+{
+	return RoomId::MinionEnemy;
+}
+
 MinionAlt::MinionAlt(Game* game)
 	:NormalEnemy(game, HEALTH, "Minion", Art::ALT_MINION_COLOR, Art::getAltMinion())
 {
@@ -773,6 +829,12 @@ Creature* MinionAlt::makeCopy()
 {
 	return new MinionAlt(game);
 }
+
+int MinionAlt::getRoomId()
+{
+	return RoomId::MinionVariantEnemy;
+}
+
 
 GiantLizard::GiantLizard(Game* game)
 	:NormalEnemy(game, HEALTH, "Giant Lizard", Art::GIANT_LIZARD_COLOR, Art::getGiantLizard())
@@ -836,6 +898,11 @@ Creature* GiantLizard::makeCopy()
 	return new GiantLizard(game);
 }
 
+int GiantLizard::getRoomId()
+{
+	return RoomId::GiantLizardEnemy;
+}
+
 AltGiantLizard::AltGiantLizard(Game* game)
 	:NormalEnemy(game, HEALTH, "Giant Lizard", Art::ALT_GIANT_LIZARD_COLOR, Art::getAltGiantLizard())
 {
@@ -878,6 +945,11 @@ EnemyTurn AltGiantLizard::getTurn(std::vector<Creature*> players)
 Creature* AltGiantLizard::makeCopy()
 {
 	return new AltGiantLizard(game);
+}
+
+int AltGiantLizard::getRoomId()
+{
+	return RoomId::GiantLizardVariantEnemy;
 }
 
 TheCollector::TheCollector(Game* game)
@@ -965,6 +1037,11 @@ Creature* TheCollector::makeCopy()
 	return new TheCollector(game);
 }
 
+int TheCollector::getRoomId()
+{
+	return RoomId::TheCollectorEnemy;
+}
+
 AbyssBeast::AbyssBeast(Game* game)
 	:HardEnemy(game, HEALTH, "Abyssal Beast", Art::ABYSS_BEAST_COLOR, Art::getAbyssBeast())
 {
@@ -1005,6 +1082,11 @@ EnemyTurn AbyssBeast::getTurn(std::vector<Creature*> players)
 Creature* AbyssBeast::makeCopy()
 {
 	return new AbyssBeast(game);
+}
+
+int AbyssBeast::getRoomId()
+{
+	return RoomId::AbyssBeastEnemy;
 }
 
 Basilisk::Basilisk(Game* game)
@@ -1070,6 +1152,11 @@ EnemyTurn Basilisk::getTurn(std::vector<Creature*> players)
 Creature* Basilisk::makeCopy()
 {
 	return new Basilisk(game);
+}
+
+int Basilisk::getRoomId()
+{
+	return RoomId::BasiliskEnemy;
 }
 
 
@@ -1151,6 +1238,11 @@ Creature* SentientMouth::makeCopy()
 	return new SentientMouth(game);
 }
 
+int SentientMouth::getRoomId()
+{
+	return RoomId::SentientMouthEnemy;
+}
+
 LaughingMask::LaughingMask(Game* game)
 	: IntenseEnemy(game, HEALTH, "Laughing Mask", Art::MASK_COLOR, Art::getLaughingMask(),
 		std::vector<ColorString> {
@@ -1207,6 +1299,11 @@ EnemyTurn LaughingMask::getTurn(std::vector<Creature*> players)
 Creature* LaughingMask::makeCopy()
 {
 	return new LaughingMask(game);
+}
+
+int LaughingMask::getRoomId()
+{
+	return RoomId::LaughingMaskEnemy;
 }
 
 DevilishMask::DevilishMask(Game* game)
@@ -1269,6 +1366,11 @@ Creature* DevilishMask::makeCopy()
 	return new DevilishMask(game);
 }
 
+int DevilishMask::getRoomId()
+{
+	return RoomId::DevilishMaskEnemy;
+}
+
 PossessedMace::PossessedMace(Game* game)
 	: IntenseEnemy(game, HEALTH, "Possessed Mace", Art::MACE_COLOR, Art::getMace(),
 		std::vector<ColorString> {
@@ -1313,6 +1415,11 @@ EnemyTurn PossessedMace::getTurn(std::vector<Creature*> players)
 Creature* PossessedMace::makeCopy()
 {
 	return new PossessedMace(game);
+}
+
+int PossessedMace::getRoomId()
+{
+	return RoomId::PossessedMaceEnemy;
 }
 
 HyperBeast::HyperBeast(Game* game)
@@ -1388,6 +1495,11 @@ Creature* HyperBeast::makeCopy()
 	return new HyperBeast(game);
 }
 
+int HyperBeast::getRoomId()
+{
+	return RoomId::HyperBeastEnemy;
+}
+
 AncientBird::AncientBird(Game* game)
 	: IntenseHardEnemy(game, HEALTH, "Ancient Bird", Art::ANC_BIRD_COLOR, Art::getAncientBird(),
 		std::vector<ColorString> {
@@ -1447,6 +1559,11 @@ EnemyTurn AncientBird::getTurn(std::vector<Creature*> players)
 Creature* AncientBird::makeCopy()
 {
 	return new AncientBird(game);
+}
+
+int AncientBird::getRoomId()
+{
+	return RoomId::AncientBirdEnemy;
 }
 
 
@@ -1556,6 +1673,11 @@ EnemyTurn TheProtector::getTurn(std::vector<Creature*> players)
 Creature* TheProtector::makeCopy()
 {
 	return new TheProtector(game);
+}
+
+int TheProtector::getRoomId()
+{
+	return RoomId::TheProtectorEnemy;
 }
 
 void TheProtector::deathScene()
@@ -1711,6 +1833,11 @@ Creature* TruePatriarch::makeCopy()
 	return new TruePatriarch(game);
 }
 
+int TruePatriarch::getRoomId()
+{
+	return RoomId::TruePatriarchEnemy;
+}
+
 void TruePatriarch::deathScene()
 {
 	game->changeScore(ddutil::VICTORY_SCORE);
@@ -1782,6 +1909,11 @@ Creature* VampireBat::makeCopy()
 	return new VampireBat(game);
 }
 
+int VampireBat::getRoomId()
+{
+	return RoomId::VampireBatEnemy;
+}
+
 VampireBatVariant::VampireBatVariant(Game* game)
 	:NormalEnemy(game, HEALTH, "Vampire Bat", Art::VAMP_BAT_ALT_COLOR, Art::getVampireBatAlt())
 {
@@ -1834,6 +1966,11 @@ Creature* VampireBatVariant::makeCopy()
 	return new VampireBatVariant(game);
 }
 
+int VampireBatVariant::getRoomId()
+{
+	return RoomId::VampireBatVariantEnemy;
+}
+
 CaveBat::CaveBat(Game* game)
 	:NormalEnemy(game, HEALTH, "Cave Bat", Art::CAVEBAT_COLOR, Art::getCaveBat())
 {
@@ -1869,6 +2006,11 @@ EnemyTurn CaveBat::getTurn(std::vector<Creature*> players)
 Creature* CaveBat::makeCopy()
 {
 	return new CaveBat(game);
+}
+
+int CaveBat::getRoomId()
+{
+	return RoomId::CaveBatEnemy;
 }
 
 CaveBatVariant::CaveBatVariant(Game* game)
@@ -1911,6 +2053,11 @@ EnemyTurn CaveBatVariant::getTurn(std::vector<Creature*> players)
 Creature* CaveBatVariant::makeCopy()
 {
 	return new CaveBatVariant(game);
+}
+
+int CaveBatVariant::getRoomId()
+{
+	return RoomId::CaveBatVariantEnemy;
 }
 
 AncientLizard::AncientLizard(Game* game)
@@ -1958,6 +2105,11 @@ EnemyTurn AncientLizard::getTurn(std::vector<Creature*> players)
 Creature* AncientLizard::makeCopy()
 {
 	return new AncientLizard(game);
+}
+
+int AncientLizard::getRoomId()
+{
+	return RoomId::AncientLizardEnemy;
 }
 
 FireBat::FireBat(Game* game)
@@ -2038,6 +2190,11 @@ Creature* FireBat::makeCopy()
 	return new FireBat(game);
 }
 
+int FireBat::getRoomId()
+{
+	return RoomId::FireBatEnemy;
+}
+
 FireBatVariant::FireBatVariant(Game* game)
 	:NormalEnemy(game, HEALTH, "Fire Bat", Art::FIRE_BAT_VARIANT_COLOR, Art::getFireBatVariant())
 {
@@ -2100,6 +2257,11 @@ EnemyTurn FireBatVariant::getTurn(std::vector<Creature*> players)
 Creature* FireBatVariant::makeCopy()
 {
 return new FireBatVariant(game);
+}
+
+int FireBatVariant::getRoomId()
+{
+	return RoomId::FireBatVariantEnemy;
 }
 
 FirePlatypus::FirePlatypus(Game* game)
@@ -2166,6 +2328,11 @@ EnemyTurn FirePlatypus::getTurn(std::vector<Creature*> players)
 Creature* FirePlatypus::makeCopy()
 {
 	return new FirePlatypus(game);
+}
+
+int FirePlatypus::getRoomId()
+{
+	return RoomId::FirePlatypusEnemy;
 }
 
 Sniffer::Sniffer(Game* game)
@@ -2236,6 +2403,11 @@ Creature* Sniffer::makeCopy()
 	return new Sniffer(game);
 }
 
+int Sniffer::getRoomId()
+{
+	return RoomId::SnifferEnemy;
+}
+
 SnifferVariant::SnifferVariant(Game* game)
 	:IntenseEnemy(game, HEALTH, "Sniffer", Art::SNIFFER_VARIANT_COLOR, Art::getSnifferVariant(),
 		std::vector<ColorString> {
@@ -2297,6 +2469,11 @@ Creature* SnifferVariant::makeCopy()
 	return new SnifferVariant(game);
 }
 
+int SnifferVariant::getRoomId()
+{
+	return RoomId::SnifferVariantEnemy;
+}
+
 CorruptedDisciple::CorruptedDisciple(Game* game)
 	:IntenseHardEnemy(game, HEALTH, "Corrupted Disciple", Art::CORRUPTED_DISCIPLE_COLOR, Art::getCorruptedDisciple(),
 		std::vector<ColorString> {
@@ -2353,4 +2530,9 @@ EnemyTurn CorruptedDisciple::getTurn(std::vector<Creature*> players)
 Creature* CorruptedDisciple::makeCopy()
 {
 	return new CorruptedDisciple(game);
+}
+
+int CorruptedDisciple::getRoomId()
+{
+	return RoomId::CorruptedDiscipleEnemy;
 }

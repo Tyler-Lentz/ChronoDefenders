@@ -156,6 +156,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="room.cpp" />
     <ClCompile Include="samurai_moves.cpp" />
+    <ClCompile Include="savefile.cpp" />
     <ClCompile Include="sorcerer_moves.cpp" />
     <ClCompile Include="soundfile.cpp" />
     <ClCompile Include="status.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="room.h" />
     <ClInclude Include="samurai_moves.h" />
+    <ClInclude Include="savefile.h" />
     <ClInclude Include="sorcerer_moves.h" />
     <ClInclude Include="soundfile.h" />
     <ClInclude Include="status.h" />

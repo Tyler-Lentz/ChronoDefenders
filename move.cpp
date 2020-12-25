@@ -66,7 +66,7 @@ void Move::playSoundEffect()
 
 
 StatusAttackMove::StatusAttackMove(int theDamage, Status* theStatus, int statusAmount, int cost, std::string name, Strength str, WavFile theSound)
-	:Move("Deals " + std::to_string(theDamage) + " damage and makes the target " + theStatus->getName().getString() +
+	:Move("Deals " + std::to_string(theDamage) + " damage and applies " + theStatus->getName().getString() +
 		(statusAmount > 1 ? (" " + std::to_string(statusAmount) + " times") : ("")),
 		name, cost, str, true, theSound)
 {

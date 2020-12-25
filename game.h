@@ -67,7 +67,10 @@ public:
 	void endingScene();
 	void changeScore(int amount);
 	int getScore();
+
+	void viewCompendium();
 private:
+
 	Compendium* compendium;
 
 	int score;
@@ -90,6 +93,7 @@ private:
 	void displayHelpScreen();
 	void printCreatureBattleInfo(Creature* creature, Coordinate bottomLeft, int textLine);
 	void doStatusDecrementionAndPrintInfo(Creature* creature);
+	void displayDividerString();
 
 	
 	void removeMinionsFromParty();

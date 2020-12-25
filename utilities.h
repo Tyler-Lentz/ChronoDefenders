@@ -97,6 +97,8 @@ namespace ddutil
     const int GUNSLINGER_COLOR = ddutil::YELLOW;
     const int SORCERER_COLOR = ddutil::LIGHTBLUE;
 
+    const int COMPENDIUM_COLOR = ddutil::LIGHTBLUE;
+
     const int WEAK_COLOR = ddutil::LIGHTGRAY;
     const int MODERATE_COLOR = ddutil::GREEN;
     const int POWERFUL_COLOR = ddutil::CYAN;

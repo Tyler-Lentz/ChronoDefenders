@@ -39,7 +39,7 @@ void Compendium::display()
 				Sleep(ddutil::BUFFER_TIME);
 				break;
 			}
-			if (ddutil::keypress(VK_ESCAPE))
+			if (ddutil::keypress(VK_SPACE))
 			{
 				exit = true;
 				playSound(WavFile("menumove2", false, true));

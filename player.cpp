@@ -92,9 +92,11 @@ void Player::tradeExperience()
 			ColorString("Mythical Strength", ddutil::MYTHICAL_COLOR)
 		);
 		options.push_back(ColorString("Save Experience", ddutil::BROWN));
+		options.push_back(ColorString("View Compendium", ddutil::COMPENDIUM_COLOR));
 		Menu moveTypeMenu(vwin, options, menuCoord, false);
 		menuCoord.y--;
 		// interpret the player input
+		bool expFail = false; // set to true if the reason for failure was the player tried to select an option that took too much XP
 		switch (moveTypeMenu.getResponse())
 		{
 		case 0:
@@ -104,6 +106,10 @@ void Player::tradeExperience()
 				str = Strength::Moderate;
 				successfulSelection = true;
 			}
+			else
+			{
+				expFail = true;
+			}
 			break;
 		case 1:
 			if (loseExperience(ddutil::POWERFUL_COST))
@@ -111,6 +117,10 @@ void Player::tradeExperience()
 				game->changeScore(ddutil::POW_MOVE_SCORE);
 				str = Strength::Powerful;
 				successfulSelection = true;
+			}
+			else
+			{
+				expFail = true;
 			}
 			break;
 		case 2:
@@ -120,15 +130,22 @@ void Player::tradeExperience()
 				str = Strength::Mythical;
 				successfulSelection = true;
 			}
+			else
+			{
+				expFail = true;
+			}
 			break;
 		case 3: // save experience
-		default:
 			game->clearCenterScreen();
 			game->clearBottomDivider();
 			return; // just leave because theres nothing else to do here, no need to navigate out of the loop
+		case 4:
+		default:// view compendium
+			game->viewCompendium();
+			break;
 		}
 
-		if (!successfulSelection)
+		if (!successfulSelection && expFail)
 		{
 			vwin->putcen(ColorString("Not enough ", ddutil::TEXT_COLOR) + ColorString("Experience!", ddutil::EXPERIENCE_COLOR), ddutil::CENTER_TEXT_LINE);
 			Menu::oneOptionMenu(vwin, ColorString("Select Again", ddutil::TEXT_COLOR), Coordinate(0, ddutil::CENTER_TEXT_LINE + 1), true);

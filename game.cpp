@@ -300,8 +300,13 @@ void Game::battle(Enemy* enemy)
 
 			otherInputs.push_back(VK_SPACE);
 			otherInputs.push_back(VK_MENU);
+			otherInputs.push_back(0x43);// "c" character
 			const int END_TURN_LINE = ddutil::DIVIDER_LINE4;
-			vwin->putcen(ColorString("Spacebar: end turn  Enter: select move  Alt: view artifacts", ddutil::CYAN), END_TURN_LINE);
+			ColorString inputInfo = ColorString("Spacebar: End Turn  ", ddutil::TEXT_COLOR) +
+				ColorString("Enter: Select Move  ", ddutil::RED) +
+				ColorString("Alt: View Artifacts  ", ddutil::ARTIFACT_COLOR) +
+				ColorString("C: View Compendium", ddutil::COMPENDIUM_COLOR);
+			vwin->putcen(inputInfo, END_TURN_LINE);
 
 			Menu moveMenu(vwin, options, otherInputs, Coordinate(0, MOVE_TEXT_LINE), true);
 
@@ -328,6 +333,9 @@ void Game::battle(Enemy* enemy)
 				break;
 			case VK_MENU:
 				playerParty[activePlayerIndex]->displayArtifacts();
+				break;
+			case 0x43:
+				this->viewCompendium();
 				break;
 			default: // corresponds to an index of the player's moves
 				Move* selectedMove = activeMoves[moveMenu.getResponse()];
@@ -637,10 +645,7 @@ void Game::displayZoneEntrance()
 	ColorString zoneString = gameWorld[currentZoneIndex]->getZoneString();
 	int zoneColor = zoneString[0].color;
 
-	ColorString dividerString(std::string(ddutil::CONSOLEX, ddutil::DIVIDER_CHARACTER), zoneColor);
-
-	vwin->put(dividerString, Coordinate(0, ddutil::DIVIDER_LINE3));
-	//vwin->put(dividerString, Coordinate(0, ddutil::DIVIDER_LINE4));
+	displayDividerString();
 
 	int midwayLine = (0 + ddutil::DIVIDER_LINE3) / 2;
 
@@ -896,6 +901,21 @@ void Game::changeScore(int amount)
 int Game::getScore()
 {
 	return score;
+}
+
+void Game::viewCompendium()
+{
+	compendium->display();
+	vwin->clearScreen();
+	displayDividerString();
+}
+
+void Game::displayDividerString()
+{
+	int zoneColor = gameWorld[currentZoneIndex]->getZoneString()[0].color;
+	ColorString dividerString(std::string(ddutil::CONSOLEX, ddutil::DIVIDER_CHARACTER), zoneColor);
+
+	vwin->put(dividerString, Coordinate(0, ddutil::DIVIDER_LINE3));
 }
 
 void Game::removeMinionsFromParty()

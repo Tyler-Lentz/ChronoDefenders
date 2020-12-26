@@ -7,7 +7,7 @@
 #include <string>
 
 EnemyMoves::Strike::Strike(int theDamage, WavFile theSound)
-	:Move("Deals " + std::to_string(theDamage) + " damage", "Strike", 0, Strength::Moderate, false, theSound)
+	:Move(MoveId::EnemyMoveId, "Deals " + std::to_string(theDamage) + " damage", "Strike", 0, Strength::Moderate, false, theSound)
 {
 	strength = theDamage;
 }
@@ -32,7 +32,7 @@ int EnemyMoves::Strike::getStrength()
 }
 
 EnemyMoves::Block::Block(int theAmount, WavFile theSound)
-	:Move("Blocks " + std::to_string(theAmount) + " damage", "Guard", 0, Strength::Moderate, false, theSound)
+	:Move(MoveId::EnemyMoveId, "Blocks " + std::to_string(theAmount) + " damage", "Guard", 0, Strength::Moderate, false, theSound)
 {
 	amount = theAmount;
 }
@@ -45,33 +45,33 @@ ColorString EnemyMoves::Block::doAction(Creature* self, Creature* other)
 }
 
 EnemyMoves::Burn::Burn(int theAmount)
-	:SimpleStatusMove(new BurntStatus(), theAmount, false, 0, "Burn", Strength::Moderate, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:SimpleStatusMove(MoveId::EnemyMoveId, new BurntStatus(), theAmount, false, 0, "Burn", Strength::Moderate, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
 
 EnemyMoves::Frostburn::Frostburn(int theAmount)
-	: SimpleStatusMove(new FrostBurntStatus(), theAmount, false, 0, "Frostburn", Strength::Moderate, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	: SimpleStatusMove(MoveId::EnemyMoveId, new FrostBurntStatus(), theAmount, false, 0, "Frostburn", Strength::Moderate, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
 
 
 EnemyMoves::Invulnerability::Invulnerability(int theLength)
-	:SimpleStatusMove(new InvulnerableStatus(), theLength, false, 0, "Invulnerability", Strength::Powerful, WavFile("ghostinvulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:SimpleStatusMove(MoveId::EnemyMoveId, new InvulnerableStatus(), theLength, false, 0, "Invulnerability", Strength::Powerful, WavFile("ghostinvulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
 
 EnemyMoves::StrikeAndBlock::StrikeAndBlock(int theDamage, int blockPerAttack, WavFile theSound)
-	:AttackAndBlockMove(theDamage, blockPerAttack, false, 0, "Strike and Block", Strength::Moderate, theSound)
+	:AttackAndBlockMove(MoveId::EnemyMoveId, theDamage, blockPerAttack, false, 0, "Strike and Block", Strength::Moderate, theSound)
 {
 }
 
 EnemyMoves::Vulnerable::Vulnerable(int length)
-	:SimpleStatusMove(new VulnerableStatus(), length, true, 0, "Leer", Strength::Moderate, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:SimpleStatusMove(MoveId::EnemyMoveId, new VulnerableStatus(), length, true, 0, "Leer", Strength::Moderate, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
 
 EnemyMoves::Sacrifice::Sacrifice(int theLength)
-	:Move("Makes all players vulnerable in exchange for half of  the enemy's HP", "Sacrifice", 0,
+	:Move(MoveId::EnemyMoveId, "Makes all players vulnerable in exchange for half of  the enemy's HP", "Sacrifice", 0,
 		Strength::Powerful, false, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 	length = theLength;
@@ -96,12 +96,12 @@ ColorString EnemyMoves::Sacrifice::doAction(Creature* self, Creature* other)
 }
 
 EnemyMoves::Heal::Heal(int theAmount)
-	:SimpleHealMove(theAmount, false, 0, "Heal", Strength::Moderate)
+	:SimpleHealMove(MoveId::EnemyMoveId, theAmount, false, 0, "Heal", Strength::Moderate)
 {
 }
 
 EnemyMoves::CreateShield::CreateShield(int block, WavFile sound)
-	:Move("Blocks X damage per turn", "Create Shield", 0, Strength::Powerful, false, sound)
+	:Move(MoveId::EnemyMoveId, "Blocks X damage per turn", "Create Shield", 0, Strength::Powerful, false, sound)
 {
 	blockAmount = block;
 }
@@ -117,18 +117,18 @@ ColorString EnemyMoves::CreateShield::doAction(Creature* self, Creature* other)
 }
 
 EnemyMoves::DualStrike::DualStrike(int damage, WavFile theSound)
-	:MultiAttackMove(damage, 2, 0, "Dual Strike", Strength::Weak, theSound)
+	:MultiAttackMove(MoveId::EnemyMoveId, damage, 2, 0, "Dual Strike", Strength::Weak, theSound)
 {
 
 }
 
 EnemyMoves::BlockBreakStrike::BlockBreakStrike(int damage, int multiplier, WavFile theSound)
-	:BlockBreakingMove(damage, multiplier, 0, "", Strength::Weak, theSound)
+	:BlockBreakingMove(MoveId::EnemyMoveId, damage, multiplier, 0, "", Strength::Weak, theSound)
 {
 }
 
 EnemyMoves::GetStatusImmunity::GetStatusImmunity(WavFile sound)
-	:Move("","",0,Strength::Mythical,false,sound)
+	:Move(MoveId::EnemyMoveId, "","",0,Strength::Mythical,false,sound)
 {
 }
 
@@ -140,7 +140,7 @@ ColorString EnemyMoves::GetStatusImmunity::doAction(Creature* self, Creature* ot
 }
 
 EnemyMoves::CreateThorns::CreateThorns(int amount)
-	:Move("","",0, Strength::Moderate, false, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:Move(MoveId::EnemyMoveId, "","",0, Strength::Moderate, false, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 	thornAmount = amount;
 }
@@ -155,7 +155,7 @@ ColorString EnemyMoves::CreateThorns::doAction(Creature* self, Creature* other)
 
 // pass through a negative number
 EnemyMoves::TakeVitalityGain::TakeVitalityGain(int negAmount)
-	:Move("", "", 0, Strength::Weak, false, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:Move(MoveId::EnemyMoveId, "", "", 0, Strength::Weak, false, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 	amount = negAmount;
 }
@@ -179,7 +179,7 @@ ColorString EnemyMoves::TakeVitalityGain::doAction(Creature* self, Creature* oth
 }
 
 EnemyMoves::TakeVitality::TakeVitality(int theAmount)
-	:Move("", "", 0, Strength::Mythical, false, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:Move(MoveId::EnemyMoveId, "", "", 0, Strength::Mythical, false, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 	amount = theAmount;
 }

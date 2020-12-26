@@ -23,7 +23,7 @@ public:
 	void writeToFile(std::string filename); // write this save file to file
 
 	Savefile(Game* game, std::string filename); // constructor to make a save file from a file
-	void loadFromFile(Game* game); // take this save file object and set the game up correctly
+	void loadIntoGame(Game* game); // take this save file object and set the game up correctly
 
 	~Savefile();
 private:
@@ -38,11 +38,11 @@ private:
 
 	std::vector<Player*> playerParty;
 	Savechunk playerPartyToText(); // helper function which puts this savefile's playerParty into text format
-	void textToPlayerParty(Savechunk data); // puts text format into this object's playerParty object
+	void textToPlayerParty(Game* game, Savechunk data); // puts text format into this object's playerParty object
 
 	std::vector<Player*> deadPlayers;
 	Savechunk deadPlayersToText(); // puts this savefile's playerParty into text format
-	void textToDeadPlayers(Savechunk data); // puts text format into this object's playerParty object
+	void textToDeadPlayers(Game* game, Savechunk data); // puts text format into this object's playerParty object
 };
 
 #endif

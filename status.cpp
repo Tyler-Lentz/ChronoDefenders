@@ -56,6 +56,66 @@ ColorString Status::getFullInformation()
 	return getName() + ColorString(": " + getDescription(), ddutil::TEXT_COLOR);
 }
 
+Status* Status::getStatusFromID(StatusID id)
+{
+	// TODO: if there is a reason a player should get some status that needs to be saved and it is a card status,
+	// then will need to fix this saving to actually cary over information about card statuses
+	// right now just using a placeholder value of 10 because it will never actually need to load in a card status
+	switch (id)
+	{
+	case StatusID::Bleeding:
+		return new BleedingStatus();
+	case StatusID::Burnt:
+		return new BurntStatus();
+	case StatusID::Club:
+		return new ClubStatus(10);
+	case StatusID::Diamond:
+		return new DiamondStatus(10);
+	case StatusID::Dodging:
+		return nullptr; // never actually used
+	case StatusID::Dragon:
+		return new DragonStatus();
+	case StatusID::Dynamite:
+		return new Dynamite();
+	case StatusID::Elemental:
+		return new ElementalStatus();
+	case StatusID::Frostburnt:
+		return new FrostBurntStatus();
+	case StatusID::Heart:
+		return new HeartStatus(10);
+	case StatusID::Hexed:
+		return new HexedStatus();
+	case StatusID::Invulnerable:
+		return new InvulnerableStatus();
+	case StatusID::Jester:
+		return new JesterStatus();
+	case StatusID::OffBalance:
+		return new OffBalanceStatus();
+	case StatusID::Poisoned:
+		return new PoisonedStatus();
+	case StatusID::Scorched:
+		return new ScorchedStatus();
+	case StatusID::Spade:
+		return new SpadeStatus(10);
+	case StatusID::Storm:
+		return new StormStatus();
+	case StatusID::Strangled:
+		return new StrangledStatus();
+	case StatusID::Stunned:
+		return new StunnedStatus();
+	case StatusID::Thorns:
+		return new ThornsStatus();
+	case StatusID::Vulnerable:
+		return new VulnerableStatus();
+	case StatusID::Zapped:
+		return new ZappedStatus();
+	case StatusID::Zen:
+		return new ZenStatus();
+	default:
+		return nullptr;
+	}
+}
+
 
 
 // Normal Statuses

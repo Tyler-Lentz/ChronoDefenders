@@ -71,7 +71,7 @@ public:
 
 	void viewCompendium();
 private:
-
+	bool loadedFromFile;
 	Compendium* compendium;
 
 	int score;

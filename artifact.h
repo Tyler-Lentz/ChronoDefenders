@@ -74,6 +74,7 @@ public:
 	ArtifactID getID();
 
 	static Artifact* generateRandomArtifact(Strength strength);
+	static Artifact* getArtifactFromID(Game* game, ArtifactID id);
 
 	// for use of sorting in the artifact menu
 	bool operator<(const Artifact& other) const;

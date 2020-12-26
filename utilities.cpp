@@ -277,7 +277,11 @@ namespace ddutil
 
 	std::string padString(std::string str, int size)
 	{
-        while (str.size() < size)
+        if (size <= 0)
+        {
+            return std::string();
+        }
+        while (str.size() < static_cast<unsigned>(size))
         {
             str = " " + str;
             str += " ";

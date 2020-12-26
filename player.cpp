@@ -13,9 +13,10 @@
 #include "enemy.h"
 #include <string>
 #include <algorithm>
+#include <sstream>
 // Player
 
-Player::Player(Game* game, int svit, int maxVit, int vitGain, int maxHp, int moveLim, std::string name, int color, Picture pic, bool min)
+Player::Player(Game* game, PlayerId id, int svit, int maxVit, int vitGain, int maxHp, int moveLim, std::string name, int color, Picture pic, bool min)
 	:Creature(maxHp, name, color, pic, game)
 {
 	startingVitality = svit;
@@ -28,6 +29,7 @@ Player::Player(Game* game, int svit, int maxVit, int vitGain, int maxHp, int mov
 	vitalityGainAdjustment = 0;
 	percentXPBoost = 0;
 	movesToChooseFrom = 3;
+	this->id = id;
 }
 
 Player::~Player()
@@ -49,6 +51,206 @@ Player::~Player()
 		delete enemyStartingStatuses[i].first;
 	}
 }
+
+Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chunk)
+{
+	int i = 0; // index to iterate throughout the chunk
+	Player* player = nullptr;
+	if (type == PlayerId::Gunslinger)
+	{
+		player = new Gunslinger(game);
+		int reserveBullets = std::stoi(chunk.at(i++));
+		int maxBullets = std::stoi(chunk.at(i++));
+		Gunslinger* gunslinger = dynamic_cast<Gunslinger*>(player);
+		gunslinger->setReserveBullets(reserveBullets);
+		gunslinger->setMaxBullets(maxBullets);
+	}
+	else if (type == PlayerId::Sorceress)
+	{
+		player = new Sorcerer(game);
+	}
+	else if (type == PlayerId::Samurai)
+	{
+		player = new Samurai(game);
+	}
+	else
+	{
+		ddutil::errorMessage("Invalid player id when loading from save", __LINE__, __FILE__);
+	}
+	// Now go through the savechunk and set all the values appropriately
+
+	player->health = std::stoi(chunk.at(i++));
+	player->maxHealth = std::stoi(chunk.at(i++));
+	player->percentHealBoost = std::stoi(chunk.at(i++));
+	player->immuneToStatuses = std::stoi(chunk.at(i++));
+	player->baseBlock = std::stoi(chunk.at(i++));
+	player->name = chunk.at(i++);
+	// Moves 
+	if (chunk.at(i++) != "MOVES START")
+	{
+		ddutil::errorMessage("invalid save file format", __LINE__, __FILE__);
+	}
+	// Delete all the default moves and replace with the moves stored in the save file
+	for (Move* m : player->moves)
+	{
+		delete m;
+	}
+	player->moves.clear();
+	// Go through and add move depending on the ID
+	while (chunk.at(i) != "MOVES END")
+	{
+		MoveId id = static_cast<MoveId>(std::stoi(chunk.at(i++)));
+		Move* newMove = Move::getMoveFromId(id, game);
+		if (newMove != nullptr)
+		{
+			player->moves.push_back(newMove);
+		}
+		else
+		{
+			ddutil::errorMessage("invalid move id in save file", __LINE__, __FILE__);
+		}
+	}
+	i++; // get it off of the MOVES END marker
+	player->color = std::stoi(chunk.at(i++));
+	player->baseDodgeChance = std::stoi(chunk.at(i++));
+	// Attack Statuses
+	if (chunk.at(i++) != "ATTACK STATUSES START")
+	{
+		ddutil::errorMessage("invalid save file format", __LINE__, __FILE__);
+	}
+	// the player's attack statuses will be empty because we are modifying a default character, so no need to delete anything
+	while (chunk.at(i) != "ATTACK STATUSES END")
+	{	
+		std::stringstream ss(chunk.at(i++));
+		std::string buff;
+		std::vector<std::string> tokens;
+		// first index is status id
+		// second index is amount of status
+		while (std::getline(ss, buff, ' '))
+		{
+			tokens.push_back(buff);
+		}
+		if (tokens.size() != 2)
+		{
+			ddutil::errorMessage("invalid attack status format in save file", __LINE__, __FILE__);
+		}
+		StatusID statusID = static_cast<StatusID>(std::stoi(tokens.front()));
+		int statusAmount = std::stoi(tokens.back());
+		Status* newStatus = Status::getStatusFromID(statusID);
+		if (newStatus != nullptr)
+		{
+			player->attackStatuses.push_back(std::make_pair(newStatus, statusAmount));
+		}
+		else
+		{
+			ddutil::errorMessage("Invalid status ID in save file", __LINE__, __FILE__);
+		}
+	}
+	i++; // get it off of ATTACK STATUSES END MARKER
+	// Artifacts
+	if (chunk.at(i++) != "ARTIFACTS START")
+	{
+		ddutil::errorMessage("invalid save file format", __LINE__, __FILE__);
+	}
+	while (chunk.at(i) != "ARTIFACTS END")
+	{
+		ArtifactID id = static_cast<ArtifactID>(std::stoi(chunk.at(i++)));
+		// just putting code to remove the artifacts in case in the future i add starting artifacts
+		if (!player->artifacts.empty())
+		{
+			for (Artifact* a : player->artifacts)
+			{
+				delete a;
+			}
+			player->artifacts.clear();
+		}
+		Artifact* artifact = Artifact::getArtifactFromID(game, id);
+		if (artifact != nullptr)
+		{
+			player->artifacts.push_back(artifact);
+			// NOT the get artifact function because that would apply the artifact's equip effect again, and that has already
+			// been taken care of in the player's stats themselves
+		}
+		else
+		{
+			ddutil::errorMessage("Invalid artifact ID in save file", __LINE__, __FILE__);
+		}
+	}
+	i++; // get it off of ARTIFACTS END
+	player->movesToChooseFrom = std::stoi(chunk.at(i++));
+	if (chunk.at(i++) != "SELF STARTING STATUSES START")
+	{
+		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+	}
+	while (chunk.at(i) != "SELF STARTING STATUSES END")
+	{	
+		std::stringstream ss(chunk.at(i++));
+		std::string buff;
+		std::vector<std::string> tokens;
+		// first index is status id
+		// second index is amount of status
+		while (std::getline(ss, buff, ' '))
+		{
+			tokens.push_back(buff);
+		}
+		if (tokens.size() != 2)
+		{
+			ddutil::errorMessage("invalid self starting status format in save file", __LINE__, __FILE__);
+		}
+		StatusID statusID = static_cast<StatusID>(std::stoi(tokens.front()));
+		int statusAmount = std::stoi(tokens.back());
+		Status* newStatus = Status::getStatusFromID(statusID);
+		if (newStatus != nullptr)
+		{
+			player->selfStartingStatuses.push_back(std::make_pair(newStatus, statusAmount));
+		}
+		else
+		{
+			ddutil::errorMessage("Invalid status ID in save file", __LINE__, __FILE__);
+		}
+	}
+	i++; // get it off of SELF STARTING STATUSES END
+	if (chunk.at(i++) != "ENEMY STARTING STATUSES START")
+	{
+		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+	}
+	while (chunk.at(i) != "ENEMY STARTING STATUSES END")
+	{
+		std::stringstream ss(chunk.at(i++));
+		std::string buff;
+		std::vector<std::string> tokens;
+		// first index is status id
+		// second index is amount of status
+		while (std::getline(ss, buff, ' '))
+		{
+			tokens.push_back(buff);
+		}
+		if (tokens.size() != 2)
+		{
+			ddutil::errorMessage("invalid enemy starting status format in save file", __LINE__, __FILE__);
+		}
+		StatusID statusID = static_cast<StatusID>(std::stoi(tokens.front()));
+		int statusAmount = std::stoi(tokens.back());
+		Status* newStatus = Status::getStatusFromID(statusID);
+		if (newStatus != nullptr)
+		{
+			player->enemyStartingStatuses.push_back(std::make_pair(newStatus, statusAmount));
+		}
+		else
+		{
+			ddutil::errorMessage("Invalid status ID in save file", __LINE__, __FILE__);
+		}
+	}
+	i++; // get it off of ENEMY STARTING STATUSES END
+	player->startingVitality = std::stoi(chunk.at(i++));
+	player->maxVitality = std::stoi(chunk.at(i++));
+	player->vitalityGain = std::stoi(chunk.at(i++));
+	player->experience = std::stoi(chunk.at(i++));
+	player->movesetLimit = std::stoi(chunk.at(i++));
+	player->percentXPBoost = std::stoi(chunk.at(i++));
+	return player;
+}
+
 
 void Player::tradeExperience()
 {
@@ -529,9 +731,78 @@ void Player::increaseMovesToChooseFrom(int amount)
 	movesToChooseFrom += amount;
 }
 
+Savechunk Player::makeSaveChunk()
+{
+	Savechunk chunk;
+	chunk.add("PLAYER START");
+	chunk.add(static_cast<int>(id));
+	Savechunk uniqueChunk = getUniqueSaveChunkInfo();
+	if (!uniqueChunk.empty())
+	{
+		chunk.add(uniqueChunk);
+	}
+	chunk.add(getHealth());
+	chunk.add(getMaxHealth(100));
+	chunk.add(percentHealBoost);
+	chunk.add(immuneToStatuses);
+	chunk.add(baseBlock);
+	chunk.add(name);
+	chunk.add("MOVES START");
+	for (Move* m : moves)
+	{
+		chunk.add(static_cast<int>(m->getId()));
+	}
+	chunk.add("MOVES END");
+	chunk.add(color);
+	chunk.add(baseDodgeChance);
+	chunk.add("ATTACK STATUSES START");
+	for (std::pair<Status*, int> stat : attackStatuses)
+	{
+		chunk.add(std::to_string(static_cast<int>(stat.first->getID())) + " " + std::to_string(stat.second));
+	}
+	chunk.add("ATTACK STATUSES END");
+	chunk.add("ARTIFACTS START");
+	for (Artifact* a : artifacts)
+	{
+		chunk.add(static_cast<int>(a->getID()));
+	}
+	chunk.add("ARTIFACTS END");
+	chunk.add(movesToChooseFrom);
+	chunk.add("SELF STARTING STATUSES START");
+	for (std::pair<Status*, int> stat : selfStartingStatuses)
+	{
+		chunk.add(std::to_string(static_cast<int>(stat.first->getID())) + " " + std::to_string(stat.second));
+	}
+	chunk.add("SELF STARTING STATUSES END");
+	chunk.add("ENEMY STARTING STATUSES START");
+	for (std::pair<Status*, int> stat : enemyStartingStatuses)
+	{
+		chunk.add(std::to_string(static_cast<int>(stat.first->getID())) + " " + std::to_string(stat.second));
+	}
+	chunk.add("ENEMY STARTING STATUSES END");
+	chunk.add(startingVitality);
+	chunk.add(maxVitality);
+	chunk.add(vitalityGain);
+	chunk.add(experience);
+	chunk.add(movesetLimit);
+	chunk.add(percentXPBoost);
+	chunk.add("PLAYER END");
+	return chunk;
+}
+
+PlayerId Player::getPlayerId()
+{
+	return id;
+}
+
+Savechunk Player::getUniqueSaveChunkInfo()
+{
+	return Savechunk();
+}
+
 // Samurai
 Samurai::Samurai(Game* game)
-	:Player(game, Samurai::STARTING_VITALITY, Samurai::MAX_VITALITY, Samurai::VITALITY_GAIN, Samurai::MAX_HP,
+	:Player(game, PlayerId::Samurai, Samurai::STARTING_VITALITY, Samurai::MAX_VITALITY, Samurai::VITALITY_GAIN, Samurai::MAX_HP,
 		Samurai::MAX_MOVES, "Samurai", ddutil::SAMURAI_COLOR, Art::getSamurai(), false)
 {
 	moves.push_back(new SamuraiMoves::Slice());
@@ -687,11 +958,10 @@ Creature* Samurai::makeCopy()
 {
 	return new Samurai(getGamePtr());
 }
-
 // Gunslinger
 
 Gunslinger::Gunslinger(Game* game)
-	:Player(game, Gunslinger::STARTING_VITALITY, Gunslinger::MAX_VITALITY, Gunslinger::VITALITY_GAIN, Gunslinger::MAX_HP,
+	:Player(game, PlayerId::Gunslinger, Gunslinger::STARTING_VITALITY, Gunslinger::MAX_VITALITY, Gunslinger::VITALITY_GAIN, Gunslinger::MAX_HP,
 		Gunslinger::MAX_MOVES, "Gunslinger", ddutil::GUNSLINGER_COLOR, Art::getGunslinger(), false)
 {
 	
@@ -904,11 +1174,29 @@ ColorString Gunslinger::getStatLine()
 	return c;
 }
 
+void Gunslinger::setReserveBullets(int val)
+{
+	reserveBullets = val;
+}
+
+void Gunslinger::setMaxBullets(int val)
+{
+	maxBullets = val;
+}
+
+Savechunk Gunslinger::getUniqueSaveChunkInfo()
+{
+	Savechunk chunk;
+	chunk.add(reserveBullets);
+	chunk.add(maxBullets);
+	return chunk;
+}
+
 
 // Sorcerer
 
 Sorcerer::Sorcerer(Game* game)
-	:Player(game, Sorcerer::STARTING_VITALITY, Sorcerer::MAX_VITALITY, Sorcerer::VITALITY_GAIN, Sorcerer::MAX_HP,
+	:Player(game, PlayerId::Sorceress, Sorcerer::STARTING_VITALITY, Sorcerer::MAX_VITALITY, Sorcerer::VITALITY_GAIN, Sorcerer::MAX_HP,
 		Sorcerer::MAX_MOVES, "Sorceress", ddutil::SORCERER_COLOR, Art::getSorcerer(), false)
 {
 	// Starting moves
@@ -1069,7 +1357,7 @@ Creature* Sorcerer::makeCopy()
 // Minions
 
 PlayerMinion::PlayerMinion(Game* game, int svit, int maxVit, int vitGain, int maxHp, int moveLim, std::string name, int color, Picture pic)
-	:Player(game, svit, maxVit, vitGain, maxHp, moveLim, name, color, pic, true)
+	:Player(game, PlayerId::Minion, svit, maxVit, vitGain, maxHp, moveLim, name, color, pic, true)
 {
 }
 

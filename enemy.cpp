@@ -665,7 +665,7 @@ Spider::Spider(Game* game)
 {
 	turnCounter = 0;
 	moves.push_back(new EnemyMoves::CreateShield(BASE_BLOCK, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new SimpleStatusMove(new StrangledStatus(), STRANGLED_LENGTH, true, 0, "Strangle", Strength::Powerful,
+	moves.push_back(new SimpleStatusMove(MoveId::EnemyMoveId, new StrangledStatus(), STRANGLED_LENGTH, true, 0, "Strangle", Strength::Powerful,
 		WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Strike(STRIKE_DAMAGE, WavFile("attack2", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
@@ -842,7 +842,7 @@ GiantLizard::GiantLizard(Game* game)
 	firstTurn = true;
 	moves.push_back(new EnemyMoves::GetStatusImmunity(WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(
-		new StatusAttackMove(
+		new StatusAttackMove(MoveId::EnemyMoveId, 
 			FLAME_DAMAGE, new BurntStatus(), BURN_LENGTH, 0,
 			"Flamethrower", Strength::Powerful, 
 			WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)
@@ -963,9 +963,9 @@ TheCollector::TheCollector(Game* game)
 {
 	turnCounter = 0;
 	moves.push_back(new EnemyMoves::CreateShield(SHIELD_BLOCK, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(FIRE_DAMAGE, new BurntStatus(), BURN_LENGTH, 0, "", Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, FIRE_DAMAGE, new BurntStatus(), BURN_LENGTH, 0, "", Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::StrikeAndBlock(BLOCKSTRIKE_DAMAGE, BLOCKSTRIKE_BLOCK, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new SimpleAttackMove(THROUGH_BLOCK_DAMAGE, true, 0, "", Strength::Powerful, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SimpleAttackMove(MoveId::EnemyMoveId, THROUGH_BLOCK_DAMAGE, true, 0, "", Strength::Powerful, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Block(BLOCK_AMOUNT, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Strike(HYPER_BEAM_DAMAGE, WavFile("magicattack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
@@ -1047,7 +1047,7 @@ AbyssBeast::AbyssBeast(Game* game)
 {
 	moves.push_back(new EnemyMoves::TakeVitalityGain(VITALITY_CHANGE));
 	moves.push_back(
-		new SelfDamageAttackMove(ATTACK_DAMAGE, false, SELF_DAMAGE, 0, "", Strength::Weak, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+		new SelfDamageAttackMove(MoveId::EnemyMoveId, ATTACK_DAMAGE, false, SELF_DAMAGE, 0, "", Strength::Weak, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)
 		)
 	);
 
@@ -1094,14 +1094,14 @@ Basilisk::Basilisk(Game* game)
 {
 	turnCounter = 0;
 	moves.push_back(
-		new SimpleStatusMove(
+		new SimpleStatusMove(MoveId::EnemyMoveId,  
 			new HexedStatus(), HEXED_LENGTH,
 			true, 0, "", Strength::Powerful,
 			WavFile("ghostinvulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)
 		)
 	);
 	moves.push_back(
-		new SimpleStatusMove(
+		new SimpleStatusMove(MoveId::EnemyMoveId, 
 			new PoisonedStatus(), POISON_AMOUNT,
 			true, 0, "", Strength::Powerful,
 			WavFile("energyattack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)
@@ -1190,9 +1190,9 @@ SentientMouth::SentientMouth(Game* game)
 	)
 {
 	turnCounter = 0;
-	moves.push_back(new StatusAttackMove(HEX_DAMAGE, new HexedStatus(), HEX_LENGTH, 0, "", Strength::Mythical, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(LICK_DAMAGE, new HexedStatus(), LICK_HEX_LENGTH, 0, "", Strength::Mythical, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(FROSTBURN_DAMAGE, new FrostBurntStatus(), FROSTBURN_LENGTH, 0, "", Strength::Mythical, WavFile("freeze", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, HEX_DAMAGE, new HexedStatus(), HEX_LENGTH, 0, "", Strength::Mythical, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, LICK_DAMAGE, new HexedStatus(), LICK_HEX_LENGTH, 0, "", Strength::Mythical, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, FROSTBURN_DAMAGE, new FrostBurntStatus(), FROSTBURN_LENGTH, 0, "", Strength::Mythical, WavFile("freeze", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 
 EnemyTurn SentientMouth::getTurn(std::vector<Creature*> players)
@@ -1251,8 +1251,8 @@ LaughingMask::LaughingMask(Game* game)
 	)
 {
 	turnCounter = 0;
-	moves.push_back(new SimpleStatusMove(new VulnerableStatus(), VULN_LENGTH, true,0,"",Strength::Mythical, WavFile("laugh", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(HEX_DAMAGE, new HexedStatus(), HEX_LENGTH, 0, "", Strength::Mythical, WavFile("magicspell1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SimpleStatusMove(MoveId::EnemyMoveId, new VulnerableStatus(), VULN_LENGTH, true,0,"",Strength::Mythical, WavFile("laugh", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, HEX_DAMAGE, new HexedStatus(), HEX_LENGTH, 0, "", Strength::Mythical, WavFile("magicspell1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::StrikeAndBlock(HEAD_BUTT_DAM, HEAD_BUTT_BLOCK, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 
@@ -1380,8 +1380,8 @@ PossessedMace::PossessedMace(Game* game)
 {
 	applyStatus(new ThornsStatus(), THORNS);
 
-	moves.push_back(new StatusAttackMove(ST_DAMAGE, new BleedingStatus(), BLEED_AMOUNT, 0, "", Strength::Mythical, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(MT_DAMAGE, new BleedingStatus(), BLEED_AMOUNT, 0, "", Strength::Mythical, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, ST_DAMAGE, new BleedingStatus(), BLEED_AMOUNT, 0, "", Strength::Mythical, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, MT_DAMAGE, new BleedingStatus(), BLEED_AMOUNT, 0, "", Strength::Mythical, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 
 EnemyTurn PossessedMace::getTurn(std::vector<Creature*> players)
@@ -1432,7 +1432,7 @@ HyperBeast::HyperBeast(Game* game)
 	turnCounter = 0;
 	alreadyStoleVitality = false;
 	moves.push_back(
-		new StatusAttackMove(HYPER_BEAM_DAM, new FrostBurntStatus(), FROSTBURN_LENGTH, 0, "", Strength::Mythical, WavFile("magicattack3", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+		new StatusAttackMove(MoveId::EnemyMoveId, HYPER_BEAM_DAM, new FrostBurntStatus(), FROSTBURN_LENGTH, 0, "", Strength::Mythical, WavFile("magicattack3", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 	);
 	moves.push_back(new EnemyMoves::TakeVitalityGain(VIT_CHANGE));
 	moves.push_back(new EnemyMoves::Heal(HEAL_AMOUNT));
@@ -1507,7 +1507,7 @@ AncientBird::AncientBird(Game* game)
 		})
 {
 	turnCounter = 0;
-	moves.push_back(new SimpleStatusMove(new InvulnerableStatus(), INVULN_TURNS, false, 0, "", Strength::Mythical, WavFile("fly", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SimpleStatusMove(MoveId::EnemyMoveId, new InvulnerableStatus(), INVULN_TURNS, false, 0, "", Strength::Mythical, WavFile("fly", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::TakeVitality(VITALITY_STEAL));
 	moves.push_back(new EnemyMoves::Strike(DIVEBOMB_DAMAGE, WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::DualStrike(DUALSTRIKE_DAM, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
@@ -1578,10 +1578,10 @@ TheProtector::TheProtector(Game* game)
 {
 	turnCounter = 0;
 	shieldCounter = 0;
-	moves.push_back(new StatusAttackMove(ICE_BEAM_DAM, new FrostBurntStatus(), BURN_LENGTH, 0, "", Strength::Mythical, WavFile("freeze", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(HEX_DAMAGE, new HexedStatus(), HEX_LENGTH, 0, "", Strength::Mythical, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, ICE_BEAM_DAM, new FrostBurntStatus(), BURN_LENGTH, 0, "", Strength::Mythical, WavFile("freeze", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, HEX_DAMAGE, new HexedStatus(), HEX_LENGTH, 0, "", Strength::Mythical, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::CreateShield(SHIELD_INCREASE, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new BlockBreakingMove(BLOCK_BREAK_DAMAGE, BLOCK_BREAK_MULT, 0, "", Strength::Mythical, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new BlockBreakingMove(MoveId::EnemyMoveId, BLOCK_BREAK_DAMAGE, BLOCK_BREAK_MULT, 0, "", Strength::Mythical, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Heal(SMALL_HEAL_AMOUNT));
 	moves.push_back(new EnemyMoves::Heal(BIG_HEAL_AMOUNT));
 }
@@ -1919,7 +1919,7 @@ VampireBatVariant::VampireBatVariant(Game* game)
 {
 	turnCounter = 0;
 	moves.push_back(new EnemyMoves::Strike(SWIPE_DAMAGE, WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(SPIT_DAMAGE, new FrostBurntStatus(), FBURN_LENGTH, 0, "Spit", Strength::Moderate,
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, SPIT_DAMAGE, new FrostBurntStatus(), FBURN_LENGTH, 0, "Spit", Strength::Moderate,
 		WavFile("attack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::HealStrike(LIFESTEAL_BITE_DAMAGE, LIFESTEAL_AMOUNT, WavFile("attack5", ddutil::SF_LOOP,
 		ddutil::SF_ASYNC)));
@@ -2016,9 +2016,9 @@ int CaveBat::getRoomId()
 CaveBatVariant::CaveBatVariant(Game* game)
 	:NormalEnemy(game, HEALTH, "Cave Bat", Art::CAVEBATALT_COLOR, Art::getCaveBatAlt())
 {
-	moves.push_back(new SimpleStatusMove(new PoisonedStatus(), POISON_SPRAY_AMOUNT, true, 0, "Poison Spray",
+	moves.push_back(new SimpleStatusMove(MoveId::EnemyMoveId, new PoisonedStatus(), POISON_SPRAY_AMOUNT, true, 0, "Poison Spray",
 		Strength::Powerful, WavFile("electricattack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(POISON_BITE_DAMAGE, new PoisonedStatus(), POISON_BITE_AMOUNT, 0, "Poison Bite",
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, POISON_BITE_DAMAGE, new PoisonedStatus(), POISON_BITE_AMOUNT, 0, "Poison Bite",
 		Strength::Moderate, WavFile("attack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 
@@ -2065,7 +2065,7 @@ AncientLizard::AncientLizard(Game* game)
 {
 	turnCounter = 0;
 	moves.push_back(new EnemyMoves::Strike(STOMP_DAMAGE, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(CHARGE_DAMAGE, new StunnedStatus(), STUNNED_LENGTH, 0, "Charge",
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, CHARGE_DAMAGE, new StunnedStatus(), STUNNED_LENGTH, 0, "Charge",
 		Strength::Powerful, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Heal(HEAL_AMOUNT));
 }
@@ -2120,13 +2120,13 @@ FireBat::FireBat(Game* game)
 	{
 		turnCounter = 2;
 	}
-	moves.push_back(new StatusAttackMove(WHIRLWIND_DAMAGE, new BurntStatus(), WHIRLWIND_BURN_LENGTH,
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, WHIRLWIND_DAMAGE, new BurntStatus(), WHIRLWIND_BURN_LENGTH,
 		0, "Fire Whirlwind", Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new SimpleStatusMove(new ScorchedStatus(), SCORCH_LENGTH, false, 0, "Scorched",
+	moves.push_back(new SimpleStatusMove(MoveId::EnemyMoveId, new ScorchedStatus(), SCORCH_LENGTH, false, 0, "Scorched",
 		Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new AttackAndBlockMove(STRIKE_DAMAGE, STRIKE_BLOCK, false, 0, "Block-Strike",
+	moves.push_back(new AttackAndBlockMove(MoveId::EnemyMoveId, STRIKE_DAMAGE, STRIKE_BLOCK, false, 0, "Block-Strike",
 		Strength::Powerful, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new MultiAttackMove(BITE_DAMAGE, BITE_TIMES, 0, "Dual Bite", Strength::Powerful,
+	moves.push_back(new MultiAttackMove(MoveId::EnemyMoveId, BITE_DAMAGE, BITE_TIMES, 0, "Dual Bite", Strength::Powerful,
 		WavFile("dualattack", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 
 }
@@ -2201,9 +2201,9 @@ FireBatVariant::FireBatVariant(Game* game)
 	turnCounter = 0;
 	previousPerson = nullptr;
 	moves.push_back(new EnemyMoves::CreateShield(BASE_BLOCK, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(BURN_DAMAGE, new BurntStatus(), BURN_LENGTH, 0, "Flamethrower",
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, BURN_DAMAGE, new BurntStatus(), BURN_LENGTH, 0, "Flamethrower",
 		Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new SimpleStatusMove(new ScorchedStatus(), SCORCHED_LENGTH, false, 0, "Scorch", Strength::Powerful,
+	moves.push_back(new SimpleStatusMove(MoveId::EnemyMoveId, new ScorchedStatus(), SCORCHED_LENGTH, false, 0, "Scorch", Strength::Powerful,
 		WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 
@@ -2268,11 +2268,11 @@ FirePlatypus::FirePlatypus(Game* game)
 	:NormalEnemy(game, HEALTH, "Magma Platypus", Art::FIRE_PLATYPUS_COLOR, Art::getFirePlatypus())
 {
 	turnCounter = 0;
-	moves.push_back(new AttackAndBlockMove(STRIKE_DAMAGE, STRIKE_BLOCK, false, 0,
+	moves.push_back(new AttackAndBlockMove(MoveId::EnemyMoveId, STRIKE_DAMAGE, STRIKE_BLOCK, false, 0,
 		"Strike-Block", Strength::Powerful, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(FLAMETHROWER_DAMAGE, new BurntStatus(), FLAMETHROWER_BURN_LENGTH, 0,
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, FLAMETHROWER_DAMAGE, new BurntStatus(), FLAMETHROWER_BURN_LENGTH, 0,
 		"Flamethrower", Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(BODY_SLAM_DAMAGE, new StunnedStatus(), STUN_LENGTH, 0,
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, BODY_SLAM_DAMAGE, new StunnedStatus(), STUN_LENGTH, 0,
 		"Body Slam", Strength::Powerful, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Heal(HEAL_AMOUNT));
 }
@@ -2343,9 +2343,9 @@ Sniffer::Sniffer(Game* game)
 	)
 {
 	turnCounter = 0;
-	moves.push_back(new StatusAttackMove(RAVAGE_DAMAGE, new VulnerableStatus(), RAVAGE_VULNERABLE_LENGTH,
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, RAVAGE_DAMAGE, new VulnerableStatus(), RAVAGE_VULNERABLE_LENGTH,
 		0, "Ravage", Strength::Mythical, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(STRANGLE_DAMAGE, new StrangledStatus(), STRANGLE_LENGTH,
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, STRANGLE_DAMAGE, new StrangledStatus(), STRANGLE_LENGTH,
 		0, "Strangle", Strength::Mythical, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::HealStrike(LIFE_STEAL_AMOUNT, LIFE_STEAL_AMOUNT,
 		WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
@@ -2416,11 +2416,11 @@ SnifferVariant::SnifferVariant(Game* game)
 	)
 {
 	previousMove = -1;
-	moves.push_back(new StatusAttackMove(FROST_BREATH_DAMAGE, new FrostBurntStatus(), FROST_BURN_LENGTH, 0,
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, FROST_BREATH_DAMAGE, new FrostBurntStatus(), FROST_BURN_LENGTH, 0,
 		"Frost Breath", Strength::Powerful, WavFile("freeze", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new SelfBlockMove(BIG_BLOCK_AMOUNT, 0, "beeg block", Strength::Powerful, WavFile("gainblock",
+	moves.push_back(new SelfBlockMove(MoveId::EnemyMoveId, BIG_BLOCK_AMOUNT, 0, "beeg block", Strength::Powerful, WavFile("gainblock",
 		ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new AttackAndBlockMove(BLOCK_ATTACK_DAMAGE, BLOCK_ATTACK_BLOCK, false, 0, "attack-block",
+	moves.push_back(new AttackAndBlockMove(MoveId::EnemyMoveId, BLOCK_ATTACK_DAMAGE, BLOCK_ATTACK_BLOCK, false, 0, "attack-block",
 		Strength::Powerful, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 
@@ -2482,9 +2482,9 @@ CorruptedDisciple::CorruptedDisciple(Game* game)
 	)
 {
 	turnCounter = 0;
-	moves.push_back(new StatusAttackMove(HEX_DAMAGE, new HexedStatus(), HEXED_LENGTH,
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, HEX_DAMAGE, new HexedStatus(), HEXED_LENGTH,
 		0, "Hex", Strength::Powerful, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(LIGHTNING_STRIKE_DAMAGE, new ZappedStatus(), ZAPPED_AMOUNT,
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, LIGHTNING_STRIKE_DAMAGE, new ZappedStatus(), ZAPPED_AMOUNT,
 		0, "Smite", Strength::Mythical, WavFile("lightning", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Heal(HEAL_AMOUNT));
 }

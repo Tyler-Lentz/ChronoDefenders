@@ -9,7 +9,7 @@ class Status;
 
 #include <string>
 #include <vector>
-
+class Game;
 enum class Strength {
 	Weak,
 	Moderate,
@@ -17,10 +17,126 @@ enum class Strength {
 	Mythical
 };
 
+enum class MoveId
+{
+	EnemyMoveId,
+	TempMoveId,
+	MinionMoveId,
+	SamuraiSlice,
+	SamuraiDeflect,
+	SamuraiThrowingKnives,
+	SamuraiPerilousStrike,
+	SamuraiCalculatedSlice,
+	SamuraiSidestep,
+	SamuraiMeditation,
+	SamuraiStorm,
+	SamuraiLightningRod,
+	SamuraiAssault,
+	SamuraiDualSlice,
+	SamuraiBodySlam,
+	SamuraiShuriken,
+	SamuraiTyphoon,
+	SamuraiDragonSlice,
+	SamuraiPerilousPlunge,
+	SamuraiZen,
+	SamuraiChargedAssault,
+	SamuraiDesperation,
+	SamuraiCrushingBlow,
+	SamuraiCriticalStrike,
+	SamuraiFinishingBlow,
+	SamuraiEyeOfTheStorm,
+	SamuraiShadowStep,
+	SamuraiDragonForm,
+	SamuraiCaltrops,
+	SamuraiTippedKunai,
+	SamuraiBlindingFury,
+	SamuraiTsunami,
+	SamuraiLeavesFromTheVine,
+	SamuraiEnlightenment,
+	SamuraiEviscerate,
+	SamuraiDualingDragons,
+	SamuraiDragonBreath,
+	SamuraiTornado,
+	SamuraiShinobiTactics,
+	GunslingerPeashooter,
+	GunslingerDodge,
+	GunslingerMakeBullets,
+	GunslingerDropkick,
+	GunslingerBottleStrike,
+	GunslingerBackflip,
+	GunslingerPunch,
+	GunslingerDrawSpade,
+	GunslingerDrawHeart,
+	GunslingerDrawDiamond,
+	GunslingerDrawClub,
+	GunslingerCardThrow,
+	GunslingerRevolver,
+	GunslingerThrowDynamite,
+	GunslingerCraftBullets,
+	GunslingerDoubleKick,
+	GunslingerHeavyRevolver,
+	GunslingerExplosiveShot,
+	GunslingerLeap,
+	GunslingerUppercut,
+	GunslingerPumpShotgun,
+	GunslingerForgeBullets,
+	GunslingerQuickDynamite,
+	GunslingerDrinkWhiskey,
+	GunslingerCardFlurry,
+	GunslingerSupressiveFire,
+	GunslingerSuckerPunch,
+	GunslingerConjureBullets,
+	GunslingerSharpsRifle,
+	GunslingerColtWalker,
+	GunslingerFaceOfSpades,
+	GunslingerFaceOfHearts,
+	GunslingerFaceOfClubs,
+	GunslingerFaceOfDiamonds,
+	GunslingerBlackDynamite,
+	GunslingerBrassKnuckles,
+	GunslingerJesterForm,
+	SorceressMagicBarrier,
+	SorceressEnergyStrike,
+	SorceressHeal,
+	SorceressElectricShock,
+	SorceressLevitate,
+	SorceressBlinkStrike,
+	SorceressFireball,
+	SorceressIceOrb,
+	SorceressRecover,
+	SorceressSummonFireImp,
+	SorceressSummonIceImp,
+	SorceressEnergyBarrier,
+	SorceressCleansingTouch,
+	SorceressEnergySword,
+	SorceressPlasmaStrike,
+	SorceressMirrorImage,
+	SorceressFairySummon,
+	SorceressSummonFireDragon,
+	SorceressSummonIceDragon,
+	SorceressBlizzard,
+	SorceressCataclysm,
+	SorceressLightningStrike,
+	SorceressPlasmaSword,
+	SorceressEtherealBarrier,
+	SorceressStarStrike,
+	SorceressCombust,
+	SorceressFreeze,
+	SorceressChainLightning,
+	SorceressCleansingAura,
+	SorceressEtherealBlade,
+	SorceressSpiritCall,
+	SorceressSupernova,
+	SorceressCastInvulnerability,
+	SorceressElementalForm,
+	SorceressElementalBarrier,
+	SorceressEnergyAura
+};
+
 class Move
 {
 public:
-	Move(std::string desc, std::string theName, int cost, Strength howStrong, bool targetChoose, WavFile theSound);
+	Move(MoveId id, std::string desc, std::string theName, int cost, Strength howStrong, bool targetChoose, WavFile theSound);
 	virtual ColorString doAction(Creature* self, Creature* other) = 0;
 	std::string getDescription();
 
@@ -32,6 +148,10 @@ public:
 	bool canChooseTarget();
 
 	void playSoundEffect();
+
+	MoveId getId();
+
+	static Move* getMoveFromId(MoveId id, Game* game);
 private:
 	bool chooseTarget;
 	std::string name;
@@ -40,13 +160,14 @@ private:
 protected:
 	std::string description;
 	WavFile sound;
+	MoveId id;
 };
 
 // Base class for a move which deals damage and inflicts a status
 class StatusAttackMove : public Move
 {
 public:
-	StatusAttackMove(int dam, Status* status, int statusAmount, int cost, std::string name, Strength str, WavFile theSound);
+	StatusAttackMove(MoveId id, int dam, Status* status, int statusAmount, int cost, std::string name, Strength str, WavFile theSound);
 	~StatusAttackMove();
 	ColorString doAction(Creature* self, Creature* other) override;
 private:
@@ -59,7 +180,7 @@ private:
 class SimpleAttackMove : public Move
 {
 public:
-	SimpleAttackMove(int dam, bool blockIgnore, int cost, std::string name, Strength str, WavFile theSound);
+	SimpleAttackMove(MoveId id, int dam, bool blockIgnore, int cost, std::string name, Strength str, WavFile theSound);
 
 	ColorString doAction(Creature* self, Creature* other) override;
 private:
@@ -71,7 +192,7 @@ private:
 class SimpleStatusMove : public Move
 {
 public:
-	SimpleStatusMove(Status* stat, int statAmount, bool chooseTarget, int cost, std::string name, Strength str, WavFile theSound);
+	SimpleStatusMove(MoveId id, Status* stat, int statAmount, bool chooseTarget, int cost, std::string name, Strength str, WavFile theSound);
 	~SimpleStatusMove();
 
 	ColorString doAction(Creature* self, Creature* other);
@@ -84,7 +205,7 @@ private:
 class SelfBlockMove : public Move
 {
 public:
-	SelfBlockMove(int blockAmount, int cost, std::string name, Strength str, WavFile theSound);
+	SelfBlockMove(MoveId id,int blockAmount, int cost, std::string name, Strength str, WavFile theSound);
 
 	ColorString doAction(Creature* self, Creature* other);
 private:
@@ -94,7 +215,7 @@ private:
 class AttackAndBlockMove : public SimpleAttackMove
 {
 public:
-	AttackAndBlockMove(int moveDamage, int moveBlock, bool blockIgnore, int cost, std::string name, Strength str, WavFile theSound);
+	AttackAndBlockMove(MoveId id, int moveDamage, int moveBlock, bool blockIgnore, int cost, std::string name, Strength str, WavFile theSound);
 
 	ColorString doAction(Creature* self, Creature* other) override;
 
@@ -106,7 +227,7 @@ private:
 class SimpleHealMove : public Move
 {
 public:
-	SimpleHealMove(int healAmount, bool canChooseTarget, int cost, std::string name, Strength str);
+	SimpleHealMove(MoveId id, int healAmount, bool canChooseTarget, int cost, std::string name, Strength str);
 
 	ColorString doAction(Creature* self, Creature* other) override;
 private:
@@ -116,7 +237,7 @@ private:
 class MultiAttackMove : public Move
 {
 public:
-	MultiAttackMove(int damage, int times, int cost, std::string name, Strength str, WavFile theSound);
+	MultiAttackMove(MoveId id, int damage, int times, int cost, std::string name, Strength str, WavFile theSound);
 	ColorString doAction(Creature* self, Creature* other) override;
 private:
 	int damage; // how much damage each hit does
@@ -127,7 +248,7 @@ private:
 class BlockBreakingMove : public Move
 {
 public:
-	BlockBreakingMove(int theBaseDamage, int theMultiplier, int cost, std::string name, Strength str, WavFile theSound);
+	BlockBreakingMove(MoveId id, int theBaseDamage, int theMultiplier, int cost, std::string name, Strength str, WavFile theSound);
 	ColorString doAction(Creature* self, Creature* other) override;
 private:
 	int baseDamage;
@@ -137,7 +258,7 @@ private:
 class SelfDamageAttackMove : public SimpleAttackMove
 {
 public:
-	SelfDamageAttackMove(int moveDamage, bool blockIgnore, int damagetaken, int cost, std::string name, Strength str, WavFile theSound);
+	SelfDamageAttackMove(MoveId id, int moveDamage, bool blockIgnore, int damagetaken, int cost, std::string name, Strength str, WavFile theSound);
 
 	ColorString doAction(Creature* self, Creature* other) override;
 private:

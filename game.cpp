@@ -42,6 +42,7 @@ Game::Game(VirtualWindow* virWin)
 	{
 		gameWorld.push_back(new Zone(this, i));
 	}
+	loadedFromFile = false;
 }
 
 Game::~Game()
@@ -79,8 +80,11 @@ ddutil::GameStatus Game::run()
 		stopSound(SoundType::MP3);
 		return status;
 	}
-
-	intro();
+	
+	if (!loadedFromFile)
+	{
+		intro();
+	}
 	stopSound(SoundType::MP3);
 
 	for (; currentZoneIndex < gameWorld.size() && !gameOver; currentZoneIndex++)
@@ -110,6 +114,9 @@ ddutil::GameStatus Game::run()
 			}
 			
 			currentRoom->setCharEmpty();
+
+			Savefile save(this);
+			save.writeToFile("save.txt");
 		}
 		if (gameWin)
 		{
@@ -568,8 +575,9 @@ void Game::titleScreen()
 		{
 			status = ddutil::GameStatus::CONTINUE;
 			exit = true;
+			loadedFromFile = true;
 			Savefile save(this, "save.txt");
-			save.loadFromFile(this);
+			save.loadIntoGame(this);
 			break;
 		}
 

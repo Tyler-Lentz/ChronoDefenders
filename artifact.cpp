@@ -44,6 +44,87 @@ Artifact* Artifact::generateRandomArtifact(Strength strength)
 	return nullptr;
 }
 
+Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
+{
+	switch (id)
+	{
+	case ArtifactID::AdamantiteShield:
+		return new AdamantiteShield(game);
+	case ArtifactID::AncientBook:
+		return new AncientBook(game);
+	case ArtifactID::AncientMask:
+		return new AncientMask(game);
+	case ArtifactID::AncientScroll:
+		return new AncientScroll(game);
+	case ArtifactID::AncientTome:
+		return new AncientTome(game);
+	case ArtifactID::AncientWand:
+		return new AncientWand(game);
+	case ArtifactID::BattleStandard:
+		return new BattleStandard(game);
+	case ArtifactID::BurningOrb:
+		return new BurningOrb(game);
+	case ArtifactID::Chainmail:
+		return new Chainmail(game);
+	case ArtifactID::DarkSeed:
+		return new DarkSeed(game);
+	case ArtifactID::ElectricOrb:
+		return new ElectricOrb(game);
+	case ArtifactID::EternalSeed:
+		return new EternalSeed(game);
+	case ArtifactID::EtherealDagger:
+		return new EtherealDagger(game);
+	case ArtifactID::FrozenOrb:
+		return new FrozenOrb(game);
+	case ArtifactID::Katana:
+		return new Katana(game);
+	case ArtifactID::MagicAmulet:
+		return new MagicAmulet(game);
+	case ArtifactID::MagicBean:
+		return new MagicBean(game);
+	case ArtifactID::MagicLeech:
+		return new MagicLeech(game);
+	case ArtifactID::MagicPotion:
+		return new MagicPotion(game);
+	case ArtifactID::MagicPowder:
+		return new MagicPowder(game);
+	case ArtifactID::MagicQuill:
+		return new MagicQuill(game);
+	case ArtifactID::PoisonVial:
+		return new PoisonVial(game);
+	case ArtifactID::PossessedDoll:
+		return new PossessedDoll(game);
+	case ArtifactID::PotentPowder:
+		return new PotentPowder(game);
+	case ArtifactID::PurpleAmulet:
+		return new PurpleAmulet(game);
+	case ArtifactID::QuailFeather:
+		return new QuailFeather(game);
+	case ArtifactID::RustyDagger:
+		return new RustyDagger(game);
+	case ArtifactID::SacrificialKnife:
+		return new SacrificialKnife(game);
+	case ArtifactID::Shuriken:
+		return new Shuriken(game);
+	case ArtifactID::SmellingSalts:
+		return new SmellingSalts(game);
+	case ArtifactID::SpectralAmulet:
+		return new SpectralAmulet(game);
+	case ArtifactID::Spurs:
+		return new Spurs(game);
+	case ArtifactID::SwiftnessBracelet:
+		return new SwiftnessBracelet(game);
+	case ArtifactID::Tesseract:
+		return new Tesseract(game);
+	case ArtifactID::VitalStone:
+		return new VitalStone(game);
+	case ArtifactID::WarriorHelm:
+		return new WarriorHelm(game);
+	default:
+		return nullptr;
+	}
+}
+
 bool Artifact::operator<(const Artifact& other) const
 {
 	if (strength == Strength::Moderate)

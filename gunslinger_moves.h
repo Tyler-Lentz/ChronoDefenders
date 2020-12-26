@@ -27,7 +27,7 @@ namespace GunslingerMoves
 	class GunMove : public Move
 	{
 	public:
-		GunMove(int damage, int bulletAmount, int cost, std::string name, Strength str, WavFile theSound);
+		GunMove(MoveId id, int damage, int bulletAmount, int cost, std::string name, Strength str, WavFile theSound);
 		ColorString doAction(Creature* self, Creature* other) override;
 	private:
 		int damage;
@@ -37,7 +37,7 @@ namespace GunslingerMoves
 	class MakeBulletMove : public Move
 	{
 	public:
-		MakeBulletMove(int bulletAmount, int cost, std::string name, Strength str, WavFile sound = WavFile("craft", ddutil::SF_LOOP, ddutil::SF_ASYNC));
+		MakeBulletMove(MoveId id, int bulletAmount, int cost, std::string name, Strength str, WavFile sound = WavFile("craft", ddutil::SF_LOOP, ddutil::SF_ASYNC));
 		ColorString doAction(Creature* self, Creature* other) override;
 	private:
 		int bulletAmount;
@@ -46,7 +46,7 @@ namespace GunslingerMoves
 	class ThrowDynamiteMove : public Move
 	{
 	public:
-		ThrowDynamiteMove(int turnsToWait, int cost, std::string name, Strength str);
+		ThrowDynamiteMove(MoveId id, int turnsToWait, int cost, std::string name, Strength str);
 		ColorString doAction(Creature* self, Creature* other) override;
 	private:
 		int explosionTime;
@@ -55,7 +55,7 @@ namespace GunslingerMoves
 	class CardDrawMove : public Move
 	{
 	public:
-		CardDrawMove(int minDraw, int maxDraw, Suit theSuit, int cost, std::string name, Strength str);
+		CardDrawMove(MoveId id, int minDraw, int maxDraw, Suit theSuit, int cost, std::string name, Strength str);
 
 		ColorString doAction(Creature* self, Creature* other);
 	private:

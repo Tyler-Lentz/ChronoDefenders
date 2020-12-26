@@ -15,7 +15,7 @@ namespace SamuraiMoves
 	class ZenMove : public Move
 	{
 	public:
-		ZenMove(int zenLevel, int cost, std::string name, Strength str);
+		ZenMove(MoveId id, int zenLevel, int cost, std::string name, Strength str);
 		ColorString doAction(Creature* self, Creature* other) override;
 	private:
 		int zenAmount;
@@ -24,7 +24,7 @@ namespace SamuraiMoves
 	class StormMove : public Move
 	{
 	public:
-		StormMove(int targetStorm, int otherStorm, bool chooseTarget, int cost, std::string name, Strength str, WavFile theSound);
+		StormMove(MoveId id, int targetStorm, int otherStorm, bool chooseTarget, int cost, std::string name, Strength str, WavFile theSound);
 		ColorString doAction(Creature* self, Creature* other) override;
 	private:
 		int targetStormLevel; // how much storm the target receives (if there is a target)
@@ -35,7 +35,7 @@ namespace SamuraiMoves
 	class VitalityBoostedAttack : public Move
 	{
 	public:
-		VitalityBoostedAttack(int theBaseDamage, int theMultplier, int theVitalityAmount, std::string name, int cost, Strength str, WavFile theSound);
+		VitalityBoostedAttack(MoveId id, int theBaseDamage, int theMultplier, int theVitalityAmount, std::string name, int cost, Strength str, WavFile theSound);
 		ColorString doAction(Creature* self, Creature* other) override;
 	private:
 		int baseDamage;

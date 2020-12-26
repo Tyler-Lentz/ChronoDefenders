@@ -19,7 +19,7 @@ namespace SorcererMoves
 	class MakeBarrierMove : public Move
 	{
 	public:
-		MakeBarrierMove(int barrierAmount, int cost, std::string name, Strength str);
+		MakeBarrierMove(MoveId id, int barrierAmount, int cost, std::string name, Strength str);
 		ColorString doAction(Creature* self, Creature* other) override;
 
 	private:
@@ -29,7 +29,7 @@ namespace SorcererMoves
 	class SummonMove : public Move
 	{
 	public:
-		SummonMove(Player* minion, int cost, std::string name, Strength str, WavFile theSound);
+		SummonMove(MoveId id, Player* minion, int cost, std::string name, Strength str, WavFile theSound);
 		~SummonMove();
 
 		ColorString doAction(Creature* self, Creature* other) override;

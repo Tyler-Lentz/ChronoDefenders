@@ -210,5 +210,6 @@ namespace ddutil
     // makes the string the desired length by adding an equal amount of spaces before and after the string
     std::string padString(std::string str, int size);
     ColorString padString(ColorString str, int size);
+
 }
 #endif

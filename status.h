@@ -52,7 +52,9 @@ public:
     std::string getDescription();
     ColorString getFullInformation();
 
-    virtual Status* makeCopy() = 0;;
+    virtual Status* makeCopy() = 0;
+
+    static Status* getStatusFromID(StatusID id);
 private:
     bool unchanging; // if true, the status number doesn't decrease naturally at the end of turn
     bool totalRemove; // if true, remove all of the status at the end of the turn, not just one tick

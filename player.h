@@ -5,14 +5,26 @@
 #include "art.h"
 #include "move.h"
 #include "artifact.h"
+#include "savefile.h"
 
 class Enemy;
+
+enum class PlayerId
+{
+	Samurai,
+	Gunslinger,
+	Sorceress,
+	Minion
+};
 
 class Player : public Creature
 {
 public:
-	Player(Game* game, int svit, int maxVit, int vitGain, int maxHp, int moveLim, std::string name, int color, Picture pic, bool minion);
+	Player(Game* game, PlayerId id, int svit, int maxVit, int vitGain, int maxHp, int moveLim, std::string name, int color, Picture pic, bool minion);
 	~Player();
+
+	// should receive a save chunk with the unique type info at the top if there, and without the PLAYER START and END tags
+	static Player* getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chunk);
 
 	virtual std::vector<Move*> getRandomMoves(Strength str) = 0; // get random moves to choose from to add to moveset
 	void tradeExperience();
@@ -59,7 +71,13 @@ public:
 	void deathScene() override;
 
 	void increaseMovesToChooseFrom(int amount);
+
+	Savechunk makeSaveChunk();
+
+	PlayerId getPlayerId();
 protected:
+	virtual Savechunk getUniqueSaveChunkInfo();  // if a class has extra values it needs to store in its save file
+	PlayerId id;
 	std::vector<Artifact*> artifacts;
 
 	int movesToChooseFrom; // how many moves this person may select from when taking a new move
@@ -121,9 +139,13 @@ public:
 	static const int STARTING_BULLETS = 9;
 
 	ColorString getStatLine(); // overrides the basic function to append the amount of bullets in reserve
+	void setReserveBullets(int val);
+	void setMaxBullets(int val);
 private:
 	int reserveBullets;
 	int maxBullets;
+protected:
+	Savechunk getUniqueSaveChunkInfo() override;
 };
 
 class Sorcerer : public Player

@@ -663,8 +663,20 @@ void Game::titleScreen()
 			status = ddutil::GameStatus::CONTINUE;
 			exit = true;
 			loadedFromFile = true;
-			Savefile save(this, "save.txt");
-			save.loadIntoGame(this);
+			try
+			{
+				Savefile save(this, "save.txt");
+				save.loadIntoGame(this);
+			}
+			catch (std::exception& ex)
+			{
+				playSound(WavFile("error", false, false));
+				exit = false;
+				loadedFromFile = false;
+				for (int i = MENU_TOP_LINE; i < MENU_TOP_LINE + 6; i++)
+					vwin->clearLine(i);
+				Menu::oneOptionMenu(vwin, ColorString("Error: " + std::string(ex.what()), ddutil::TEXT_COLOR), Coordinate(0, MENU_TOP_LINE), true);
+			}	
 			break;
 		}
 

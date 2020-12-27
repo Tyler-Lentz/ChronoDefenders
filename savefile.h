@@ -8,6 +8,7 @@ class Game;
 class Zone;
 class Player;
 
+
 class Savechunk : public std::vector<std::string>
 {
 public:

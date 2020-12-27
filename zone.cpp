@@ -876,7 +876,7 @@ Zone::Zone(Game* theGame, Savechunk data)
 
 	if (data.at(3) != "ZONE MAP START")
 	{
-		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
 	int numRows = std::stoi(data.at(4));
 	int numCols = std::stoi(data.at(5));
@@ -884,7 +884,7 @@ Zone::Zone(Game* theGame, Savechunk data)
 	Savechunk roomChunk;
 	if (data.at(6) != "ROOM COORDS START")
 	{
-		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
 	int i = 7;
 	for (; data.at(i) != "ROOM COORDS END"; i++)
@@ -893,8 +893,9 @@ Zone::Zone(Game* theGame, Savechunk data)
 	}
 	if (data.at(++i) != "ROOM 2D VECTOR START")
 	{
-		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
+
 	i++;
 	for (; data.at(i) != "ROOM 2D VECTOR END"; i++)
 	{
@@ -1169,7 +1170,7 @@ ZoneMap::ZoneMap(Game* game, Savechunk coordinates, Savechunk rooms, int numRows
 		}
 		if (tokens.size() != 2)
 		{
-			ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+			throw std::exception("Invalid save file format");
 		}
 		Coordinate c;
 		c.x = std::stoi(tokens.front());
@@ -1193,7 +1194,7 @@ ZoneMap::ZoneMap(Game* game, Savechunk coordinates, Savechunk rooms, int numRows
 		}
 		if (tokens.size() != 5)
 		{
-			ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+			throw std::exception("Invalid save file format");
 		}
 		int roomId = std::stoi(tokens.at(0));
 		char roomChar = tokens.at(1).front();
@@ -1349,7 +1350,7 @@ ZoneMap::ZoneMap(Game* game, Savechunk coordinates, Savechunk rooms, int numRows
 			room = new EnemyRoom(game, new VampireBatVariant(game));
 			break;
 		default:
-			ddutil::errorMessage("Invalid Room Id in save file", __LINE__, __FILE__);
+			throw std::exception("Invalid Room ID in save file");
 			break;
 		}
 		room->setChar(roomColorChar);

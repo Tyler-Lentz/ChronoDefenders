@@ -75,8 +75,9 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 	}
 	else
 	{
-		ddutil::errorMessage("Invalid player id when loading from save", __LINE__, __FILE__);
+		throw std::exception("Invalid player id when loading from save");
 	}
+
 	// Now go through the savechunk and set all the values appropriately
 
 	player->health = std::stoi(chunk.at(i++));
@@ -88,7 +89,7 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 	// Moves 
 	if (chunk.at(i++) != "MOVES START")
 	{
-		ddutil::errorMessage("invalid save file format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
 	// Delete all the default moves and replace with the moves stored in the save file
 	for (Move* m : player->moves)
@@ -107,7 +108,7 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 		}
 		else
 		{
-			ddutil::errorMessage("invalid move id in save file", __LINE__, __FILE__);
+			throw std::exception("Invalid move ID in save file");
 		}
 	}
 	i++; // get it off of the MOVES END marker
@@ -116,7 +117,7 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 	// Attack Statuses
 	if (chunk.at(i++) != "ATTACK STATUSES START")
 	{
-		ddutil::errorMessage("invalid save file format", __LINE__, __FILE__);
+		throw std::exception("Invalid status ID in save file");
 	}
 	// the player's attack statuses will be empty because we are modifying a default character, so no need to delete anything
 	while (chunk.at(i) != "ATTACK STATUSES END")
@@ -132,7 +133,7 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 		}
 		if (tokens.size() != 2)
 		{
-			ddutil::errorMessage("invalid attack status format in save file", __LINE__, __FILE__);
+			throw std::exception("Invalid attack status format in save file");
 		}
 		StatusID statusID = static_cast<StatusID>(std::stoi(tokens.front()));
 		int statusAmount = std::stoi(tokens.back());
@@ -143,14 +144,14 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 		}
 		else
 		{
-			ddutil::errorMessage("Invalid status ID in save file", __LINE__, __FILE__);
+			throw std::exception("Invalid attack status format in save file");
 		}
 	}
 	i++; // get it off of ATTACK STATUSES END MARKER
 	// Artifacts
 	if (chunk.at(i++) != "ARTIFACTS START")
 	{
-		ddutil::errorMessage("invalid save file format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
 	if (!player->artifacts.empty())
 	{
@@ -174,14 +175,14 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 		}
 		else
 		{
-			ddutil::errorMessage("Invalid artifact ID in save file", __LINE__, __FILE__);
+			throw std::exception("Invalid artifact ID in save file");
 		}
 	}
 	i++; // get it off of ARTIFACTS END
 	player->movesToChooseFrom = std::stoi(chunk.at(i++));
 	if (chunk.at(i++) != "SELF STARTING STATUSES START")
 	{
-		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
 	while (chunk.at(i) != "SELF STARTING STATUSES END")
 	{	
@@ -196,8 +197,9 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 		}
 		if (tokens.size() != 2)
 		{
-			ddutil::errorMessage("invalid self starting status format in save file", __LINE__, __FILE__);
+			throw std::exception("Invalid save file format");
 		}
+
 		StatusID statusID = static_cast<StatusID>(std::stoi(tokens.front()));
 		int statusAmount = std::stoi(tokens.back());
 		Status* newStatus = Status::getStatusFromID(statusID);
@@ -207,13 +209,13 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 		}
 		else
 		{
-			ddutil::errorMessage("Invalid status ID in save file", __LINE__, __FILE__);
+			throw std::exception("Invalid save file format");
 		}
 	}
 	i++; // get it off of SELF STARTING STATUSES END
 	if (chunk.at(i++) != "ENEMY STARTING STATUSES START")
 	{
-		ddutil::errorMessage("Invalid save file format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
 	while (chunk.at(i) != "ENEMY STARTING STATUSES END")
 	{
@@ -228,7 +230,7 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 		}
 		if (tokens.size() != 2)
 		{
-			ddutil::errorMessage("invalid enemy starting status format in save file", __LINE__, __FILE__);
+			throw std::exception("Invalid save file format");
 		}
 		StatusID statusID = static_cast<StatusID>(std::stoi(tokens.front()));
 		int statusAmount = std::stoi(tokens.back());
@@ -239,7 +241,7 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 		}
 		else
 		{
-			ddutil::errorMessage("Invalid status ID in save file", __LINE__, __FILE__);
+			throw std::exception("Invalid save file format");
 		}
 	}
 	i++; // get it off of ENEMY STARTING STATUSES END

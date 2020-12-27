@@ -48,7 +48,7 @@ Savefile::Savefile(Game* game, std::string filename)
 
 	if (file.peek() == std::ifstream::traits_type::eof())
 	{
-		ddutil::errorMessage("No save file found", __LINE__, __FILE__);
+		throw std::exception("Save file not found");
 	}
 
 	Savechunk gameWorldChunk;
@@ -64,6 +64,10 @@ Savefile::Savefile(Game* game, std::string filename)
 	{
 		std::getline(file, s);
 		gameWorldChunk.add(s);
+		if (file.eof())
+		{
+			throw std::exception("Invalid save file format");
+		}
 	}
 
 	textToGameWorld(game, gameWorldChunk);
@@ -73,6 +77,10 @@ Savefile::Savefile(Game* game, std::string filename)
 	{
 		std::getline(file, s);
 		playerPartyChunk.add(s);
+		if (file.eof())
+		{
+			throw std::exception("Invalid save file format");
+		}
 	}
 
 	textToPlayerParty(game, playerPartyChunk);
@@ -82,6 +90,10 @@ Savefile::Savefile(Game* game, std::string filename)
 	{
 		std::getline(file, s);
 		deadPlayersChunk.add(s);
+		if (file.eof())
+		{
+			throw std::exception("Invalid save file format");
+		}
 	}
 
 	textToDeadPlayers(game, deadPlayersChunk);
@@ -126,6 +138,7 @@ Savefile::~Savefile()
 	// put into game
 }
 
+
 Savechunk Savefile::gameWorldToText()
 {
 	Savechunk chunk;
@@ -142,7 +155,7 @@ void Savefile::textToGameWorld(Game* game, Savechunk data)
 {
 	if (data.front() != "GAME WORLD START" || data.back() != "GAME WORLD END")
 	{
-		ddutil::errorMessage("Invalid Save File Format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
 	for (unsigned i = 1; i < data.size(); i++)
 	{
@@ -159,7 +172,7 @@ void Savefile::textToGameWorld(Game* game, Savechunk data)
 		}
 		else if (data.at(i) != "GAME WORLD END")
 		{
-			ddutil::errorMessage("Invalid Save File Format", __LINE__, __FILE__);
+			throw std::exception("Invalid save file format");
 		}
 	}
 }
@@ -180,7 +193,7 @@ void Savefile::textToPlayerParty(Game* game, Savechunk data)
 {
 	if (data.front() != "PLAYER PARTY START" || data.back() != "PLAYER PARTY END")
 	{
-		ddutil::errorMessage("Invalid Save File Format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
 	for (unsigned i = 1; i < data.size(); i++)
 	{
@@ -198,7 +211,7 @@ void Savefile::textToPlayerParty(Game* game, Savechunk data)
 		}
 		else if (data.at(i) != "PLAYER PARTY END")
 		{
-			ddutil::errorMessage("Invalid Save File Format", __LINE__, __FILE__);
+			throw std::exception("Invalid save file format");
 		}
 	}
 }
@@ -219,7 +232,7 @@ void Savefile::textToDeadPlayers(Game* game, Savechunk data)
 {
 	if (data.front() != "DEAD PLAYERS START" || data.back() != "DEAD PLAYERS END")
 	{
-		ddutil::errorMessage("Invalid Save File Format", __LINE__, __FILE__);
+		throw std::exception("Invalid save file format");
 	}
 	for (unsigned i = 1; i < data.size(); i++)
 	{
@@ -237,7 +250,7 @@ void Savefile::textToDeadPlayers(Game* game, Savechunk data)
 		}
 		else if (data.at(i) != "DEAD PLAYERS END")
 		{
-			ddutil::errorMessage("Invalid Save File Format", __LINE__, __FILE__);
+			throw std::exception("Invalid save file format");
 		}
 	}
 }

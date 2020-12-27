@@ -250,8 +250,8 @@ namespace SamuraiMoves
 	public:
 		CriticalStrike();
 
-		const static int DAMAGE = 9;
-		const static int BLOCK = 9;
+		const static int DAMAGE = 8;
+		const static int BLOCK = 8;
 		const static int COST = 1;
 	};
 
@@ -413,7 +413,7 @@ namespace SamuraiMoves
 		ColorString doAction(Creature* self, Creature* other);
 		const static int BLOCK = 12;
 		const static int COST = 1;
-		const static int BLEED_AMOUNT = 6;
+		const static int BLEED_AMOUNT = 9;
 	};
 }
 

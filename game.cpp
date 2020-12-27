@@ -829,6 +829,13 @@ void Game::displayZoneEntrance()
 	vwin->putcen(title, midwayLine - 1);
 	vwin->putcen(zoneString, midwayLine);
 
+	if (!loadedFromFile && currentZoneIndex == 0)
+	{
+		playSound(Mp3File("chapterbegin"));
+		Sleep(6500);
+		stopSound(SoundType::MP3);
+	}
+
 	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, midwayLine + 2), true);
 
 	clearCenterScreen();

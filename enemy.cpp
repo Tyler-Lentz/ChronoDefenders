@@ -1758,10 +1758,11 @@ TruePatriarch::TruePatriarch(Game* game)
 	moves.push_back(new EnemyMoves::Strike(DESPERATION_BEAM_DAM, WavFile("desperationbeam", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	// distortion 5 moves
 	moves.push_back(new EnemyMoves::StealMove());
-	moves.push_back(new EnemyMoves::Strike(BEAM_DAMAGE, WavFile("magicattack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::Strike(DIST5_BEAM_DAM, WavFile("magicattack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, HEX_DAMAGE, new HexedStatus(), HEX_LENGTH, 0, "", Strength::Mythical,
 		WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Block(DIST5BLOCK, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SimpleAttackMove(MoveId::EnemyMoveId, DIST5THRUBLOCK, true, 0, "", Strength::Mythical, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 
 EnemyTurn TruePatriarch::getTurn(std::vector<Creature*> players)
@@ -1795,12 +1796,13 @@ EnemyTurn TruePatriarch::getTurn(std::vector<Creature*> players)
 			case 1:
 			{
 				auto scalingAttack = dynamic_cast<EnemyMoves::Strike*>(moves[6]);
+				scalingAttack->increaseStrength(DIST5_BEAM_SCALE);
 				chosenMove = moves[6];
 				targets = players;
 				intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
 					ColorString(" will Blast everyone for ", ddutil::TEXT_COLOR) +
 					ColorString(std::to_string(scalingAttack->getStrength()) + " damage!", ddutil::DAMAGE_COLOR);
-				scalingAttack->increaseStrength(DIST5_BEAM_SCALE);
+
 				break;
 			}
 			case 2:
@@ -1817,13 +1819,13 @@ EnemyTurn TruePatriarch::getTurn(std::vector<Creature*> players)
 				}
 				else
 				{
-					chosenMove = moves[7];
+					chosenMove = moves[9];
 					targets.push_back(ddutil::getLowestHealthPlayer(players));
 					intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-						ColorString(" intends to ", ddutil::TEXT_COLOR) + ColorString("Hex", HexedStatus::COLOR) +
+						ColorString(" intends to ", ddutil::TEXT_COLOR) + ColorString("Strike", ddutil::TEXT_COLOR) +
 						ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
-						ColorString(" for ", ddutil::TEXT_COLOR) +
-						ColorString(std::to_string(HEX_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR);
+						ColorString(" through block for ", ddutil::TEXT_COLOR) +
+						ColorString(std::to_string(DIST5THRUBLOCK) + " damage ", ddutil::DAMAGE_COLOR);
 				}
 				break;
 			case 3:

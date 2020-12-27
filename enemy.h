@@ -267,9 +267,9 @@ public:
 	const static int WHIRLWIND_DAMAGE = 10; // multi attack
 	const static int WHIRLWIND_BURN_LENGTH = 4;
 	const static int SCORCH_LENGTH = 1; // attack that applies scorched on an enemy
-	const static int STRIKE_DAMAGE = 10; // single attack/block
+	const static int STRIKE_DAMAGE = 14; // single attack/block
 	const static int STRIKE_BLOCK = 20;
-	const static int BITE_DAMAGE = 6; // double attack
+	const static int BITE_DAMAGE = 7; // double attack
 	const static int BITE_TIMES = 2;
 
 private:
@@ -287,7 +287,7 @@ public:
 	const static int HEALTH = 150;
 	const static int BASE_BLOCK = 8; // One time gets base block enveloping in shield of fire
 	const static int BURN_LENGTH = 6; // Single target high burn attack
-	const static int BURN_DAMAGE = 10;
+	const static int BURN_DAMAGE = 14;
 	const static int SCORCHED_LENGTH = 1; // Attack that just applies scorched
 private:
 	int turnCounter;
@@ -303,11 +303,11 @@ public:
 	int getRoomId() override;
 
 	const static int HEALTH = 180;
-	const static int STRIKE_DAMAGE = 10; // attack that also gives block
+	const static int STRIKE_DAMAGE = 15; // attack that also gives block
 	const static int STRIKE_BLOCK = 25;
-	const static int FLAMETHROWER_DAMAGE = 10; // multitarget flame attack
+	const static int FLAMETHROWER_DAMAGE = 14; // multitarget flame attack
 	const static int FLAMETHROWER_BURN_LENGTH = 3;
-	const static int BODY_SLAM_DAMAGE = 9; // Multitarget stun attack
+	const static int BODY_SLAM_DAMAGE = 12; // Multitarget stun attack
 	const static int STUN_LENGTH = 2;
 	const static int HEAL_AMOUNT = 20; // heal move
 private:
@@ -564,7 +564,7 @@ public:
 	int getRoomId() override;
 
 	const static int HEALTH = 280;
-	const static int FROST_BREATH_DAMAGE = 12; // Multitarget frostburn attack
+	const static int FROST_BREATH_DAMAGE = 16; // Multitarget frostburn attack
 	const static int FROST_BURN_LENGTH = 2;
 	const static int BIG_BLOCK_AMOUNT = 40; // blocks a lot in one turn
 	const static int BLOCK_ATTACK_DAMAGE = 20; // blocks and attacks in one turn
@@ -679,7 +679,7 @@ public:
 	const static int BURN_LENGTH = 3;
 	const static int BLOCKSTRIKE_DAMAGE = 10;
 	const static int BLOCKSTRIKE_BLOCK = 10;
-	const static int THROUGH_BLOCK_DAMAGE = 9;
+	const static int THROUGH_BLOCK_DAMAGE = 6;
 	const static int HYPER_BEAM_DAMAGE = 40;
 	const static int BLOCK_AMOUNT = 50;
 
@@ -711,7 +711,7 @@ public:
 	const static int BLOCK_BREAK_DAMAGE = 15;
 	const static int BLOCK_BREAK_MULT = 2;
 
-	const static int THROUGH_BLOCK_DAMAGE = 9;
+	const static int THROUGH_BLOCK_DAMAGE = 8;
 
 	const static int SMALL_HEAL_AMOUNT = 50;
 
@@ -738,7 +738,7 @@ public:
 	const static int BEAM_DAMAGE = 20; // multitarget beam
 	const static int BIG_BLOCK = 66;
 	
-	const static int BLOCK_BREAK_DAMAGE = 20;
+	const static int BLOCK_BREAK_DAMAGE = 18;
 	const static int BLOCK_BREAK_MULT = 2;
 
 	const static int DESPERATION_THRESHOLD = 20; // at less than 20% of max hp go to desperation mode
@@ -753,6 +753,7 @@ public:
 	const static int HEX_DAMAGE = 20;
 
 	const static int DIST5BLOCK = 100;
+	const static int DIST5THRUBLOCK = 9;
 private:
 	int turnCounter;
 	bool desperation;

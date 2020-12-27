@@ -76,6 +76,9 @@ public:
 
 	void appendCount(int count);
 	void appendToName(std::string n);
+
+	void setHealthPercent(int percentOfMaxHp); // set health to a percentage of max health)
+	void removeNewestMove(); // removes the bottom most move, used by true final boss
 protected:
 	int health;
 	int maxHealth;

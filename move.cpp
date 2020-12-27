@@ -300,7 +300,6 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 	}
 }
 
-
 StatusAttackMove::StatusAttackMove(MoveId id, int theDamage, Status* theStatus, int statusAmount, int cost, std::string name, Strength str, WavFile theSound)
 	:Move(id, "Deals " + std::to_string(theDamage) + " damage and applies " + theStatus->getName().getString() +
 		(statusAmount > 1 ? (" " + std::to_string(statusAmount) + " times") : ("")),

@@ -99,6 +99,9 @@ public:
 	static Picture getPatriarch();
 	const static int PATRIARCH_COLOR = ddutil::DARKGRAY;
 
+	static Picture getDist5Patriarch();
+	const static int DIST5_PATRIARCH_COLOR = ddutil::MAGENTA;
+
 	static Picture getPortal();
 	const static int PORTAL_COLOR = ddutil::BLUE;
 

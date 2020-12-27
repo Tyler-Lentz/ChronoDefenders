@@ -13,6 +13,7 @@ Savefile::Savefile(Game* game)
 	gameWorld = game->gameWorld;
 	playerParty = game->playerParty;
 	deadPlayers = game->deadPlayers;
+	distortion = game->currentDistortion;
 }
 
 void Savefile::writeToFile(std::string filename)
@@ -20,6 +21,7 @@ void Savefile::writeToFile(std::string filename)
 	std::ofstream file(filename, std::ios::trunc);
 	file << score << std::endl;
 	file << currentZoneIndex << std::endl;
+	file << distortion << std::endl;
 	Savechunk gameWorldChunk = gameWorldToText();
 	for (std::string s : gameWorldChunk)
 	{
@@ -54,6 +56,8 @@ Savefile::Savefile(Game* game, std::string filename)
 	score = std::stoi(s);
 	std::getline(file, s);
 	currentZoneIndex = std::stoi(s);
+	std::getline(file, s);
+	distortion = std::stoi(s);
 	while (s != "GAME WORLD END")
 	{
 		std::getline(file, s);
@@ -85,6 +89,13 @@ void Savefile::loadIntoGame(Game* game)
 {
 	game->score = score;
 	game->currentZoneIndex = currentZoneIndex;
+	game->currentDistortion = distortion;
+	if (game->currentDistortion >= 2)
+	{
+		game->greenMoveCost *= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
+		game->blueMoveCost*= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
+		game->redMoveCost *= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
+	}
 	for (Zone* z : game->gameWorld)
 	{
 		delete z;

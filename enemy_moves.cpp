@@ -230,3 +230,16 @@ ColorString EnemyMoves::HealStrike::doAction(Creature* self, Creature* other)
 	output += ColorString(" and heals ", ddutil::TEXT_COLOR) + ColorString(std::to_string(netHeal) + " HP", ddutil::HEAL_COLOR);
 	return output;
 }
+
+EnemyMoves::StealMove::StealMove()
+	:Move(MoveId::EnemyMoveId, "", "", 0, Strength::Mythical, true, WavFile("lightning", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+{
+}
+
+ColorString EnemyMoves::StealMove::doAction(Creature* self, Creature* other)
+{
+	other->removeNewestMove();
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" steals The ", ddutil::TEXT_COLOR) + other->getColorString() +
+		ColorString("'s newest move!", ddutil::TEXT_COLOR);
+}

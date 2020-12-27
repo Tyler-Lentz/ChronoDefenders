@@ -19,6 +19,7 @@ public:
 	ColorString getIntent();
 	const std::vector<Creature*>& getTargets();
 	Move* getMove();
+
 private:
 	ColorString intent;
 	std::vector<Creature*> targets; // vector of whom it is attacking
@@ -31,6 +32,7 @@ public:
 	Enemy(Game* game, int maxHp, std::string name, int color, Picture pic, Mp3File theMusic, std::vector<ColorString> intro, char mapChar);
 	virtual EnemyTurn getTurn(std::vector<Creature*> players) = 0;
 
+	virtual void distortionUpdate(int dist) {}// function that is called on all enemies before battle if there is a distortion, so stats can adjust
 	virtual ColorString getStatLine();
 
 	virtual int getRoomId() = 0;
@@ -42,7 +44,7 @@ public:
 	char getMapChar();
 
 	virtual void deathScene() override;
-private:
+protected:
 	std::vector<ColorString> introText;
 	Mp3File music;
 	char mapChar;
@@ -728,6 +730,7 @@ public:
 	Creature* makeCopy() override;
 	int getRoomId() override;
 	void deathScene() override;
+	void distortionUpdate(int dist) override;
 
 	const static int HEALTH = 800;
 
@@ -742,10 +745,16 @@ public:
 	
 	const static int INVULN_LENGTH = 2;
 	const static int DESPERATION_BEAM_DAM = 45; // solo target
+
+	const static int DIST5_BEAM_DAM = 15;
+	const static int DIST5_BEAM_SCALE = 5; // scaling beam attack
+
+	const static int HEX_LENGTH = 3;
+	const static int HEX_DAMAGE = 20;
+
+	const static int DIST5BLOCK = 100;
 private:
 	int turnCounter;
 	bool desperation;
 };
-
-
 #endif

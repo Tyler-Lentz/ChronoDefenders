@@ -32,6 +32,7 @@ EnemyRoom::~EnemyRoom()
 
 void EnemyRoom::playRoom()
 {
+	enemy->distortionUpdate(game->getCurrentDistortion());
 	game->battle(enemy);
 	if (!game->isGameOver() && !game->getGameWin())
 	{

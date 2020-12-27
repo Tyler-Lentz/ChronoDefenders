@@ -1142,6 +1142,37 @@ Picture Art::getPatriarch()
 	return patriarch;
 }
 
+Picture Art::getDist5Patriarch()
+{
+	Picture patriarch;
+	int color = DIST5_PATRIARCH_COLOR;
+	int eyeColor = ddutil::RED;
+
+	patriarch.push_back(ColorString(R"(                            ,-.                            )", color));
+	patriarch.push_back(ColorString(R"(       ___,---.__          /'|`\          __,---,___       )", color));
+	patriarch.push_back(ColorString(R"(    ,-'    \`    `-.____,-'  |  `-.____,-'    //    `-.    )", color));
+	patriarch.push_back(ColorString(R"(  ,'        |           ~'\     /`~           |        `.  )", color));
+	patriarch.push_back(ColorString(R"( /      ___//              `. ,'          ,  , \___      \ )", color));
+	patriarch.push_back(ColorString(R"(|    ,-'   `-.__   _         |        ,    __,-'   `-.    |)", color));
+	patriarch.push_back(ColorString(R"(|   /          /\_  `   .    |    ,      _/\          \   |)", color));
+	patriarch.push_back(ColorString(R"(\  |           \)", color)+ColorString(R"( \`-.___ \)",eyeColor)+ColorString(R"(   |  )",color)+ColorString(R"( / ___,-'/)", eyeColor)+ColorString(R"( /           |  /)", color));
+	patriarch.push_back(ColorString(R"( \  \           |)",color)+ColorString(R"( `._   `\\)",eyeColor)+ColorString(R"(  | )",color)+ColorString(R"( //'   _,')",eyeColor)+ColorString(R"( |           /  / )", color));
+	patriarch.push_back(ColorString(R"(  `-.\         /'  _)",color)+ColorString(R"( `---'')",eyeColor)+ColorString(R"( , .)",color)+ColorString(R"( ``---')", eyeColor)+ColorString(R"( _  `\         /,-'  )", color));
+	patriarch.push_back(ColorString(R"(     ``       /     \    ,='/ \`=.    /     \       ''     )", color));
+	patriarch.push_back(ColorString(R"(             |__   /|\_,--.,-.--,--._/|\   __|             )", color));
+	patriarch.push_back(ColorString(R"(             /  `./  \\`\ |  |  | /,//' \,'  \             )", color));
+	patriarch.push_back(ColorString(R"(            /   /     ||--+--|--+-/-|     \   \            )", color));
+	patriarch.push_back(ColorString(R"(           |   |     /'\_\_\ | /_/_/`\     |   |           )", color));
+	patriarch.push_back(ColorString(R"(            \   \__, \_     `~'     _/ .__/   /            )", color));
+	patriarch.push_back(ColorString(R"(             `-._,-'   `-._______,-'   `-._,-'             )", color));
+	patriarch.push_back(ColorString(R"(                                                           )", color));
+	patriarch.push_back(ColorString(R"(                                                           )", color));
+	patriarch.push_back(ColorString(R"(                                                           )", color));
+	patriarch.push_back(ColorString(R"(                                                           )", color));
+	patriarch.push_back(ColorString(R"(                                                           )", color));
+	return patriarch;
+}
+
 Picture Art::getPortal()
 {
 	Picture portal;

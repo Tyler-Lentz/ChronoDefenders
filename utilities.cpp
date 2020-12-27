@@ -306,5 +306,32 @@ namespace ddutil
         int index = ddutil::random(0, minionNames.size() - 1);
         return minionNames.at(index);
     }
+
+    ColorString getDistortionDescription(int level)
+    {
+        switch (level)
+        {
+        case 0:
+            return ColorString("Distortion 0: ", ddutil::DISTORTION_COLOR) +
+                ColorString("Default difficulty", ddutil::TEXT_COLOR);
+        case 1:
+            return ColorString("Distortion 1: ", ddutil::DISTORTION_COLOR) +
+                ColorString("Start with "+std::to_string(ddutil::DIST1_HP_PERCENT)+"% HP", ddutil::TEXT_COLOR);
+        case 2:
+            return ColorString("Distortion 2: ", ddutil::DISTORTION_COLOR) +
+                ColorString("Moves cost " + std::to_string(ddutil::DIST2_MOVEXP_PERCENT) + "% more XP", ddutil::TEXT_COLOR);
+        case 3:
+            return ColorString("Distortion 3: ", ddutil::DISTORTION_COLOR) +
+                ColorString("Start with -" + std::to_string(ddutil::DIST3_MAXHP_MINUS) + " max HP", ddutil::TEXT_COLOR);
+        case 4:
+            return ColorString("Distortion 4: ", ddutil::DISTORTION_COLOR) +
+                ColorString("Receive no starting bonus", ddutil::TEXT_COLOR);
+        case 5:
+            return ColorString("Distortion 5: ", ddutil::DISTORTION_COLOR) +
+                ColorString("True Final Boss", ddutil::LIGHTMAGENTA);
+        default:
+            return ColorString("Invalid Distortion Level", ddutil::TEXT_COLOR);
+        }
+    }
 }
 

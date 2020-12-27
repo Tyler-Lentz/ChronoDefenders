@@ -19,8 +19,13 @@
 #include <algorithm>
 
 Game::Game(VirtualWindow* virWin)
+	:profile()
 {
 	score = 0;
+	greenMoveCost = ddutil::MODERATE_COST;
+	blueMoveCost = ddutil::POWERFUL_COST;
+	redMoveCost = ddutil::MYTHICAL_COST;
+	currentDistortion = profile.getHighestDistortion();
 	vwin = virWin;
 	compendium = new Compendium(vwin);
 	gameWin = false;
@@ -106,20 +111,62 @@ ddutil::GameStatus Game::run()
 			if (gameOver)
 			{
 				status = ddutil::GameStatus::RESTART;
+				if (score > profile.getHighestScore())
+				{
+					profile.setNewHighScore(score);
+				}
+				profile.incrementNumLosses();
 				break;
 			}
-			if (gameWin || shouldSkipChapter())
+
+			if (gameWin)
 			{
 				break;
 			}
-			
+
 			currentRoom->setCharEmpty();
 
 			Savefile save(this);
 			save.writeToFile("save.txt");
+			int line = ddutil::BOTTOM_TEXT_LINE - 4;
+			Menu::oneOptionMenu(vwin, ColorString("Run Data Saved", ddutil::TEXT_COLOR), Coordinate(0, line), true);
+			vwin->clearLine(line);
+
+			if (shouldSkipChapter())
+			{
+				break;
+			}
 		}
 		if (gameWin)
 		{
+			status = ddutil::GameStatus::RESTART;
+			profile.incrementNumWins();
+			if (score > profile.getHighestScore())
+			{
+				profile.setNewHighScore(score);
+			}
+			if (currentDistortion == profile.getHighestDistortion())
+			{
+				if (currentDistortion == 5)
+				{
+					vwin->clearScreen();
+					int line = ddutil::CONSOLEY / 2;
+					vwin->putcen(ColorString("You completed the game! Thank you and Congratulations!", ddutil::DISTORTION_COLOR), line++);
+					playSound(WavFile("mythicalartifact", false, false));
+					Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line), true);
+					vwin->clearScreen();
+				}
+				else
+				{
+					profile.incrementHighestDistortion();
+					vwin->clearScreen();
+					int line = ddutil::CONSOLEY / 2;
+					vwin->putcen(ColorString("New Distortion Unlocked!", ddutil::DISTORTION_COLOR), line++);
+					playSound(WavFile("lightning", false, false));
+					Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line), true);
+					vwin->clearScreen();
+				}
+			}
 			break;
 		}
 	}
@@ -578,7 +625,11 @@ void Game::titleScreen()
 	while (!exit)
 	{
 		vwin->printArt(Art::getTitle(), Coordinate(0, 5), true);
-		Menu menu(vwin, options, otherInput, Coordinate(0, 25), true);
+
+		vwin->putcen(profile.getColorString(), ddutil::CONSOLEY - 2);
+		
+		const int MENU_TOP_LINE = 25;
+		Menu menu(vwin, options, otherInput, Coordinate(0, MENU_TOP_LINE), true);
 		int response = menu.getResponse();
 
 		switch (response)
@@ -586,6 +637,25 @@ void Game::titleScreen()
 		case 0: // start
 			status = ddutil::GameStatus::CONTINUE;
 			exit = true;
+			for (int i = MENU_TOP_LINE; i < MENU_TOP_LINE + 6; i++)
+				vwin->clearLine(i);
+			{
+				vwin->putcen(ColorString(
+					"Distortion levels are stacking difficulty modifiers",
+					ddutil::YELLOW), MENU_TOP_LINE - 4
+				);
+				vwin->putcen(ColorString("unlocked by beating the previous distortion level", ddutil::YELLOW), MENU_TOP_LINE - 3);
+				vwin->putcen(ColorString("Choose ", ddutil::TEXT_COLOR) + ColorString("Distortion", ddutil::DISTORTION_COLOR) +
+					ColorString(" level", ddutil::TEXT_COLOR), MENU_TOP_LINE - 1);
+				std::vector<ColorString> distOptions;
+				for (int i = 0; i <= profile.getHighestDistortion(); i++)
+				{
+					distOptions.push_back(ddutil::getDistortionDescription(i));
+				}
+				Menu distMenu(vwin, distOptions, Coordinate(0, MENU_TOP_LINE), true);
+				currentDistortion = distMenu.getResponse();
+				setDistortionModifers();
+			}
 			break;
 			
 		case 1: // load game
@@ -634,6 +704,53 @@ void Game::intro()
 		ColorString("\"You three must destroy him and his minions before it's too late!\"", color),
 		ColorString("\"Please take my blessing.\"", color),
 	};
+	if (currentDistortion == 1)
+	{
+		text = {
+			ColorString("\"I am once again calling you three to the world's aid\"", color),
+			ColorString("\"The Patriarch has once again broken free of his seal\"", color),
+			ColorString("\"This occurred much faster than anticipated\"", color),
+			ColorString("\"There must have been some distortions in the fabric of spacetime\"", color),
+			ColorString("\"Nevertheless, there is no time to lose! Please take my blessing\"", color)
+		};
+	}
+	else if (currentDistortion == 2)
+	{
+		text = {
+			ColorString("\"Unfortunately, I must call upon you all once more\"", color),
+			ColorString("\"It appears that my summons keep causing more distortions in spacetime\"", color),
+			ColorString("\"I believe that your quest will become difficult with more distortions\"", color),
+			ColorString("\"This is an unfortunate side effect which cannot be ignored\"", color),
+			ColorString("\"Nevertheless, Please take my blessing\"", color)
+		};
+	}
+	else if (currentDistortion == 3)
+	{
+		text = {
+			ColorString("\"I am extremely sorry to have to summon you all here again\"", color),
+			ColorString("\"There is no time to waste. Please take my blessing\"", color)
+		};
+	}
+	else if (currentDistortion == 4)
+	{
+		text = {
+			ColorString("\"Oh this is terrible!\"", color),
+			ColorString("\"The distortions have become so great I can no longer bestow my blessing!\"", color),
+			ColorString("\"This time, it looks like you all are on your own\"", color),
+			ColorString("\"Please, the whole universe is counting on you\"", color)
+		};
+	}
+	else if (currentDistortion == 5)
+	{
+		text = {
+			ColorString("\"Disaster has struck!\"", color),
+			ColorString("\"The Patriarch has broken from his seal, and is more powerful than ever!\"", color),
+			ColorString("\"However, with this newfound power comes new vulnerabilities\"", color),
+			ColorString("\"If you take him out now, he will be gone forever!\"", color),
+			ColorString("\"I am sorry there is not more I can do for you\"", color),
+			ColorString("\"I humbly beg for your service once last time\"", color)
+		};
+	}
 	
 	for (ColorString c : text)
 	{
@@ -643,33 +760,36 @@ void Game::intro()
 		vwin->clearLine(line + 1);
 	}
 
-	vwin->putcen(ColorString("Choose your blessing:", Art::WATCHER_COLOR), line++);
-	
-	const int EXPERIENCE_GAIN = 20;
-
-	std::vector<ColorString> options = {
-		ColorString("Each gain "+std::to_string(EXPERIENCE_GAIN)+" experience", ddutil::EXPERIENCE_COLOR),
-		ColorString("Obtain one random moderate artifact", ddutil::ARTIFACT_COLOR)
-	};
-
-	Menu menu(vwin, options, Coordinate(0, line), true);
-
-	if (menu.getResponse() == 0)
+	if (currentDistortion < 4)
 	{
-		for (Player* p : playerParty)
+		vwin->putcen(ColorString("Choose your blessing:", Art::WATCHER_COLOR), line++);
+		
+		const int EXPERIENCE_GAIN = 20;
+
+		std::vector<ColorString> options = {
+			ColorString("Each gain "+std::to_string(EXPERIENCE_GAIN)+" experience", ddutil::EXPERIENCE_COLOR),
+			ColorString("Obtain one random moderate artifact", ddutil::ARTIFACT_COLOR)
+		};
+
+		Menu menu(vwin, options, Coordinate(0, line), true);
+
+		if (menu.getResponse() == 0)
 		{
-			p->gainExperience(EXPERIENCE_GAIN);
+			for (Player* p : playerParty)
+			{
+				p->gainExperience(EXPERIENCE_GAIN);
+			}
 		}
-	}
-	else
-	{
-		clearBottomDivider();
-		artifactSelectionMenu(line, gameWorld[currentZoneIndex]->getRandomArtifact(Strength::Moderate));
-	}
-	
-	for (Player* p : getPlayerParty())
-	{
-		p->tradeExperience();
+		else
+		{
+			clearBottomDivider();
+			artifactSelectionMenu(line, gameWorld[currentZoneIndex]->getRandomArtifact(Strength::Moderate));
+		}
+		
+		for (Player* p : getPlayerParty())
+		{
+			p->tradeExperience();
+		}
 	}
 
 	vwin->clearScreen();
@@ -790,9 +910,9 @@ bool Game::checkForPlayerDeaths()
 		int centerLine = ddutil::CONSOLEY / 2;
 		playSound(WavFile("demonscream", false, false));
 		playSound(Mp3File("gameover"));
-		vwin->put(ColorString("Score: " + std::to_string(getScore()), ddutil::YELLOW), Coordinate(3, 5));
+		vwin->put(ColorString("Score: " + std::to_string(getScore()), ddutil::getColor(ddutil::YELLOW, ddutil::RED)), Coordinate(3, 5));
 		vwin->putcen(ColorString("Game Over!", ddutil::getColor(ddutil::WHITE, ddutil::RED)), centerLine);
-		vwin->putcen(ColorString("[Restart]", ddutil::getColor(ddutil::WHITE, ddutil::RED)), centerLine + 1);
+		vwin->putcen(ColorString("Press enter to restart...", ddutil::getColor(ddutil::WHITE, ddutil::RED)), centerLine + 1);
 		ddutil::waitForKeyPress(VK_RETURN);
 		stopSound(SoundType::MP3);
 		return true;
@@ -869,8 +989,64 @@ bool Game::shouldSkipChapter()
 void Game::endingScene()
 {
 	Coordinate coord(0, 5);
-	playSound(Mp3File("ending"));
+	score *= 1 + (currentDistortion / 10.0);
+	if (currentDistortion == 5)
+	{
+		int line = 30;
+		vwin->printArt(Art::getTheWatcher(), coord, true);
+		int color = ddutil::MAGENTA;
+		std::vector<ColorString> text = {
+			ColorString("\"......\"", color),
+			ColorString("\"Is it over?\"", color),
+			ColorString("\"Is he finally gone?\"", color),
+			ColorString("\"......\"", color),
+		};
+	
+		for (ColorString c : text)
+		{
+			vwin->putcenSlowScroll(c, line);
+			Menu::oneOptionMenu(vwin, ColorString("...", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
+			vwin->clearLine(line);
+			vwin->clearLine(line + 1);
+		}
 
+		playSound(Mp3File("trueending"));
+		vwin->put(ColorString("Score: " + std::to_string(getScore()), ddutil::YELLOW), Coordinate(3, coord.y));
+		vwin->put(ColorString("Distortion: " + std::to_string(currentDistortion), ddutil::DISTORTION_COLOR), Coordinate(3, coord.y+1));
+		int newLine = 30;
+
+		vwin->putcenSlowScroll(ColorString("Thank you ", Art::WATCHER_COLOR) + getPartyNames(playerParty), newLine);
+		vwin->putcenSlowScroll(ColorString("Your courage will always be remembered", Art::WATCHER_COLOR), newLine + 1);
+		Sleep(2500);
+		if (deadPlayers.empty())
+		{
+			vwin->putcenSlowScroll(ColorString("Fortunately, nobody died! Less work for me!", Art::WATCHER_COLOR), newLine + 2);
+		}
+		else
+		{
+			vwin->putcenSlowScroll(ColorString("And of course, we will not forget the sacrifices of ", Art::WATCHER_COLOR) +
+				getPartyNames(deadPlayers), newLine + 2);
+		}
+		Sleep(4000);
+		vwin->putcenSlowScroll(ColorString("When you're ready, I can send you all back to your own times... One last time", Art::WATCHER_COLOR), newLine + 3);
+		Menu::oneOptionMenu(vwin, ColorString("Return to your own times", ddutil::TEXT_COLOR), Coordinate(0, newLine + 4), true);
+		stopSound(SoundType::MP3);
+		playSound(WavFile("enterportal", false, true));
+		for (int i = 0; i < 4; i++)
+		{
+			vwin->clearScreen(ddutil::YELLOW);
+			Sleep(100);
+			vwin->clearScreen(ddutil::RED);
+			Sleep(100);
+			vwin->clearScreen(ddutil::BLUE);
+			Sleep(100);
+		}
+		vwin->clearScreen(ddutil::BLACK);
+		Sleep(1000);
+		return;
+	}
+	
+	playSound(Mp3File("ending"));	
 	vwin->putcen(ColorString("Epilogue", Art::WATCHER_COLOR), ddutil::CONSOLEY / 2);
 
 	Menu::oneOptionMenu(vwin, ColorString("Continue", Art::WATCHER_COLOR), Coordinate(0, ddutil::CONSOLEY / 2 + 1), true);
@@ -878,6 +1054,7 @@ void Game::endingScene()
 	vwin->printArt(Art::getTheWatcher(), coord, true);
 
 	vwin->put(ColorString("Score: " + std::to_string(getScore()), ddutil::YELLOW), Coordinate(3, coord.y));
+	vwin->put(ColorString("Distortion: " + std::to_string(currentDistortion), ddutil::DISTORTION_COLOR), Coordinate(3, coord.y+1));
 
 	int newLine = 30;
 
@@ -886,7 +1063,7 @@ void Game::endingScene()
 	Sleep(2500);
 	if (deadPlayers.empty())
 	{
-		vwin->putcenSlowScroll(ColorString("Fortunately, nobody died! That is truely incredible.", Art::WATCHER_COLOR), newLine + 2);
+		vwin->putcenSlowScroll(ColorString("Fortunately, nobody died! Less work for me!", Art::WATCHER_COLOR), newLine + 2);
 	}
 	else
 	{
@@ -899,7 +1076,7 @@ void Game::endingScene()
 	
 	stopSound(SoundType::MP3);
 	playSound(WavFile("enterportal", false, true));
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		vwin->clearScreen(ddutil::YELLOW);
 		Sleep(100);
@@ -943,6 +1120,59 @@ void Game::viewCompendium()
 	compendium->display();
 	vwin->clearScreen();
 	displayDividerString();
+}
+
+int Game::getGreenMoveCost()
+{
+	return greenMoveCost;
+}
+
+int Game::getBlueMoveCost()
+{
+	return blueMoveCost;
+}
+
+int Game::getRedMoveCost()
+{
+	return redMoveCost;
+}
+
+int Game::getCurrentDistortion()
+{
+	return currentDistortion;
+}
+
+void Game::setDistortionModifers()
+{
+	// do before distortion 1 because of the percentages
+	if (currentDistortion >= 3)
+	{
+		for (Player* p : playerParty)
+		{
+			p->decreaseMaxHealth(ddutil::DIST3_MAXHP_MINUS);
+		}
+	}
+	if (currentDistortion >= 1)
+	{
+		for (Player* p : playerParty)
+		{
+			p->setHealthPercent(ddutil::DIST1_HP_PERCENT);
+		}
+	}
+	if (currentDistortion >= 2)
+	{
+		greenMoveCost *= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
+		blueMoveCost*= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
+		redMoveCost *= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
+	}
+	if (currentDistortion >= 4)
+	{
+		// do nothing, handled in the intro function 
+	}
+	if (currentDistortion >= 5)
+	{
+		// TODO:
+	}
 }
 
 void Game::displayDividerString()
@@ -1069,6 +1299,7 @@ void Game::displayInfo()
 	int line = ddutil::BOTTOM_TEXT_LINE;
 
 	vwin->clearLine(line);
+	vwin->putcen(ColorString("Distortion: " + std::to_string(currentDistortion), ddutil::DISTORTION_COLOR), line++);
 	vwin->putcen(ColorString("- Name - Health - Vitality -", ddutil::WHITE), line++);
 	for (auto& i : playerParty) // display the name, healthbar, health in number, and vitality information at the bottom of the screen
 	{

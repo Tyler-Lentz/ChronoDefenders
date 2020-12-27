@@ -154,6 +154,7 @@
     <ClCompile Include="minion_moves.cpp" />
     <ClCompile Include="move.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="profile.cpp" />
     <ClCompile Include="room.cpp" />
     <ClCompile Include="samurai_moves.cpp" />
     <ClCompile Include="savefile.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="minion_moves.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="profile.h" />
     <ClInclude Include="room.h" />
     <ClInclude Include="samurai_moves.h" />
     <ClInclude Include="savefile.h" />

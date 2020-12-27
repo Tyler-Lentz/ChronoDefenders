@@ -97,7 +97,11 @@ namespace ddutil
     const int GUNSLINGER_COLOR = ddutil::YELLOW;
     const int SORCERER_COLOR = ddutil::LIGHTBLUE;
 
-    const int COMPENDIUM_COLOR = ddutil::MAGENTA;
+    const int COMPENDIUM_COLOR = ddutil::CYAN;
+    const int DISTORTION_COLOR = ddutil::MAGENTA;
+    const int SCORE_COLOR = ddutil::YELLOW;
+    const int WIN_COLOR = ddutil::GREEN;
+    const int LOSS_COLOR = ddutil::RED;
 
     const int WEAK_COLOR = ddutil::LIGHTGRAY;
     const int MODERATE_COLOR = ddutil::GREEN;
@@ -134,6 +138,10 @@ namespace ddutil
     const bool SF_ASYNC = false;
 
     const int ABSOLUTE_MAX_MOVES = 7;
+
+    const int DIST1_HP_PERCENT = 75;
+    const int DIST2_MOVEXP_PERCENT = 33;
+    const int DIST3_MAXHP_MINUS = 10;
 
     void errorMessage(std::string error, int line, std::string file);
 
@@ -303,6 +311,8 @@ namespace ddutil
         "Flameo"
     };
     std::string getCuteMinionName();
+
+    ColorString getDistortionDescription(int level);
 
 }
 #endif

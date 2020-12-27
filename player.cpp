@@ -152,18 +152,19 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 	{
 		ddutil::errorMessage("invalid save file format", __LINE__, __FILE__);
 	}
+	if (!player->artifacts.empty())
+	{
+		for (Artifact* a : player->artifacts)
+		{
+			delete a;
+		}
+		player->artifacts.clear();
+	}
 	while (chunk.at(i) != "ARTIFACTS END")
 	{
 		ArtifactID id = static_cast<ArtifactID>(std::stoi(chunk.at(i++)));
 		// just putting code to remove the artifacts in case in the future i add starting artifacts
-		if (!player->artifacts.empty())
-		{
-			for (Artifact* a : player->artifacts)
-			{
-				delete a;
-			}
-			player->artifacts.clear();
-		}
+
 		Artifact* artifact = Artifact::getArtifactFromID(game, id);
 		if (artifact != nullptr)
 		{
@@ -282,15 +283,15 @@ void Player::tradeExperience()
 		menuCoord.y++;
 		std::vector<ColorString> options;
 		options.push_back(
-			ColorString("(" + std::to_string(ddutil::MODERATE_COST) + " XP) ", ddutil::EXPERIENCE_COLOR) +
+			ColorString("(" + std::to_string(game->getGreenMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
 			ColorString("Moderate Strength", ddutil::MODERATE_COLOR)
 		);
 		options.push_back(
-			ColorString("(" + std::to_string(ddutil::POWERFUL_COST) + " XP) ", ddutil::EXPERIENCE_COLOR) +
+			ColorString("(" + std::to_string(game->getBlueMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
 			ColorString("Powerful Strength", ddutil::POWERFUL_COLOR)
 		);
 		options.push_back(
-			ColorString("(" + std::to_string(ddutil::MYTHICAL_COST) + " XP) ", ddutil::EXPERIENCE_COLOR) +
+			ColorString("(" + std::to_string(game->getRedMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
 			ColorString("Mythical Strength", ddutil::MYTHICAL_COLOR)
 		);
 		options.push_back(ColorString("Save Experience", ddutil::BROWN));
@@ -302,7 +303,7 @@ void Player::tradeExperience()
 		switch (moveTypeMenu.getResponse())
 		{
 		case 0:
-			if (loseExperience(ddutil::MODERATE_COST))
+			if (loseExperience(game->getGreenMoveCost()))
 			{
 				game->changeScore(ddutil::MOD_MOVE_SCORE);
 				str = Strength::Moderate;
@@ -314,7 +315,7 @@ void Player::tradeExperience()
 			}
 			break;
 		case 1:
-			if (loseExperience(ddutil::POWERFUL_COST))
+			if (loseExperience(game->getBlueMoveCost()))
 			{
 				game->changeScore(ddutil::POW_MOVE_SCORE);
 				str = Strength::Powerful;
@@ -326,7 +327,7 @@ void Player::tradeExperience()
 			}
 			break;
 		case 2:
-			if (loseExperience(ddutil::MYTHICAL_COST))
+			if (loseExperience(game->getRedMoveCost()))
 			{
 				game->changeScore(ddutil::MYTH_MOVE_SCORE);
 				str = Strength::Mythical;
@@ -795,6 +796,7 @@ PlayerId Player::getPlayerId()
 	return id;
 }
 
+
 Savechunk Player::getUniqueSaveChunkInfo()
 {
 	return Savechunk();
@@ -1196,14 +1198,14 @@ Savechunk Gunslinger::getUniqueSaveChunkInfo()
 // Sorcerer
 
 Sorcerer::Sorcerer(Game* game)
-	:Player(game, PlayerId::Sorceress, Sorcerer::STARTING_VITALITY, Sorcerer::MAX_VITALITY, Sorcerer::VITALITY_GAIN + 17, Sorcerer::MAX_HP,
+	:Player(game, PlayerId::Sorceress, Sorcerer::STARTING_VITALITY, Sorcerer::MAX_VITALITY, Sorcerer::VITALITY_GAIN, Sorcerer::MAX_HP,
 		Sorcerer::MAX_MOVES, "Sorceress", ddutil::SORCERER_COLOR, Art::getSorcerer(), false)
 {
 	// Starting moves
-	moves.push_back(new SorcererMoves::SummonIceImp(game));
-	moves.push_back(new SorcererMoves::SummonIceImp(game));
-	moves.push_back(new SorcererMoves::SpiritCall(game));
-	moves.push_back(new SorcererMoves::SummonIceDragon(game));
+	moves.push_back(new SorcererMoves::EnergyStrike());
+	moves.push_back(new SorcererMoves::EnergyStrike());
+	moves.push_back(new SorcererMoves::Heal());
+	moves.push_back(new SorcererMoves::Heal());
 	moves.push_back(new SorcererMoves::MagicBarrier());
 }
 

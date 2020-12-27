@@ -1756,6 +1756,12 @@ TruePatriarch::TruePatriarch(Game* game)
 	moves.push_back(new EnemyMoves::Block(BIG_BLOCK, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::BlockBreakStrike(BLOCK_BREAK_DAMAGE, BLOCK_BREAK_MULT, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Strike(DESPERATION_BEAM_DAM, WavFile("desperationbeam", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	// distortion 5 moves
+	moves.push_back(new EnemyMoves::StealMove());
+	moves.push_back(new EnemyMoves::Strike(BEAM_DAMAGE, WavFile("magicattack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, HEX_DAMAGE, new HexedStatus(), HEX_LENGTH, 0, "", Strength::Mythical,
+		WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::Block(DIST5BLOCK, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 
 EnemyTurn TruePatriarch::getTurn(std::vector<Creature*> players)
@@ -1776,52 +1782,119 @@ EnemyTurn TruePatriarch::getTurn(std::vector<Creature*> players)
 
 	if (!desperation)
 	{
-		switch (turnCounter)
+		if (game->getCurrentDistortion() == 5)
 		{
-		case 0:
-			chosenMove = moves[0];
-			targets = players;
-			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-				ColorString(" is stealing everybody's", ddutil::TEXT_COLOR) +
-				ColorString(" Vitality Gain", ddutil::VITALITY_COLOR);
-			break;
-		case 1:
-			chosenMove = moves[1];
-			targets = players;
-			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-				ColorString(" will Blast everybody for ", ddutil::TEXT_COLOR) +
-				ColorString(std::to_string(BEAM_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
-			break;
-		case 2:
-			chosenMove = moves[2];
-			targets.push_back(this);
-			intent = ddutil::genericBlockIntent(BIG_BLOCK, getColorString());
-			break;
-		case 3:
-			chosenMove = moves[3];
-			targets.push_back(ddutil::getLowestHealthPlayer(players));
-			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-				ColorString(" intends to Strike its horns into The ", ddutil::TEXT_COLOR) +
-				targets.front()->getColorString() +
-				ColorString(" for ", ddutil::TEXT_COLOR) +
-				ColorString(std::to_string(BLOCK_BREAK_DAMAGE) + " damage", ddutil::DAMAGE_COLOR) +
-				ColorString(" (x"+std::to_string(BLOCK_BREAK_MULT)+" if hits block)", ddutil::DAMAGE_COLOR);
-			break;
+			switch (turnCounter)
+			{
+			case 0:
+				chosenMove = moves[5];
+				targets = players;
+				intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+					ColorString(" is opening its mouth?", ddutil::TEXT_COLOR);
+				break;
+			case 1:
+			{
+				auto scalingAttack = dynamic_cast<EnemyMoves::Strike*>(moves[6]);
+				chosenMove = moves[6];
+				targets = players;
+				intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+					ColorString(" will Blast everyone for ", ddutil::TEXT_COLOR) +
+					ColorString(std::to_string(scalingAttack->getStrength()) + " damage!", ddutil::DAMAGE_COLOR);
+				scalingAttack->increaseStrength(DIST5_BEAM_SCALE);
+				break;
+			}
+			case 2:
+				if (ddutil::random(1, 2) == 1)
+				{
+					chosenMove = moves[3];
+					targets.push_back(ddutil::getLowestHealthPlayer(players));
+					intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+						ColorString(" intends to Strike its horns into The ", ddutil::TEXT_COLOR) +
+						targets.front()->getColorString() +
+						ColorString(" for ", ddutil::TEXT_COLOR) +
+						ColorString(std::to_string(BLOCK_BREAK_DAMAGE) + " damage", ddutil::DAMAGE_COLOR) +
+						ColorString(" (x"+std::to_string(BLOCK_BREAK_MULT)+" if hits block)", ddutil::DAMAGE_COLOR);
+				}
+				else
+				{
+					chosenMove = moves[7];
+					targets.push_back(ddutil::getLowestHealthPlayer(players));
+					intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+						ColorString(" intends to ", ddutil::TEXT_COLOR) + ColorString("Hex", HexedStatus::COLOR) +
+						ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+						ColorString(" for ", ddutil::TEXT_COLOR) +
+						ColorString(std::to_string(HEX_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR);
+				}
+				break;
+			case 3:
+				chosenMove = moves[8];
+				targets.push_back(this);
+				intent = ddutil::genericBlockIntent(DIST5BLOCK, getColorString());
+				break;
+			}
+			turnCounter++;
+			if (turnCounter > 3)
+			{
+				turnCounter = 0;
+			}
+		}
+		else
+		{
+			switch (turnCounter)
+			{
+			case 0:
+				chosenMove = moves[0];
+				targets = players;
+				intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+					ColorString(" is stealing everybody's", ddutil::TEXT_COLOR) +
+					ColorString(" Vitality Gain", ddutil::VITALITY_COLOR);
+				break;
+			case 1:
+				chosenMove = moves[1];
+				targets = players;
+				intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+					ColorString(" will Blast everybody for ", ddutil::TEXT_COLOR) +
+					ColorString(std::to_string(BEAM_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+				break;
+			case 2:
+				chosenMove = moves[2];
+				targets.push_back(this);
+				intent = ddutil::genericBlockIntent(BIG_BLOCK, getColorString());
+				break;
+			case 3:
+				chosenMove = moves[3];
+				targets.push_back(ddutil::getLowestHealthPlayer(players));
+				intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+					ColorString(" intends to Strike its horns into The ", ddutil::TEXT_COLOR) +
+					targets.front()->getColorString() +
+					ColorString(" for ", ddutil::TEXT_COLOR) +
+					ColorString(std::to_string(BLOCK_BREAK_DAMAGE) + " damage", ddutil::DAMAGE_COLOR) +
+					ColorString(" (x"+std::to_string(BLOCK_BREAK_MULT)+" if hits block)", ddutil::DAMAGE_COLOR);
+				break;
+			}
+
+			turnCounter++;
+			if (turnCounter > 3)
+			{
+				turnCounter = 0;
+			}
 		}
 
-		turnCounter++;
-		if (turnCounter > 3)
-		{
-			turnCounter = 0;
-		}
+
+
 	}
 	else // desperation
 	{
+		auto scalingAttack = dynamic_cast<EnemyMoves::Strike*>(moves[4]);
+		if (game->getCurrentDistortion() == 5)
+		{
+			scalingAttack->increaseStrength(5);
+		}
 		chosenMove = moves[4];
 		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
 		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
 			ColorString(" is wildy aiming its Energy Beam at an unidentifiable target for ", ddutil::TEXT_COLOR) +
-			ColorString(std::to_string(DESPERATION_BEAM_DAM) + " damage", ddutil::DAMAGE_COLOR) +
+			ColorString(std::to_string(scalingAttack->getStrength()) + " damage", ddutil::DAMAGE_COLOR) +
 			ColorString("!", ddutil::TEXT_COLOR);
 	}
 
@@ -1865,6 +1938,20 @@ void TruePatriarch::deathScene()
 
 	game->setGameWin();
 
+}
+
+void TruePatriarch::distortionUpdate(int dist)
+{
+	if (dist == 5)
+	{	
+		picture = Art::getDist5Patriarch();
+		increaseMaxHealth(200);
+		introText = std::vector<ColorString>{
+			ColorString("Do you know what I'll do after I defeat you?", color),
+			ColorString("......", color),
+			ColorString("Why don't you stay and find out?", color)
+		};
+	}
 }
 
 VampireBat::VampireBat(Game* game)

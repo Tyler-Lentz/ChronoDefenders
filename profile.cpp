@@ -1,0 +1,99 @@
+#include "profile.h"
+
+#include <fstream>
+#include <vector>
+#include <string>
+
+Profile::Profile()
+	:FILENAME("profile.txt")
+{
+	std::ifstream file(FILENAME);
+
+	if (file.peek() == std::ifstream::traits_type::eof())
+	{
+		// The profile is empty, so put default values
+		highestDistortion = 0;
+		highestScore = 0;
+		numWins = 0;
+		numLosses = 0;
+		updateFile();
+	}
+	else
+	{
+		// should be data, so fill em up
+		std::string s;
+		std::getline(file, s);
+		highestDistortion = std::stoi(s);
+		std::getline(file, s);
+		highestScore = std::stoi(s);
+		std::getline(file, s);
+		numWins = std::stoi(s);
+		std::getline(file, s);
+		numLosses = std::stoi(s);
+	}	
+	
+	file.close();
+}
+
+void Profile::incrementNumWins()
+{
+	numWins++;
+	updateFile();
+}
+
+void Profile::incrementNumLosses()
+{
+	numLosses++;
+	updateFile();
+}
+
+void Profile::incrementHighestDistortion()
+{
+	highestDistortion++;
+	updateFile();
+}
+
+void Profile::setNewHighScore(int amount)
+{
+	highestScore = amount;
+	updateFile();
+}
+
+int Profile::getHighestDistortion()
+{
+	return highestDistortion;
+}
+
+int Profile::getHighestScore()
+{
+	return highestScore;
+}
+
+int Profile::getNumWins()
+{
+	return numWins;
+}
+
+int Profile::getNumLosses()
+{
+	return numLosses;
+}
+
+ColorString Profile::getColorString()
+{
+	ColorString c1("Highest Distortion: " + std::to_string(highestDistortion) + "  ", ddutil::DISTORTION_COLOR);
+	ColorString c2("Highest Score: " + std::to_string(highestScore) + "  ", ddutil::SCORE_COLOR);
+	ColorString c3("Wins: " + std::to_string(numWins) + "  ", ddutil::WIN_COLOR);
+	ColorString c4("Losses: " + std::to_string(numLosses) + "  ", ddutil::LOSS_COLOR);
+	return c1 + c2 + c3 + c4;
+}
+
+void Profile::updateFile()
+{
+	std::ofstream file(FILENAME, std::ios::trunc);
+	file << highestDistortion << std::endl;
+	file << highestScore << std::endl;
+	file << numWins << std::endl;
+	file << numLosses << std::endl;
+	file.close();
+}

@@ -165,6 +165,21 @@ void Creature::appendToName(std::string n)
 	name = name + " " + n;
 }
 
+void Creature::setHealthPercent(int percentOfMaxHp)
+{
+	health = getMaxHealth(percentOfMaxHp);
+}
+
+void Creature::removeNewestMove()
+{
+	if (moves.empty())
+	{
+		return;
+	}
+	delete moves.back();
+	moves.pop_back();
+}
+
 int Creature::increaseHealth(int amount)
 {
 	int overheal = 0;

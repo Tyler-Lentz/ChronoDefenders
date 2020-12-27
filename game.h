@@ -5,6 +5,7 @@
 #include "utilities.h"
 #include "art.h"
 #include "savefile.h"
+#include "profile.h"
 
 #include <vector>
 
@@ -70,11 +71,30 @@ public:
 	int getScore();
 
 	void viewCompendium();
+
+	int getGreenMoveCost();
+	int getBlueMoveCost();
+	int getRedMoveCost();
+	int getCurrentDistortion();
 private:
 	bool loadedFromFile;
 	Compendium* compendium;
 
+	int greenMoveCost;
+	int blueMoveCost;
+	int redMoveCost;
 	int score;
+	Profile profile;
+	int currentDistortion; // the actual distortion the current run is on
+	void setDistortionModifers(); // once the player has selected their modifier, then change the values appropriately
+	// Distortion is the unlockable difficulty meter for the game
+	// distortion 0 is the default
+	// each time you win, you unlock a new distortion
+	// distortion 1: Start with 75% of max HP
+	// distortion 2: Moves cost 33% more experience
+	// distortion 3: -10 Max Health
+	// distortion 4: Receive no starting bonus
+	// distortion 5: True Final Boss
 
 	// Major Functions
 	void titleScreen(); // display the titlescreen

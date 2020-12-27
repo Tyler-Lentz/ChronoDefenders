@@ -139,6 +139,13 @@ namespace EnemyMoves
 		int amount;
 	};
 
+	class StealMove : public Move
+	{
+	public:
+		StealMove();
+		ColorString(doAction(Creature* self, Creature* other)) override;
+	};
+
 	class TakeVitality : public Move
 	{
 	public:

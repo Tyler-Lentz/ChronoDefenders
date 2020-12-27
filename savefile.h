@@ -30,6 +30,7 @@ private:
 	// easy integer values and the like
 	int score;
 	unsigned int currentZoneIndex;
+	int distortion;
 
 	// complicated containers
 	std::vector<Zone*> gameWorld;

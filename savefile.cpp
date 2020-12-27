@@ -30,6 +30,11 @@ void Savefile::writeToFile(std::string filename)
 	{
 		file << s << std::endl;
 	}
+	Savechunk deadPlayersChunk = deadPlayersToText();
+	for (std::string s : deadPlayersChunk)
+	{
+		file << s << std::endl;
+	}
 	file.close();
 }
 
@@ -65,6 +70,15 @@ Savefile::Savefile(Game* game, std::string filename)
 	}
 
 	textToPlayerParty(game, playerPartyChunk);
+
+	Savechunk deadPlayersChunk;
+	while (s != "DEAD PLAYERS END")
+	{
+		std::getline(file, s);
+		deadPlayersChunk.add(s);
+	}
+
+	textToDeadPlayers(game, deadPlayersChunk);
 }
 
 void Savefile::loadIntoGame(Game* game)
@@ -83,6 +97,12 @@ void Savefile::loadIntoGame(Game* game)
 	}
 	game->playerParty.clear();
 	game->playerParty = playerParty;
+	for (Player* p : game->deadPlayers)
+	{
+		delete p;
+	}
+	game->deadPlayers.clear();
+	game->deadPlayers = deadPlayers;
 }
 
 Savefile::~Savefile()
@@ -170,11 +190,41 @@ void Savefile::textToPlayerParty(Game* game, Savechunk data)
 
 Savechunk Savefile::deadPlayersToText()
 {
-	return Savechunk();
+	Savechunk chunk;
+	chunk.add("DEAD PLAYERS START");
+	for (Player* p : deadPlayers)
+	{
+		chunk.add(p->makeSaveChunk());
+	}
+	chunk.add("DEAD PLAYERS END");
+	return chunk;
 }
 
 void Savefile::textToDeadPlayers(Game* game, Savechunk data)
 {
+	if (data.front() != "DEAD PLAYERS START" || data.back() != "DEAD PLAYERS END")
+	{
+		ddutil::errorMessage("Invalid Save File Format", __LINE__, __FILE__);
+	}
+	for (unsigned i = 1; i < data.size(); i++)
+	{
+		if (data.at(i) == "PLAYER START")
+		{
+			Savechunk playerChunk;
+			i++;
+			PlayerId type = static_cast<PlayerId>(std::stoi(data.at(i++)));
+			for (; data.at(i) != "PLAYER END"; i++)
+			{
+				playerChunk.add(data.at(i));
+			}
+			Player* player = Player::getPlayerFromSavechunk(game, type, playerChunk);
+			deadPlayers.push_back(player);
+		}
+		else if (data.at(i) != "DEAD PLAYERS END")
+		{
+			ddutil::errorMessage("Invalid Save File Format", __LINE__, __FILE__);
+		}
+	}
 }
 
 void Savechunk::add(Savechunk other)

@@ -75,6 +75,7 @@ public:
 	virtual void deathScene() = 0;
 
 	void appendCount(int count);
+	void appendToName(std::string n);
 protected:
 	int health;
 	int maxHealth;

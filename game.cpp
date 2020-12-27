@@ -525,6 +525,23 @@ void Game::battle(Enemy* enemy)
 
 void Game::addPlayer(Player* newPlayer)
 {
+	if (newPlayer->isMinion())
+	{
+		newPlayer->appendToName(ddutil::getCuteMinionName());
+	}
+	std::string name = newPlayer->getColorString().getString();
+	int count = 0;
+	for (Player* p : playerParty)
+	{
+		if (p->getColorString().getString() == name)
+		{
+			count++;
+		}
+	}
+	if (count > 0)
+	{
+		newPlayer->appendCount(count);
+	}
 	playerParty.push_back(newPlayer);
 }
 

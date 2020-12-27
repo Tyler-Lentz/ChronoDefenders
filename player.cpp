@@ -1196,14 +1196,14 @@ Savechunk Gunslinger::getUniqueSaveChunkInfo()
 // Sorcerer
 
 Sorcerer::Sorcerer(Game* game)
-	:Player(game, PlayerId::Sorceress, Sorcerer::STARTING_VITALITY, Sorcerer::MAX_VITALITY, Sorcerer::VITALITY_GAIN, Sorcerer::MAX_HP,
+	:Player(game, PlayerId::Sorceress, Sorcerer::STARTING_VITALITY, Sorcerer::MAX_VITALITY, Sorcerer::VITALITY_GAIN + 17, Sorcerer::MAX_HP,
 		Sorcerer::MAX_MOVES, "Sorceress", ddutil::SORCERER_COLOR, Art::getSorcerer(), false)
 {
 	// Starting moves
-	moves.push_back(new SorcererMoves::EnergyStrike());
-	moves.push_back(new SorcererMoves::EnergyStrike());
-	moves.push_back(new SorcererMoves::Heal());
-	moves.push_back(new SorcererMoves::Heal());
+	moves.push_back(new SorcererMoves::SummonIceImp(game));
+	moves.push_back(new SorcererMoves::SummonIceImp(game));
+	moves.push_back(new SorcererMoves::SpiritCall(game));
+	moves.push_back(new SorcererMoves::SummonIceDragon(game));
 	moves.push_back(new SorcererMoves::MagicBarrier());
 }
 
@@ -1372,14 +1372,11 @@ FireImp::FireImp(Game* game)
 	:PlayerMinion(game, 2, 2, 2, 8, 1, "Fire Imp", ddutil::RED, Art::getFireImp())
 {
 	moves.push_back(new SorcererMoves::Fireball());
-	count = 0;
 }
 
 Creature* FireImp::makeCopy()
 {
-	count++;
 	FireImp* minion = new FireImp(getGamePtr());
-	minion->appendCount(count);
 	return minion;
 }
 
@@ -1387,14 +1384,11 @@ IceImp::IceImp(Game* game)
 	: PlayerMinion(game, 2, 2, 2, 8, 1, "Ice Imp", ddutil::LIGHTCYAN, Art::getIceImp())
 {
 	moves.push_back(new SorcererMoves::IceOrb());
-	count = 0;
 }
 
 Creature* IceImp::makeCopy()
 {
-	count++;
 	IceImp* minion = new IceImp(getGamePtr());
-	minion->appendCount(count);
 	return minion;
 }
 
@@ -1402,14 +1396,11 @@ Fairy::Fairy(Game* game)
 	:PlayerMinion(game, 2, 4, 2, 5, 2, "Fairy", ddutil::LIGHTMAGENTA, Art::getFairy())
 {
 	moves.push_back(new MinionMoves::FairyDust());
-	count = 0;
 }
 
 Creature* Fairy::makeCopy()
 {
-	count++;
 	Fairy* minion = new Fairy(getGamePtr());
-	minion->appendCount(count);
 	return minion;
 }
 
@@ -1418,14 +1409,11 @@ FireDragon::FireDragon(Game* game)
 {
 	moves.push_back(new MinionMoves::FireBreath());
 	moves.push_back(new MinionMoves::FireBreath());
-	count = 0;
 }
 
 Creature* FireDragon::makeCopy()
 {
-	count++;
 	FireDragon* minion = new FireDragon(getGamePtr());
-	minion->appendCount(count);
 	return minion;
 }
 
@@ -1434,14 +1422,11 @@ IceDragon::IceDragon(Game* game)
 {
 	moves.push_back(new MinionMoves::IceBreath());
 	moves.push_back(new MinionMoves::IceBreath());
-	count = 0;
 }
 
 Creature* IceDragon::makeCopy()
 {
-	count++;
 	IceDragon* minion = new IceDragon(getGamePtr());
-	minion->appendCount(count);
 	return minion;
 }
 
@@ -1451,13 +1436,10 @@ SpiritKnight::SpiritKnight(Game* game)
 	moves.push_back(new MinionMoves::SpiritStrike());
 	moves.push_back(new MinionMoves::SpiritStrike());
 	moves.push_back(new MinionMoves::SpiritProjection());
-	count = 0;
 }
 
 Creature* SpiritKnight::makeCopy()
 {
-	count++;
 	SpiritKnight* minion = new SpiritKnight(getGamePtr());
-	minion->appendCount(count);
 	return minion;
 }

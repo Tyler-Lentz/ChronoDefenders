@@ -78,7 +78,7 @@ std::string ColorString::getString() const
 std::vector<int> ColorString::getColors() const
 {
     std::vector<int> colors;
-    for (int i = 0; i < this->size(); i++)
+    for (unsigned i = 0; i < this->size(); i++)
     {
         colors.push_back(this->at(i).color);
     }

@@ -160,6 +160,11 @@ void Creature::appendCount(int count)
 	name += "(" + std::to_string(count) + ")";
 }
 
+void Creature::appendToName(std::string n)
+{
+	name = name + " " + n;
+}
+
 int Creature::increaseHealth(int amount)
 {
 	int overheal = 0;

@@ -300,5 +300,11 @@ namespace ddutil
         }
         return ColorString(padString(regStr, size), colors);
     }
+
+    std::string getCuteMinionName()
+    {
+        int index = ddutil::random(0, minionNames.size() - 1);
+        return minionNames.at(index);
+    }
 }
 

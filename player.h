@@ -178,8 +178,6 @@ class FireImp : public PlayerMinion
 public:
 	FireImp(Game* game);
 	Creature* makeCopy() override;
-private:
-	int count;
 };
 
 class IceImp : public PlayerMinion
@@ -187,8 +185,6 @@ class IceImp : public PlayerMinion
 public:
 	IceImp(Game* game);
 	Creature* makeCopy() override;
-private:
-	int count;
 };
 
 class Fairy : public PlayerMinion
@@ -196,8 +192,6 @@ class Fairy : public PlayerMinion
 public:
 	Fairy(Game* game);
 	Creature* makeCopy() override;
-private:
-	int count;
 };
 
 class FireDragon : public PlayerMinion
@@ -205,8 +199,6 @@ class FireDragon : public PlayerMinion
 public:
 	FireDragon(Game* game);
 	Creature* makeCopy() override;
-private:
-	int count;
 };
 
 class IceDragon : public PlayerMinion
@@ -214,8 +206,6 @@ class IceDragon : public PlayerMinion
 public:
 	IceDragon(Game* game);
 	Creature* makeCopy() override;
-private:
-	int count;
 };
 
 
@@ -224,8 +214,6 @@ class SpiritKnight : public PlayerMinion
 public:
 	SpiritKnight(Game* game);
 	Creature* makeCopy() override;
-private:
-	int count;
 };
 
 #endif

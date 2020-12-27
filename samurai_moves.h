@@ -274,7 +274,7 @@ namespace SamuraiMoves
 
 		ColorString doAction(Creature* self, Creature* other) override;
 
-		const static int BLOCK = 15;
+		const static int BLOCK = 12;
 		const static int MULTIPLIER = 2;
 		const static int COST = 2;
 	};
@@ -285,7 +285,7 @@ namespace SamuraiMoves
 		ShadowStep();
 
 		ColorString doAction(Creature* self, Creature* other) override;
-		const static int BLOCK = 20;
+		const static int BLOCK = 15;
 		const static int COST = 2;
 		const static int HEXED_LENGTH = 2;
 	};

@@ -5,6 +5,7 @@
 #include "colorstring.h"
 
 #include <string>
+#include <fstream>
 #include <list>
 #include <vector>
 
@@ -314,5 +315,6 @@ namespace ddutil
 
     ColorString getDistortionDescription(int level);
 
+    void xorFile(std::string filename);
 }
 #endif

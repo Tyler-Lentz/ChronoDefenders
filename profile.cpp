@@ -7,6 +7,7 @@
 Profile::Profile()
 	:FILENAME("profile.txt")
 {
+	ddutil::xorFile(FILENAME);
 	std::ifstream file(FILENAME);
 
 	if (file.peek() == std::ifstream::traits_type::eof())
@@ -33,6 +34,7 @@ Profile::Profile()
 	}	
 	
 	file.close();
+	ddutil::xorFile(FILENAME);
 }
 
 void Profile::incrementNumWins()
@@ -96,4 +98,5 @@ void Profile::updateFile()
 	file << numWins << std::endl;
 	file << numLosses << std::endl;
 	file.close();
+	ddutil::xorFile(FILENAME);
 }

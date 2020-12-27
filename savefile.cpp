@@ -38,10 +38,12 @@ void Savefile::writeToFile(std::string filename)
 		file << s << std::endl;
 	}
 	file.close();
+	ddutil::xorFile(filename);
 }
 
 Savefile::Savefile(Game* game, std::string filename)
 {
+	ddutil::xorFile(filename);
 	std::ifstream file(filename);
 
 	if (file.peek() == std::ifstream::traits_type::eof())
@@ -83,6 +85,8 @@ Savefile::Savefile(Game* game, std::string filename)
 	}
 
 	textToDeadPlayers(game, deadPlayersChunk);
+	file.close();
+	ddutil::xorFile(filename);
 }
 
 void Savefile::loadIntoGame(Game* game)

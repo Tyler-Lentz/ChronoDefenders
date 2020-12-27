@@ -333,5 +333,27 @@ namespace ddutil
             return ColorString("Invalid Distortion Level", ddutil::TEXT_COLOR);
         }
     }
+    void xorFile(std::string filename)
+    {
+        std::fstream file(filename, std::ios::in);
+
+        std::string str;
+        std::getline(file, str, std::string::traits_type::to_char_type(
+            std::string::traits_type::eof()));
+
+        file.close();
+
+        int key = 30;
+        for (auto& i : str)
+        {
+            i ^= key;
+        }
+
+        file.open(filename, std::ios::out | std::ios::trunc);
+
+        file << str;
+
+        file.close();
+    }
 }
 

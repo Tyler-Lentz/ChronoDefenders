@@ -294,8 +294,8 @@ void Player::tradeExperience()
 			ColorString("(" + std::to_string(game->getRedMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
 			ColorString("Mythical Strength", ddutil::MYTHICAL_COLOR)
 		);
-		options.push_back(ColorString("Save Experience", ddutil::BROWN));
 		options.push_back(ColorString("View Compendium", ddutil::COMPENDIUM_COLOR));
+		options.push_back(ColorString("Save Experience", ddutil::BROWN));
 		Menu moveTypeMenu(vwin, options, menuCoord, false);
 		menuCoord.y--;
 		// interpret the player input
@@ -338,11 +338,11 @@ void Player::tradeExperience()
 				expFail = true;
 			}
 			break;
-		case 3: // save experience
+		case 4: // save experience
 			game->clearCenterScreen();
 			game->clearBottomDivider();
 			return; // just leave because theres nothing else to do here, no need to navigate out of the loop
-		case 4:
+		case 3:
 		default:// view compendium
 			game->viewCompendium();
 			break;

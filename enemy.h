@@ -201,7 +201,7 @@ public:
 
 	const static int HEALTH = 150;
 	const static int DUAL_STRIKE_DAMAGE = 9;
-	const static int BLOCK_BREAK_DAMAGE = 11;
+	const static int BLOCK_BREAK_DAMAGE = 10;
 	const static int BLOCK_MULTIPLIER = 2;
 	const static int BASE_BLOCK = 13;
 private:
@@ -218,7 +218,7 @@ public:
 
 	const static int HEALTH = 180;
 	const static int DUAL_STRIKE_DAMAGE = 10;
-	const static int BLOCK_BREAK_DAMAGE = 12;
+	const static int BLOCK_BREAK_DAMAGE = 10;
 	const static int BLOCK_MULTIPLIER = 2;
 };
 

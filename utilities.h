@@ -145,8 +145,8 @@ namespace ddutil
     const int DIST1_HP_PERCENT = 75;
     const int DIST2_MOVEXP_PERCENT = 33;
     const int DIST3_MAXHP_MINUS = 10;
-    const int NORMAL_REVIVAL_PERCENT = 50;
-    const int DIST4_REVIVAL_PERCENT = 10;
+    const int NORMAL_REVIVAL_PERCENT = 67;
+    const int DIST4_REVIVAL_PERCENT = 33;
 
     void errorMessage(std::string error, int line, std::string file);
 

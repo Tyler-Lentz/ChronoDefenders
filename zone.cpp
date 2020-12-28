@@ -648,8 +648,8 @@ VoidEnvironment::VoidEnvironment(Game* theGame)
 
 ZoneMap VoidEnvironment::generateRooms()
 {
-	int numPaths = 2;
-	int numRows = 4;
+	int numPaths = 4;
+	int numRows = 7;
 	int numCols = 11;
 	ZoneMap map(numPaths, numRows, numCols);
 

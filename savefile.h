@@ -27,6 +27,8 @@ public:
 	void loadIntoGame(Game* game); // take this save file object and set the game up correctly
 
 	~Savefile();
+
+	static void eraseFile(std::string filename);
 private:
 	// easy integer values and the like
 	int score;

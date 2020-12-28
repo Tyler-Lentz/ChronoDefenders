@@ -745,7 +745,7 @@ public:
 	const static int INVULN_LENGTH = 2;
 	const static int DESPERATION_BEAM_DAM = 45; // solo target
 
-	const static int DIST5_BEAM_DAM = 15;
+	const static int DIST5_BEAM_DAM = 20;
 	const static int DIST5_BEAM_SCALE = 5; // scaling beam attack
 
 	const static int HEX_LENGTH = 3;

@@ -138,6 +138,12 @@ Savefile::~Savefile()
 	// put into game
 }
 
+void Savefile::eraseFile(std::string filename)
+{
+	std::ofstream file(filename, std::ios::trunc);
+	file.close();
+}
+
 
 Savechunk Savefile::gameWorldToText()
 {

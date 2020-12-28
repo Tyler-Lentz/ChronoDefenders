@@ -116,6 +116,7 @@ ddutil::GameStatus Game::run()
 					profile.setNewHighScore(score);
 				}
 				profile.incrementNumLosses();
+				Savefile::eraseFile("save.txt");
 				break;
 			}
 
@@ -167,6 +168,7 @@ ddutil::GameStatus Game::run()
 					vwin->clearScreen();
 				}
 			}
+			Savefile::eraseFile("save.txt");
 			break;
 		}
 	}

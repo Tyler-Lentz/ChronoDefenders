@@ -31,10 +31,11 @@ Profile::Profile()
 		numWins = std::stoi(s);
 		std::getline(file, s);
 		numLosses = std::stoi(s);
+		ddutil::xorFile(FILENAME); // don't want to xor if we call updateFile(), so its in this else block not outside
 	}	
 	
 	file.close();
-	ddutil::xorFile(FILENAME);
+
 }
 
 void Profile::incrementNumWins()

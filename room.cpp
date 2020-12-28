@@ -85,7 +85,7 @@ void FireRoom::playRoom()
 		{
 			vwin->clearLine(i);
 		}
-		game->artifactSelectionMenu(menuTop - 1, game->getActiveZone()->getRandomArtifact());
+		game->artifactSelectionMenu(menuTop - 2, game->getActiveZone()->getRandomArtifact());
 		break;
 	}
 
@@ -120,7 +120,7 @@ void DeadAdventurerEvent::playRoom()
 	Coordinate skullBottom(0, ddutil::EVENT_PICTURE_LINE);
 	vwin->printArtFromBottom(Art::getDeadAdventurer(), skullBottom, true);
 	
-	int line = skullBottom.y + 2;
+	int line = skullBottom.y + 1;
 	vwin->putcenSlowScroll(ColorString("You come across a dead adventurer. They were not as fortunate as you.", ddutil::TEXT_COLOR), line++);
 	
 	std::vector<ColorString> options = {
@@ -209,7 +209,7 @@ void BrokenMirrorEvent::playRoom()
 
 	if (menu.getResponse() == 0) // take the dagger
 	{
-		game->artifactSelectionMenu(line, dagger);
+		game->artifactSelectionMenu(line - 1, dagger);
 
 	}
 	else // leave the dagger
@@ -421,7 +421,7 @@ void TreasureEvent::playRoom()
 	vwin->printArtFromBottom(Art::getTreasureChest(), Coordinate(0, line), true);
 
 	line += 2;
-	game->artifactSelectionMenu(line, game->getActiveZone()->getRandomArtifact());
+	game->artifactSelectionMenu(line - 1, game->getActiveZone()->getRandomArtifact());
 
 	game->clearCenterScreen();
 }
@@ -506,7 +506,7 @@ void LavaBeastEvent::playRoom()
 
 		for (int i = 0; i < NUM_ARTIFACTS; i++)
 		{
-			game->artifactSelectionMenu(line, game->getActiveZone()->getRandomArtifact());
+			game->artifactSelectionMenu(line - 1, game->getActiveZone()->getRandomArtifact());
 			for (int i = line - 1; i < line + 5; i++)
 			{
 				vwin->clearLine(i);
@@ -645,7 +645,7 @@ void MirrorEvent::playRoom()
 
 		Artifact* a = new EtherealDagger(game);
 		a->playFindSound();
-		game->artifactSelectionMenu(line, a);
+		game->artifactSelectionMenu(line - 1, a);
 	}
 	game->clearCenterScreen();
 }
@@ -978,7 +978,7 @@ void MaskEvent::playRoom()
 
 	if (menu.getResponse() == 0) // take the mask 
 	{
-		game->artifactSelectionMenu(line, mask);
+		game->artifactSelectionMenu(line - 1, mask);
 
 	}
 	else // leave the dagger

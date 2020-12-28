@@ -51,7 +51,7 @@ public:
 
 	void playersGetExperience(int amount);
 
-	Player* selectPlayer(int startingLine);
+	Player* selectPlayer(int startingLine, bool allowSkip);
 
 	void artifactSelectionMenu(int startingLine, Artifact* theArtifact);
 

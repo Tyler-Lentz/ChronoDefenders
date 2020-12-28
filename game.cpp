@@ -1315,17 +1315,28 @@ void Game::playersGetExperience(int amount)
 	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, ddutil::CENTER_TEXT_LINE + 1), true);
 }
 
-Player* Game::selectPlayer(int startingLine)
+Player* Game::selectPlayer(int startingLine, bool allowSkip)
 {
 	std::vector<ColorString> options;
 	for (Player* p : playerParty)
 	{
 		options.push_back(p->getColorString());
 	}
+	if (allowSkip)
+	{
+		options.push_back(ColorString("Skip", ddutil::TEXT_COLOR));
+	}
 
 	Menu menu(vwin, options, Coordinate(0, startingLine), true);
 	
-	return playerParty[menu.getResponse()];
+	if (menu.getResponse() >= playerParty.size() || menu.getResponse() < 0)
+	{
+		return nullptr;
+	}
+	else
+	{
+		return playerParty[menu.getResponse()];
+	}
 }
 
 void Game::artifactSelectionMenu(int line, Artifact* artifact)
@@ -1333,7 +1344,15 @@ void Game::artifactSelectionMenu(int line, Artifact* artifact)
 	vwin->putcen(ColorString("Who should receive the ", ddutil::TEXT_COLOR) +
 		artifact->getName() + ColorString("?", ddutil::TEXT_COLOR), line++);
 	vwin->putcen(artifact->getFullInformation(), line++);
-	selectPlayer(line)->getArtifact(artifact);
+	Player* player = selectPlayer(line, true);
+	if (player == nullptr)
+	{
+		delete artifact;
+	}
+	else
+	{
+		player->getArtifact(artifact);
+	}
 }
 
 Zone* Game::getActiveZone()

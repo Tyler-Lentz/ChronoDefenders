@@ -355,6 +355,14 @@ void HardEnemy::deathScene()
 {
 	Enemy::deathScene();
 	game->changeScore(ddutil::STRONG_ENEMY_SCORE);
+
+	VirtualWindow* vwin = game->getVWin();
+	Artifact* artifact = game->getActiveZone()->getRandomArtifact();
+	int line = ddutil::CONSOLEY / 2;
+	vwin->putcen(ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" drops a ", ddutil::TEXT_COLOR) +
+		artifact->getName(), line - 2);
+	game->artifactSelectionMenu(line, artifact);
+	game->clearCenterScreen();
 }
 
 Minotaur::Minotaur(Game* game)
@@ -1187,6 +1195,14 @@ void IntenseHardEnemy::deathScene()
 {
 	Enemy::deathScene();
 	game->changeScore(ddutil::STRONG_ENEMY_SCORE);
+
+	VirtualWindow* vwin = game->getVWin();
+	Artifact* artifact = game->getActiveZone()->getRandomArtifact();
+	int line = ddutil::CONSOLEY / 2;
+	vwin->putcen(ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" drops a ", ddutil::TEXT_COLOR) +
+		artifact->getName(), line - 2);
+	game->artifactSelectionMenu(line, artifact);
+	game->clearCenterScreen();
 }
 
 IntenseEnemy::IntenseEnemy(Game* game, int maxHp, std::string name, int color, Picture pic, std::vector<ColorString> intro)

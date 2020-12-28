@@ -385,7 +385,20 @@ void Game::battle(Enemy* enemy)
 				}
 				break;
 			case VK_SPACE:
-				endTurn = true;
+			{
+				clearBottomDivider();
+				vwin->putcen(ColorString("End Turn?", ddutil::TEXT_COLOR), MOVE_TEXT_LINE - 2);
+				std::vector<ColorString> endTurnOptions = {
+					ColorString("Yes", ddutil::GREEN),
+					ColorString("No", ddutil::RED)
+				};
+				Menu confirmEndTurnMenu(vwin, endTurnOptions, Coordinate(0, MOVE_TEXT_LINE), true);
+				int response = confirmEndTurnMenu.getResponse();
+				if (response == 0)
+				{
+					endTurn = true;
+				} // else do nothing, the turn will repeat itself
+			}
 				break;
 			case VK_MENU:
 				playerParty[activePlayerIndex]->displayArtifacts();

@@ -49,7 +49,7 @@ namespace SamuraiMoves
 	public:
 		Slice();
 
-		const static int DAMAGE = 4000;
+		const static int DAMAGE = 4;
 		const static int COST = 1;
 	};
 

@@ -38,6 +38,8 @@ public:
 	void addPlayer(Player* newPlayer);
 
 	std::vector<Player*> getPlayerParty();
+	std::vector<Player*> getDeadPlayers();
+	Player* revivePlayer(int index); // pass through the index of the dead player in the dead player list
 	Enemy* getCurrentEnemy();
 
 	VirtualWindow* getVWin();
@@ -76,7 +78,11 @@ public:
 	int getBlueMoveCost();
 	int getRedMoveCost();
 	int getCurrentDistortion();
+
+	// drawing to screen
+	void displayDividerString();
 private:
+
 	bool loadedFromFile;
 	Compendium* compendium;
 
@@ -114,7 +120,7 @@ private:
 	void displayHelpScreen();
 	void printCreatureBattleInfo(Creature* creature, Coordinate bottomLeft, int textLine);
 	void doStatusDecrementionAndPrintInfo(Creature* creature);
-	void displayDividerString();
+
 
 	
 	void removeMinionsFromParty();

@@ -325,7 +325,7 @@ namespace ddutil
                 ColorString("Start with -" + std::to_string(ddutil::DIST3_MAXHP_MINUS) + " max HP", ddutil::TEXT_COLOR);
         case 4:
             return ColorString("Distortion 4: ", ddutil::DISTORTION_COLOR) +
-                ColorString("Receive no starting bonus", ddutil::TEXT_COLOR);
+                ColorString("Players only receive 10% HP on revival", ddutil::TEXT_COLOR);
         case 5:
             return ColorString("Distortion 5: ", ddutil::DISTORTION_COLOR) +
                 ColorString("True Final Boss", ddutil::LIGHTMAGENTA);

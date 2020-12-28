@@ -60,7 +60,8 @@ enum RoomId
 	TheMessengerEnemy,
 	TheCollectorEnemy,
 	TheProtectorEnemy,
-	TruePatriarchEnemy
+	TruePatriarchEnemy,
+	RevivalAltar
 };
 
 class Room
@@ -250,6 +251,15 @@ class GoldAltarEvent : public EventRoom
 {
 public:
 	GoldAltarEvent(Game* game);
+
+	void playRoom() override;
+	int getRoomId() override;
+};
+
+class RevivalAltarEvent : public Room
+{
+public:
+	RevivalAltarEvent(Game* game);
 
 	void playRoom() override;
 	int getRoomId() override;

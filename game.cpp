@@ -597,6 +597,31 @@ std::vector<Player*> Game::getPlayerParty()
 	return playerParty;
 }
 
+std::vector<Player*> Game::getDeadPlayers()
+{
+	return deadPlayers;
+}
+
+Player* Game::revivePlayer(int index)
+{
+	if (index < 0 || index >= deadPlayers.size())
+	{
+		return nullptr;
+	}
+	Player* player = deadPlayers.at(index);
+	deadPlayers.erase(deadPlayers.begin() + index);
+	playerParty.push_back(player);
+	if (currentDistortion >= 4)
+	{
+		player->setHealthPercent(ddutil::DIST4_REVIVAL_PERCENT);
+	}
+	else
+	{
+		player->setHealthPercent(ddutil::NORMAL_REVIVAL_PERCENT);
+	}
+	return player;
+}
+
 Enemy* Game::getCurrentEnemy()
 {
 	return currentEnemy;
@@ -676,6 +701,7 @@ void Game::titleScreen()
 				for (int i = MENU_TOP_LINE; i < MENU_TOP_LINE + 6; i++)
 					vwin->clearLine(i);
 				Menu::oneOptionMenu(vwin, ColorString("Error: " + std::string(ex.what()), ddutil::TEXT_COLOR), Coordinate(0, MENU_TOP_LINE), true);
+				ddutil::xorFile("save.txt");
 			}	
 			break;
 		}
@@ -747,8 +773,8 @@ void Game::intro()
 	{
 		text = {
 			ColorString("\"Oh this is terrible!\"", color),
-			ColorString("\"The distortions have become so great I can no longer bestow my blessing!\"", color),
-			ColorString("\"This time, it looks like you all are on your own\"", color),
+			ColorString("\"The distortions have become so great, my revival powers are waning!\"", color),
+			ColorString("\"This time, it looks like you'll have to be extra careful!\"", color),
 			ColorString("\"Please, the whole universe is counting on you\"", color)
 		};
 	}
@@ -772,7 +798,7 @@ void Game::intro()
 		vwin->clearLine(line + 1);
 	}
 
-	if (currentDistortion < 4)
+	if (true)
 	{
 		vwin->putcen(ColorString("Choose your blessing:", Art::WATCHER_COLOR), line++);
 		

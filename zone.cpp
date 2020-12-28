@@ -469,6 +469,7 @@ ZoneMap AbyssEnvironment::generateRooms()
 	ZoneMap map(numPaths, numRows, numCols);
 
 	int middleCol = numCols / 2;
+	bool generatedRevivalAltar = false;
 	for (Coordinate c : map.getRoomCoords())
 	{
 		int row = c.y;
@@ -503,7 +504,15 @@ ZoneMap AbyssEnvironment::generateRooms()
 		}
 		else if (col == middleCol) // middle room always spawns campfire
 		{
-			map[row][col] = new FireRoom(game);
+			if (!generatedRevivalAltar)
+			{
+				map[row][col] = new RevivalAltarEvent(game);
+				generatedRevivalAltar = true;
+			}
+			else
+			{
+				map[row][col] = new FireRoom(game);
+			}
 		}
 		else if (col < middleCol && col > 0) // if not first room but still not middle
 		{
@@ -645,6 +654,7 @@ ZoneMap VoidEnvironment::generateRooms()
 	ZoneMap map(numPaths, numRows, numCols);
 
 	int middleCol = numCols / 2;
+	bool generatedRevivalAltar = false;
 	for (Coordinate c : map.getRoomCoords())
 	{
 		int row = c.y;
@@ -675,7 +685,15 @@ ZoneMap VoidEnvironment::generateRooms()
 		}
 		else if (col == middleCol) // middle room always spawns campfire
 		{
-			map[row][col] = new FireRoom(game);
+			if (!generatedRevivalAltar)
+			{
+				map[row][col] = new RevivalAltarEvent(game);
+				generatedRevivalAltar = true;
+			}
+			else
+			{
+				map[row][col] = new FireRoom(game);
+			}
 		}
 		else if (col < middleCol && col > 0) // if not first room but still not middle
 		{
@@ -965,6 +983,7 @@ Room* Zone::chooseRoom()
 
 	// displaying the map
 	vwin->putcen(getZoneString(), origin.y - 2);
+	vwin->putcen(ColorString("Use the arrow keys to select a Room", ddutil::TEXT_COLOR), origin.y - 1);
 
 	for (Coordinate c : map.getRoomCoords())
 	{
@@ -997,10 +1016,15 @@ Room* Zone::chooseRoom()
 			}	
 		}
 	}
-	ColorString controls1 = ColorString("E = Normal Enemy; S = Strong Enemy; B = Boss Enemy; ", ddutil::CYAN);
-	ColorString controls2 = ColorString("~ = Campfire; ", ddutil::FIRE_COLOR);
-	ColorString controls3 = ColorString("? = Random Event", ddutil::EVENT_COLOR);
+	ColorString controls1 = ColorString("E -> Normal Enemy; S -> Strong Enemy; B -> Boss Enemy; ", ddutil::CYAN);
+	ColorString controls2 = ColorString("~ -> Campfire; ", ddutil::FIRE_COLOR);
+	ColorString controls3 = ColorString("? -> Random Event", ddutil::EVENT_COLOR);
+	ColorString specificControls = ColorString("+ -> Revival Altar", ddutil::REVIVE_COLOR);
 
+	if (zoneNumber == 2 || zoneNumber == 3)
+	{
+		vwin->putcen(specificControls, ddutil::DIVIDER_LINE3 - 2);
+	}
 	game->getVWin()->putcen(controls1 + controls2 + controls3, ddutil::DIVIDER_LINE3 - 1);
 	game->displayInfo();
 
@@ -1348,6 +1372,9 @@ ZoneMap::ZoneMap(Game* game, Savechunk coordinates, Savechunk rooms, int numRows
 			break;
 		case RoomId::VampireBatVariantEnemy:
 			room = new EnemyRoom(game, new VampireBatVariant(game));
+			break;
+		case RoomId::RevivalAltar:
+			room = new RevivalAltarEvent(game);
 			break;
 		default:
 			throw std::exception("Invalid Room ID in save file");

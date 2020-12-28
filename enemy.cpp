@@ -535,6 +535,31 @@ void BossEnemy::deathScene()
 
 	game->getActiveZone()->chooseBossArtifact();
 
+	
+	if (game->getDeadPlayers().size() > 0)
+	{
+		vwin->clearScreen();
+		
+		vwin->printArt(Art::getTheWatcher(), Coordinate(0, 4), true); 
+		int line = (ddutil::CONSOLEY * 3) / 4;
+
+		std::vector<ColorString> text = {
+			ColorString("\"It appears that some in your party have died\"", ddutil::MAGENTA),
+			ColorString("\"My powers cannot reach where you are currently\"", ddutil::MAGENTA),
+			ColorString("\"However, if you find your way to a Revival Altar, I will be able to help\"", ddutil::MAGENTA),
+			ColorString("\"There, my powers will be able to reach you.\"", ddutil::MAGENTA),
+			ColorString("\"Don't give up!\"", ddutil::MAGENTA)
+		};
+		for (ColorString c : text)
+		{
+			vwin->putcenSlowScroll(c, line);
+			Menu::oneOptionMenu(vwin, ColorString("...", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
+			vwin->clearLine(line);
+			vwin->clearLine(line + 1);
+		}
+	}
+
+
 	game->clearCenterScreen();
 }
 

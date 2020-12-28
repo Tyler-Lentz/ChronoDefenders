@@ -1062,4 +1062,67 @@ int GoldAltarEvent::getRoomId()
 	return RoomId::GoldAltar;
 }
 
+RevivalAltarEvent::RevivalAltarEvent(Game* game)
+	:Room(game, ColorChar(ddutil::MAP_REVIVE, ddutil::REVIVE_COLOR))
+{
+}
 
+void RevivalAltarEvent::playRoom()
+{
+	VirtualWindow* vwin = game->getVWin();
+	game->clearCenterScreen();
+
+	int line = ddutil::EVENT_PICTURE_LINE;
+	vwin->printArtFromBottom(Art::getTheWatcher(), Coordinate(0, line), true);
+
+	line += 2;
+
+	vwin->putcenSlowScroll(ColorString("\"You have arrived at a revival altar. Here I can revive one dead party member\"", ddutil::MAGENTA), line);
+	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR),
+		Coordinate(0, line + 1), true);
+	vwin->clearLine(line);
+	vwin->clearLine(line + 1);
+
+	if (game->getDeadPlayers().empty())
+	{
+		vwin->putcenSlowScroll(ColorString("\"However, it appears that nobody has died. That is truly incredible.\"", ddutil::TEXT_COLOR), line);
+		Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::HEAL_COLOR),
+			Coordinate(0, line + 1), true);
+		vwin->clearLine(line);
+		vwin->clearLine(line + 1);
+	}
+	else
+	{
+		vwin->putcenSlowScroll(ColorString("Please select who I shall revive", ddutil::TEXT_COLOR), line);
+
+		std::vector<ColorString> options;
+		for (Player* p : game->getDeadPlayers())
+		{
+			options.push_back(p->getColorString());
+		}
+
+		Menu menu(vwin, options, Coordinate(0, line + 1), true);
+		Player* selectedPlayer = game->revivePlayer(menu.getResponse());
+		playSound(WavFile("lightning", false, true));
+		vwin->clearScreen(ddutil::REVIVE_COLOR);
+		Sleep(50);
+		vwin->clearScreen(ddutil::BLACK);
+		game->displayDividerString();
+
+		ColorString output = ColorString("The ", ddutil::HEAL_COLOR) + selectedPlayer->getColorString() +
+			ColorString(" has been revived!", ddutil::HEAL_COLOR);
+		game->clearCenterScreen();
+		game->displayInfo();
+
+		vwin->putcen(output, line);
+
+		Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
+	}
+
+	game->clearCenterScreen();
+}
+
+int RevivalAltarEvent::getRoomId()
+{
+	return RoomId::RevivalAltar;
+}

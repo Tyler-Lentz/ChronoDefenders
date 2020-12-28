@@ -79,6 +79,8 @@ namespace ddutil
     const char MAP_NENEMY = 'E'; //233
     const char MAP_SENEMY = 'S'; //232
     const char MAP_FIRE = '~';
+    const char MAP_REVIVE = '+';
+    const int REVIVE_COLOR = ddutil::LIGHTGREEN;
     const int FIRE_COLOR = ddutil::LIGHTRED;
     const int MAP_HIGHLIGHT_COLOR = ddutil::LIGHTCYAN;
 
@@ -143,6 +145,8 @@ namespace ddutil
     const int DIST1_HP_PERCENT = 75;
     const int DIST2_MOVEXP_PERCENT = 33;
     const int DIST3_MAXHP_MINUS = 10;
+    const int NORMAL_REVIVAL_PERCENT = 50;
+    const int DIST4_REVIVAL_PERCENT = 10;
 
     void errorMessage(std::string error, int line, std::string file);
 

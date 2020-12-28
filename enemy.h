@@ -443,7 +443,7 @@ public:
 
 	const static int HEALTH = 240;
 	const static int VULNERABLE_LENGTH = 99;
-	const static int SINGLE_TARGET_DAMAGE = 20;
+	const static int SINGLE_TARGET_DAMAGE = 16;
 	const static int BLOCK = 3;
 private:
 	bool firstTurn;
@@ -476,10 +476,9 @@ public:
 	const static int HEALTH = 250;
 	const static int HEX_LENGTH = 2;
 	const static int HEX_DAMAGE = 13;
-	const static int LICK_DAMAGE = 18;
-	const static int LICK_HEX_LENGTH = 1;
+	const static int LICK_DAMAGE = 9;
 	const static int FROSTBURN_LENGTH = 2;
-	const static int FROSTBURN_DAMAGE = 15;
+	const static int FROSTBURN_DAMAGE = 13;
 private:
 	int turnCounter;
 };
@@ -656,6 +655,7 @@ public:
 	const static int HEALTH = 230;
 	const static int VULNERABLE_LENGTH = 3;
 	const static int BURN_LENGTH = 3;
+	const static int BURN_DAMAGE = 12;
 	const static int SINGLE_TARGET_DAMAGE = 16;
 	const static int INVULNERABLE_LENGTH = 3;
 
@@ -677,11 +677,10 @@ public:
 	const static int SHIELD_BLOCK = 8;
 	const static int FIRE_DAMAGE = 15;
 	const static int BURN_LENGTH = 3;
-	const static int BLOCKSTRIKE_DAMAGE = 10;
-	const static int BLOCKSTRIKE_BLOCK = 10;
+	const static int BLOCKSTRIKE_DAMAGE = 15;
+	const static int BLOCKSTRIKE_BLOCK = 15;
 	const static int THROUGH_BLOCK_DAMAGE = 6;
 	const static int HYPER_BEAM_DAMAGE = 40;
-	const static int BLOCK_AMOUNT = 50;
 
 private:
 	int turnCounter;

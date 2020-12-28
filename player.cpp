@@ -1024,6 +1024,7 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 				{
 					newMoves.push_back(new GunslingerMoves::DrawHeart());
 				}
+				break;
 			}
 			case 7:
 				newMoves.push_back(new GunslingerMoves::Punch());

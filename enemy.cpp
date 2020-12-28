@@ -465,7 +465,7 @@ EnemyTurn GiantHead::getTurn(std::vector<Creature*> players)
 	{
 		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
 		chosenMove = moves[0];
-		intent = ddutil::genericDamageIntent(STUN_DAMAGE, getColorString(), "Maul", targets);
+		intent = ddutil::genericDamageIntent(scalingAttack->getStrength(), getColorString(), "Maul", targets);
 	}
 	else
 	{
@@ -570,7 +570,8 @@ TheMessenger::TheMessenger(Game* game)
 		}
 	)
 {
-	moves.push_back(new EnemyMoves::Burn(BURN_LENGTH));
+	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, BURN_DAMAGE, new BurntStatus(), BURN_LENGTH, 0, "", Strength::Powerful, 
+		WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Vulnerable(VULNERABLE_LENGTH));
 	moves.push_back(new EnemyMoves::Strike(SINGLE_TARGET_DAMAGE, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Strike(SINGLE_TARGET_DAMAGE, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
@@ -591,9 +592,9 @@ EnemyTurn TheMessenger::getTurn(std::vector<Creature*> players)
 	{
 	case 0: // burn
 		targets = players;
-		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + 
-			ColorString(" will ",ddutil::TEXT_COLOR) + ColorString("Burn", BurntStatus::COLOR) +
-			ColorString(" everybody", ddutil::TEXT_COLOR);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" will ", ddutil::TEXT_COLOR) + ColorString("Burn", BurntStatus::COLOR) +
+			ColorString(" everybody for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BURN_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
 		break;
 	case 1: // apply vulnerable
 		targets = players;
@@ -605,8 +606,8 @@ EnemyTurn TheMessenger::getTurn(std::vector<Creature*> players)
 		targets.push_back(ddutil::getLowestHealthPlayer(players));
 		intent = ddutil::genericDamageIntent(SINGLE_TARGET_DAMAGE, getColorString(), "Attack", targets);
 		break;
-	case 3: // Strike (again)
-		targets.push_back(ddutil::getLowestHealthPlayer(players));
+	case 3: // Strike (again) but attack random
+		targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
 		intent = ddutil::genericDamageIntent(SINGLE_TARGET_DAMAGE, getColorString(), "Attack", targets);
 		break;
 	case 4: // Invulnerability
@@ -667,7 +668,7 @@ EnemyTurn MysteriousKnight::getTurn(std::vector<Creature*> players)
 	else // damage people for the rest of hte battle
 	{
 		chosenMove = moves[1];
-		targets.push_back(ddutil::getLowestHealthPlayer(players));
+		targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
 		intent = ddutil::genericDamageIntent(SINGLE_TARGET_DAMAGE, getColorString(), "Strike", targets);
 	}
 
@@ -979,7 +980,7 @@ int AltGiantLizard::getRoomId()
 
 TheCollector::TheCollector(Game* game)
 	:BossEnemy(
-		game, HEALTH, "Collector", Art::COLLECTOR_COLOR, Art::getCollector(),
+		game, HEALTH, "Destructor", Art::COLLECTOR_COLOR, Art::getCollector(),
 		std::vector<ColorString> {
 			ColorString("Resistance is futile", Art::COLLECTOR_COLOR),
 			ColorString("",ddutil::TEXT_COLOR) + ddutil::PATRIARCH_STRING + ColorString(" will destroy this world!", Art::COLLECTOR_COLOR)
@@ -991,7 +992,6 @@ TheCollector::TheCollector(Game* game)
 	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, FIRE_DAMAGE, new BurntStatus(), BURN_LENGTH, 0, "", Strength::Powerful, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::StrikeAndBlock(BLOCKSTRIKE_DAMAGE, BLOCKSTRIKE_BLOCK, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new SimpleAttackMove(MoveId::EnemyMoveId, THROUGH_BLOCK_DAMAGE, true, 0, "", Strength::Powerful, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new EnemyMoves::Block(BLOCK_AMOUNT, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new EnemyMoves::Strike(HYPER_BEAM_DAMAGE, WavFile("magicattack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 
@@ -1036,20 +1036,13 @@ EnemyTurn TheCollector::getTurn(std::vector<Creature*> players)
 		break;
 	case 4:
 		chosenMove = moves[4];
-		targets.push_back(this);
-		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-			ColorString(" will ", ddutil::TEXT_COLOR) +
-			ColorString("block " + std::to_string(BLOCK_AMOUNT) + " damage next turn", ddutil::BLOCK_COLOR);
-		break;
-	case 5:
-		chosenMove = moves[5];
 		targets.push_back(ddutil::getHighestHealthPlayer(players));
 		intent = ddutil::genericDamageIntent(HYPER_BEAM_DAMAGE, getColorString(), "Blast", targets);
 		break;
 	}
 
 	turnCounter++;
-	if (turnCounter > 5)
+	if (turnCounter > 4)
 	{
 		turnCounter = 1; // reset to begining but dont redo more thorns
 	}
@@ -1216,7 +1209,7 @@ SentientMouth::SentientMouth(Game* game)
 {
 	turnCounter = 0;
 	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, HEX_DAMAGE, new HexedStatus(), HEX_LENGTH, 0, "", Strength::Mythical, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, LICK_DAMAGE, new HexedStatus(), LICK_HEX_LENGTH, 0, "", Strength::Mythical, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SimpleAttackMove(MoveId::EnemyMoveId, LICK_DAMAGE,false, 0, "", Strength::Mythical, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, FROSTBURN_DAMAGE, new FrostBurntStatus(), FROSTBURN_LENGTH, 0, "", Strength::Mythical, WavFile("freeze", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
 }
 

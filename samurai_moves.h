@@ -109,7 +109,7 @@ namespace SamuraiMoves
 		Meditation();
 
 		const static int ZEN_AMOUNT = 3;
-		const static int COST = 3;
+		const static int COST = 4;
 	};
 
 	class Storm : public StormMove

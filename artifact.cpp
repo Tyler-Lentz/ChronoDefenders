@@ -224,6 +224,8 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 		return new ThornedArmor(game);
 	case ArtifactID::TikiTotem:
 		return new TikiTotem(game);
+	case ArtifactID::StarCannon:
+		return new StarCannon(game);
 	default:
 		return nullptr;
 	}
@@ -1248,6 +1250,7 @@ ColorString LightningInABottle::startOfBattleAction(Player* player, Enemy* enemy
 		int damage = static_cast<int>(enemy->getMaxHealth(100) * (PERC_DAM / 100.0));
 		ddutil::DamageReport damRep = enemy->reduceHealth(damage, nullptr, true);
 		setAsConsumed();
+		playSound(WavFile("lightning", false, true));
 		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
 			ColorString(" deals ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep) +
 			ColorString(" to the ", ddutil::TEXT_COLOR) + enemy->getColorString();
@@ -1316,6 +1319,30 @@ TikiTotem::TikiTotem(Game* game)
 ColorString TikiTotem::startOfBattleAction(Player* player, Enemy* enemy)
 {
 	ddutil::DamageReport damRep = enemy->reduceHealth(DAMAGE, nullptr, true);
+	playSound(WavFile("vulnerable", false, true));
+	return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+		ColorString(" deals ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep) +
+		ColorString(" to the ", ddutil::TEXT_COLOR) + enemy->getColorString();
+}
+
+StarCannon::StarCannon(Game* game)
+	:MythicalArtifact(
+		"Star Cannon",
+		ColorString("Deals ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(DAM) + " damage", ddutil::TEXT_COLOR) + 
+			ColorString(" per ", ddutil::TEXT_COLOR) + ColorString(std::to_string(XP)+ " XP", ddutil::EXPERIENCE_COLOR) +
+			ColorString(" at the start of battle", ddutil::TEXT_COLOR),
+		ArtifactID::StarCannon,
+		game
+	)
+{
+}
+
+ColorString StarCannon::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	int damage = static_cast<int>(DAM * (player->getExperience() / static_cast<double>(XP)));
+	ddutil::DamageReport damRep = enemy->reduceHealth(damage, nullptr, true);
+	playSound(WavFile("magicattack3", false, true));
 	return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
 		ColorString(" deals ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep) +
 		ColorString(" to the ", ddutil::TEXT_COLOR) + enemy->getColorString();

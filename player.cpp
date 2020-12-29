@@ -893,6 +893,9 @@ Samurai::Samurai(Game* game)
 	moves.push_back(new SamuraiMoves::Slice());
 	moves.push_back(new SamuraiMoves::Deflect());
 	moves.push_back(new SamuraiMoves::Deflect());
+	getArtifact(new StarCannon(game));
+	getArtifact(new LightningInABottle(game));
+	getArtifact(new TikiTotem(game));
 }
 
 std::vector<Move*> Samurai::getRandomMoves(Strength str)

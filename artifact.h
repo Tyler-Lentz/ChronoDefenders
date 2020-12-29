@@ -81,7 +81,7 @@ enum class ArtifactID
 	// new artifacts added later on to not mess up save files
 	TikiTotem,
 	ThornedArmor, // powerful, gives thorns
-	
+	StarCannon
 };
 
 class Artifact
@@ -528,6 +528,17 @@ class MythicalArtifact : public Artifact
 public:
 	MythicalArtifact(std::string name, ColorString description, ArtifactID theID, Game* theGame);
 	void playFindSound() override;
+};
+
+class StarCannon : public MythicalArtifact
+{
+public:
+	StarCannon(Game* game);
+	void equipAction(Player* player) override {};
+	ColorString startOfBattleAction(Player* player, Enemy* enemy) override;
+
+	const static int DAM = 1;
+	const static int XP = 10;// 1 damage per 10 xp
 };
 
 class PoisonVial : public MythicalArtifact

@@ -240,7 +240,7 @@ MythicalArtifact* ZoneEnvironment::getMythArtifact()
 {
 	game->changeScore(ddutil::MYTH_ARTIFACT_SCORE);
 	MythicalArtifact* newArtifact = nullptr;
-	switch (ddutil::random(1, 8))
+	switch (ddutil::random(1, 9))
 	{
 	case 1:
 		newArtifact = new PoisonVial(game);
@@ -265,6 +265,9 @@ MythicalArtifact* ZoneEnvironment::getMythArtifact()
 		break;
 	case 8:
 		newArtifact = new VitalStone(game);
+		break;
+	case 9:
+		newArtifact = new StarCannon(game);
 		break;
 	}
 	newArtifact->playFindSound();

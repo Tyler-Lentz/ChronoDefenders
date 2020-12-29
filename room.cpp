@@ -1085,15 +1085,15 @@ void RevivalAltarEvent::playRoom()
 
 	if (game->getDeadPlayers().empty())
 	{
-		vwin->putcenSlowScroll(ColorString("\"However, it appears that nobody has died. That is truly incredible.\"", ddutil::TEXT_COLOR), line);
-		Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::HEAL_COLOR),
+		vwin->putcenSlowScroll(ColorString("\"However, it appears that nobody has died. That is truly incredible.\"", ddutil::MAGENTA), line);
+		Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR),
 			Coordinate(0, line + 1), true);
 		vwin->clearLine(line);
 		vwin->clearLine(line + 1);
 	}
 	else
 	{
-		vwin->putcenSlowScroll(ColorString("Please select who I shall revive", ddutil::TEXT_COLOR), line);
+		vwin->putcenSlowScroll(ColorString("Please select who I shall revive", ddutil::MAGENTA), line);
 
 		std::vector<ColorString> options;
 		for (Player* p : game->getDeadPlayers())

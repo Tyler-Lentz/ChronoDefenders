@@ -81,6 +81,8 @@ public:
 
 	// drawing to screen
 	void displayDividerString();
+
+	bool canChooseAnyRoom(); // whether you can ignore room path restrictions (wax wings)
 private:
 
 	bool loadedFromFile;

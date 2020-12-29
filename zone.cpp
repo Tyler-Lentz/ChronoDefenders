@@ -1019,12 +1019,9 @@ Room* Zone::chooseRoom()
 	ColorString controls1 = ColorString("E -> Normal Enemy; S -> Strong Enemy; B -> Boss Enemy; ", ddutil::CYAN);
 	ColorString controls2 = ColorString("~ -> Campfire; ", ddutil::FIRE_COLOR);
 	ColorString controls3 = ColorString("? -> Random Event", ddutil::EVENT_COLOR);
-	ColorString specificControls = ColorString("+ -> Revival Altar", ddutil::REVIVE_COLOR);
+	ColorString specificControls = ColorString("+ -> Revival Altar; ", ddutil::REVIVE_COLOR) + ColorString("$ -> XP Merchant", ddutil::EXPERIENCE_COLOR);
+	vwin->putcen(specificControls, ddutil::DIVIDER_LINE3 - 2);
 
-	if (zoneNumber == 2 || zoneNumber == 3)
-	{
-		vwin->putcen(specificControls, ddutil::DIVIDER_LINE3 - 2);
-	}
 	game->getVWin()->putcen(controls1 + controls2 + controls3, ddutil::DIVIDER_LINE3 - 1);
 	game->displayInfo();
 
@@ -1032,12 +1029,30 @@ Room* Zone::chooseRoom()
 
 	// Figuring out what coordinates are valid
 	std::vector<int> allowedNewRows; // vector that contains the current row +- 1
+	std::string menuSoundFile = "menumove";
+	bool canChooseAnyRoom = game->canChooseAnyRoom();
+	if (canChooseAnyRoom)
+	{
+		menuSoundFile = "fly";
+	}
+
 	if (currentCol == 0) // first room
 	{
 		// let the player select any row
 		for (Coordinate c : map.getRoomCoords())
 		{
 			if (c.x == 0)
+			{
+				allowedNewRows.push_back(c.y);
+			}
+		}
+	}
+	else if (canChooseAnyRoom)
+	{	
+		// let the player select any row relative to the column they are in
+		for (Coordinate c : map.getRoomCoords())
+		{
+			if (c.x == currentCol)
 			{
 				allowedNewRows.push_back(c.y);
 			}
@@ -1076,7 +1091,7 @@ Room* Zone::chooseRoom()
 		{
 			if (ddutil::keypress(VK_DOWN))
 			{
-				playSound(WavFile("menumove", false, true));
+				playSound(WavFile(menuSoundFile, false, true));
 				currentValidCoordIndex++;
 				if (currentValidCoordIndex >= static_cast<int>(validCoords.size()))
 				{
@@ -1087,7 +1102,7 @@ Room* Zone::chooseRoom()
 			}
 			else if (ddutil::keypress(VK_UP))
 			{
-				playSound(WavFile("menumove", false, true));
+				playSound(WavFile(menuSoundFile, false, true));
 				currentValidCoordIndex--;
 				if (currentValidCoordIndex < 0)
 				{

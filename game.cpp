@@ -228,6 +228,7 @@ void Game::battle(Enemy* enemy)
 		p->resetVitality();
 		p->clearAllStatuses(); // make sure no statuses from previous battles are lingering
 		p->applyStartingStatuses(enemy);
+		p->doStartBattleArtifactEffects(enemy);
 	}
 	
 	bool firstTimeThrough = true; // flag so that it doesnt apply statuses that are from the self status list
@@ -1242,6 +1243,18 @@ void Game::displayDividerString()
 	ColorString dividerString(std::string(ddutil::CONSOLEX, ddutil::DIVIDER_CHARACTER), zoneColor);
 
 	vwin->put(dividerString, Coordinate(0, ddutil::DIVIDER_LINE3));
+}
+
+bool Game::canChooseAnyRoom()
+{
+	for (Player* p : playerParty)
+	{
+		if (p->hasArtifact(ArtifactID::WaxWings))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void Game::removeMinionsFromParty()

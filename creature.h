@@ -19,6 +19,7 @@ public:
 	~Creature();
 
 	int increaseHealth(int amount); // returns the change in health
+	void setHealth(int amount);
 	void increaseMaxHealth(int amount);
 	void decreaseMaxHealth(int amount);
 	ddutil::DamageReport reduceHealth(int amount, Creature* attacker, bool ignoreBlock = false); // reduces health by amount (taking into account buffer) and sets alive flag appropriately
@@ -101,6 +102,7 @@ protected:
 
 	std::vector<std::pair<Status*, int>> attackStatuses; // statuses that are applied on every attack 
 
+	virtual void doMiscDamageEffects(int damage) {}; // if a sub class has something special when taking damage, then override this
 
 	Game* game;
 };

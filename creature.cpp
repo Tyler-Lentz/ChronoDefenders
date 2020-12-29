@@ -196,6 +196,19 @@ int Creature::increaseHealth(int amount)
 	return endingHealth - startingHealth;
 }
 
+void Creature::setHealth(int amount)
+{
+	health = amount;
+	if (health < 0)
+	{
+		health = 0;
+	}
+	if (health > maxHealth)
+	{
+		health = maxHealth;
+	}
+}
+
 void Creature::increaseMaxHealth(int amount)
 {
 	maxHealth += amount;
@@ -311,6 +324,10 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 		playSound(WavFile("lowhealth", false, true));
 	}
 
+	if (startingHealth - health > 0)
+	{
+		doMiscDamageEffects(startingHealth - health);
+	}
 	return ddutil::DamageReport(damageBlocked, startingHealth - health);
 }
 

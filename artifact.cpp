@@ -7,6 +7,7 @@
 #include "creature.h"
 #include "player.h"
 #include "soundfile.h"
+#include "enemy.h"
 
 Artifact::Artifact(std::string theName, ColorString theDescription, ArtifactID theID, Strength theStrength, int theColor, Game* theGame)
 {
@@ -16,6 +17,18 @@ Artifact::Artifact(std::string theName, ColorString theDescription, ArtifactID t
 	id = theID;
 	strength = theStrength;
 	game = theGame;
+	consumed = false;
+}
+
+bool Artifact::isConsumed()
+{
+	return consumed;
+}
+
+void Artifact::setAsConsumed()
+{
+	consumed = true;
+	description += ColorString(" (Used)", ddutil::YELLOW);
 }
 
 ColorString Artifact::getFullInformation()
@@ -38,10 +51,65 @@ ArtifactID Artifact::getID()
 	return id;
 }
 
-Artifact* Artifact::generateRandomArtifact(Strength strength)
+std::vector<Artifact*> Artifact::getRandomCommonArtifacts(Game* game)
 {
-	// TODO
-	return nullptr;
+	std::vector<Artifact*> artifacts;
+	const int NUM_ARTIFACTS = 3;
+	for (int i : ddutil::uniqueRandom(0, 15, NUM_ARTIFACTS))
+	{
+		switch (i)
+		{
+		case 0:
+			artifacts.push_back(new PurpleShackles(game));
+			break;
+		case 1:
+			artifacts.push_back(new PurpleEnergy(game));
+			break;
+		case 2:
+			artifacts.push_back(new RedShackles(game));
+			break;
+		case 3:
+			artifacts.push_back(new RedEnergy(game));
+			break;
+		case 4:
+			artifacts.push_back(new GreenShackles(game));
+			break;
+		case 5:
+			artifacts.push_back(new GreenEnergy(game));
+			break;
+		case 6:
+			artifacts.push_back(new BrandingIron(game));
+			break;
+		case 7:
+			artifacts.push_back(new EnergyBar(game));
+			break;
+		case 8:
+			artifacts.push_back(new Fungus(game));
+			break;
+		case 9:
+			artifacts.push_back(new CorruptIdol(game));
+			break;
+		case 10:
+			artifacts.push_back(new Ectoplasm(game));
+			break;
+		case 11:
+			artifacts.push_back(new Meat(game));
+			break;
+		case 12:
+			artifacts.push_back(new ShriveledSeed(game));
+			break;
+		case 13:
+			artifacts.push_back(new LightningInABottle(game));
+			break;
+		case 14:
+			artifacts.push_back(new Cookie(game));
+			break;
+		case 15:
+			artifacts.push_back(new WaxWings(game));
+			break;
+		}
+	}
+	return artifacts;
 }
 
 Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
@@ -120,6 +188,38 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 		return new VitalStone(game);
 	case ArtifactID::WarriorHelm:
 		return new WarriorHelm(game);
+	case ArtifactID::PurpleShackles:
+		return new PurpleShackles(game);
+	case ArtifactID::PurpleEnergy:
+		return new PurpleEnergy(game);
+	case ArtifactID::RedShackles:
+		return new RedShackles(game);
+	case ArtifactID::RedEnergy:
+		return new RedEnergy(game);
+	case ArtifactID::GreenShackles:
+		return new GreenShackles(game);
+	case ArtifactID::GreenEnergy:
+		return new GreenEnergy(game);
+	case ArtifactID::BrandingIron:
+		return new BrandingIron(game);
+	case ArtifactID::EnergyBar:
+		return new EnergyBar(game);
+	case ArtifactID::Fungus:
+		return new Fungus(game);
+	case ArtifactID::CorruptIdol:
+		return new CorruptIdol(game);
+	case ArtifactID::Ectoplasm:
+		return new Ectoplasm(game);
+	case ArtifactID::Meat:
+		return new Meat(game);
+	case ArtifactID::ShriveledSeed:
+		return new ShriveledSeed(game);
+	case ArtifactID::LightningInABottle:
+		return new LightningInABottle(game);
+	case ArtifactID::Cookie:
+		return new Cookie(game);
+	case ArtifactID::WaxWings:
+		return new WaxWings(game);
 	default:
 		return nullptr;
 	}
@@ -127,36 +227,14 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 
 bool Artifact::operator<(const Artifact& other) const
 {
-	if (strength == Strength::Moderate)
+	if (strength != other.strength)
 	{
-		if (other.strength == Strength::Powerful || other.strength == Strength::Mythical)
-		{
-			return true;
-		}
-		// else other strength is moderate, and sort by alphabetizing down below the if chain
+		return static_cast<int>(strength) < static_cast<int>(other.strength);
 	}
-	else if (strength == Strength::Powerful)
+	else
 	{
-		if (other.strength == Strength::Moderate)
-		{
-			return false;
-		}
-		else if (other.strength == Strength::Mythical)
-		{
-			return true;
-		}
-		// same strength, sort by alphabetizing below
+		return (name.getString() < other.name.getString());
 	}
-	else if (strength == Strength::Mythical)
-	{
-		if (other.strength != Strength::Mythical)
-		{
-			return false;
-		}
-		// same strength, sort by alphabetizing
-	}
-
-	return (name.getString() < other.name.getString());
 }
 
 ModerateArtifact::ModerateArtifact(std::string name, ColorString description, ArtifactID theID, Game* theGame)
@@ -791,4 +869,417 @@ void BattleStandard::equipAction(Player* player)
 {
 	player->increaseVitalityPerTurn(VIT_PER_TURN_GAIN);
 	player->addSelfStartingStatus(new VulnerableStatus(), VULN_TURNS);
+}
+
+CommonArtifact::CommonArtifact(std::string name, ColorString description, ArtifactID theID, Game* theGame)
+	:Artifact(name, description, theID, Strength::Weak, ddutil::WEAK_COLOR, theGame)
+{
+}
+
+PurpleShackles::PurpleShackles(Game* game)
+	:CommonArtifact(
+		"Purple Shackles",
+		ColorString("Receive ", ddutil::TEXT_COLOR) + ColorString(std::to_string(VIT_PER_TURN) + " vitality ", ddutil::VITALITY_COLOR) +
+			ColorString("per turn in the next battle, but gain ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(XP)+" XP ", ddutil::EXPERIENCE_COLOR) +
+			ColorString("now", ddutil::TEXT_COLOR),
+		ArtifactID::PurpleShackles,
+		game
+	)
+{
+	
+}
+
+ColorString PurpleShackles::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->adjustVitalityGainTemp(VIT_PER_TURN);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" reduce the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString("'s", player->getColor()) + 
+			ColorString(" vitality gain by " + std::to_string(VIT_PER_TURN), ddutil::VITALITY_COLOR);
+	}
+	return ColorString();
+}
+
+void PurpleShackles::equipAction(Player* player)
+{
+	player->gainExperience(XP);
+}
+
+PurpleEnergy::PurpleEnergy(Game* game)
+	:CommonArtifact(
+		"Purple Energy",
+		ColorString("Start with ", ddutil::TEXT_COLOR) + ColorString(std::to_string(START_VIT) + " vitality ", ddutil::VITALITY_COLOR) +
+			ColorString("in the next battle, but gain ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(XP)+" XP ", ddutil::EXPERIENCE_COLOR) +
+			ColorString("now", ddutil::TEXT_COLOR),
+		ArtifactID::PurpleEnergy,
+		game
+	)
+{
+}
+
+void PurpleEnergy::equipAction(Player* player)
+{
+	player->gainExperience(XP);
+}
+
+ColorString PurpleEnergy::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->setVitality(START_VIT);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" reduces the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString("'s", player->getColor()) + 
+			ColorString(" vitality to " + std::to_string(START_VIT), ddutil::VITALITY_COLOR);
+	}
+	return ColorString();
+}
+
+RedShackles::RedShackles(Game* game)
+	:CommonArtifact(
+		"Red Shackles",
+		ColorString("Receive ", ddutil::TEXT_COLOR) + ColorString(std::to_string(VIT_PER_TURN) + " vitality ", ddutil::VITALITY_COLOR) +
+			ColorString("per turn in the next battle, but gain ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(MAX_HP)+" Max HP ", ddutil::HEAL_COLOR) +
+			ColorString("now", ddutil::TEXT_COLOR),
+		ArtifactID::RedShackles,
+		game
+	)
+{
+}
+
+ColorString RedShackles::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->adjustVitalityGainTemp(VIT_PER_TURN);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" reduce the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString("'s", player->getColor()) + 
+			ColorString(" vitality gain by " + std::to_string(VIT_PER_TURN), ddutil::VITALITY_COLOR);
+	}
+	return ColorString();
+}
+
+void RedShackles::equipAction(Player* player)
+{
+	player->increaseMaxHealth(MAX_HP);
+}
+
+RedEnergy::RedEnergy(Game* game)
+	:CommonArtifact(
+		"Red Energy",
+		ColorString("Start with ", ddutil::TEXT_COLOR) + ColorString(std::to_string(START_VIT) + " vitality ", ddutil::VITALITY_COLOR) +
+			ColorString("in the next battle, but gain ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(MAX_HP)+" Max HP ", ddutil::HEAL_COLOR) +
+			ColorString("now", ddutil::TEXT_COLOR),
+		ArtifactID::RedEnergy,
+		game
+	)
+{
+}
+
+ColorString RedEnergy::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->setVitality(START_VIT);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" reduces the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString("'s", player->getColor()) + 
+			ColorString(" vitality to " + std::to_string(START_VIT), ddutil::VITALITY_COLOR);
+	}
+	return ColorString();
+}
+
+void RedEnergy::equipAction(Player* player)
+{
+	player->increaseMaxHealth(MAX_HP);
+}
+
+GreenShackles::GreenShackles(Game* game)
+	:CommonArtifact(
+		"Green Shackles",
+		ColorString("Receive ", ddutil::TEXT_COLOR) + ColorString(std::to_string(VIT_PER_TURN) + " vitality ", ddutil::VITALITY_COLOR) +
+			ColorString("per turn in the next battle, but heal ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(HEAL)+" HP ", ddutil::HEAL_COLOR) +
+			ColorString("now", ddutil::TEXT_COLOR),
+		ArtifactID::GreenShackles,
+		game
+	)
+{
+}
+
+ColorString GreenShackles::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->adjustVitalityGainTemp(VIT_PER_TURN);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" reduce the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString("'s", player->getColor()) + 
+			ColorString(" vitality gain by " + std::to_string(VIT_PER_TURN), ddutil::VITALITY_COLOR);
+	}
+	return ColorString();
+}
+
+void GreenShackles::equipAction(Player* player)
+{
+	player->increaseHealth(HEAL);
+}
+
+GreenEnergy::GreenEnergy(Game* game)
+	:CommonArtifact(
+		"Green Energy",
+		ColorString("Start with ", ddutil::TEXT_COLOR) + ColorString(std::to_string(START_VIT) + " vitality ", ddutil::VITALITY_COLOR) +
+			ColorString("in the next battle, but heal ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(HEAL)+" HP ", ddutil::HEAL_COLOR) +
+			ColorString("now", ddutil::TEXT_COLOR),
+		ArtifactID::GreenEnergy,
+		game
+	)
+{
+}
+
+ColorString GreenEnergy::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->setVitality(START_VIT);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" reduces the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString("'s", player->getColor()) + 
+			ColorString(" vitality to " + std::to_string(START_VIT), ddutil::VITALITY_COLOR);
+	}
+	return ColorString();
+}
+
+void GreenEnergy::equipAction(Player* player)
+{
+	player->increaseHealth(HEAL);
+}
+
+BrandingIron::BrandingIron(Game* game)
+	:CommonArtifact(
+		"Branding Iron",
+		ColorString("Take "+std::to_string(DAMAGE)+ " damage", ddutil::DAMAGE_COLOR) + ColorString(" and ", ddutil::TEXT_COLOR) +
+			ColorString(" increase base block by "+std::to_string(BBLOCK_INC), ddutil::BLOCK_COLOR) +
+			ColorString(" (Cannot kill)", ddutil::TEXT_COLOR),
+		ArtifactID::BrandingIron,
+		game
+	)
+{
+}
+
+void BrandingIron::equipAction(Player* player)
+{
+	player->reduceHealth(DAMAGE, nullptr, true);
+	if (player->getHealth() < 0)
+	{
+		player->setHealth(1);
+	}
+	player->increaseBaseBlock(BBLOCK_INC);
+}
+
+EnergyBar::EnergyBar(Game* game)
+	:CommonArtifact(
+		"Energy Bar",
+		ColorString("Start the next battle with ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(VIT_INC) + " additional vitality", ddutil::VITALITY_COLOR),
+		ArtifactID::EnergyBar,
+		game
+	)
+{
+}
+
+ColorString EnergyBar::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->addVitality(VIT_INC);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() + 
+			ColorString(" gives the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString(" " + std::to_string(VIT_INC) + " vitality", ddutil::VITALITY_COLOR);
+	}
+	return ColorString();
+}
+
+Fungus::Fungus(Game* game)
+	:CommonArtifact(
+		"Fungus",
+		ColorString("Receive ", ddutil::TEXT_COLOR) +
+			ColorString("+" + std::to_string(VIT_PER_TURN_GAIN) + " vitality gain", ddutil::VITALITY_COLOR) +
+			ColorString(" next battle, but ", ddutil::TEXT_COLOR) +
+			ColorString("lose " + std::to_string(HP_COST) + " HP ", ddutil::DAMAGE_COLOR) +
+			ColorString("now (Cannot Kill)", ddutil::TEXT_COLOR),
+		ArtifactID::Fungus,
+		game
+	)
+{
+}
+
+ColorString Fungus::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->adjustVitalityGainTemp(VIT_PER_TURN_GAIN);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" increases the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString("'s", player->getColor()) + 
+			ColorString(" vitality gain by " + std::to_string(VIT_PER_TURN_GAIN), ddutil::VITALITY_COLOR);
+	}
+	return ColorString();
+}
+
+void Fungus::equipAction(Player* player)
+{
+	player->reduceHealth(HP_COST, nullptr, true);
+	if (player->getHealth() < 0)
+	{
+		player->setHealth(1);
+	}
+}
+
+CorruptIdol::CorruptIdol(Game* game)
+	:CommonArtifact(
+		"Corrupt Idol",
+		ColorString("Receive ", ddutil::TEXT_COLOR) +
+			ColorString("+" + std::to_string(VIT_PER_TURN_GAIN) + " vitality gain", ddutil::VITALITY_COLOR) +
+			ColorString(" next battle, but ", ddutil::TEXT_COLOR) +
+			ColorString("receive no XP", ddutil::EXPERIENCE_COLOR),
+		ArtifactID::CorruptIdol,
+		game
+	)
+{
+}
+
+ColorString CorruptIdol::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->adjustVitalityGainTemp(VIT_PER_TURN_GAIN);
+		player->setShouldReceiveXP(false);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" increases the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString("'s", player->getColor()) +
+			ColorString(" vitality gain by " + std::to_string(VIT_PER_TURN_GAIN), ddutil::TEXT_COLOR) +
+			ColorString(", but will steal their ", ddutil::TEXT_COLOR) + ColorString("XP", ddutil::EXPERIENCE_COLOR);
+	}
+	return ColorString();
+}
+
+Ectoplasm::Ectoplasm(Game* game)
+	:CommonArtifact(
+		"Ectoplasm",
+		ColorString("Increases dodge chance by "+std::to_string(DODGE_INC)+"%", ddutil::TEXT_COLOR),
+		ArtifactID::Ectoplasm,
+		game
+	)
+{
+}
+
+void Ectoplasm::equipAction(Player* player)
+{
+	player->increaseDodgeChance(DODGE_INC);
+}
+
+Meat::Meat(Game* game)
+	:CommonArtifact(
+		"Meat",
+		ColorString("Heals "+std::to_string(HEAL)+" HP", ddutil::HEAL_COLOR),
+		ArtifactID::Meat,
+		game
+	)
+{
+}
+
+void Meat::equipAction(Player* player)
+{
+	player->increaseHealth(HEAL);
+	setAsConsumed();
+}
+
+ShriveledSeed::ShriveledSeed(Game* game)
+	:CommonArtifact(
+		"Shriveled Seed",
+		ColorString("Increases Max HP by "+std::to_string(MAX_HP_INC), ddutil::HEAL_COLOR),
+		ArtifactID::ShriveledSeed,
+		game
+	)
+{
+}
+
+void ShriveledSeed::equipAction(Player* player)
+{
+	player->increaseMaxHealth(MAX_HP_INC);
+}
+
+LightningInABottle::LightningInABottle(Game* game)
+	:CommonArtifact(
+		"Lightning in a Bottle",
+		ColorString("Reduces the next enemy's HP by "+std::to_string(PERC_DAM)+"%", ddutil::DAMAGE_COLOR),
+		ArtifactID::LightningInABottle,
+		game
+	)
+{
+}
+
+ColorString LightningInABottle::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		enemy->setHealthPercent(100 - PERC_DAM);
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" reduces the ", ddutil::TEXT_COLOR) + enemy->getColorString() +
+			ColorString("'s", enemy->getColor()) + ColorString(" HP to ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(enemy->getHealth()), ddutil::DAMAGE_COLOR);
+	}
+	return ColorString();
+}
+
+Cookie::Cookie(Game* game)
+	:CommonArtifact(
+		"Cookie",
+		ColorString("Removes all status effects at the start of battle once", ddutil::TEXT_COLOR),
+		ArtifactID::Cookie,
+		game
+	)
+{
+}
+
+ColorString Cookie::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	if (!isConsumed())
+	{
+		player->clearAllStatuses();
+		setAsConsumed();
+		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+			ColorString(" clears the ", ddutil::TEXT_COLOR) + player->getColorString() +
+			ColorString(" of all their status effects", ddutil::TEXT_COLOR);
+	}
+	return ColorString();
+}
+
+WaxWings::WaxWings(Game* game)
+	:CommonArtifact(
+		"Wax Wings",
+		ColorString("Ignore path restrictions when choosing rooms. Destroyed upon taking damage.", ddutil::TEXT_COLOR),
+		ArtifactID::WaxWings,
+		game
+	)	
+{
 }

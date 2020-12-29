@@ -31,6 +31,7 @@ public:
 
 	void displayArtifacts(); // prints out all the player's artifacts in the top of the screen
 
+	void setVitality(int amount);
 	void addVitality(int amount); // adds "amount" to vitality. Checks to make sure it isnt over max vitality.
 	bool subVitality(int amount); // subtracts "amount" from vitality. Returns false if unable to subtract that amount
 	int stealVitality(int amount); // takes away the passed through vitality, cannot go below zero, returns amount stolen
@@ -75,6 +76,10 @@ public:
 	Savechunk makeSaveChunk();
 
 	PlayerId getPlayerId();
+
+	void setShouldReceiveXP(bool val);
+
+	void doStartBattleArtifactEffects(Enemy* enemy);
 protected:
 	virtual Savechunk getUniqueSaveChunkInfo();  // if a class has extra values it needs to store in its save file
 	PlayerId id;
@@ -93,11 +98,14 @@ protected:
 	int movesetLimit; // how many moves the player can have at once
 
 	int percentXPBoost; // represents the percet amount of extra XP the player should gain from artifacts / other boosts
+	bool shouldReceiveXP; // if false, get no Xp and set back to true
 
 	int vitalityGainAdjustment; // value that is added to vitality gain and is used to keep track of temporary adjustments to vitality gain
 								// that go away after the battle
 
 	bool minion; // whether or not the object is a core member of the player party or a temporary minion that leaves after the battle
+
+	void doMiscDamageEffects(int damage) override;
 };
 
 class Samurai : public Player

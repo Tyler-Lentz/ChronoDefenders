@@ -30,6 +30,7 @@ Player::Player(Game* game, PlayerId id, int svit, int maxVit, int vitGain, int m
 	percentXPBoost = 0;
 	movesToChooseFrom = 3;
 	this->id = id;
+	shouldReceiveXP = true;
 }
 
 Player::~Player()
@@ -163,12 +164,33 @@ Player* Player::getPlayerFromSavechunk(Game* game, PlayerId type, Savechunk chun
 	}
 	while (chunk.at(i) != "ARTIFACTS END")
 	{
-		ArtifactID id = static_cast<ArtifactID>(std::stoi(chunk.at(i++)));
-		// just putting code to remove the artifacts in case in the future i add starting artifacts
+		std::stringstream ss(chunk.at(i++));
+		std::string buff;
+		std::vector<std::string> tokens;
+		// first index is artifact id
+		// second index is consumed value
+		while (std::getline(ss, buff, ' '))
+		{
+			tokens.push_back(buff);
+		}
+		if (tokens.size() != 2 && tokens.size() != 1)
+		{
+			throw std::exception("Invalid save file format");
+		}
+		ArtifactID id = static_cast<ArtifactID>(std::stoi(tokens.front()));
 
 		Artifact* artifact = Artifact::getArtifactFromID(game, id);
+
 		if (artifact != nullptr)
 		{
+			if (tokens.size() == 2)
+			{
+				bool consumed = std::stoi(tokens.back());
+				if (consumed)
+				{
+					artifact->setAsConsumed();
+				}
+			} // dont do anything extra if not consumed
 			player->artifacts.push_back(artifact);
 			// NOT the get artifact function because that would apply the artifact's equip effect again, and that has already
 			// been taken care of in the player's stats themselves
@@ -481,7 +503,7 @@ void Player::displayArtifacts()
 	vwin->putcen(
 		ColorString("The ", ddutil::TEXT_COLOR) + 
 		getColorString() + ColorString("'s ", ddutil::TEXT_COLOR) + 
-		ColorString("Artifacts", ddutil::ARTIFACT_COLOR), 
+		ColorString("Artifacts", ddutil::ARTIFACT_COLOR),
 		titleLine
 	);
 	int artifactLine = titleLine + 2;
@@ -492,6 +514,19 @@ void Player::displayArtifacts()
 	Menu::oneOptionMenu(vwin, ColorString("Return", ddutil::TEXT_COLOR), Coordinate(0, ddutil::BOTTOM_TEXT_LINE), true);
 	game->clearCenterScreen();
 	game->clearBottomDivider();
+}
+
+void Player::setVitality(int amount)
+{
+	vitality = amount;
+	if (vitality < 0)
+	{
+		vitality = 0;
+	}
+	if (vitality > maxVitality)
+	{
+		vitality = maxVitality;
+	}
 }
 
 void Player::addVitality(int amount)
@@ -570,6 +605,12 @@ void Player::resetTempStatAdjustments()
 
 int Player::gainExperience(double amount)
 {
+	if (!shouldReceiveXP)
+	{
+		shouldReceiveXP = true;
+		return 0;
+	}
+
 	amount *= 1 + (percentXPBoost / 100.0);
 	experience += static_cast<int>(amount);
 	return static_cast<int>(amount);
@@ -767,7 +808,7 @@ Savechunk Player::makeSaveChunk()
 	chunk.add("ARTIFACTS START");
 	for (Artifact* a : artifacts)
 	{
-		chunk.add(static_cast<int>(a->getID()));
+		chunk.add(std::to_string(static_cast<int>(a->getID())) + " " + std::to_string(static_cast<int>(a->isConsumed())));
 	}
 	chunk.add("ARTIFACTS END");
 	chunk.add(movesToChooseFrom);
@@ -798,10 +839,48 @@ PlayerId Player::getPlayerId()
 	return id;
 }
 
+void Player::setShouldReceiveXP(bool val)
+{
+	shouldReceiveXP = val;
+}
+
+void Player::doStartBattleArtifactEffects(Enemy* enemy)
+{
+	const int LINE = ddutil::CENTER_TEXT_LINE;
+	for (Artifact* a : artifacts)
+	{
+		ColorString info = a->startOfBattleAction(this, enemy);
+		if (!info.empty())
+		{
+			game->getVWin()->putcen(info, LINE);
+			Menu::oneOptionMenu(game->getVWin(), ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, LINE + 1), true);
+			game->getVWin()->clearLine(LINE);
+			game->getVWin()->clearLine(LINE + 1);
+		}
+	}
+}
+
 
 Savechunk Player::getUniqueSaveChunkInfo()
 {
 	return Savechunk();
+}
+
+void Player::doMiscDamageEffects(int damage)
+{
+	if (damage <= 0)
+	{
+		return;
+	}
+	for (int i = 0; i < artifacts.size(); i++)
+	{
+		if (artifacts.at(i)->getID() == ArtifactID::WaxWings)
+		{
+			delete artifacts[i];
+			artifacts.erase(artifacts.begin() + i);
+			break;
+		}
+	}
 }
 
 // Samurai

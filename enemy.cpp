@@ -124,7 +124,34 @@ NormalEnemy::NormalEnemy(Game* game, int maxHp, std::string name, int color, Pic
 void NormalEnemy::deathScene()
 {
 	Enemy::deathScene();
+	game->displayInfo();
 	game->changeScore(ddutil::NORM_ENEMY_SCORE);
+	game->getVWin()->putcen(ColorString("The ", ddutil::ARTIFACT_COLOR) + getColorString() + 
+		ColorString(" drops some artifacts. Choose one:", ddutil::ARTIFACT_COLOR), ddutil::EVENT_PICTURE_LINE-2);
+
+	std::vector<Artifact*> choices = Artifact::getRandomCommonArtifacts(game);
+	std::vector<ColorString> menuOptions;
+	menuOptions.push_back(ColorString("Skip", ddutil::TEXT_COLOR));
+	for (Artifact* a : choices)
+	{
+		menuOptions.push_back(a->getFullInformation());
+	}
+	Menu menu(game->getVWin(), menuOptions, Coordinate(0, ddutil::EVENT_PICTURE_LINE), true);
+	if (menu.getResponse() != 0)
+	{
+		int index = menu.getResponse() - 1;
+		Artifact* chosen = choices.at(index);
+		choices.erase(choices.begin() + index);
+		game->clearCenterScreen();
+		game->artifactSelectionMenu(ddutil::EVENT_PICTURE_LINE, chosen);
+	}
+	// delete the artifacts which are left, which will be all 3 if skipped, or just the 2 that weren't picked
+	for (Artifact* a : choices)
+	{
+		delete a;
+	}
+	game->clearCenterScreen();
+	game->displayInfo();
 }
 
 Ghost::Ghost(Game* game)
@@ -354,6 +381,7 @@ HardEnemy::HardEnemy(Game* game, int maxHp, std::string name, int color, Picture
 void HardEnemy::deathScene()
 {
 	Enemy::deathScene();
+	game->displayInfo();
 	game->changeScore(ddutil::STRONG_ENEMY_SCORE);
 
 	VirtualWindow* vwin = game->getVWin();
@@ -1194,6 +1222,7 @@ IntenseHardEnemy::IntenseHardEnemy(Game* game, int maxHp, std::string name, int 
 void IntenseHardEnemy::deathScene()
 {
 	Enemy::deathScene();
+	game->displayInfo();
 	game->changeScore(ddutil::STRONG_ENEMY_SCORE);
 
 	VirtualWindow* vwin = game->getVWin();
@@ -1213,7 +1242,34 @@ IntenseEnemy::IntenseEnemy(Game* game, int maxHp, std::string name, int color, P
 void IntenseEnemy::deathScene()
 {
 	Enemy::deathScene();
+	game->displayInfo();
 	game->changeScore(ddutil::NORM_ENEMY_SCORE);
+	game->getVWin()->putcen(ColorString("The ", ddutil::ARTIFACT_COLOR) + getColorString() + 
+		ColorString(" drops some artifacts. Choose one:", ddutil::ARTIFACT_COLOR), ddutil::EVENT_PICTURE_LINE-2);
+
+	std::vector<Artifact*> choices = Artifact::getRandomCommonArtifacts(game);
+	std::vector<ColorString> menuOptions;
+	menuOptions.push_back(ColorString("Skip", ddutil::TEXT_COLOR));
+	for (Artifact* a : choices)
+	{
+		menuOptions.push_back(a->getFullInformation());
+	}
+	Menu menu(game->getVWin(), menuOptions, Coordinate(0, ddutil::EVENT_PICTURE_LINE), true);
+	if (menu.getResponse() != 0)
+	{
+		int index = menu.getResponse() - 1;
+		Artifact* chosen = choices.at(index);
+		choices.erase(choices.begin() + index);
+		game->clearCenterScreen();
+		game->artifactSelectionMenu(ddutil::EVENT_PICTURE_LINE, chosen);
+	}
+	// delete the artifacts which are left, which will be all 3 if skipped, or just the 2 that weren't picked
+	for (Artifact* a : choices)
+	{
+		delete a;
+	}
+	game->clearCenterScreen();
+	game->displayInfo();
 }
 
 SentientMouth::SentientMouth(Game* game)

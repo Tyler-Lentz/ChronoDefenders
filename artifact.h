@@ -128,7 +128,7 @@ public:
 	void equipAction(Player* player) override;
 	
 	const static int VIT_PER_TURN = -1;
-	const static int XP = 50;
+	const static int XP = 40;
 };
 
 class PurpleEnergy : public CommonArtifact
@@ -139,7 +139,7 @@ public:
 	ColorString startOfBattleAction(Player* player, Enemy* enemy) override;
 	
 	const static int START_VIT = 0;
-	const static int XP = 50;
+	const static int XP = 40;
 };
 
 class RedShackles: public CommonArtifact

@@ -419,10 +419,9 @@ Room* CatacombsEnvironment::generateEventRoom()
 {
 	int randomNum = ddutil::random(1, 4);
 	static int uniqueCounter = ddutil::random(1, 5);
-	// 50% unique event
-	// 25% - normal enemy
+	// 75% unique event
 	// 25% generic event
-	if (randomNum <= 2) // unique event
+	if (randomNum <= 3) // unique event
 	{
 		uniqueCounter++;
 		if (uniqueCounter >= 6)
@@ -449,10 +448,6 @@ Room* CatacombsEnvironment::generateEventRoom()
 		{
 			return new DynamiteEvent(game);
 		}
-	}
-	else if (randomNum == 3) // enemy
-	{
-		return new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Normal));
 	}
 	else // generic event
 	{
@@ -618,7 +613,7 @@ Room* AbyssEnvironment::generateEventRoom()
 	static int uniqueCounter = ddutil::random(1, 3);
 	int randomNum = ddutil::random(1, 4);
 
-	if (randomNum <= 2) // unique event
+	if (randomNum <= 3) // unique event
 	{
 		uniqueCounter++;
 		if (uniqueCounter > 3)
@@ -637,10 +632,6 @@ Room* AbyssEnvironment::generateEventRoom()
 		{
 			return new MaskEvent(game);
 		}
-	}
-	else if (randomNum == 3) // enemy fight
-	{
-		return new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Normal));
 	}
 	else // generic Event
 	{
@@ -799,7 +790,7 @@ Room* VoidEnvironment::generateEventRoom()
 	static int uniqueCounter = ddutil::random(1, 3);
 
 	int randomNum = ddutil::random(1, 5);
-	if (randomNum == 1) // unique event 20%
+	if (randomNum <= 3) // unique event 20%
 	{
 		uniqueCounter++;
 		if (uniqueCounter > 3)
@@ -818,10 +809,6 @@ Room* VoidEnvironment::generateEventRoom()
 		{
 			return new GoldAltarEvent(game);
 		}
-	}
-	else if (randomNum == 2 || randomNum == 3) // enemy fight 40%
-	{
-		return new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Normal));
 	}
 	else // generic Event 40%
 	{

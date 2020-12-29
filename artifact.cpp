@@ -522,7 +522,7 @@ MagicQuill::MagicQuill(Game* game)
 		"Magic Quill",
 		ColorString("Increases max moves by " +
 			std::to_string(MOVESET_INCREASE) +
-			"(cannot increase beyond " +
+			" (cannot increase beyond " +
 			std::to_string(ddutil::ABSOLUTE_MAX_MOVES) +
 			")",
 			ddutil::TEXT_COLOR

@@ -1019,7 +1019,7 @@ Room* Zone::chooseRoom()
 	ColorString controls1 = ColorString("E -> Normal Enemy; S -> Strong Enemy; B -> Boss Enemy; ", ddutil::CYAN);
 	ColorString controls2 = ColorString("~ -> Campfire; ", ddutil::FIRE_COLOR);
 	ColorString controls3 = ColorString("? -> Random Event", ddutil::EVENT_COLOR);
-	ColorString specificControls = ColorString("+ -> Revival Altar; ", ddutil::REVIVE_COLOR) + ColorString("$ -> XP Merchant", ddutil::EXPERIENCE_COLOR);
+	ColorString specificControls = ColorString("+ -> Revival Altar; ", ddutil::REVIVE_COLOR);
 	vwin->putcen(specificControls, ddutil::DIVIDER_LINE3 - 2);
 
 	game->getVWin()->putcen(controls1 + controls2 + controls3, ddutil::DIVIDER_LINE3 - 1);

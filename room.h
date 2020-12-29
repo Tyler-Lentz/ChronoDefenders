@@ -153,7 +153,7 @@ public:
 	int getRoomId() override;
 
 	const static int DAMAGE = 10;
-	const static int EXPERIENCE_GAIN = 40;
+	const static int EXPERIENCE_GAIN = 60;
 };
 
 // Enter a room, become surrounded by giant spiders, either can attempt escape

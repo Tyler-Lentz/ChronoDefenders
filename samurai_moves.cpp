@@ -12,7 +12,15 @@
 
 
 SamuraiMoves::ZenMove::ZenMove(MoveId id, int zenLevel, int cost, std::string name, Strength str)
-	:Move(id, "Enter Zen "+std::to_string(zenLevel)+", which applies healing per turn", name, cost, str, false, WavFile("magicspell2", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:Move(
+		id,
+		"Enter Zen "+std::to_string(zenLevel)+", which heals "+std::to_string(ZenStatus::HP_GAIN)+" HP per turn",
+		name,
+		cost,
+		str,
+		false,
+		WavFile("magicspell2", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
 {
 	zenAmount = zenLevel;
 }

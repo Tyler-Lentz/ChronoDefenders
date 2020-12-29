@@ -121,8 +121,8 @@ public:
 
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
+    const static int HP_GAIN = 5;
     const static int COLOR = ddutil::LIGHTMAGENTA;
-private:
 };
 
 class StormStatus : public NormalStatus

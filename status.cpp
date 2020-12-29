@@ -196,7 +196,7 @@ ColorString FrostBurntStatus::applyEndTurnEffect(Creature* target, int stackAmou
 
 ZenStatus::ZenStatus()
 	:NormalStatus(StatusID::Zen, ColorString("Zen", COLOR), 
-		"Heals HP equal to the status's stack amount every turn")
+		"Heals "+std::to_string(HP_GAIN)+"HP amount every turn")
 {
 }
 
@@ -207,7 +207,7 @@ Status* ZenStatus::makeCopy()
 
 ColorString ZenStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
-	int actualHealAmount = target->increaseHealth(stackAmount);
+	int actualHealAmount = target->increaseHealth(HP_GAIN);
 
 	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() + ColorString(" heals ", ddutil::TEXT_COLOR) +
 		ColorString(std::to_string(actualHealAmount) + " health ", ddutil::HEAL_COLOR) +

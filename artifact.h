@@ -357,7 +357,7 @@ public:
 	Chainmail(Game* game);
 	void equipAction(Player* player) override;
 
-	const static int BLOCK_GAIN = 2;
+	const static int BLOCK_GAIN = 4;
 };
 
 class SmellingSalts : public ModerateArtifact
@@ -469,7 +469,7 @@ public:
 	WarriorHelm(Game* game);
 	void equipAction(Player* player) override;
 
-	const static int BLOCK_AMOUNT = 4;
+	const static int BLOCK_AMOUNT = 8;
 };
 
 class Shuriken : public PowerfulArtifact
@@ -571,7 +571,7 @@ class AdamantiteShield : public MythicalArtifact
 public:
 	AdamantiteShield(Game* game);
 	void equipAction(Player* player) override;
-	const static int BLOCK_PER_TURN = 8;
+	const static int BLOCK_PER_TURN = 12;
 };
 
 class EtherealDagger : public MythicalArtifact

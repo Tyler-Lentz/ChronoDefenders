@@ -177,13 +177,13 @@ ColorString SorcererMoves::Blizzard::doAction(Creature* self, Creature* other)
 
 SorcererMoves::Cataclysm::Cataclysm()
 	:Move(MoveId::SorceressCataclysm, "Deals " + std::to_string(BASE_DAMAGE) + " damage (x" + std::to_string(MULTIPLIER) + " if enemy is burnt)", 
-		"Cataclysm", COST, Strength::Powerful, true, WavFile("magicattack2", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+		"Cataclysm", COST, Strength::Powerful, true, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
 
 ColorString SorcererMoves::Cataclysm::doAction(Creature* self, Creature* other)
 {
-	int damageAmount = 10;
+	int damageAmount = BASE_DAMAGE;
 	if (other->hasStatus(StatusID::Burnt))
 	{
 		damageAmount *= 2;

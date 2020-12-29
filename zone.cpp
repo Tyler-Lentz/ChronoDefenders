@@ -155,7 +155,7 @@ ModerateArtifact* ZoneEnvironment::getModArtifact()
 {
 	game->changeScore(ddutil::MOD_ARTIFACT_SCORE);
 	ModerateArtifact* newArtifact = nullptr;
-	switch (ddutil::random(1, 7))
+	switch (ddutil::random(1, 8))
 	{
 	case 1:
 		newArtifact = new PurpleAmulet(game);
@@ -178,6 +178,9 @@ ModerateArtifact* ZoneEnvironment::getModArtifact()
 	case 7:
 		newArtifact = new SmellingSalts(game);
 		break;
+	case 8:
+		newArtifact = new TikiTotem(game);
+		break;
 	}
 	newArtifact->playFindSound();
 	return newArtifact;
@@ -187,7 +190,7 @@ PowerfulArtifact* ZoneEnvironment::getPowArtifact()
 {
 	game->changeScore(ddutil::POW_ARTIFACT_SCORE);
 	PowerfulArtifact* newArtifact = nullptr;
-	switch (ddutil::random(1, 10))
+	switch (ddutil::random(1, 13))
 	{
 	case 1:
 		newArtifact = new SpectralAmulet(game);
@@ -218,6 +221,15 @@ PowerfulArtifact* ZoneEnvironment::getPowArtifact()
 		break;
 	case 10:
 		newArtifact = new ElectricOrb(game);
+		break;
+	case 11:
+		newArtifact = new ThornedArmor(game);
+		break;
+	case 12:
+		newArtifact = new MagicQuill(game);
+		break;
+	case 13:
+		newArtifact = new QuailFeather(game);
 		break;
 	}
 	newArtifact->playFindSound();

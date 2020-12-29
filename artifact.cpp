@@ -220,6 +220,10 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 		return new Cookie(game);
 	case ArtifactID::WaxWings:
 		return new WaxWings(game);
+	case ArtifactID::ThornedArmor:
+		return new ThornedArmor(game);
+	case ArtifactID::TikiTotem:
+		return new TikiTotem(game);
 	default:
 		return nullptr;
 	}
@@ -1241,12 +1245,12 @@ ColorString LightningInABottle::startOfBattleAction(Player* player, Enemy* enemy
 {
 	if (!isConsumed())
 	{
-		enemy->setHealthPercent(100 - PERC_DAM);
+		int damage = static_cast<int>(enemy->getMaxHealth(100) * (PERC_DAM / 100.0));
+		ddutil::DamageReport damRep = enemy->reduceHealth(damage, nullptr, true);
 		setAsConsumed();
 		return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
-			ColorString(" reduces the ", ddutil::TEXT_COLOR) + enemy->getColorString() +
-			ColorString("'s", enemy->getColor()) + ColorString(" HP to ", ddutil::TEXT_COLOR) +
-			ColorString(std::to_string(enemy->getHealth()), ddutil::DAMAGE_COLOR);
+			ColorString(" deals ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep) +
+			ColorString(" to the ", ddutil::TEXT_COLOR) + enemy->getColorString();
 	}
 	return ColorString();
 }
@@ -1282,4 +1286,37 @@ WaxWings::WaxWings(Game* game)
 		game
 	)	
 {
+}
+
+ThornedArmor::ThornedArmor(Game* game)
+	:PowerfulArtifact(
+		"Thorned Armor",
+		ColorString("Applies ", ddutil::TEXT_COLOR) + ColorString("Thorned " +std::to_string(THORNS), ThornsStatus::COLOR),
+		ArtifactID::ThornedArmor, game
+	)
+{
+}
+
+void ThornedArmor::equipAction(Player* player)
+{
+	player->addSelfStartingStatus(new ThornsStatus(), THORNS);
+}
+
+TikiTotem::TikiTotem(Game* game)
+	:ModerateArtifact(
+		"Tiki Totem",
+		ColorString("Deals ", ddutil::TEXT_COLOR) + ColorString(std::to_string(DAMAGE)+" damage ", ddutil::DAMAGE_COLOR) +
+			ColorString("at the start of battle", ddutil::TEXT_COLOR),
+		ArtifactID::TikiTotem,
+		game
+	)
+{
+}
+
+ColorString TikiTotem::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	ddutil::DamageReport damRep = enemy->reduceHealth(DAMAGE, nullptr, true);
+	return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+		ColorString(" deals ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep) +
+		ColorString(" to the ", ddutil::TEXT_COLOR) + enemy->getColorString();
 }

@@ -77,6 +77,11 @@ enum class ArtifactID
 	LightningInABottle, // deal 10% of enemy's hp as damage. Consume on use.
 	Cookie, // clear all status effects at start of battle. Consume on use
 	WaxWings, // Ignore room boundary restrictions. Destroyed upon taking damage.
+	
+	// new artifacts added later on to not mess up save files
+	TikiTotem,
+	ThornedArmor, // powerful, gives thorns
+	
 };
 
 class Artifact
@@ -289,6 +294,16 @@ public:
 	void playFindSound() override;
 };
 
+class TikiTotem : public ModerateArtifact
+{
+public:
+	TikiTotem(Game* game);
+	void equipAction(Player* player) override {};
+	ColorString startOfBattleAction(Player* player, Enemy* enemy) override;
+
+	const static int DAMAGE = 10;
+};
+
 class RustyDagger : public ModerateArtifact
 {
 public:
@@ -374,6 +389,14 @@ class PowerfulArtifact : public Artifact
 public:
 	PowerfulArtifact(std::string name, ColorString description, ArtifactID theID, Game* theGame);
 	void playFindSound() override;
+};
+
+class ThornedArmor : public PowerfulArtifact
+{
+public:
+	ThornedArmor(Game* game);
+	void equipAction(Player* player) override;
+	const static int THORNS = 15;
 };
 
 class SpectralAmulet : public PowerfulArtifact

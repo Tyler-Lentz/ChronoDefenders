@@ -43,7 +43,7 @@ namespace SorcererMoves
 	public:
 		MagicBarrier();
 
-		const static int BLOCK_AMOUNT = 8;
+		const static int BLOCK_AMOUNT = 7;
 		const static int COST = 3;
 	};
 
@@ -145,7 +145,7 @@ namespace SorcererMoves
 	public:
 		EnergyBarrier();
 
-		const static int BLOCK_AMOUNT = 11;
+		const static int BLOCK_AMOUNT = 10;
 		const static int COST = 3;
 	};
 
@@ -257,7 +257,7 @@ namespace SorcererMoves
 	public:
 		EtherealBarrier();
 
-		const static int BLOCK_AMOUNT = 14;
+		const static int BLOCK_AMOUNT = 13;
 		const static int COST = 3;
 	};
 
@@ -373,7 +373,7 @@ namespace SorcererMoves
 	public:
 		ElementalBarrier();
 		const static int COST = 3;
-		const static int BLOCK = 18;
+		const static int BLOCK = 16;
 	};
 }
 

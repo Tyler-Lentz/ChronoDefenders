@@ -48,6 +48,11 @@ Game::Game(VirtualWindow* virWin)
 		gameWorld.push_back(new Zone(this, i));
 	}
 	loadedFromFile = false;
+
+	if (profile.getNumLosses() == 0 && profile.getNumWins() == 0)
+	{
+		displayHelpScreen();
+	}
 }
 
 Game::~Game()
@@ -68,6 +73,7 @@ Game::~Game()
 	}
 
 	delete compendium;
+
 }
 
 ddutil::GameStatus Game::run()
@@ -886,7 +892,9 @@ void Game::displayZoneEntrance()
 
 void Game::displayHelpScreen()
 {
-	// TODO
+	int line = ddutil::EVENT_PICTURE_LINE;
+	vwin->putcen(ColorString("TIP: If you are ever confused about a game mechanic, try reading the compendium.", ddutil::GREEN), line);
+	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line + 1), true);
 }
 
 void Game::printCreatureBattleInfo(Creature* creature, Coordinate bottomLeft, int textLine)

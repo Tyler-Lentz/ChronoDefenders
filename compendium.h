@@ -26,6 +26,7 @@ private:
 
 	// Private helper functions
 	void makeTitlePage();
+	void makeBattlePage();
 	void makeSamuraiList(); // add list of samurai moves
 	void makeGunslingerList(); // add list of gunslinger moves
 	void makeSorceressList(); // add list of sorceress moves

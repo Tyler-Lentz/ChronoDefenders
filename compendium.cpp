@@ -10,6 +10,7 @@ Compendium::Compendium(VirtualWindow* vwin)
 	lastPage = 0; // start on the first page
 	borderString = std::string(ddutil::CONSOLEX, '=');
 	makeTitlePage();
+	makeBattlePage();
 	makeSamuraiList();
 	makeGunslingerList();
 	makeSorceressList();
@@ -73,9 +74,46 @@ void Compendium::makeTitlePage()
 	page.push_back(ColorString("Here, you can find information about all the moves each class can learn, alongside ", ddutil::TEXT_COLOR));
 	page.push_back(ColorString("information about status ailments you may find on your journey", ddutil::TEXT_COLOR));
 	page.push_back(ColorString());
-	page.push_back(ColorString("Controls:", ddutil::TEXT_COLOR));
-	page.push_back(ColorString("Left/Right arrows: navegate through the book", ddutil::TEXT_COLOR));
-	page.push_back(ColorString("Spacebar: exit the Compendium", ddutil::TEXT_COLOR));
+	page.push_back(ColorString("Controls:", ddutil::YELLOW));
+	page.push_back(ColorString("Left/Right arrows: navegate through the book", ddutil::GREEN));
+	page.push_back(ColorString("Spacebar: exit the Compendium", ddutil::RED));
+	compendium.push_back(page);
+}
+
+void Compendium::makeBattlePage()
+{
+	Picture page;
+	int color = ddutil::COMPENDIUM_COLOR;
+	int size = ddutil::CONSOLEX;
+	page.push_back(ColorString(borderString, color));
+	page.push_back(ColorString(ddutil::padString("<- Character Stats ->", size), color));	
+	page.push_back(ColorString(borderString, color));
+	page.push_back(ColorString());
+	page.push_back(ColorString("This section contains information about each character's stats.", ddutil::TEXT_COLOR));
+	page.push_back(ColorString());
+	page.push_back(ColorString("Every player character has its own stat line. Here is an example: ", ddutil::TEXT_COLOR));
+	Gunslinger temp(nullptr);
+	page.push_back(temp.getStatLine());
+	page.push_back(ColorString());	
+	page.push_back(ColorString("In yellow is the character's name. This will vary depending on which character it is.", ddutil::GUNSLINGER_COLOR));
+	page.push_back(ColorString());	
+	page.push_back(ColorString("In green is the character's healthbar, followed by the numerical value.", ddutil::GREEN));
+	page.push_back(ColorString("The color of the healthbar will vary depending on the percentage of HP remaining.", ddutil::GREEN));
+	page.push_back(ColorString());	
+	page.push_back(ColorString("In blue following the healthbar is the amount of block the character has.", ddutil::BLOCK_COLOR));
+	page.push_back(ColorString("Unless specified otherwise, damage from enemies will go to block before it lowers health.", ddutil::BLOCK_COLOR));	
+	page.push_back(ColorString("At the end of the turn, the amount of block returns to 0, so you can't stack block between turns", ddutil::BLOCK_COLOR));
+	page.push_back(ColorString());	
+	page.push_back(ColorString("The 3 numbers in red are the character's vitality stats", ddutil::VITALITY_COLOR));
+	page.push_back(ColorString("The leftmost number is how much vitality the character currently has. Moves costs vitality to use.", ddutil::VITALITY_COLOR));
+	page.push_back(ColorString("The center number is how much vitality the character gains every turn.", ddutil::VITALITY_COLOR));
+	page.push_back(ColorString("The rightmost number is the maximum amount of vitality the character can have stored up.", ddutil::VITALITY_COLOR));
+	page.push_back(ColorString());
+	page.push_back(ColorString("In purple is how much experience the character has. XP can be used to learn new moves", ddutil::EXPERIENCE_COLOR));
+	page.push_back(ColorString());
+	page.push_back(ColorString("The information about bullets is specific to the Gunslinger. Some of his moves use bullets.", ddutil::TEXT_COLOR));
+	page.push_back(ColorString());
+	page.push_back(ColorString("In addition, if a character gains a dodge stat, that will also appear in the stat line", ddutil::TEXT_COLOR));
 	compendium.push_back(page);
 }
 

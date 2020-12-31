@@ -155,7 +155,7 @@ ModerateArtifact* ZoneEnvironment::getModArtifact()
 {
 	game->changeScore(ddutil::MOD_ARTIFACT_SCORE);
 	ModerateArtifact* newArtifact = nullptr;
-	switch (ddutil::random(1, 8))
+	switch (ddutil::random(1, 9))
 	{
 	case 1:
 		newArtifact = new PurpleAmulet(game);
@@ -180,6 +180,9 @@ ModerateArtifact* ZoneEnvironment::getModArtifact()
 		break;
 	case 8:
 		newArtifact = new TikiTotem(game);
+		break;
+	case 9:
+		newArtifact = new BloodyTotem(game);
 		break;
 	}
 	newArtifact->playFindSound();

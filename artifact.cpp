@@ -226,6 +226,8 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 		return new TikiTotem(game);
 	case ArtifactID::StarCannon:
 		return new StarCannon(game);
+	case ArtifactID::BloodyTotem:
+		return new BloodyTotem(game);
 	default:
 		return nullptr;
 	}
@@ -1346,4 +1348,23 @@ ColorString StarCannon::startOfBattleAction(Player* player, Enemy* enemy)
 	return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
 		ColorString(" deals ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep) +
 		ColorString(" to the ", ddutil::TEXT_COLOR) + enemy->getColorString();
+}
+
+BloodyTotem::BloodyTotem(Game* game)
+	:ModerateArtifact(
+		"Bloody Totem", 
+		ColorString("Heals " + std::to_string(HEAL) + " HP ", ddutil::HEAL_COLOR) +
+			ColorString("at the start of every battle", ddutil::TEXT_COLOR),
+		ArtifactID::BloodyTotem,
+		game
+	)
+{
+}
+
+ColorString BloodyTotem::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	int healAmount = player->increaseHealth(HEAL);
+	return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+		ColorString(" heals ", ddutil::HEAL_COLOR) + ColorString("the ", ddutil::TEXT_COLOR) +
+		player->getColorString() + ColorString(" for " + std::to_string(healAmount) + " HP", ddutil::HEAL_COLOR);
 }

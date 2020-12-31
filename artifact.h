@@ -81,7 +81,8 @@ enum class ArtifactID
 	// new artifacts added later on to not mess up save files
 	TikiTotem,
 	ThornedArmor, // powerful, gives thorns
-	StarCannon
+	StarCannon,
+	BloodyTotem
 };
 
 class Artifact
@@ -292,6 +293,16 @@ class ModerateArtifact : public Artifact
 public:
 	ModerateArtifact(std::string name, ColorString description, ArtifactID theID, Game* theGame);
 	void playFindSound() override;
+};
+
+class BloodyTotem : public ModerateArtifact
+{
+public:
+	BloodyTotem(Game* game);
+	void equipAction(Player* player) override {};
+	ColorString startOfBattleAction(Player* player, Enemy* enemy) override;
+
+	const static int HEAL = 1;
 };
 
 class TikiTotem : public ModerateArtifact

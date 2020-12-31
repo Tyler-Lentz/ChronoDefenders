@@ -888,9 +888,9 @@ Samurai::Samurai(Game* game)
 	:Player(game, PlayerId::Samurai, Samurai::STARTING_VITALITY, Samurai::MAX_VITALITY, Samurai::VITALITY_GAIN, Samurai::MAX_HP,
 		Samurai::MAX_MOVES, "Samurai", ddutil::SAMURAI_COLOR, Art::getSamurai(), false)
 {
-	moves.push_back(new SamuraiMoves::Meditation());
-	moves.push_back(new SamuraiMoves::Zen());
-	moves.push_back(new SamuraiMoves::Enlightenment());
+	moves.push_back(new SamuraiMoves::Slice());
+	moves.push_back(new SamuraiMoves::Slice());
+	moves.push_back(new SamuraiMoves::Slice());
 	moves.push_back(new SamuraiMoves::Deflect());
 	moves.push_back(new SamuraiMoves::Deflect());
 }

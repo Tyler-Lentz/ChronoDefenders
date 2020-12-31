@@ -79,10 +79,11 @@ enum class ArtifactID
 	WaxWings, // Ignore room boundary restrictions. Destroyed upon taking damage.
 	
 	// new artifacts added later on to not mess up save files
-	TikiTotem,
+	TikiTotem, // moderate
 	ThornedArmor, // powerful, gives thorns
-	StarCannon,
-	BloodyTotem
+	StarCannon, // mythical
+	BloodyTotem, // Moderate
+	CursedTome // boss
 };
 
 class Artifact
@@ -661,7 +662,7 @@ public:
 	void equipAction(Player* player) override;
 
 	const static int VIT_PER_TURN_GAIN = 2;
-	const static int HEX_TURNS = 2;
+	const static int HEX_TURNS = 1;
 };
 
 class DarkSeed : public BossArtifact
@@ -692,6 +693,15 @@ public:
 
 	const static int VIT_PER_TURN_GAIN = 2;
 	const static int VULN_TURNS = 4;
+};
+
+class CursedTome : public BossArtifact
+{
+public:
+	CursedTome(Game* game);
+	void equipAction(Player* player) override;
+	const static int VIT_PER_TURN_GAIN = 2;
+	const static int MOVES_TO_CHOOSE_REDUCTION = -1;
 };
 
 #endif

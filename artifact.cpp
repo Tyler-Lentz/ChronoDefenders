@@ -228,6 +228,8 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 		return new StarCannon(game);
 	case ArtifactID::BloodyTotem:
 		return new BloodyTotem(game);
+	case ArtifactID::CursedTome:
+		return new CursedTome(game);
 	default:
 		return nullptr;
 	}
@@ -1367,4 +1369,21 @@ ColorString BloodyTotem::startOfBattleAction(Player* player, Enemy* enemy)
 	return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
 		ColorString(" heals ", ddutil::HEAL_COLOR) + ColorString("the ", ddutil::TEXT_COLOR) +
 		player->getColorString() + ColorString(" for " + std::to_string(healAmount) + " HP", ddutil::HEAL_COLOR);
+}
+
+CursedTome::CursedTome(Game* game)
+	:BossArtifact(
+		"Cursed Tome",
+		ColorString("Gives " + std::to_string(VIT_PER_TURN_GAIN) + " vitality per turn ", ddutil::VITALITY_COLOR) + 
+			ColorString("but reduces move selection by " + std::to_string(MOVES_TO_CHOOSE_REDUCTION),ddutil::TEXT_COLOR),
+		ArtifactID::CursedTome,
+		game
+	)
+{
+}
+
+void CursedTome::equipAction(Player* player)
+{
+	player->increaseMovesToChooseFrom(MOVES_TO_CHOOSE_REDUCTION);
+	player->increaseVitalityPerTurn(VIT_PER_TURN_GAIN);
 }

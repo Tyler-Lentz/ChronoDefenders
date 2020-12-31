@@ -32,7 +32,7 @@ public:
 	Enemy(Game* game, int maxHp, std::string name, int color, Picture pic, Mp3File theMusic, std::vector<ColorString> intro, char mapChar);
 	virtual EnemyTurn getTurn(std::vector<Creature*> players) = 0;
 
-	virtual void distortionUpdate(int dist) {}// function that is called on all enemies before battle if there is a distortion, so stats can adjust
+	virtual void distortionUpdate(int dist);// function that is called on all enemies before battle if there is a distortion, so stats can adjust
 	virtual ColorString getStatLine();
 
 	virtual int getRoomId() = 0;

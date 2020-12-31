@@ -20,6 +20,8 @@ public:
 	int getNumWins();
 	int getNumLosses();
 
+	bool wasNoFileFound(); // marks that no file was found, so default profile was created
+	bool isCorrupted(); // marks that could not read the save file, and data was reset to default
 	ColorString getColorString(); // colorstring off all info to display
 private:
 	void updateFile(); // update the file with the values stored in this class
@@ -28,6 +30,8 @@ private:
 	int highestScore;
 	int numWins;
 	int numLosses;
+	bool corrupted;
+	bool noFileFound;
 };
 
 #endif

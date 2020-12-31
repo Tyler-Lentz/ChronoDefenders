@@ -68,6 +68,14 @@ Enemy::Enemy(Game* game, int maxHp, std::string name, int color, Picture pic, Mp
 	mapChar = theChar;
 }
 
+void Enemy::distortionUpdate(int dist)
+{
+	if (dist >= 4)
+	{
+		increaseMaxHealth(getMaxHealth(ddutil::DIST4_PERC_ENEMY_HP_INC));
+	}
+}
+
 ColorString Enemy::getStatLine()
 {
 	return Creature::getStatLine();

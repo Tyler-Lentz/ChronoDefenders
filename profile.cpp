@@ -9,10 +9,13 @@ Profile::Profile()
 {
 	ddutil::xorFile(FILENAME);
 	std::ifstream file(FILENAME);
+	corrupted = false;
+	noFileFound = false;
 
 	if (file.peek() == std::ifstream::traits_type::eof())
 	{
 		// The profile is empty, so put default values
+		noFileFound = true;
 		highestDistortion = 0;
 		highestScore = 0;
 		numWins = 0;
@@ -22,16 +25,29 @@ Profile::Profile()
 	else
 	{
 		// should be data, so fill em up
-		std::string s;
-		std::getline(file, s);
-		highestDistortion = std::stoi(s);
-		std::getline(file, s);
-		highestScore = std::stoi(s);
-		std::getline(file, s);
-		numWins = std::stoi(s);
-		std::getline(file, s);
-		numLosses = std::stoi(s);
-		ddutil::xorFile(FILENAME); // don't want to xor if we call updateFile(), so its in this else block not outside
+		try
+		{
+			std::string s;
+			std::getline(file, s);
+			highestDistortion = std::stoi(s);
+			std::getline(file, s);
+			highestScore = std::stoi(s);
+			std::getline(file, s);
+			numWins = std::stoi(s);
+			std::getline(file, s);
+			numLosses = std::stoi(s);
+			ddutil::xorFile(FILENAME); // don't want to xor if we call updateFile(), so its in this else block not outside
+		}
+		catch (std::exception& ex)
+		{
+			// error loading, reset file to default and report that file was corrupted
+			corrupted = true;
+			highestDistortion = 0;
+			highestScore = 0;
+			numWins = 0;
+			numLosses = 0;
+			updateFile();
+		}
 	}	
 	
 	file.close();
@@ -80,6 +96,16 @@ int Profile::getNumWins()
 int Profile::getNumLosses()
 {
 	return numLosses;
+}
+
+bool Profile::wasNoFileFound()
+{
+	return noFileFound;
+}
+
+bool Profile::isCorrupted()
+{
+	return corrupted;
 }
 
 ColorString Profile::getColorString()

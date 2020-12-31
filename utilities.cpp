@@ -312,22 +312,22 @@ namespace ddutil
         switch (level)
         {
         case 0:
-            return ColorString("Distortion 0: ", ddutil::DISTORTION_COLOR) +
+            return ColorString("No Distortion: ", ddutil::DISTORTION_COLOR) +
                 ColorString("Default difficulty", ddutil::TEXT_COLOR);
         case 1:
-            return ColorString("Distortion 1: ", ddutil::DISTORTION_COLOR) +
+            return ColorString("Distortion I: ", ddutil::DISTORTION_COLOR) +
                 ColorString("Start with "+std::to_string(ddutil::DIST1_HP_PERCENT)+"% HP", ddutil::TEXT_COLOR);
         case 2:
-            return ColorString("Distortion 2: ", ddutil::DISTORTION_COLOR) +
+            return ColorString("Distortion II: ", ddutil::DISTORTION_COLOR) +
                 ColorString("Moves cost " + std::to_string(ddutil::DIST2_MOVEXP_PERCENT) + "% more XP", ddutil::TEXT_COLOR);
         case 3:
-            return ColorString("Distortion 3: ", ddutil::DISTORTION_COLOR) +
+            return ColorString("Distortion III: ", ddutil::DISTORTION_COLOR) +
                 ColorString("Start with -" + std::to_string(ddutil::DIST3_MAXHP_MINUS) + " max HP", ddutil::TEXT_COLOR);
         case 4:
-            return ColorString("Distortion 4: ", ddutil::DISTORTION_COLOR) +
-                ColorString("Players only receive "+std::to_string(ddutil::DIST4_REVIVAL_PERCENT)+ "% HP on revival", ddutil::TEXT_COLOR);
+            return ColorString("Distortion IV: ", ddutil::DISTORTION_COLOR) +
+                ColorString("Enemies receive " + std::to_string(ddutil::DIST4_PERC_ENEMY_HP_INC) + "% more HP", ddutil::TEXT_COLOR);
         case 5:
-            return ColorString("Distortion 5: ", ddutil::DISTORTION_COLOR) +
+            return ColorString("Distortion V: ", ddutil::DISTORTION_COLOR) +
                 ColorString("True Final Boss", ddutil::LIGHTMAGENTA);
         default:
             return ColorString("Invalid Distortion Level", ddutil::TEXT_COLOR);

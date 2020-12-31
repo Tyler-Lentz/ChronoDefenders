@@ -49,6 +49,17 @@ Game::Game(VirtualWindow* virWin)
 	}
 	loadedFromFile = false;
 
+	if (profile.isCorrupted())
+	{
+		vwin->putcen(ColorString("Profile data was corrupted, so values were reset to default.", ddutil::RED), ddutil::EVENT_PICTURE_LINE);
+		Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, ddutil::EVENT_PICTURE_LINE + 1), true);
+	}
+	if (profile.wasNoFileFound())
+	{
+		vwin->putcen(ColorString("No profile data was found, so a default profile was created.", ddutil::RED), ddutil::EVENT_PICTURE_LINE);
+		Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, ddutil::EVENT_PICTURE_LINE + 1), true);
+	}
+
 	if (profile.getNumLosses() == 0 && profile.getNumWins() == 0)
 	{
 		displayHelpScreen();
@@ -633,14 +644,7 @@ Player* Game::revivePlayer(int index)
 	Player* player = deadPlayers.at(index);
 	deadPlayers.erase(deadPlayers.begin() + index);
 	playerParty.push_back(player);
-	if (currentDistortion >= 4)
-	{
-		player->setHealthPercent(ddutil::DIST4_REVIVAL_PERCENT);
-	}
-	else
-	{
-		player->setHealthPercent(ddutil::NORMAL_REVIVAL_PERCENT);
-	}
+	player->setHealthPercent(ddutil::NORMAL_REVIVAL_PERCENT);
 	return player;
 }
 
@@ -672,7 +676,7 @@ void Game::titleScreen()
 	while (!exit)
 	{
 		vwin->printArt(Art::getTitle(), Coordinate(0, 5), true);
-		vwin->put(ColorString("Version 1.2c", ddutil::TEXT_COLOR), Coordinate(1, 1));
+		vwin->put(ColorString("Version 1.3", ddutil::COSMIC_COLOR), Coordinate(1, 1));
 
 		vwin->putcen(profile.getColorString(), ddutil::CONSOLEY - 2);
 		

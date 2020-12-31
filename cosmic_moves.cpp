@@ -176,7 +176,7 @@ CosmicMoves::EternalTomb::EternalTomb()
 std::vector<Move*> CosmicMoves::getRandomMoves(int movesToChooseFrom)
 {
 	std::vector <Move*> moves;
-	for (int i : ddutil::uniqueRandom(0, 7, movesToChooseFrom))
+	for (int i : ddutil::uniqueRandom(0, 8, movesToChooseFrom))
 	{
 		switch (i)
 		{
@@ -203,6 +203,9 @@ std::vector<Move*> CosmicMoves::getRandomMoves(int movesToChooseFrom)
 			break;
 		case 7:
 			moves.push_back(new CosmicMoves::WarpBarrier());
+			break;
+		case 8:
+			moves.push_back(new CosmicMoves::SeeingEye());
 			break;
 		}
 	}

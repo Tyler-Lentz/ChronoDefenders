@@ -80,6 +80,9 @@ public:
 	void setShouldReceiveXP(bool val);
 
 	void doStartBattleArtifactEffects(Enemy* enemy);
+
+	void cosmicAscension();
+	bool isCosmic();
 protected:
 	virtual Savechunk getUniqueSaveChunkInfo();  // if a class has extra values it needs to store in its save file
 	PlayerId id;

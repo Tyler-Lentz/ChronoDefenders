@@ -130,6 +130,14 @@ void Savefile::loadIntoGame(Game* game)
 	}
 	game->deadPlayers.clear();
 	game->deadPlayers = deadPlayers;
+	for (Player* p : playerParty)
+	{
+		p->resetPicture();
+	}
+	for (Player* p : deadPlayers)
+	{
+		p->resetPicture();
+	}
 }
 
 Savefile::~Savefile()

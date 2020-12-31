@@ -234,6 +234,8 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 		return new ShipInABottle(game);
 	case ArtifactID::MonkeysPaw:
 		return new MonkeysPaw(game);
+	case ArtifactID::Singularity:
+		return new Singularity(game);
 	default:
 		return nullptr;
 	}
@@ -1395,8 +1397,8 @@ void CursedTome::equipAction(Player* player)
 ShipInABottle::ShipInABottle(Game* game)
 	:BossArtifact(
 		"Ship in a Bottle",
-		ColorString("At the start of battle, deals "+std::to_string(PER_DAM)+"% of the enemy's max HP as damage", ddutil::DAMAGE_COLOR) +
-			ColorString(" and applies ",ddutil::TEXT_COLOR) + ColorString("Storm 10"+std::to_string(STORM_LEN), StormStatus::COLOR),
+		ColorString("Once per battle, deals "+std::to_string(PER_DAM)+"% of enemy's max HP as damage", ddutil::DAMAGE_COLOR) +
+			ColorString(" & applies ",ddutil::TEXT_COLOR) + ColorString("Storm 10"+std::to_string(STORM_LEN), StormStatus::COLOR),
 		ArtifactID::ShipInABottle,
 		game
 	)
@@ -1432,4 +1434,22 @@ void MonkeysPaw::equipAction(Player* player)
 	player->increaseMaxHealth(player->getMaxHealth(100));
 	player->setHealth(player->getMaxHealth(100));
 	player->increasePercentHealBoost(-100);
+}
+
+Singularity::Singularity(Game* game)
+	:BossArtifact(
+		"Singularity",
+		ColorString("Bestows ultimate cosmic power", ddutil::COSMIC_COLOR) + 
+			ColorString(", but ", ddutil::TEXT_COLOR) +
+			ColorString("halves Max HP and wipes all current moves", ddutil::DAMAGE_COLOR),
+		ArtifactID::Singularity,
+		game
+	)
+{
+}
+
+void Singularity::equipAction(Player* player)
+{
+	player->decreaseMaxHealth(player->getMaxHealth(50));
+	player->cosmicAscension();
 }

@@ -32,7 +32,8 @@ enum class StatusID
     Elemental,
     Strangled,
     Stunned,
-    Scorched
+    Scorched,
+    Entombed
 };
 
 class Status
@@ -321,6 +322,17 @@ public:
     const static int COLOR = ddutil::YELLOW;
 };
 
+class EntombedStatus : public UnchangingStatus
+{
+public:
+    EntombedStatus();
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+    const static int COLOR = ddutil::MAGENTA;
+private:
+    int damage;
+};
+
 class DragonStatus : public NormalStatus 
 {
 public:
@@ -352,7 +364,7 @@ public:
     Status* makeCopy() override;
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
     
-    const static int COLOR = ddutil::LIGHTMAGENTA;
+    const static int COLOR = ddutil::LIGHTGREEN;
     const static int ZAP_AMOUNT = 5;
     const static int BURN_AMOUNT = 2;
     const static int FBURN_AMOUNT = 2;

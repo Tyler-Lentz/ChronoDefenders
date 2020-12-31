@@ -20,9 +20,11 @@ public:
 	static Picture getPaladin();
 	static Picture getGunslinger();
 	static Picture getJesterGunslinger();
+	static Picture getCosmicGunslinger();
 	static Picture getWhiteBackgroundGunslinger();
 	static Picture getSorcerer();
 	static Picture getElementalSorceress();
+	static Picture getCosmicSorceress();
 	static Picture getWhiteBackgroundSorcerer();
 	static Picture getMinotaur();
 	static Picture getFireImp();
@@ -33,6 +35,7 @@ public:
 	static Picture getSpiritKnight();
 	static Picture getSamurai();
 	static Picture getDragonSamurai();
+	static Picture getCosmicSamurai();
 	static Picture getWhiteBackgroundSamurai();
 	static Picture getCampfire();
 	static Picture getGhost();

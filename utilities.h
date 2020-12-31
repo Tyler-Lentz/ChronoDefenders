@@ -97,7 +97,7 @@ namespace ddutil
 
     const int SAMURAI_COLOR = ddutil::RED;
     const int PALADIN_COLOR = ddutil::LIGHTGRAY;
-    const int GUNSLINGER_COLOR = ddutil::YELLOW;
+    const int GUNSLINGER_COLOR = ddutil::BROWN;
     const int SORCERER_COLOR = ddutil::LIGHTBLUE;
 
     const int COMPENDIUM_COLOR = ddutil::CYAN;
@@ -110,6 +110,7 @@ namespace ddutil
     const int MODERATE_COLOR = ddutil::GREEN;
     const int POWERFUL_COLOR = ddutil::CYAN;
     const int MYTHICAL_COLOR = ddutil::RED;
+    const int COSMIC_COLOR = ddutil::YELLOW;
 
     const unsigned int BOSS_ARTIFACT_CHOICES = 3;
 

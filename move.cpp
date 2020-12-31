@@ -6,6 +6,7 @@
 #include "gunslinger_moves.h"
 #include "sorcerer_moves.h"
 #include "samurai_moves.h"
+#include "cosmic_moves.h"
 
 #include <string>
 
@@ -42,6 +43,9 @@ ColorString Move::getColorString()
 	case Strength::Mythical:
 		color = ddutil::MYTHICAL_COLOR;
 		break;
+	case Strength::Cosmic:
+		color = ddutil::COSMIC_COLOR;
+		break;
 	}
 	return ColorString(name, color);
 }
@@ -57,6 +61,12 @@ int Move::getCost()
 {
 	return cost;
 }
+
+Strength Move::getStrength()
+{
+	return strength;
+}
+
 
 bool Move::canChooseTarget()
 {
@@ -295,6 +305,22 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new SorcererMoves::SummonIceImp(game);
 	case MoveId::SorceressSupernova:
 		return new SorcererMoves::Supernova();
+	case MoveId::CosmicBlackHole:
+		return new CosmicMoves::BlackHole();
+	case MoveId::CosmicStarRegen:
+		return new CosmicMoves::StarRegen();
+	case MoveId::CosmicWarpBarrier:
+		return new CosmicMoves::WarpBarrier();
+	case MoveId::CosmicDisturbance:
+		return new CosmicMoves::Disturbance();
+	case MoveId::CosmicDeletion:
+		return new CosmicMoves::Deletion();
+	case MoveId::CosmicCosmicBeam:
+		return new CosmicMoves::CosmicBeam();
+	case MoveId::CosmicStarDust:
+		return new CosmicMoves::StarDust();
+	case MoveId::CosmicEternalTomb:
+		return new CosmicMoves::EternalTomb();
 	default:
 		return nullptr;
 	}

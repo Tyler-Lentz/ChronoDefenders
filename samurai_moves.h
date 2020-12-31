@@ -83,7 +83,7 @@ namespace SamuraiMoves
 		const static int SELF_DAMAGE = 4;
 		const static int COST = 2;
 	};
-
+	
 	class CalculatedSlice : public AttackAndBlockMove
 	{
 	public:

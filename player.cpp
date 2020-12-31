@@ -11,6 +11,7 @@
 #include "menu.h"
 #include "artifact.h"
 #include "enemy.h"
+#include "cosmic_moves.h"
 #include <string>
 #include <algorithm>
 #include <sstream>
@@ -306,70 +307,109 @@ void Player::tradeExperience()
 		vwin->put(ColorString("Spend XP to view " + std::to_string(movesToChooseFrom) + " new moves?", ddutil::TEXT_COLOR), menuCoord);
 		menuCoord.y++;
 		std::vector<ColorString> options;
-		options.push_back(
-			ColorString("(" + std::to_string(game->getGreenMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
-			ColorString("Moderate Strength", ddutil::MODERATE_COLOR)
-		);
-		options.push_back(
-			ColorString("(" + std::to_string(game->getBlueMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
-			ColorString("Powerful Strength", ddutil::POWERFUL_COLOR)
-		);
-		options.push_back(
-			ColorString("(" + std::to_string(game->getRedMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
-			ColorString("Mythical Strength", ddutil::MYTHICAL_COLOR)
-		);
-		options.push_back(ColorString("View Compendium", ddutil::COMPENDIUM_COLOR));
-		options.push_back(ColorString("Save Experience", ddutil::BROWN));
-		Menu moveTypeMenu(vwin, options, menuCoord, false);
-		menuCoord.y--;
-		// interpret the player input
-		bool expFail = false; // set to true if the reason for failure was the player tried to select an option that took too much XP
-		switch (moveTypeMenu.getResponse())
+		bool expFail = false;
+		if (isCosmic())
 		{
-		case 0:
-			if (loseExperience(game->getGreenMoveCost()))
+			options.push_back(
+				ColorString("(" + std::to_string(game->getRedMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
+				ColorString("Cosmic Strength", ddutil::COSMIC_COLOR)
+			);
+			options.push_back(ColorString("View Compendium", ddutil::COMPENDIUM_COLOR));
+			options.push_back(ColorString("Save Experience", ddutil::BROWN));
+
+			Menu moveTypeMenu(vwin, options, menuCoord, false);
+			menuCoord.y--;
+			// interpret the player input
+			switch (moveTypeMenu.getResponse())
 			{
-				game->changeScore(ddutil::MOD_MOVE_SCORE);
-				str = Strength::Moderate;
-				successfulSelection = true;
+			case 0:
+				if (loseExperience(game->getRedMoveCost()))
+				{
+					game->changeScore(ddutil::MYTH_MOVE_SCORE);
+					str = Strength::Cosmic;
+					successfulSelection = true;
+				}
+				else
+				{
+					expFail = true;
+				}
+				break;
+			case 2: // save experience
+				game->clearCenterScreen();
+				game->clearBottomDivider();
+				return; // just leave because theres nothing else to do here, no need to navigate out of the loop
+			case 1:
+			default:// view compendium
+				game->viewCompendium();
+				break;
 			}
-			else
+		}
+		else
+		{
+			options.push_back(
+				ColorString("(" + std::to_string(game->getGreenMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
+				ColorString("Moderate Strength", ddutil::MODERATE_COLOR)
+			);
+			options.push_back(
+				ColorString("(" + std::to_string(game->getBlueMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
+				ColorString("Powerful Strength", ddutil::POWERFUL_COLOR)
+			);
+			options.push_back(
+				ColorString("(" + std::to_string(game->getRedMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
+				ColorString("Mythical Strength", ddutil::MYTHICAL_COLOR)
+			);
+			options.push_back(ColorString("View Compendium", ddutil::COMPENDIUM_COLOR));
+			options.push_back(ColorString("Save Experience", ddutil::BROWN));
+			Menu moveTypeMenu(vwin, options, menuCoord, false);
+			menuCoord.y--;
+			// interpret the player input
+			switch (moveTypeMenu.getResponse())
 			{
-				expFail = true;
+			case 0:
+				if (loseExperience(game->getGreenMoveCost()))
+				{
+					game->changeScore(ddutil::MOD_MOVE_SCORE);
+					str = Strength::Moderate;
+					successfulSelection = true;
+				}
+				else
+				{
+					expFail = true;
+				}
+				break;
+			case 1:
+				if (loseExperience(game->getBlueMoveCost()))
+				{
+					game->changeScore(ddutil::POW_MOVE_SCORE);
+					str = Strength::Powerful;
+					successfulSelection = true;
+				}
+				else
+				{
+					expFail = true;
+				}
+				break;
+			case 2:
+				if (loseExperience(game->getRedMoveCost()))
+				{
+					game->changeScore(ddutil::MYTH_MOVE_SCORE);
+					str = Strength::Mythical;
+					successfulSelection = true;
+				}
+				else
+				{
+					expFail = true;
+				}
+				break;
+			case 4: // save experience
+				game->clearCenterScreen();
+				game->clearBottomDivider();
+				return; // just leave because theres nothing else to do here, no need to navigate out of the loop
+			case 3:
+			default:// view compendium
+				game->viewCompendium();
+				break;
 			}
-			break;
-		case 1:
-			if (loseExperience(game->getBlueMoveCost()))
-			{
-				game->changeScore(ddutil::POW_MOVE_SCORE);
-				str = Strength::Powerful;
-				successfulSelection = true;
-			}
-			else
-			{
-				expFail = true;
-			}
-			break;
-		case 2:
-			if (loseExperience(game->getRedMoveCost()))
-			{
-				game->changeScore(ddutil::MYTH_MOVE_SCORE);
-				str = Strength::Mythical;
-				successfulSelection = true;
-			}
-			else
-			{
-				expFail = true;
-			}
-			break;
-		case 4: // save experience
-			game->clearCenterScreen();
-			game->clearBottomDivider();
-			return; // just leave because theres nothing else to do here, no need to navigate out of the loop
-		case 3:
-		default:// view compendium
-			game->viewCompendium();
-			break;
 		}
 
 		if (!successfulSelection && expFail)
@@ -381,7 +421,15 @@ void Player::tradeExperience()
 	while (!successfulSelection);
 
 	// generate the moves to select from based upon the player input
-	std::vector<Move*> randomMoves = getRandomMoves(str);
+	std::vector<Move*> randomMoves;
+	if (isCosmic())
+	{
+		randomMoves = CosmicMoves::getRandomMoves(movesToChooseFrom);
+	}
+	else
+	{
+		randomMoves	= getRandomMoves(str);
+	}
 
 	bool exit = false;
 	while (!exit)
@@ -860,6 +908,71 @@ void Player::doStartBattleArtifactEffects(Enemy* enemy)
 	}
 }
 
+void Player::cosmicAscension()
+{
+	game->getVWin()->clearScreen();
+	const int CHAR_LINE = ddutil::DIVIDER_LINE3 - 2;
+	game->getVWin()->printArtFromBottom(getPicture(), Coordinate(0, CHAR_LINE), true);
+	int line = ddutil::DIVIDER_LINE3 + 1;
+	game->getVWin()->putcen(getStatLine(), line++);
+	for (Move* m : moves)
+	{
+		game->getVWin()->putcen(m->getFullInformation(), line++);
+	}
+	Sleep(500);
+	line--;
+	while (moves.size() > 0)
+	{
+		removeNewestMove();
+		game->getVWin()->clearLine(line--);
+		playSound(WavFile("shot3", false, false));
+	}
+
+	startingVitality = 10 + startingVitality;
+	vitalityGain = 10 + vitalityGain;
+	maxVitality = 100;
+	movesetLimit = 4;
+	std::vector<Move*> newMoves = CosmicMoves::getRandomMoves(movesetLimit);
+	for (Move* m : newMoves)
+	{
+		moves.push_back(m);
+	}
+	color = ddutil::COSMIC_COLOR;
+	resetPicture(); // do after cosmic move added
+
+	playSound(WavFile("lightning", false, true));
+	for (int i = 0; i < ddutil::CONSOLEY; i++)
+	{
+		game->getVWin()->clearLine(i, ddutil::getColor(ddutil::BLACK, ddutil::COSMIC_COLOR));
+		Sleep(1);
+	}
+	for (int i = 0; i < ddutil::CONSOLEY; i++)
+	{
+		game->getVWin()->clearLine(i, ddutil::BLACK);
+		Sleep(1);
+	}
+	game->getVWin()->printArtFromBottom(getPicture(), Coordinate(0, CHAR_LINE), true);
+	line = ddutil::DIVIDER_LINE3 + 1;
+	game->getVWin()->putcen(getStatLine(), line++);
+	for (Move* m : moves)
+	{
+		game->getVWin()->putcen(m->getFullInformation(), line++);
+	}
+	Menu::oneOptionMenu(game->getVWin(), ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, line), true);
+}
+
+bool Player::isCosmic()
+{
+	for (Move* m : moves)
+	{
+		if (m->getStrength() == Strength::Cosmic)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 
 Savechunk Player::getUniqueSaveChunkInfo()
 {
@@ -1034,7 +1147,14 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 
 void Samurai::resetPicture()
 {
-	this->changePicture(Art::getSamurai());
+	if (isCosmic())
+	{
+		this->changePicture(Art::getCosmicSamurai());
+	}
+	else
+	{
+		this->changePicture(Art::getSamurai());
+	}
 }
 
 Creature* Samurai::makeCopy()
@@ -1216,7 +1336,14 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 
 void Gunslinger::resetPicture()
 {
-	this->changePicture(Art::getGunslinger());
+	if (isCosmic())
+	{
+		this->changePicture(Art::getCosmicGunslinger());
+	}
+	else
+	{
+		this->changePicture(Art::getGunslinger());
+	}
 }
 
 Creature* Gunslinger::makeCopy()
@@ -1428,7 +1555,15 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 
 void Sorcerer::resetPicture()
 {
-	this->changePicture(Art::getSorcerer());
+	if (isCosmic())
+	{
+		this->changePicture(Art::getCosmicSorceress());
+	}
+	else
+	{
+		this->changePicture(Art::getSorcerer());
+	}
+	
 }
 
 Creature* Sorcerer::makeCopy()

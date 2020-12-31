@@ -14,7 +14,8 @@ enum class Strength {
 	Weak,
 	Moderate,
 	Powerful, 
-	Mythical
+	Mythical,
+	Cosmic
 };
 
 enum class MoveId
@@ -130,7 +131,15 @@ enum class MoveId
 	SorceressCastInvulnerability,
 	SorceressElementalForm,
 	SorceressElementalBarrier,
-	SorceressEnergyAura
+	SorceressEnergyAura,
+	CosmicBlackHole,
+	CosmicStarRegen,
+	CosmicWarpBarrier,
+	CosmicDisturbance,
+	CosmicDeletion,
+	CosmicCosmicBeam,
+	CosmicStarDust,
+	CosmicEternalTomb
 };
 
 class Move
@@ -144,6 +153,7 @@ public:
 	ColorString getFullInformation();
 
 	int getCost();
+	Strength getStrength();
 
 	bool canChooseTarget();
 

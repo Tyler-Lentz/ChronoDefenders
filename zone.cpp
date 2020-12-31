@@ -111,6 +111,11 @@ void ZoneEnvironment::chooseBossArtifact()
 			break;
 		}
 	}
+	if (ddutil::random(1, 10) == 1)
+	{
+		choices.push_back(new Singularity(game));
+	}
+
 	if (choices.empty())
 	{
 		ddutil::errorMessage("BAD BOSS ARTIFACT GENERATION", __LINE__, __FILE__);

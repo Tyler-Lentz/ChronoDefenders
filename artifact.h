@@ -85,7 +85,8 @@ enum class ArtifactID
 	BloodyTotem, // Moderate
 	CursedTome, // boss
 	ShipInABottle, // boss
-	MonkeysPaw // Boss
+	MonkeysPaw, // Boss
+	Singularity // boss
 };
 
 class Artifact
@@ -723,6 +724,15 @@ public:
 	MonkeysPaw(Game* game);
 	void equipAction(Player* player) override;
 	// doubles max hp and full heals, but reduces all future healing by 100%
+};
+
+class Singularity : public BossArtifact
+{
+public:
+	Singularity(Game* game);
+	void equipAction(Player* player) override;
+
+
 };
 
 #endif

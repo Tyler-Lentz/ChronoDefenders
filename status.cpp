@@ -111,6 +111,8 @@ Status* Status::getStatusFromID(StatusID id)
 		return new ZappedStatus();
 	case StatusID::Zen:
 		return new ZenStatus();
+	case StatusID::Entombed:
+		return new EntombedStatus();
 	default:
 		return nullptr;
 	}
@@ -638,4 +640,29 @@ ColorString ScorchedStatus::applyEndTurnEffect(Creature* target, int stackAmount
 	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
 		ColorString(" loses " + std::to_string(dam.getDamageTaken()) + " health due to being ", ddutil::TEXT_COLOR) +
 		getName();
+}
+
+EntombedStatus::EntombedStatus()
+	:UnchangingStatus(
+		StatusID::Entombed,
+		ColorString("Entombed", COLOR),
+		"Starts by dealing 1 damage. The damage doubles each turn."
+	)
+{
+	damage = 1;
+}
+
+Status* EntombedStatus::makeCopy()
+{
+	return new EntombedStatus();
+}
+
+ColorString EntombedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	ddutil::DamageReport damRep = target->reduceHealth(damage, nullptr, true);
+	
+	damage *= 2;
+	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
+		ColorString(" takes " + std::to_string(damRep.getDamageTaken()) + " damage", ddutil::DAMAGE_COLOR) +
+		ColorString(" from being ", ddutil::TEXT_COLOR) + ColorString("Entombed", COLOR);
 }

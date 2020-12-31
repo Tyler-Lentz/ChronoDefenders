@@ -1,5 +1,6 @@
 #include "art.h"
 #include "utilities.h"
+#include "status.h"
 
 int Picture::getHeight()
 {
@@ -112,6 +113,31 @@ Picture Art::getJesterGunslinger()
 	return gunslinger;
 }
 
+Picture Art::getCosmicGunslinger()
+{
+	Picture gunslinger;
+	int color = ddutil::COSMIC_COLOR;
+	int color2 = ddutil::LIGHTMAGENTA;
+	gunslinger.push_back(ColorString(R"(    \______          )", color));
+	gunslinger.push_back(ColorString(R"(   __\o___|__        )", color2));
+	gunslinger.push_back(ColorString(R"(    ///  -.          )", color));
+	gunslinger.push_back(ColorString(R"(    _/ \_c/          )", color2));
+	gunslinger.push_back(ColorString(R"(   /= \/             )", color));
+	gunslinger.push_back(ColorString(R"(   \ ^|\     ______. )", color2));
+	gunslinger.push_back(ColorString(R"(   )\  \___~(_]---'  )", color));
+	gunslinger.push_back(ColorString(R"(  _\_\,__o//_)       )", color2));
+	gunslinger.push_back(ColorString(R"( (x_\_:M             )", color));
+	gunslinger.push_back(ColorString(R"(   \ *\ \            )", color2));
+	gunslinger.push_back(ColorString(R"(    \ *\ \           )", color));
+	gunslinger.push_back(ColorString(R"(     \,/ `)          )", color2));
+	gunslinger.push_back(ColorString(R"(    / (   |          )", color));
+	gunslinger.push_back(ColorString(R"(   ,- <___(          )", color2));
+	gunslinger.push_back(ColorString(R"(   (o \|  |          )", color));
+	gunslinger.push_back(ColorString(R"(   [_,_(o \__        )", color2));
+	gunslinger.push_back(ColorString(R"(       \_,___]       )", color));
+	return gunslinger;
+}
+
 Picture Art::getWhiteBackgroundGunslinger()
 {
 	Picture gunslinger;
@@ -167,7 +193,7 @@ Picture Art::getSorcerer()
 Picture Art::getElementalSorceress()
 {
 	Picture sorcerer;
-	int color = ddutil::LIGHTMAGENTA;
+	int color = ElementalStatus::COLOR;
 	sorcerer.push_back(ColorString(R"(              \'/    )", color));
 	sorcerer.push_back(ColorString(R"(            -= * =-  )", color));
 	sorcerer.push_back(ColorString(R"(        .-"-. / #,_  )", color));
@@ -190,6 +216,36 @@ Picture Art::getElementalSorceress()
 	sorcerer.push_back(ColorString(R"(     \_|/   \|_/     )", color));
 	sorcerer.push_back(ColorString(R"(      / \`-'/ \      )", color));
 	sorcerer.push_back(ColorString(R"(      `-'   '-`      )", color));
+	return sorcerer;
+}
+
+Picture Art::getCosmicSorceress()
+{
+	Picture sorcerer;
+	int color = ddutil::COSMIC_COLOR;
+	int color2 = ddutil::LIGHTMAGENTA;
+	sorcerer.push_back(ColorString(R"(              \'/    )", color));
+	sorcerer.push_back(ColorString(R"(            -= * =-  )", color2));
+	sorcerer.push_back(ColorString(R"(        .-"-. / #,_  )", color));
+	sorcerer.push_back(ColorString(R"(       / /\_ \  `#|\ )", color2));
+	sorcerer.push_back(ColorString(R"(      / /')'\ \  /#/ )", color));
+	sorcerer.push_back(ColorString(R"(     (  \ = /  )/\/# )", color2));
+	sorcerer.push_back(ColorString(R"(      )  ) (  (/  \  )", color));
+	sorcerer.push_back(ColorString(R"(     (_.;`"`;._)  |  )", color2));
+	sorcerer.push_back(ColorString(R"(    / (  \|/  )   |  )", color));
+	sorcerer.push_back(ColorString(R"(   /  /\-'^'-/\   |  )", color2));
+	sorcerer.push_back(ColorString(R"(  |  \| )=@=(  \_/   )", color));
+	sorcerer.push_back(ColorString(R"(  |  /\/     \       )", color2));
+	sorcerer.push_back(ColorString(R"(  | /\ \      ;      )", color));
+	sorcerer.push_back(ColorString(R"(  \(// /'     |      )", color2));
+	sorcerer.push_back(ColorString(R"(     \/       |      )", color));
+	sorcerer.push_back(ColorString(R"(      |     / /      )", color2));
+	sorcerer.push_back(ColorString(R"(      | ___/\_\      )", color));
+	sorcerer.push_back(ColorString(R"(      |/ / \ \|      )", color2));
+	sorcerer.push_back(ColorString(R"(     / | | | | \     )", color));
+	sorcerer.push_back(ColorString(R"(     \_|/   \|_/     )", color2));
+	sorcerer.push_back(ColorString(R"(      / \`-'/ \      )", color));
+	sorcerer.push_back(ColorString(R"(      `-'   '-`      )", color2));
 	return sorcerer;
 }
 
@@ -406,6 +462,37 @@ Picture Art::getDragonSamurai()
 	Picture samurai;
 	int color1 = ddutil::DARKGRAY;
 	int color2 = ddutil::LIGHTRED;
+	samurai.push_back(ColorString(R"(                                    /))", color1));
+	samurai.push_back(ColorString(R"(                                   // )", color2));
+	samurai.push_back(ColorString(R"(                 __*_             //  )", color1));
+	samurai.push_back(ColorString(R"(              /-(____)           //   )", color2));
+	samurai.push_back(ColorString(R"(             ////- -|\          //    )", color1));
+	samurai.push_back(ColorString(R"(          ,____o% -,_          //     )", color2));
+	samurai.push_back(ColorString(R"(         /  \\   |||  ;       //      )", color1));
+	samurai.push_back(ColorString(R"(        /____\....::./\      //       )", color2));
+	samurai.push_back(ColorString(R"(       _/__/#\_ _,,_/--\    //        )", color1));
+	samurai.push_back(ColorString(R"(       /___/######## \/""-(\</        )", color2));
+	samurai.push_back(ColorString(R"(      _/__/ '#######  ""^(/</         )", color1));
+	samurai.push_back(ColorString(R"(    __/ /   ,)))=:=(,    //.          )", color2));
+	samurai.push_back(ColorString(R"(   |,--\   /Q...... /.  (/            )", color1));
+	samurai.push_back(ColorString(R"(   /       .Q....../..\               )", color2));
+	samurai.push_back(ColorString(R"(          /.Q ..../...\               )", color1));
+	samurai.push_back(ColorString(R"(         /......./.....\              )", color2));
+	samurai.push_back(ColorString(R"(         /...../  \.....\             )", color1));
+	samurai.push_back(ColorString(R"(         /_.._./   \..._\             )", color2));
+	samurai.push_back(ColorString(R"(          (` )      (` )              )", color1));
+	samurai.push_back(ColorString(R"(          | /        \ |              )", color2));
+	samurai.push_back(ColorString(R"(          '(          )'              )", color1));
+	samurai.push_back(ColorString(R"(         /+|          |+\             )", color2));
+	samurai.push_back(ColorString(R"(         |,/          \,/             )", color1));
+	return samurai;
+}
+
+Picture Art::getCosmicSamurai()
+{
+	Picture samurai;
+	int color1 = ddutil::COSMIC_COLOR;
+	int color2 = ddutil::LIGHTMAGENTA;
 	samurai.push_back(ColorString(R"(                                    /))", color1));
 	samurai.push_back(ColorString(R"(                                   // )", color2));
 	samurai.push_back(ColorString(R"(                 __*_             //  )", color1));

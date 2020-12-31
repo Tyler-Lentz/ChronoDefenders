@@ -626,7 +626,7 @@ std::vector<Player*> Game::getDeadPlayers()
 
 Player* Game::revivePlayer(int index)
 {
-	if (index < 0 || index >= deadPlayers.size())
+	if (index < 0 || index >= static_cast<int>(deadPlayers.size()))
 	{
 		return nullptr;
 	}
@@ -726,6 +726,7 @@ void Game::titleScreen()
 				Menu::oneOptionMenu(vwin, ColorString("Error: " + std::string(ex.what()), ddutil::TEXT_COLOR), Coordinate(0, MENU_TOP_LINE), true);
 				ddutil::xorFile("save.txt");
 			}	
+
 			break;
 		}
 

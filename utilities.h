@@ -111,7 +111,7 @@ namespace ddutil
     const int POWERFUL_COLOR = ddutil::CYAN;
     const int MYTHICAL_COLOR = ddutil::RED;
 
-    const unsigned int BOSS_ARTIFACT_CHOICES = 2;
+    const unsigned int BOSS_ARTIFACT_CHOICES = 3;
 
     const int MODERATE_COST = 20;
     const int POWERFUL_COST = 100;

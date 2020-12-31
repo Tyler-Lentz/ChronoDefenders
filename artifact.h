@@ -83,7 +83,9 @@ enum class ArtifactID
 	ThornedArmor, // powerful, gives thorns
 	StarCannon, // mythical
 	BloodyTotem, // Moderate
-	CursedTome // boss
+	CursedTome, // boss
+	ShipInABottle, // boss
+	MonkeysPaw // Boss
 };
 
 class Artifact
@@ -702,6 +704,25 @@ public:
 	void equipAction(Player* player) override;
 	const static int VIT_PER_TURN_GAIN = 2;
 	const static int MOVES_TO_CHOOSE_REDUCTION = -1;
+};
+
+class ShipInABottle : public BossArtifact
+{
+public:
+	ShipInABottle(Game* game);
+	ColorString startOfBattleAction(Player* player, Enemy* enemy) override;
+	void equipAction(Player* player) override {};
+
+	const static int PER_DAM = 15;
+	const static int STORM_LEN = 10;
+};
+
+class MonkeysPaw : public BossArtifact
+{
+public:
+	MonkeysPaw(Game* game);
+	void equipAction(Player* player) override;
+	// doubles max hp and full heals, but reduces all future healing by 100%
 };
 
 #endif

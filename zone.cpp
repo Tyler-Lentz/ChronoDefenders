@@ -77,7 +77,7 @@ Artifact* ZoneEnvironment::getRandomArtifact(Strength str)
 void ZoneEnvironment::chooseBossArtifact()
 {
 	std::vector<BossArtifact*> choices;
-	const std::vector<int>& randomNums = ddutil::uniqueRandom(1, 7, ddutil::BOSS_ARTIFACT_CHOICES);
+	const std::vector<int>& randomNums = ddutil::uniqueRandom(1, 9, ddutil::BOSS_ARTIFACT_CHOICES);
 	for (int i : randomNums)
 	{
 		switch (i)
@@ -102,6 +102,12 @@ void ZoneEnvironment::chooseBossArtifact()
 			break;
 		case 7:
 			choices.push_back(new CursedTome(game));
+			break;
+		case 8:
+			choices.push_back(new ShipInABottle(game));
+			break;
+		case 9:
+			choices.push_back(new MonkeysPaw(game));
 			break;
 		}
 	}

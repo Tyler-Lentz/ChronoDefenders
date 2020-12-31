@@ -230,6 +230,10 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 		return new BloodyTotem(game);
 	case ArtifactID::CursedTome:
 		return new CursedTome(game);
+	case ArtifactID::ShipInABottle:
+		return new ShipInABottle(game);
+	case ArtifactID::MonkeysPaw:
+		return new MonkeysPaw(game);
 	default:
 		return nullptr;
 	}
@@ -1386,4 +1390,46 @@ void CursedTome::equipAction(Player* player)
 {
 	player->increaseMovesToChooseFrom(MOVES_TO_CHOOSE_REDUCTION);
 	player->increaseVitalityPerTurn(VIT_PER_TURN_GAIN);
+}
+
+ShipInABottle::ShipInABottle(Game* game)
+	:BossArtifact(
+		"Ship in a Bottle",
+		ColorString("At the start of battle, deals "+std::to_string(PER_DAM)+"% of the enemy's max HP as damage", ddutil::DAMAGE_COLOR) +
+			ColorString(" and applies ",ddutil::TEXT_COLOR) + ColorString("Storm 10"+std::to_string(STORM_LEN), StormStatus::COLOR),
+		ArtifactID::ShipInABottle,
+		game
+	)
+{
+}
+
+ColorString ShipInABottle::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	int damage = static_cast<int>(enemy->getMaxHealth(100) * (PER_DAM / 100.0));
+	ddutil::DamageReport damRep = enemy->reduceHealth(damage, nullptr, true);
+	playSound(WavFile("bottleship", false, true));
+	enemy->applyStatus(new StormStatus(), STORM_LEN);
+	return ColorString("The ", ddutil::TEXT_COLOR) + getName() +
+		ColorString(" deals ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep) +
+		ColorString(" to the ", ddutil::TEXT_COLOR) + enemy->getColorString();
+}
+
+
+MonkeysPaw::MonkeysPaw(Game* game)
+	:BossArtifact(
+		"Monkey's Paw",
+		ColorString("Doubles Max HP and sets HP to max", ddutil::HEAL_COLOR) + 
+			ColorString(", but", ddutil::TEXT_COLOR) + 
+			ColorString(" reduces all future healing by 100%", ddutil::DAMAGE_COLOR),
+		ArtifactID::MonkeysPaw,
+		game
+	)
+{
+}
+
+void MonkeysPaw::equipAction(Player* player)
+{
+	player->increaseMaxHealth(player->getMaxHealth(100));
+	player->setHealth(player->getMaxHealth(100));
+	player->increasePercentHealBoost(-100);
 }

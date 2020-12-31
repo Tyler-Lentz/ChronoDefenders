@@ -76,7 +76,7 @@ namespace CosmicMoves
 		ColorString doAction(Creature* self, Creature* other) override;
 
 		const static int COST = 20;
-		const static int VIT_PER_STAT = 1;
+		const static int VIT_PER_STAT = 2;
 		// removes all the status effects on the target, and gets 1 vitality per status stack
 	};
 

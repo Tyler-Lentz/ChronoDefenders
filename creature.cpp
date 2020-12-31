@@ -235,6 +235,11 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 
 	int damageBlocked = 0;
 
+	if (hasStatus(StatusID::Marked))
+	{
+		attacker->applyBlock(getNumberOfStatuses(StatusID::Marked));
+	}
+
 	if (attacker != nullptr && hasStatus(StatusID::Thorns))
 	{
 		for (auto s : currentStatuses)

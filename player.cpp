@@ -932,7 +932,8 @@ void Player::cosmicAscension()
 	vitalityGain = 10 + vitalityGain;
 	maxVitality = 100;
 	movesetLimit = 4;
-	std::vector<Move*> newMoves = CosmicMoves::getRandomMoves(movesetLimit);
+	const int NUM_NEW_MOVES = 1;
+	std::vector<Move*> newMoves = CosmicMoves::getRandomMoves(NUM_NEW_MOVES);
 	for (Move* m : newMoves)
 	{
 		moves.push_back(m);
@@ -954,6 +955,7 @@ void Player::cosmicAscension()
 	game->getVWin()->printArtFromBottom(getPicture(), Coordinate(0, CHAR_LINE), true);
 	line = ddutil::DIVIDER_LINE3 + 1;
 	game->getVWin()->putcen(getStatLine(), line++);
+	game->getVWin()->putcen(ColorString("(" + std::to_string(moves.size()) + "/" + std::to_string(movesetLimit) + ") Moves", ddutil::TEXT_COLOR), line++);
 	for (Move* m : moves)
 	{
 		game->getVWin()->putcen(m->getFullInformation(), line++);

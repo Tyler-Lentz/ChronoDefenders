@@ -321,6 +321,8 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new CosmicMoves::StarDust();
 	case MoveId::CosmicEternalTomb:
 		return new CosmicMoves::EternalTomb();
+	case MoveId::CosmicSeeingEye:
+		return new CosmicMoves::SeeingEye();
 	default:
 		return nullptr;
 	}

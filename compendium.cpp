@@ -95,7 +95,7 @@ void Compendium::makeBattlePage()
 	Gunslinger temp(nullptr);
 	page.push_back(temp.getStatLine());
 	page.push_back(ColorString());	
-	page.push_back(ColorString("In brown is the character's name. This will vary depending on which character it is.", ddutil::GUNSLINGER_COLOR));
+	page.push_back(ColorString("In brown /Ma/mis the character's name. This will vary depending on which character it is.", ddutil::GUNSLINGER_COLOR));
 	page.push_back(ColorString());	
 	page.push_back(ColorString("In green is the character's healthbar, followed by the numerical value.", ddutil::GREEN));
 	page.push_back(ColorString("The color of the healthbar will vary depending on the percentage of HP remaining.", ddutil::GREEN));
@@ -563,6 +563,8 @@ void Compendium::makeStatusList()
 	status = std::make_unique<ElementalStatus>();
 	page.push_back(status->getFullInformation());
 	status = std::make_unique<EntombedStatus>();
+	page.push_back(status->getFullInformation());
+	status = std::make_unique<MarkedStatus>();
 	page.push_back(status->getFullInformation());
 
 	compendium.push_back(page);

@@ -113,6 +113,8 @@ Status* Status::getStatusFromID(StatusID id)
 		return new ZenStatus();
 	case StatusID::Entombed:
 		return new EntombedStatus();
+	case StatusID::Marked:
+		return new MarkedStatus();
 	default:
 		return nullptr;
 	}
@@ -665,4 +667,23 @@ ColorString EntombedStatus::applyEndTurnEffect(Creature* target, int stackAmount
 	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
 		ColorString(" takes " + std::to_string(damRep.getDamageTaken()) + " damage", ddutil::DAMAGE_COLOR) +
 		ColorString(" from being ", ddutil::TEXT_COLOR) + ColorString("Entombed", COLOR);
+}
+
+MarkedStatus::MarkedStatus()
+	:UnchangingStatus(
+		StatusID::Marked,
+		ColorString("Marked", COLOR),
+		"When a marked creature is attacked, the attacker gains block equal to the status stack"
+	)
+{
+}
+
+Status* MarkedStatus::makeCopy()
+{
+	return new MarkedStatus();
+}
+
+ColorString MarkedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	return ColorString();
 }

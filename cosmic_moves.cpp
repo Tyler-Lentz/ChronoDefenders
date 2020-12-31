@@ -208,3 +208,17 @@ std::vector<Move*> CosmicMoves::getRandomMoves(int movesToChooseFrom)
 	}
 	return moves;
 }
+
+CosmicMoves::SeeingEye::SeeingEye()
+	:SimpleStatusMove(
+		MoveId::CosmicSeeingEye,
+		new MarkedStatus(),
+		AMOUNT,
+		true,
+		COST,
+		"Seeing Eye",
+		Strength::Cosmic,
+		WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}

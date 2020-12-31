@@ -88,7 +88,14 @@ namespace CosmicMoves
 		static const int AMOUNT = 1; // entombed status is not dependent on count, deals 1,2,4,8,16,32,64,128
 		static const int COST = 20;
 	};
-	
+
+	class SeeingEye : public SimpleStatusMove
+	{
+	public:
+		SeeingEye();
+		static const int AMOUNT = 3;
+		static const int COST = 10;
+	};
 }
 
 

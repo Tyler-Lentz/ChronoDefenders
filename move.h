@@ -139,7 +139,8 @@ enum class MoveId
 	CosmicDeletion,
 	CosmicCosmicBeam,
 	CosmicStarDust,
-	CosmicEternalTomb
+	CosmicEternalTomb,
+	CosmicSeeingEye
 };
 
 class Move

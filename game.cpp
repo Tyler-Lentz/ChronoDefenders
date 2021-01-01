@@ -762,7 +762,7 @@ void Game::titleScreen()
 	while (!exit)
 	{
 		vwin->printArt(Art::getTitle(), Coordinate(0, 5), true);
-		vwin->put(ColorString("Version 1.3b", ddutil::COSMIC_COLOR), Coordinate(1, 1));
+		vwin->put(ColorString("Version 1.3c", ddutil::COSMIC_COLOR), Coordinate(1, 1));
 
 		vwin->putcen(profile.getColorString(), ddutil::CONSOLEY - 2);
 		
@@ -1105,6 +1105,10 @@ bool Game::checkForEnemyDeath(Enemy* enemy)
 		{
 			// calculate experience gain
 			unsigned int expGain = enemy->getMaxHealth(100) / playerParty.size();
+			if (currentDistortion >= 4)
+			{
+				expGain -= expGain * (ddutil::DIST4_PERC_ENEMY_HP_INC / 100.0);
+			}
 			playersGetExperience(expGain);
 		}
 

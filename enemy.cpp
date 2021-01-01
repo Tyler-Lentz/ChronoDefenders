@@ -351,7 +351,7 @@ EnemyTurn GiantSnailVariant::getTurn(std::vector<Creature*> players)
 	ColorString intent;
 	std::vector<Creature*> targets;
 
-	targets.push_back(ddutil::getLowestHealthPlayer(players));
+	targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
 	if (health < getMaxHealth(50))
 	{
 		chosenMove = moves[0];

@@ -298,6 +298,9 @@ void Game::battle(Enemy* enemy)
 
 		// Player move selection
 		std::vector<Move*> usedMoves; // keep track of moves played so that the player can't play the same move twice
+		std::vector<Move*> queuedMoves; // pressing enter plays all queued moves
+		int prevPos = 0;
+		bool autoPlayMoves = false; // set to true when the player starts to play moves from the queue
 		while (true)
 		{
 			// Print  information
@@ -374,21 +377,55 @@ void Game::battle(Enemy* enemy)
 
 			otherInputs.push_back(VK_SPACE);
 			otherInputs.push_back(VK_MENU);
+			otherInputs.push_back(VK_SHIFT);
+			otherInputs.push_back(VK_BACK);
 			otherInputs.push_back(0x43);// "c" character
 			const int END_TURN_LINE = ddutil::DIVIDER_LINE4;
-			ColorString inputInfo = ColorString("Spacebar: End Turn  ", ddutil::TEXT_COLOR) +
-				ColorString("Enter: Select Move  ", ddutil::RED) +
-				ColorString("Alt: View Artifacts  ", ddutil::ARTIFACT_COLOR) +
-				ColorString("C: View Compendium", ddutil::COMPENDIUM_COLOR);
+			ColorString inputInfo;
+			if (queuedMoves.empty())
+			{
+				inputInfo = ColorString("Space: End Turn  ", ddutil::TEXT_COLOR) +
+					ColorString("Enter: Select Move  ", ddutil::RED) +
+					ColorString("Alt: Artifacts  ", ddutil::ARTIFACT_COLOR) +
+					ColorString("C: Compendium  ", ddutil::COMPENDIUM_COLOR) +
+					ColorString("Shift: Queue move", ddutil::LIGHTGREEN);
+			}
+			else
+			{
+				inputInfo = ColorString("Queue: ", ddutil::LIGHTGREEN);
+				for (Move* m : queuedMoves)
+				{
+					inputInfo += m->getColorString() + ColorString(", ", ddutil::TEXT_COLOR);
+				}
+				inputInfo += ColorString(" (Backspace: clear, Enter: use)", ddutil::LIGHTGREEN);
+			}
+			ddutil::trimLength(inputInfo);
 			vwin->putcen(inputInfo, END_TURN_LINE);
 
-			Menu moveMenu(vwin, options, otherInputs, Coordinate(0, MOVE_TEXT_LINE), true);
-
+			int response;
+			int otherInputResponse;
 			bool endTurn = false;
-			// getReponse will either be an low value integer corresponding to a move index, OR VK_LEFT/VK_RIGHT indicating character change
-			switch (moveMenu.getResponse())
+			bool addedMoveToQueue = false;
+			if (autoPlayMoves)
+			{
+				response = 0; // will go to the move using screen, and will automatically select newest move in queue
+				otherInputResponse = 0;
+				prevPos = 0;  // so these values don't really matter
+			}
+			else
+			{
+				Menu moveMenu(vwin, options, otherInputs, Coordinate(0, MOVE_TEXT_LINE), true, prevPos);
+
+				// getReponse will either be an low value integer corresponding to a move index, OR VK_LEFT/VK_RIGHT indicating character change
+				response = moveMenu.getResponse();
+				otherInputResponse = moveMenu.getOtherInputResponse();
+				prevPos = otherInputResponse;
+			}
+
+			switch (response)
 			{
 			case VK_LEFT:
+				queuedMoves.clear();
 				activePlayerIndex--;
 				if (activePlayerIndex < 0)
 				{
@@ -396,6 +433,7 @@ void Game::battle(Enemy* enemy)
 				}
 				break;
 			case VK_RIGHT:
+				queuedMoves.clear();
 				activePlayerIndex++;
 				if (activePlayerIndex >= static_cast<int>(playerParty.size()))
 				{
@@ -411,8 +449,8 @@ void Game::battle(Enemy* enemy)
 					ColorString("No", ddutil::RED)
 				};
 				Menu confirmEndTurnMenu(vwin, endTurnOptions, Coordinate(0, MOVE_TEXT_LINE), true);
-				int response = confirmEndTurnMenu.getResponse();
-				if (response == 0)
+				int endTurnResponse = confirmEndTurnMenu.getResponse();
+				if (endTurnResponse == 0)
 				{
 					endTurn = true;
 				} // else do nothing, the turn will repeat itself
@@ -424,8 +462,51 @@ void Game::battle(Enemy* enemy)
 			case 0x43:
 				this->viewCompendium();
 				break;
-			default: // corresponds to an index of the player's moves
-				Move* selectedMove = activeMoves[moveMenu.getResponse()];
+			case VK_SHIFT:
+			{
+				// check to make sure the move hasnt been used this turn yet
+				Move* selectedMove = activeMoves[otherInputResponse];
+				if (std::find(usedMoves.begin(), usedMoves.end(), selectedMove) != usedMoves.end())
+				{
+					clearBottomDivider();
+					vwin->putcen(ColorString("That move has already been used this turn", ddutil::TEXT_COLOR), PLAYER_TEXT_LINE);
+					Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, PLAYER_TEXT_LINE + 1), true);
+					break;
+				}
+				if (std::find(queuedMoves.begin(), queuedMoves.end(), selectedMove) != queuedMoves.end())
+				{
+					clearBottomDivider();
+					vwin->putcen(ColorString("That move is already in the queue", ddutil::TEXT_COLOR), PLAYER_TEXT_LINE);
+					Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, PLAYER_TEXT_LINE + 1), true);
+					break;
+				}
+				queuedMoves.push_back(selectedMove);
+				addedMoveToQueue;
+				break;
+			}
+			case VK_BACK:
+				queuedMoves.clear();
+				break;
+
+			default: // corresponds to an index of the player's moves,	
+				Move* selectedMove;
+				if (queuedMoves.empty())
+				{
+					selectedMove = activeMoves[otherInputResponse];
+				}
+				else
+				{
+					selectedMove = queuedMoves.front();
+					queuedMoves.erase(queuedMoves.begin());
+					if (queuedMoves.size() > 0)
+					{
+						autoPlayMoves = true;
+					}
+					else
+					{
+						autoPlayMoves = false;
+					}
+				}
 
 				if (activePlayer->hasStatus(StatusID::Hexed) || 
 					activePlayer->hasStatus(StatusID::Strangled) ||
@@ -471,6 +552,7 @@ void Game::battle(Enemy* enemy)
 						}
 
 						clearBottomDivider();
+						vwin->putcen(selectedMove->getFullInformation(), ddutil::DIVIDER_LINE4);
 						Menu targetMenu(vwin, options, Coordinate(0, PLAYER_TEXT_LINE), true);
 						
 						if (targetMenu.getResponse() == 0)
@@ -533,6 +615,10 @@ void Game::battle(Enemy* enemy)
 					Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, PLAYER_TEXT_LINE + 1), true);
 				}
 				break;
+			} // end of switch statement
+			if (addedMoveToQueue)
+			{
+				continue;
 			}
 
 			if (checkForPlayerDeaths() || checkForEnemyDeath(enemy))

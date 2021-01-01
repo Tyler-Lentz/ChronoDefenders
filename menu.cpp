@@ -7,13 +7,13 @@
 #include <Windows.h>
 #include <vector>
 
-Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, Coordinate theTopLeft, bool centered)
-	:Menu(theWin, theOptions, std::vector<int> {}, theTopLeft, centered)
+Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, Coordinate theTopLeft, bool centered, int startPos)
+	:Menu(theWin, theOptions, std::vector<int> {}, theTopLeft, centered, startPos)
 {
 	// passes through an empy other options vector because there arent any	
 }
 
-Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vector<int> otherInput, Coordinate theTopLeft, bool centered)
+Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vector<int> otherInput, Coordinate theTopLeft, bool centered, int startPos)
 {
 	vwin = theWin;
 	int x = theTopLeft.x;
@@ -61,11 +61,21 @@ Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vect
 	char openChar = '[';
 	char closeChar = ']';
 
-	// draw the [] around the first option (which starts selected)
-	drawIndicators(bracketSlots[0], theTopLeft.y);
+
 
 	// start with the first one selected
-	int currentSelection = 0;
+	if (startPos < 0)
+	{
+		startPos = 0;
+	}
+	if (startPos >= theOptions.size())
+	{
+		startPos = theOptions.size() - 1;
+	}
+	// draw the [] around the first option (which starts selected)
+
+	int currentSelection = startPos;
+	drawIndicators(bracketSlots[startPos], theTopLeft.y + currentSelection);
 
 	// input loop, waiting for enter press
 	while (true)
@@ -106,6 +116,7 @@ Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vect
 		{
 			playSound(WavFile("menuselect", false, true));
 			response = currentSelection;
+			otherInputResponse = currentSelection;
 			Sleep(ddutil::BUFFER_TIME);
 			return;
 		}
@@ -115,6 +126,7 @@ Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vect
 			{
 				playSound(WavFile("menumove2", false, true));
 				response = i;
+				otherInputResponse = currentSelection;
 				Sleep(ddutil::BUFFER_TIME);
 				return;
 			}
@@ -125,6 +137,11 @@ Menu::Menu(VirtualWindow* theWin, std::vector<ColorString> theOptions, std::vect
 int Menu::getResponse()
 {
 	return response;
+}
+
+int Menu::getOtherInputResponse()
+{
+	return otherInputResponse;
 }
 
 void Menu::oneOptionMenu(VirtualWindow* theWin, ColorString text, Coordinate topLeft, bool centered)

@@ -24,19 +24,23 @@ int Picture::getLength()
 
 Picture Art::getTitle()
 {
-	Picture title;
-	title.push_back(ColorString(R"(         _____  _   _ ______ _____ _   _ _____          )", TITLE_COLOR));
-	title.push_back(ColorString(R"(        /  __ \| | | || ___ \  _  | \ | |  _  |         )", TITLE_COLOR));
-	title.push_back(ColorString(R"(        | /  \/| |_| || |_/ / | | |  \| | | | |         )", TITLE_COLOR));
-	title.push_back(ColorString(R"(        | |    |  _  ||    /| | | | . ` | | | |         )", TITLE_COLOR));
-	title.push_back(ColorString(R"(        | \__/\| | | || |\ \\ \_/ / |\  \ \_/ /         )", TITLE_COLOR));
-	title.push_back(ColorString(R"(         \____/\_| |_/\_| \_|\___/\_| \_/\___/          )", TITLE_COLOR));
-	title.push_back(ColorString(R"(______ ___________ _____ _   _______ ___________  _____ )", TITLE_COLOR));
-	title.push_back(ColorString(R"(|  _  \  ___|  ___|  ___| \ | |  _  \  ___| ___ \/  ___|)", TITLE_COLOR));
-	title.push_back(ColorString(R"(| | | | |__ | |_  | |__ |  \| | | | | |__ | |_/ /\ `--. )", TITLE_COLOR));
-	title.push_back(ColorString(R"(| | | |  __||  _| |  __|| . ` | | | |  __||    /  `--. \)", TITLE_COLOR));
-	title.push_back(ColorString(R"(| |/ /| |___| |   | |___| |\  | |/ /| |___| |\ \ /\__/ /)", TITLE_COLOR));
-	title.push_back(ColorString(R"(|___/ \____/\_|   \____/\_| \_/___/ \____/\_| \_|\____/ )", TITLE_COLOR));
+	Picture title; 
+	int starColor = ddutil::COSMIC_COLOR;
+	title.push_back(ColorString(R"(                     *             *            *             )", starColor));
+	title.push_back(ColorString(R"(          *                 *             *         *   *     )", starColor));
+	title.push_back(ColorString(R"(     *         *     *            *            *              )", starColor));
+	title.push_back(ColorString(R"(        *)", starColor)+ColorString(R"(   _____  _   _ ______ _____ _   _ _____ )", TITLE_COLOR)+ColorString(R"(        *   )", starColor));
+	title.push_back(ColorString(R"(    *     )", starColor)+ColorString(R"( /  __ \| | | || ___ \  _  | \ | |  _  | )", TITLE_COLOR)+ColorString(R"(  *        )", starColor));
+	title.push_back(ColorString(R"(        *  )", starColor)+ColorString(R"(| /  \/| |_| || |_/ / | | |  \| | | | | )", TITLE_COLOR)+ColorString(R"(      *    )", starColor));
+	title.push_back(ColorString(R"( *    *    )", starColor)+ColorString(R"(| |    |  _  ||    /| | | | . ` | | | |  )", TITLE_COLOR)+ColorString(R"(*       * )", starColor));
+	title.push_back(ColorString(R"(           )", starColor)+ColorString(R"(| \__i\| | | || |\ \\ \_/ / |\  \ \_/ /  )", TITLE_COLOR)+ColorString(R"(   *      )", starColor));
+	title.push_back(ColorString(R"(    *   *   )", starColor)+ColorString(R"(\____/\_| |_/\_| \_|\___/\_| \_/\___/  )", TITLE_COLOR)+ColorString(R"(*       *  )", starColor));
+	title.push_back(ColorString(R"( * )", starColor)+ColorString(R"(______ ___________ _____ _   _______ ___________  _____    )", TITLE_COLOR));
+	title.push_back(ColorString(R"(   )", starColor)+ColorString(R"(|  _  \  ___|  ___|  ___| \ | |  _  \  ___| ___ \/  ___| )", TITLE_COLOR)+ColorString(R"(* )", starColor));
+	title.push_back(ColorString(R"(  *)", starColor)+ColorString(R"(| | | | |__ | |_  | |__ |  \| | | | | |__ | |_/ /\ `--.   )", TITLE_COLOR)+ColorString(R"( )", starColor));
+	title.push_back(ColorString(R"(   )", starColor)+ColorString(R"(| | | |  __||  _| |  __|| . ` | | | |  __||    /  `--. \  )", TITLE_COLOR)+ColorString(R"(*)", starColor));
+	title.push_back(ColorString(R"(*  )", starColor)+ColorString(R"(| |/ /| |___| |   | |___| |\  | |/ /| |___| |\ \ /\__/ /  )", TITLE_COLOR)+ColorString(R"( )", starColor));
+	title.push_back(ColorString(R"(   )", starColor)+ColorString(R"(|___/ \____/\_|   \____/\_| \_/___/ \____/\_| \_|\____/  )", TITLE_COLOR)+ColorString(R"(* )", starColor));
 	return title;
 }
 
@@ -1712,6 +1716,23 @@ Picture Art::getGiantHead()
 	head.push_back(ColorString(R"(  \ )       .-'             )", color));
 	head.push_back(ColorString(R"(   `-----*"'                )", color));
 	return head;
+}
+
+Picture Art::getBug()
+{
+	Picture bug;
+	bug.push_back(ColorString(R"(      ,_      _,      )", BUG_COLOR));
+	bug.push_back(ColorString(R"(        '.__.'        )", BUG_COLOR));
+	bug.push_back(ColorString(R"(   '-,   (__)   ,-'   )", BUG_COLOR));
+	bug.push_back(ColorString(R"(     '._ .::. _.'     )", BUG_COLOR));
+	bug.push_back(ColorString(R"(       _'(^^)'_       )", BUG_COLOR));
+	bug.push_back(ColorString(R"(    _,` `>\/<` `,_    )", BUG_COLOR));
+	bug.push_back(ColorString(R"(   `  ,-` )( `-,  `   )", BUG_COLOR));
+	bug.push_back(ColorString(R"(      |  /==\  |      )", BUG_COLOR));
+	bug.push_back(ColorString(R"(    ,-'  |=-|  '-,    )", BUG_COLOR));
+	bug.push_back(ColorString(R"(         )-=(         )", BUG_COLOR));
+	bug.push_back(ColorString(R"(         \__/         )", BUG_COLOR));
+	return bug;
 }
 
 Picture Art::getGiantSnail()

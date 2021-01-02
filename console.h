@@ -42,6 +42,7 @@ struct Console
         SetConsoleTextAttribute(hConOut, csbi.wAttributes);
         SetConsoleScreenBufferSize(hConOut, csbi.dwSize);
         SetConsoleWindowInfo(hConOut, TRUE, &csbi.srWindow);
+		PostMessage(GetConsoleWindow(), WM_CLOSE, 0, 0);
     }
 
     void setFontSize(int size) const

@@ -17,9 +17,7 @@ namespace ddutil
 {
     void errorMessage(std::string error, int line, std::string file)
     {
-        std::cerr << "Error on line " << line << " in the file " << file << "\n- " << error;
-        Sleep(100000);
-        exit(1);
+        throw std::exception(error.c_str());
     }
 
     int getColor(int letterColor, int backgroundColor, int numberOfColors)

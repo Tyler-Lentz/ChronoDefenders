@@ -167,6 +167,9 @@ public:
 	
 	static Picture getGiantHead();
 	const static int GIANT_HEAD_COLOR = ddutil::LIGHTGRAY;
+
+	static Picture getBug();
+	const static int BUG_COLOR = ddutil::BROWN;
 };
 
 

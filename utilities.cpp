@@ -164,7 +164,7 @@ namespace ddutil
         if (str.getString().length() >= ddutil::CONSOLEX)
         {
             ColorString trimmedResult;
-            for (unsigned int i = 0; i < ddutil::CONSOLEX - trailingText.getString().length(); i++)
+            for (unsigned int i = 0; i < ddutil::CONSOLEX - trailingText.getString().length() - 1; i++)
             {
                 trimmedResult += str[i];
             }

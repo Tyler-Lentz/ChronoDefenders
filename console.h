@@ -3,6 +3,7 @@
 
 #define _WIN32_WINNT 0x0500
 #include <Windows.h>
+#include "utilities.h"
 #include <stdexcept>
 
 struct Console
@@ -33,16 +34,7 @@ struct Console
         HWND consoleWindow = GetConsoleWindow();
         SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
 
-        CONSOLE_FONT_INFOEX cfi;
-        cfi.cbSize = sizeof cfi;
-        cfi.nFont = 0;
-        cfi.dwFontSize.X = 0;
-        cfi.dwFontSize.Y = 15;
-        cfi.FontFamily = FF_DONTCARE;
-        cfi.FontWeight = FW_NORMAL;
-
-        wcscpy_s(cfi.FaceName, L"Lucida Console");
-        SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+        setFontSize(ddutil::DEFAULT_CON_SIZE);
     }
 
     ~Console()
@@ -50,6 +42,20 @@ struct Console
         SetConsoleTextAttribute(hConOut, csbi.wAttributes);
         SetConsoleScreenBufferSize(hConOut, csbi.dwSize);
         SetConsoleWindowInfo(hConOut, TRUE, &csbi.srWindow);
+    }
+
+    void setFontSize(int size) const
+    {
+        CONSOLE_FONT_INFOEX cfi;
+        cfi.cbSize = sizeof cfi;
+        cfi.nFont = 0;
+        cfi.dwFontSize.X = 0;
+        cfi.dwFontSize.Y = size;
+        cfi.FontFamily = FF_DONTCARE;
+        cfi.FontWeight = FW_NORMAL;
+
+        wcscpy_s(cfi.FaceName, L"Lucida Console");
+        SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
     }
 
     void setTitle() const

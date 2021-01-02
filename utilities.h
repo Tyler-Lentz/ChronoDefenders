@@ -149,6 +149,8 @@ namespace ddutil
     const int DIST4_PERC_ENEMY_HP_INC = 20;
     const int NORMAL_REVIVAL_PERCENT = 67;
 
+    const int DEFAULT_CON_SIZE = 16;
+
     void errorMessage(std::string error, int line, std::string file);
 
     int getColor(int letterColor, int backgroundColor, int numberOfColors = 16);

@@ -754,6 +754,7 @@ void Game::titleScreen()
 	options.push_back(ColorString("New Game", ddutil::TEXT_COLOR));
 	options.push_back(ColorString("Load Game", ddutil::TEXT_COLOR));
 	options.push_back(ColorString("View Compendium", ddutil::TEXT_COLOR));
+	options.push_back(ColorString("Resize Console", ddutil::TEXT_COLOR));
 	options.push_back(ColorString("Exit", ddutil::TEXT_COLOR));
 
 	std::vector<int> otherInput = { VK_ESCAPE };
@@ -825,6 +826,28 @@ void Game::titleScreen()
 			break;
 
 		case 3:
+		{
+			for (int i = MENU_TOP_LINE; i < MENU_TOP_LINE + 6; i++)
+				vwin->clearLine(i);
+			std::vector<ColorString> sizeOptions = {
+				ColorString("Y = 4", ddutil::TEXT_COLOR),
+				ColorString("Y = 8", ddutil::TEXT_COLOR),
+				ColorString("Y = 12", ddutil::TEXT_COLOR),
+				ColorString("Y = 16", ddutil::TEXT_COLOR),
+				ColorString("Y = 20", ddutil::TEXT_COLOR),
+				ColorString("Y = 24", ddutil::TEXT_COLOR),
+				ColorString("Y = 28", ddutil::TEXT_COLOR),
+			};
+			vwin->putcen(ColorString("Choose size:", ddutil::TEXT_COLOR), MENU_TOP_LINE - 1);
+			Menu sizeMenu(vwin, sizeOptions, Coordinate(0, MENU_TOP_LINE), true, 3);
+			int size = (sizeMenu.getResponse() * 4) + 4;
+			vwin->getConsole().setFontSize(size);
+			
+			break;
+		}
+
+
+		case 4:
 		case VK_ESCAPE: // quit
 			status = ddutil::GameStatus::EXIT;
 			exit = true;

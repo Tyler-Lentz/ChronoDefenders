@@ -106,6 +106,7 @@ ddutil::GameStatus Game::run()
 	if (!loadedFromFile)
 	{
 		intro();
+		chooseClasses();
 	}
 	stopSound(SoundType::MP3);
 
@@ -631,6 +632,10 @@ void Game::battle(Enemy* enemy)
 			{
 				for (Player* p : playerParty)
 				{
+					if (p->getVitality() == 0 && p->hasArtifact(ArtifactID::BrawlersBelt))
+					{
+						p->addVitality(BrawlersBelt::VIT_INC);
+					}
 					p->addVitality(p->getVitalityGain());
 				}
 				break;
@@ -763,7 +768,7 @@ void Game::titleScreen()
 	while (!exit)
 	{
 		vwin->printArt(Art::getTitle(), Coordinate(0, 5), true);
-		vwin->put(ColorString("version 1.3d", ddutil::DARKGRAY), Coordinate(1, 1));
+		vwin->put(ColorString("Version 1.4", ddutil::DARKGRAY), Coordinate(1, 1));
 
 		vwin->putcen(profile.getColorString(), ddutil::CONSOLEY - 2);
 		
@@ -877,7 +882,7 @@ void Game::intro()
 		ColorString("\"The Ancient Demon 'The Patriarch' has broken from his Seal.\"", color),
 		ColorString("\"If he is not stopped, this world will cease to exist as we know it.\"", color),
 		ColorString("\"You three must destroy him and his minions before it's too late!\"", color),
-		ColorString("\"Please take my blessing.\"", color),
+		ColorString("\"Please, the world is counting on you.\"", color),
 	};
 	if (currentDistortion == 1)
 	{
@@ -886,7 +891,7 @@ void Game::intro()
 			ColorString("\"The Patriarch has once again broken free of his seal\"", color),
 			ColorString("\"This occurred much faster than anticipated\"", color),
 			ColorString("\"There must have been some distortions in the fabric of spacetime\"", color),
-			ColorString("\"Nevertheless, there is no time to lose! Please take my blessing\"", color)
+			ColorString("\"Nevertheless, there is no time to lose! Please get going...\"", color)
 		};
 	}
 	else if (currentDistortion == 2)
@@ -896,14 +901,14 @@ void Game::intro()
 			ColorString("\"It appears that my summons keep causing more distortions in spacetime\"", color),
 			ColorString("\"I believe that your quest will become difficult with more distortions\"", color),
 			ColorString("\"This is an unfortunate side effect which cannot be ignored\"", color),
-			ColorString("\"Nevertheless, Please take my blessing\"", color)
+			ColorString("\"Nevertheless, I wish you the best of luck.\"", color)
 		};
 	}
 	else if (currentDistortion == 3)
 	{
 		text = {
 			ColorString("\"I am extremely sorry to have to summon you all here again\"", color),
-			ColorString("\"There is no time to waste. Please take my blessing\"", color)
+			ColorString("\"There is no time to waste. You know what to do.\"", color)
 		};
 	}
 	else if (currentDistortion == 4)
@@ -935,38 +940,204 @@ void Game::intro()
 		vwin->clearLine(line + 1);
 	}
 
-	if (true)
+	vwin->clearScreen();
+}
+
+void Game::chooseClasses()
+{
+	Player* samurai = nullptr;
+	Player* sorceress = nullptr;
+	Player* gunslinger = nullptr;
+	for (Player* p : playerParty)
 	{
-		vwin->putcen(ColorString("Choose your blessing:", Art::WATCHER_COLOR), line++);
-		
-		const int EXPERIENCE_GAIN = 20;
-
-		std::vector<ColorString> options = {
-			ColorString("Each gain "+std::to_string(EXPERIENCE_GAIN)+" experience", ddutil::EXPERIENCE_COLOR),
-			ColorString("Obtain one random moderate artifact", ddutil::ARTIFACT_COLOR)
-		};
-
-		Menu menu(vwin, options, Coordinate(0, line), true);
-
-		if (menu.getResponse() == 0)
+		if (p->getColorString().getString() == "Samurai")
 		{
-			for (Player* p : playerParty)
-			{
-				p->gainExperience(EXPERIENCE_GAIN);
-			}
+			samurai = p;
 		}
+		else if (p->getColorString().getString() == "Sorceress")
+		{
+			sorceress = p;
+		}
+		else if (p->getColorString().getString() == "Gunslinger")
+		{
+			gunslinger = p;
+		}	
 		else
 		{
-			clearBottomDivider();
-			artifactSelectionMenu(line, gameWorld[currentZoneIndex]->getRandomArtifact(Strength::Moderate));
-		}
-		
-		for (Player* p : getPlayerParty())
-		{
-			p->tradeExperience();
+			ddutil::errorMessage("Invalid player construction", __LINE__, __FILE__);
 		}
 	}
+	
+	const int SLEEP = 250;
+	const int TOP_LINE = 2;
+	const int CHAR_BOTTOM_LINE = ddutil::DIVIDER_LINE3;
+	const int FIR_CLASS_Y = 10;
+	const int SEC_CLASS_Y = 13;
+	const int THI_CLASS_Y = 16;
+	const int FOU_CLASS_Y = 19;
+	while (true)
+	{
+		vwin->clearScreen();
+		vwin->putcen(ColorString("Choose SAMURAI Class", ddutil::SAMURAI_COLOR), TOP_LINE);
+		BeserkersBrew* brew = new BeserkersBrew(this);
+		NomadsMat* mat = new NomadsMat(this);
+		NinjasCaltrops* caltrops = new NinjasCaltrops(this);
+		vwin->putcen(ColorString("Beserker: ", ddutil::BESERKER_COLOR), FIR_CLASS_Y);
+		vwin->putcen(brew->getFullInformation(), FIR_CLASS_Y + 1);
+		vwin->putcen(ColorString("Nomad: ", ddutil::NOMAD_COLOR), SEC_CLASS_Y);
+		vwin->putcen(mat->getFullInformation(), SEC_CLASS_Y + 1);
+		vwin->putcen(ColorString("Ninja: ", ddutil::NINJA_COLOR), THI_CLASS_Y);
+		vwin->putcen(caltrops->getFullInformation(), THI_CLASS_Y + 1);
+		std::vector<ColorString> samOptions = {
+			ColorString("View Compendium", ddutil::COMPENDIUM_COLOR),
+			ColorString("Beserker", ddutil::BESERKER_COLOR),
+			ColorString("Nomad", ddutil::NOMAD_COLOR),
+			ColorString("Ninja", ddutil::NINJA_COLOR)
+		};
+		Menu samMenu(vwin, samOptions, Coordinate(0, FOU_CLASS_Y + 3), true);
+		if (samMenu.getResponse() == 0)
+		{
+			compendium->display();
+			continue;
+		}
+		switch (samMenu.getResponse())
+		{
+		case 1:
+			samurai->getArtifact(brew);
+			samurai->setColor(ddutil::BESERKER_COLOR);
+			delete caltrops;
+			delete mat;
+			break;
+		case 2:
+			samurai->getArtifact(mat);
+			samurai->setColor(ddutil::NOMAD_COLOR);
+			delete caltrops;
+			delete brew;
+			break;
+		default: // 3
+			samurai->getArtifact(caltrops);
+			samurai->setColor(ddutil::NINJA_COLOR);
+			delete brew;
+			delete mat;
+			break;
+		}
+		vwin->clearScreen();
+		break;	
+	}
+	vwin->printArtFromBottom(Art::getSamurai(samurai->getColor()), Coordinate(0, ddutil::DIVIDER_LINE3), true);
+	playSound(WavFile("attackblock", false, false));
+	Sleep(SLEEP);
+	vwin->clearScreen();
+	while (true)
+	{
+		vwin->putcen(ColorString("Choose SORCERESS Class", ddutil::SORCERER_COLOR), TOP_LINE);
+		ClericsRobes* robes = new ClericsRobes(this);
+		SummonersOrb* orb = new SummonersOrb(this);
+		TempestsStaff* staff = new TempestsStaff(this);
+		vwin->putcen(ColorString("Cleric: ", ddutil::CLERIC_COLOR), FIR_CLASS_Y);
+		vwin->putcen(robes->getFullInformation(), FIR_CLASS_Y + 1);
+		vwin->putcen(ColorString("Summoner: ", ddutil::SUMMONER_COLOR), SEC_CLASS_Y);
+		vwin->putcen(orb->getFullInformation(), SEC_CLASS_Y + 1);
+		vwin->putcen(ColorString("Tempest: ", ddutil::TEMPEST_COLOR), THI_CLASS_Y);
+		vwin->putcen(staff->getFullInformation(), THI_CLASS_Y + 1);
+		std::vector<ColorString> sorOptions = {
+			ColorString("View Compendium", ddutil::COMPENDIUM_COLOR),
+			ColorString("Cleric", ddutil::CLERIC_COLOR),
+			ColorString("Summoner", ddutil::SUMMONER_COLOR),
+			ColorString("Tempest", ddutil::TEMPEST_COLOR)
+		};
+		Menu sorMenu(vwin, sorOptions, Coordinate(0, FOU_CLASS_Y + 3), true);
+		if (sorMenu.getResponse() == 0)
+		{
+			compendium->display();
+			continue;
+		}
+		switch (sorMenu.getResponse())
+		{
+		case 1:
+			sorceress->getArtifact(robes);
+			sorceress->setColor(ddutil::CLERIC_COLOR);
+			delete orb;
+			delete staff;
+			break;
+		case 2:
+			sorceress->getArtifact(orb);
+			sorceress->setColor(ddutil::SUMMONER_COLOR);
+			delete robes;
+			delete staff;
+			break;
+		default:
+			sorceress->getArtifact(staff);
+			sorceress->setColor(ddutil::TEMPEST_COLOR);
+			delete robes;
+			delete orb;
+			break;
+		}
+		vwin->clearScreen();
+		break;
+	}
+	vwin->printArtFromBottom(Art::getSorcerer(sorceress->getColor()), Coordinate(0, ddutil::DIVIDER_LINE3), true);
+	playSound(WavFile("starattack", false, false));
+	Sleep(SLEEP);
+	vwin->clearScreen();
+	while (true)
+	{
+		vwin->putcen(ColorString("Choose GUNSLINGER Class", ddutil::GUNSLINGER_COLOR), TOP_LINE);
+		BrawlersBelt* belt = new BrawlersBelt(this);
+		GamblersDeck* deck = new GamblersDeck(this);
+		SharpshootersSack* sack = new SharpshootersSack(this);
+		vwin->putcen(ColorString("Brawler: ", ddutil::BRAWLER_COLOR), FIR_CLASS_Y);
+		vwin->putcen(belt->getFullInformation(), FIR_CLASS_Y + 1);
+		vwin->putcen(ColorString("Gambler: ", ddutil::GAMBLER_COLOR), SEC_CLASS_Y);
+		vwin->putcen(deck->getFullInformation(), SEC_CLASS_Y + 1);
+		vwin->putcen(ColorString("Sharpshooter: ", ddutil::SHARPSHOOTER_COLOR), THI_CLASS_Y);
+		vwin->putcen(sack->getFullInformation(), THI_CLASS_Y + 1);
+		std::vector<ColorString> sorOptions = {
+			ColorString("View Compendium", ddutil::COMPENDIUM_COLOR),
+			ColorString("Brawler", ddutil::BRAWLER_COLOR),
+			ColorString("Gambler", ddutil::GAMBLER_COLOR),
+			ColorString("Sharpshooter", ddutil::SHARPSHOOTER_COLOR)
+		};
+		Menu sorMenu(vwin, sorOptions, Coordinate(0, FOU_CLASS_Y + 3), true);
+		if (sorMenu.getResponse() == 0)
+		{
+			compendium->display();
+			continue;
+		}
+		switch (sorMenu.getResponse())
+		{
+		case 1:
+			gunslinger->getArtifact(belt);
+			gunslinger->setColor(ddutil::BRAWLER_COLOR);
+			delete sack;
+			delete deck;
+			break;
+		case 2:
+			gunslinger->getArtifact(deck);
+			gunslinger->setColor(ddutil::GAMBLER_COLOR);
+			delete sack;
+			delete belt;
+			break;
+		default:
+			gunslinger->getArtifact(sack);
+			gunslinger->setColor(ddutil::SHARPSHOOTER_COLOR);
+			delete belt;
+			delete deck;
+			break;
+		}
+		vwin->clearScreen();
+		break;
+	}
 
+
+	vwin->printArtFromBottom(Art::getGunslinger(gunslinger->getColor()), Coordinate(0, ddutil::DIVIDER_LINE3), true);
+	playSound(WavFile("shot3", false, false));
+	playSound(WavFile("shot3", false, false));
+	Sleep(25);
+	playSound(WavFile("shot3", false, false));
+	Sleep(SLEEP);
+	vwin->clearScreen();
+	
 	vwin->clearScreen();
 }
 

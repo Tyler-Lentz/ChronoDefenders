@@ -107,6 +107,7 @@ private:
 	// Major Functions
 	void titleScreen(); // display the titlescreen
 	void intro();
+	void chooseClasses();
 
 	//flags
 	bool skipToNextChapter;

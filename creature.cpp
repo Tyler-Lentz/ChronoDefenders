@@ -62,6 +62,7 @@ std::vector<Move*> Creature::getMoves()
 	return moves;
 }
 
+
 Picture Creature::getPicture()
 {
 	return picture;
@@ -76,6 +77,7 @@ ColorString Creature::getColorString()
 {
 	return ColorString(name, color);
 }
+
 
 ColorString Creature::getStatLine()
 {
@@ -279,6 +281,11 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 		double mult = 1 + (DragonStatus::PERCENT_DAM_INC / 100.0);
 		amount = static_cast<int>(static_cast<double>(amount) * mult);
 	}
+	if (attacker != nullptr && attacker->hasStatus(StatusID::Beserked))
+	{	
+		double mult = 1 + (BeserkedStatus::PERCENT_DAM_INC / 100.0);
+		amount = static_cast<int>(static_cast<double>(amount) * mult);
+	}
 	if (attacker != nullptr && attacker->hasStatus(StatusID::Elemental))
 	{
 		applyStatus(new ZappedStatus(), ElementalStatus::ZAP_AMOUNT);
@@ -332,6 +339,11 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 	if (startingHealth - health > 0)
 	{
 		doMiscDamageEffects(startingHealth - health);
+		Player* playerAttacker = dynamic_cast<Player*>(attacker);
+		if (playerAttacker != nullptr && playerAttacker->hasArtifact(ArtifactID::TempestStaff))
+		{
+			playerAttacker->addVitality(TempestsStaff::VIT);
+		}
 	}
 	return ddutil::DamageReport(damageBlocked, startingHealth - health);
 }

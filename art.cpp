@@ -70,33 +70,33 @@ Picture Art::getPaladin()
 	return paladin;
 }
 
-Picture Art::getGunslinger()
+Picture Art::getGunslinger(int color)
 {
 	Picture gunslinger;
-	gunslinger.push_back(ColorString(R"(    \______          )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(   __\o___|__        )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(    ///  -.          )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(    _/ \_c/          )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(   /= \/             )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(   \ ^|\     ______. )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(   )\  \___~(_]---'  )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(  _\_\,__o//_)       )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"( (x_\_:M             )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(   \ *\ \            )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(    \ *\ \           )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(     \,/ `)          )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(    / (   |          )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(   ,- <___(          )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(   (o \|  |          )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(   [_,_(o \__        )", ddutil::GUNSLINGER_COLOR));
-	gunslinger.push_back(ColorString(R"(       \_,___]       )", ddutil::GUNSLINGER_COLOR));
+	gunslinger.push_back(ColorString(R"(    \______          )", color));
+	gunslinger.push_back(ColorString(R"(   __\o___|__        )", color));
+	gunslinger.push_back(ColorString(R"(    ///  -.          )", color));
+	gunslinger.push_back(ColorString(R"(    _/ \_c/          )", color));
+	gunslinger.push_back(ColorString(R"(   /= \/             )", color));
+	gunslinger.push_back(ColorString(R"(   \ ^|\     ______. )", color));
+	gunslinger.push_back(ColorString(R"(   )\  \___~(_]---'  )", color));
+	gunslinger.push_back(ColorString(R"(  _\_\,__o//_)       )", color));
+	gunslinger.push_back(ColorString(R"( (x_\_:M             )", color));
+	gunslinger.push_back(ColorString(R"(   \ *\ \            )", color));
+	gunslinger.push_back(ColorString(R"(    \ *\ \           )", color));
+	gunslinger.push_back(ColorString(R"(     \,/ `)          )", color));
+	gunslinger.push_back(ColorString(R"(    / (   |          )", color));
+	gunslinger.push_back(ColorString(R"(   ,- <___(          )", color));
+	gunslinger.push_back(ColorString(R"(   (o \|  |          )", color));
+	gunslinger.push_back(ColorString(R"(   [_,_(o \__        )", color));
+	gunslinger.push_back(ColorString(R"(       \_,___]       )", color));
 	return gunslinger;
 }
 
 Picture Art::getJesterGunslinger()
 {
 	Picture gunslinger;
-	int color = ddutil::GREEN;
+	int color = JesterStatus::COLOR;
 	gunslinger.push_back(ColorString(R"(    \______          )", color));
 	gunslinger.push_back(ColorString(R"(   __\o___|__        )", color));
 	gunslinger.push_back(ColorString(R"(    ///  -.          )", color));
@@ -166,31 +166,31 @@ Picture Art::getWhiteBackgroundGunslinger()
 	return gunslinger;
 }
 
-Picture Art::getSorcerer()
+Picture Art::getSorcerer(int color)
 {
 	Picture sorcerer;
-	sorcerer.push_back(ColorString(R"(              \'/    )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(            -= * =-  )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(        .-"-. / #,_  )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(       / /\_ \  `#|\ )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(      / /')'\ \  /#/ )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(     (  \ = /  )/\/# )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(      )  ) (  (/  \  )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(     (_.;`"`;._)  |  )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(    / (  \|/  )   |  )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(   /  /\-'^'-/\   |  )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(  |  \| )=@=(  \_/   )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(  |  /\/     \       )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(  | /\ \      ;      )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(  \(// /'     |      )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(     \/       |      )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(      |     / /      )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(      | ___/\_\      )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(      |/ / \ \|      )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(     / | | | | \     )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(     \_|/   \|_/     )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(      / \`-'/ \      )", ddutil::SORCERER_COLOR));
-	sorcerer.push_back(ColorString(R"(      `-'   '-`      )", ddutil::SORCERER_COLOR));
+	sorcerer.push_back(ColorString(R"(              \'/    )", color));
+	sorcerer.push_back(ColorString(R"(            -= * =-  )", color));
+	sorcerer.push_back(ColorString(R"(        .-"-. / #,_  )", color));
+	sorcerer.push_back(ColorString(R"(       / /\_ \  `#|\ )", color));
+	sorcerer.push_back(ColorString(R"(      / /')'\ \  /#/ )", color));
+	sorcerer.push_back(ColorString(R"(     (  \ = /  )/\/# )", color));
+	sorcerer.push_back(ColorString(R"(      )  ) (  (/  \  )", color));
+	sorcerer.push_back(ColorString(R"(     (_.;`"`;._)  |  )", color));
+	sorcerer.push_back(ColorString(R"(    / (  \|/  )   |  )", color));
+	sorcerer.push_back(ColorString(R"(   /  /\-'^'-/\   |  )", color));
+	sorcerer.push_back(ColorString(R"(  |  \| )=@=(  \_/   )", color));
+	sorcerer.push_back(ColorString(R"(  |  /\/     \       )", color));
+	sorcerer.push_back(ColorString(R"(  | /\ \      ;      )", color));
+	sorcerer.push_back(ColorString(R"(  \(// /'     |      )", color));
+	sorcerer.push_back(ColorString(R"(     \/       |      )", color));
+	sorcerer.push_back(ColorString(R"(      |     / /      )", color));
+	sorcerer.push_back(ColorString(R"(      | ___/\_\      )", color));
+	sorcerer.push_back(ColorString(R"(      |/ / \ \|      )", color));
+	sorcerer.push_back(ColorString(R"(     / | | | | \     )", color));
+	sorcerer.push_back(ColorString(R"(     \_|/   \|_/     )", color));
+	sorcerer.push_back(ColorString(R"(      / \`-'/ \      )", color));
+	sorcerer.push_back(ColorString(R"(      `-'   '-`      )", color));
 	return sorcerer;
 }
 
@@ -432,32 +432,32 @@ Picture Art::getSpiritKnight()
 	return knight;
 }
 
-Picture Art::getSamurai()
+Picture Art::getSamurai(int color)
 {
 	Picture samurai;
-	samurai.push_back(ColorString(R"(                                    /))", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(                                   // )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(                 __*_             //  )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(              /-(____)           //   )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(             ////- -|\          //    )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(          ,____o% -,_          //     )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(         /  \\   |||  ;       //      )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(        /____\....::./\      //       )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(       _/__/#\_ _,,_/--\    //        )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(       /___/######## \/""-(\</        )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(      _/__/ '#######  ""^(/</         )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(    __/ /   ,)))=:=(,    //.          )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(   |,--\   /Q...... /.  (/            )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(   /       .Q....../..\               )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(          /.Q ..../...\               )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(         /......./.....\              )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(         /...../  \.....\             )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(         /_.._./   \..._\             )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(          (` )      (` )              )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(          | /        \ |              )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(          '(          )'              )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(         /+|          |+\             )", ddutil::SAMURAI_COLOR));
-	samurai.push_back(ColorString(R"(         |,/          \,/             )", ddutil::SAMURAI_COLOR));
+	samurai.push_back(ColorString(R"(                                    /))", color));
+	samurai.push_back(ColorString(R"(                                   // )", color));
+	samurai.push_back(ColorString(R"(                 __*_             //  )", color));
+	samurai.push_back(ColorString(R"(              /-(____)           //   )", color));
+	samurai.push_back(ColorString(R"(             ////- -|\          //    )", color));
+	samurai.push_back(ColorString(R"(          ,____o% -,_          //     )", color));
+	samurai.push_back(ColorString(R"(         /  \\   |||  ;       //      )", color));
+	samurai.push_back(ColorString(R"(        /____\....::./\      //       )", color));
+	samurai.push_back(ColorString(R"(       _/__/#\_ _,,_/--\    //        )", color));
+	samurai.push_back(ColorString(R"(       /___/######## \/""-(\</        )", color));
+	samurai.push_back(ColorString(R"(      _/__/ '#######  ""^(/</         )", color));
+	samurai.push_back(ColorString(R"(    __/ /   ,)))=:=(,    //.          )", color));
+	samurai.push_back(ColorString(R"(   |,--\   /Q...... /.  (/            )", color));
+	samurai.push_back(ColorString(R"(   /       .Q....../..\               )", color));
+	samurai.push_back(ColorString(R"(          /.Q ..../...\               )", color));
+	samurai.push_back(ColorString(R"(         /......./.....\              )", color));
+	samurai.push_back(ColorString(R"(         /...../  \.....\             )", color));
+	samurai.push_back(ColorString(R"(         /_.._./   \..._\             )", color));
+	samurai.push_back(ColorString(R"(          (` )      (` )              )", color));
+	samurai.push_back(ColorString(R"(          | /        \ |              )", color));
+	samurai.push_back(ColorString(R"(          '(          )'              )", color));
+	samurai.push_back(ColorString(R"(         /+|          |+\             )", color));
+	samurai.push_back(ColorString(R"(         |,/          \,/             )", color));
 	return samurai;
 }
 

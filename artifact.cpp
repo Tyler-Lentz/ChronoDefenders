@@ -8,6 +8,7 @@
 #include "player.h"
 #include "soundfile.h"
 #include "enemy.h"
+#include "gunslinger_moves.h"
 
 Artifact::Artifact(std::string theName, ColorString theDescription, ArtifactID theID, Strength theStrength, int theColor, Game* theGame)
 {
@@ -236,6 +237,22 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 		return new MonkeysPaw(game);
 	case ArtifactID::Singularity:
 		return new Singularity(game);
+	case ArtifactID::BeserkersBrew:
+		return new BeserkersBrew(game);
+	case ArtifactID::NomadsMat:
+		return new NomadsMat(game);
+	case ArtifactID::NinjasCaltrops:
+		return new NinjasCaltrops(game);
+	case ArtifactID::ClericsRobes:
+		return new ClericsRobes(game);
+	case ArtifactID::SummonersOrb:
+		return new SummonersOrb(game);
+	case ArtifactID::BrawlersBelt:
+		return new BrawlersBelt(game);
+	case ArtifactID::GamblersDeck:
+		return new GamblersDeck(game);
+	case ArtifactID::SharpshootersSack:
+		return new SharpshootersSack(game);
 	default:
 		return nullptr;
 	}
@@ -1452,4 +1469,147 @@ void Singularity::equipAction(Player* player)
 {
 	player->decreaseMaxHealth(player->getMaxHealth(50));
 	player->cosmicAscension();
+}
+
+BeserkersBrew::BeserkersBrew(Game* game)
+	:MythicalArtifact(
+		"Beserker's Brew",
+		ColorString("Gives ", ddutil::TEXT_COLOR) + ColorString("Beserked ("+std::to_string(LENGTH)+")", BeserkedStatus::COLOR) +
+			ColorString(" at the start of battle", ddutil::TEXT_COLOR),
+		ArtifactID::BeserkersBrew,
+		game
+	)
+{
+}
+
+void BeserkersBrew::equipAction(Player* player)
+{
+	player->addSelfStartingStatus(new BeserkedStatus(), LENGTH);
+}
+
+NomadsMat::NomadsMat(Game* game)
+	:MythicalArtifact(
+		"Nomad's Mat",
+		ColorString("Start battle in ",ddutil::TEXT_COLOR) + ColorString("Zen ("+std::to_string(LENGTH)+")", ZenStatus::COLOR) +
+			ColorString(", and ", ddutil::TEXT_COLOR) + ColorString("Zen", ZenStatus::COLOR) + ColorString(" heals "+std::to_string(ZEN_INC)+" more HP", ddutil::TEXT_COLOR),
+		ArtifactID::NomadsMat,
+		game
+	)
+{
+}
+
+void NomadsMat::equipAction(Player* player)
+{
+	player->addSelfStartingStatus(new ZenStatus(), LENGTH);
+}
+
+NinjasCaltrops::NinjasCaltrops(Game* game)
+	:MythicalArtifact(
+		"Ninja's Caltrops",
+		ColorString("Gives ", ddutil::TEXT_COLOR) + ColorString("Thorned ("+std::to_string(THORNS)+")", ThornsStatus::COLOR) +
+			ColorString(" and increases dodge chance by "+std::to_string(DODGE_INC)+"%", ddutil::TEXT_COLOR),
+		ArtifactID::NinjasCaltrops,
+		game
+	)
+{
+}
+
+void NinjasCaltrops::equipAction(Player* player)
+{
+	player->increaseBaseDodgeChance(DODGE_INC);
+	player->addSelfStartingStatus(new ThornsStatus(), THORNS);
+}
+
+ClericsRobes::ClericsRobes(Game* game)
+	:MythicalArtifact(
+		"Cleric's Robes",
+		ColorString("Gain " +std::to_string(MAX_HP_INC) +" max HP", ddutil::HEAL_COLOR) + ColorString(" if ending a fight at full HP", ddutil::TEXT_COLOR),
+		ArtifactID::ClericsRobes,
+		game
+	)
+{
+}
+
+SummonersOrb::SummonersOrb(Game* game)
+	:MythicalArtifact(
+		"Summoner's Orb",
+		ColorString("When using a summon move, ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BLOCK) + " block", ddutil::BLOCK_COLOR),
+		ArtifactID::SummonersOrb,
+		game
+	)
+{
+}
+
+TempestsStaff::TempestsStaff(Game* game)
+	:MythicalArtifact(
+		"Tempest's Staff",
+		ColorString("When dealing damage, gain back ", ddutil::TEXT_COLOR) + ColorString(std::to_string(VIT)+" vitality", ddutil::VITALITY_COLOR),
+		ArtifactID::TempestStaff,
+		game
+	)
+{
+
+}
+
+BrawlersBelt::BrawlersBelt(Game* game)
+	:MythicalArtifact(
+		"Brawler's Belt",
+		ColorString("If ending a turn with 0 vitality, ", ddutil::TEXT_COLOR) + ColorString("gain "+std::to_string(VIT_INC)+" extra vitality", ddutil::VITALITY_COLOR),
+		ArtifactID::BrawlersBelt,
+		game
+	)
+{
+}
+
+GamblersDeck::GamblersDeck(Game* game)
+	:MythicalArtifact(
+		"Gambler's Deck",
+		ColorString("Replace ", ddutil::TEXT_COLOR) + ColorString("Make Bullets", ddutil::MODERATE_COLOR) + 
+			ColorString(" with ",ddutil::TEXT_COLOR) + ColorString("Card Throw", ddutil::MODERATE_COLOR) + 
+			ColorString(" and start battle with a random card", ddutil::TEXT_COLOR),
+		ArtifactID::GamblersDeck,
+		game
+	)
+{
+}
+
+void GamblersDeck::equipAction(Player* player)
+{
+	player->removeNewestMove();
+	player->addMove(new GunslingerMoves::CardThrow());
+}
+
+ColorString GamblersDeck::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	Status* status = CardStatus::getRandomCard();
+	player->applyStatus(status);
+	return ColorString("The ", ddutil::TEXT_COLOR) + player->getColorString() +
+		ColorString(" draws the ", ddutil::TEXT_COLOR) + status->getName() +
+		ColorString(" from the ", ddutil::TEXT_COLOR) + getName();
+}
+
+SharpshootersSack::SharpshootersSack(Game* game)
+	:MythicalArtifact(
+		"Sharpshooter's Sack",
+		ColorString("Gives " + std::to_string(BULLETS)+" bullets at the start of battle", ddutil::TEXT_COLOR),
+		ArtifactID::SharpshootersSack,
+		game
+	)
+{
+}
+
+ColorString SharpshootersSack::startOfBattleAction(Player* player, Enemy* enemy)
+{
+	Gunslinger* gunman = dynamic_cast<Gunslinger*>(player);
+	if (gunman == nullptr)
+	{
+		return ColorString("The ", ddutil::TEXT_COLOR) + player->getColorString() + ColorString(" cannot use the ", ddutil::TEXT_COLOR) +
+			getName();
+	}
+	else
+	{
+		gunman->createBullets(BULLETS);
+		return ColorString("The ", ddutil::TEXT_COLOR) + player->getColorString() + ColorString(" gets " + std::to_string(BULLETS) + " bullets from the ", ddutil::TEXT_COLOR) +
+			getName();
+	}
 }

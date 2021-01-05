@@ -34,7 +34,8 @@ enum class StatusID
     Stunned,
     Scorched,
     Entombed,
-    Marked
+    Marked,
+    Beserked
 };
 
 class Status
@@ -224,6 +225,8 @@ class CardStatus : public Status
 public:
     CardStatus(StatusID theID, ColorString name, std::string description, int num);
 
+    static CardStatus* getRandomCard();
+
 protected:
     int number; // 2-10, 11 = jack, 12 = queen, 13 = king, 14 = ace
 };
@@ -355,6 +358,17 @@ public:
     const static int PERCENT_DAM_INC = 50;
 };
 
+class BeserkedStatus : public NormalStatus
+{
+public:
+    BeserkedStatus();
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override { return ColorString(); };
+
+    const static int COLOR = ddutil::BESERKER_COLOR;
+    const static int PERCENT_DAM_INC = 25;
+};
+
 class JesterStatus : public NormalStatus
 {
 public:
@@ -363,7 +377,7 @@ public:
     Status* makeCopy() override;
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
-    const static int COLOR = ddutil::GREEN;
+    const static int COLOR = ddutil::LIGHTRED;
 };
 
 class ElementalStatus : public NormalStatus

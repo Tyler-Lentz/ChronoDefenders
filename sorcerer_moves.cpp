@@ -53,6 +53,12 @@ ColorString SorcererMoves::SummonMove::doAction(Creature* self, Creature* other)
 
 	gamePtr->addPlayer(minion);
 
+	Player* playerSelf = dynamic_cast<Player*>(self);
+	if (playerSelf != nullptr && playerSelf->hasArtifact(ArtifactID::SummonersOrb))
+	{
+		self->applyBlock(SummonersOrb::BLOCK);
+	}
+
 	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
 		ColorString(" summons a ", ddutil::TEXT_COLOR) + minionName;
 }

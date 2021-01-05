@@ -115,6 +115,8 @@ Status* Status::getStatusFromID(StatusID id)
 		return new EntombedStatus();
 	case StatusID::Marked:
 		return new MarkedStatus();
+	case StatusID::Beserked:
+		return new BeserkedStatus();
 	default:
 		return nullptr;
 	}
@@ -211,7 +213,13 @@ Status* ZenStatus::makeCopy()
 
 ColorString ZenStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
-	int actualHealAmount = target->increaseHealth(HP_GAIN);
+	int startHealAmount = HP_GAIN;
+	Player* player = dynamic_cast<Player*>(target);
+	if (player != nullptr && player->hasArtifact(ArtifactID::NomadsMat))
+	{
+		startHealAmount += NomadsMat::ZEN_INC;
+	}
+	int actualHealAmount = target->increaseHealth(startHealAmount);
 
 	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() + ColorString(" heals ", ddutil::TEXT_COLOR) +
 		ColorString(std::to_string(actualHealAmount) + " health ", ddutil::HEAL_COLOR) +
@@ -319,6 +327,22 @@ CardStatus::CardStatus(StatusID theID, ColorString name, std::string description
 	:Status(theID, name, description, true, true, false, false)
 {
 	number = num;
+}
+
+CardStatus* CardStatus::getRandomCard()
+{
+	int num = ddutil::random(2, 14);
+	switch (ddutil::random(1, 4))
+	{
+	case 1:
+		return new DiamondStatus(num);
+	case 2:
+		return new HeartStatus(num);
+	case 3:
+		return new ClubStatus(num);
+	default:
+		return new SpadeStatus(num);
+	}
 }
 
 SpadeStatus::SpadeStatus(int num)
@@ -686,4 +710,18 @@ Status* MarkedStatus::makeCopy()
 ColorString MarkedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
 	return ColorString();
+}
+
+BeserkedStatus::BeserkedStatus()
+	:NormalStatus(
+		StatusID::Beserked,
+		ColorString("Beserked", COLOR),
+		"While active, increases damage by "+std::to_string(PERCENT_DAM_INC)+"%"
+	)
+{
+}
+
+Status* BeserkedStatus::makeCopy()
+{
+	return new BeserkedStatus();
 }

@@ -100,6 +100,18 @@ namespace ddutil
     const int GUNSLINGER_COLOR = ddutil::BROWN;
     const int SORCERER_COLOR = ddutil::LIGHTBLUE;
 
+    const int BESERKER_COLOR = ddutil::RED;
+    const int NOMAD_COLOR = ddutil::MAGENTA;
+    const int NINJA_COLOR = ddutil::DARKGRAY;
+
+    const int CLERIC_COLOR = ddutil::WHITE;
+    const int SUMMONER_COLOR = ddutil::CYAN;
+    const int TEMPEST_COLOR = ddutil::YELLOW;
+
+    const int BRAWLER_COLOR = ddutil::BROWN;
+    const int GAMBLER_COLOR = ddutil::LIGHTBLUE;
+    const int SHARPSHOOTER_COLOR = ddutil::LIGHTMAGENTA;
+
     const int COMPENDIUM_COLOR = ddutil::CYAN;
     const int DISTORTION_COLOR = ddutil::MAGENTA;
     const int SCORE_COLOR = ddutil::YELLOW;

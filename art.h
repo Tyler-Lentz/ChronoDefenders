@@ -18,11 +18,11 @@ public:
 	static Picture getTitle();
 	const static int TITLE_COLOR = ddutil::CYAN;
 	static Picture getPaladin();
-	static Picture getGunslinger();
+	static Picture getGunslinger(int color);
 	static Picture getJesterGunslinger();
 	static Picture getCosmicGunslinger();
 	static Picture getWhiteBackgroundGunslinger();
-	static Picture getSorcerer();
+	static Picture getSorcerer(int color);
 	static Picture getElementalSorceress();
 	static Picture getCosmicSorceress();
 	static Picture getWhiteBackgroundSorcerer();
@@ -33,7 +33,7 @@ public:
 	static Picture getFireDragon();
 	static Picture getIceDragon();
 	static Picture getSpiritKnight();
-	static Picture getSamurai();
+	static Picture getSamurai(int color);
 	static Picture getDragonSamurai();
 	static Picture getCosmicSamurai();
 	static Picture getWhiteBackgroundSamurai();

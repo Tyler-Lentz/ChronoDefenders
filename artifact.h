@@ -86,7 +86,16 @@ enum class ArtifactID
 	CursedTome, // boss
 	ShipInABottle, // boss
 	MonkeysPaw, // Boss
-	Singularity // boss
+	Singularity, // boss
+	BeserkersBrew, // starting
+	NomadsMat, // starting
+	NinjasCaltrops, // starting
+	ClericsRobes, // ''
+	SummonersOrb,
+	TempestStaff,
+	BrawlersBelt,
+	GamblersDeck,
+	SharpshootersSack
 };
 
 class Artifact
@@ -732,7 +741,89 @@ public:
 	Singularity(Game* game);
 	void equipAction(Player* player) override;
 
+};
 
+// starting artifacts
+class BeserkersBrew : public MythicalArtifact 
+{
+public:
+	BeserkersBrew(Game* game);
+	void equipAction(Player* player) override;
+
+	const static int LENGTH = 1;
+};
+
+class NomadsMat : public MythicalArtifact
+{
+public:
+	NomadsMat(Game* game);
+	void equipAction(Player* player) override;
+
+	const static int LENGTH = 1;
+	const static int ZEN_INC = 1;
+};
+
+class NinjasCaltrops : public MythicalArtifact
+{
+public:
+	NinjasCaltrops(Game* game);
+	void equipAction(Player* player) override;
+
+	const static int DODGE_INC = 5;
+	const static int THORNS = 8;
+};
+
+class ClericsRobes : public MythicalArtifact
+{
+public:
+	ClericsRobes(Game* game);
+	void equipAction(Player* player) override {};
+
+	const static int MAX_HP_INC = 3;
+};
+
+class SummonersOrb : public MythicalArtifact
+{
+public:
+	SummonersOrb(Game* game);
+	void equipAction(Player* player) override {};
+
+	const static int BLOCK = 10;
+};
+
+class TempestsStaff : public MythicalArtifact
+{
+public:
+	TempestsStaff(Game* game);
+	void equipAction(Player* player) override {};
+
+	const static int VIT = 1; // gain back 1 vitality when dealing damage
+};
+
+class BrawlersBelt : public MythicalArtifact
+{
+public:
+	BrawlersBelt(Game* game);
+	void equipAction(Player* player) override {};
+	const static int VIT_INC = 1;
+};
+
+class GamblersDeck : public MythicalArtifact
+{
+public:
+	GamblersDeck(Game* game);
+	void equipAction(Player* player) override;
+	ColorString startOfBattleAction(Player* player, Enemy* enemy) override;
+};
+
+class SharpshootersSack : public MythicalArtifact
+{
+public:
+	SharpshootersSack(Game* game);
+	void equipAction(Player* player) override {};
+	ColorString startOfBattleAction(Player* player, Enemy* enemy) override;
+
+	const static int BULLETS = 3;
 };
 
 #endif

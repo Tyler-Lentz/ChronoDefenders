@@ -566,6 +566,8 @@ void Compendium::makeStatusList()
 	page.push_back(status->getFullInformation());
 	status = std::make_unique<MarkedStatus>();
 	page.push_back(status->getFullInformation());
+	status = std::make_unique<BeserkedStatus>();
+	page.push_back(status->getFullInformation());
 
 	compendium.push_back(page);
 }

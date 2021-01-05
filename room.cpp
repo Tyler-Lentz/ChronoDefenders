@@ -38,6 +38,10 @@ void EnemyRoom::playRoom()
 	{
 		for (Player* p : game->getPlayerParty())
 		{
+			if (p->hasArtifact(ArtifactID::ClericsRobes))
+			{
+				p->increaseMaxHealth(ClericsRobes::MAX_HP_INC);
+			}
 			p->tradeExperience();
 		}
 	}

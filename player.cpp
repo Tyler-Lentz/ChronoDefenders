@@ -932,7 +932,7 @@ void Player::cosmicAscension()
 	vitalityGain = 10 + vitalityGain;
 	maxVitality = 100;
 	movesetLimit = 4;
-	const int NUM_NEW_MOVES = 1;
+	const int NUM_NEW_MOVES = 2;
 	std::vector<Move*> newMoves = CosmicMoves::getRandomMoves(NUM_NEW_MOVES);
 	for (Move* m : newMoves)
 	{
@@ -975,6 +975,24 @@ bool Player::isCosmic()
 	return false;
 }
 
+void Player::addMove(Move* move)
+{
+	if (moves.size() < movesetLimit)
+	{
+		moves.push_back(move);
+	}
+	else
+	{
+		delete move;
+	}
+}
+
+void Player::setColor(int color)
+{
+	this->color = color;
+	resetPicture();
+}
+
 
 Savechunk Player::getUniqueSaveChunkInfo()
 {
@@ -1001,7 +1019,7 @@ void Player::doMiscDamageEffects(int damage)
 // Samurai
 Samurai::Samurai(Game* game)
 	:Player(game, PlayerId::Samurai, Samurai::STARTING_VITALITY, Samurai::MAX_VITALITY, Samurai::VITALITY_GAIN, Samurai::MAX_HP,
-		Samurai::MAX_MOVES, "Samurai", ddutil::SAMURAI_COLOR, Art::getSamurai(), false)
+		Samurai::MAX_MOVES, "Samurai", ddutil::SAMURAI_COLOR, Art::getSamurai(ddutil::SAMURAI_COLOR), false)
 {
 	moves.push_back(new SamuraiMoves::Slice());
 	moves.push_back(new SamuraiMoves::Slice());
@@ -1155,7 +1173,7 @@ void Samurai::resetPicture()
 	}
 	else
 	{
-		this->changePicture(Art::getSamurai());
+		this->changePicture(Art::getSamurai(color));
 	}
 }
 
@@ -1167,7 +1185,7 @@ Creature* Samurai::makeCopy()
 
 Gunslinger::Gunslinger(Game* game)
 	:Player(game, PlayerId::Gunslinger, Gunslinger::STARTING_VITALITY, Gunslinger::MAX_VITALITY, Gunslinger::VITALITY_GAIN, Gunslinger::MAX_HP,
-		Gunslinger::MAX_MOVES, "Gunslinger", ddutil::GUNSLINGER_COLOR, Art::getGunslinger(), false)
+		Gunslinger::MAX_MOVES, "Gunslinger", ddutil::GUNSLINGER_COLOR, Art::getGunslinger(ddutil::GUNSLINGER_COLOR), false)
 {
 	
 	maxBullets = Gunslinger::STARTING_MAX_BULLETS;
@@ -1344,7 +1362,7 @@ void Gunslinger::resetPicture()
 	}
 	else
 	{
-		this->changePicture(Art::getGunslinger());
+		this->changePicture(Art::getGunslinger(color));
 	}
 }
 
@@ -1410,7 +1428,7 @@ Savechunk Gunslinger::getUniqueSaveChunkInfo()
 
 Sorcerer::Sorcerer(Game* game)
 	:Player(game, PlayerId::Sorceress, Sorcerer::STARTING_VITALITY, Sorcerer::MAX_VITALITY, Sorcerer::VITALITY_GAIN, Sorcerer::MAX_HP,
-		Sorcerer::MAX_MOVES, "Sorceress", ddutil::SORCERER_COLOR, Art::getSorcerer(), false)
+		Sorcerer::MAX_MOVES, "Sorceress", ddutil::SORCERER_COLOR, Art::getSorcerer(ddutil::SORCERER_COLOR), false)
 {
 	// Starting moves
 	moves.push_back(new SorcererMoves::EnergyStrike());
@@ -1563,7 +1581,7 @@ void Sorcerer::resetPicture()
 	}
 	else
 	{
-		this->changePicture(Art::getSorcerer());
+		this->changePicture(Art::getSorcerer(color));
 	}
 	
 }

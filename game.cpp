@@ -858,7 +858,14 @@ void Game::titleScreen()
 			exit = true;
 			break;
 		}
-		vwin->clearScreen();
+		if (exit)
+		{
+			screenTransition(ddutil::BLACK);
+		}
+		else
+		{
+			vwin->clearScreen();
+		}
 	}
 
 
@@ -970,37 +977,31 @@ void Game::chooseClasses()
 	
 	const int SLEEP = 250;
 	const int TOP_LINE = 2;
-	const int CHAR_BOTTOM_LINE = ddutil::DIVIDER_LINE3;
-	const int FIR_CLASS_Y = 10;
-	const int SEC_CLASS_Y = 13;
-	const int THI_CLASS_Y = 16;
-	const int FOU_CLASS_Y = 19;
+	const int CHAR_LINE = ddutil::DIVIDER_LINE3 - 1;
+	const int MENU_LINE = CHAR_LINE + 2;
 	while (true)
 	{
 		vwin->clearScreen();
+		vwin->printArtFromBottom(Art::getSamurai(samurai->getColor()), Coordinate(0, CHAR_LINE), true);
 		vwin->putcen(ColorString("*================================*", ddutil::WHITE), TOP_LINE - 1);
 		vwin->putcen(ColorString(" Choose Samurai Starting Artifact", ddutil::SAMURAI_COLOR), TOP_LINE);
 		vwin->putcen(ColorString("*================================*", ddutil::WHITE), TOP_LINE + 1);
 		BeserkersBrew* brew = new BeserkersBrew(this);
 		NomadsMat* mat = new NomadsMat(this);
 		NinjasCaltrops* caltrops = new NinjasCaltrops(this);
-		vwin->putcen(brew->getFullInformation(), FIR_CLASS_Y + 1);
-		vwin->putcen(mat->getFullInformation(), SEC_CLASS_Y + 1);
-		vwin->putcen(caltrops->getFullInformation(), THI_CLASS_Y + 1);
 		std::vector<ColorString> samOptions = {
 			ColorString("View Compendium", ddutil::COMPENDIUM_COLOR),
-			brew->getName(),
-			mat->getName(),
-			caltrops->getName()
+			brew->getFullInformation(),
+			mat->getFullInformation(),
+			caltrops->getFullInformation()
 		};
-		Menu samMenu(vwin, samOptions, Coordinate(0, FOU_CLASS_Y + 3), true);
+		Menu samMenu(vwin, samOptions, Coordinate(0, MENU_LINE), true);
 		if (samMenu.getResponse() == 0)
 		{
 			compendium->display();
 			continue;
 		}
-		vwin->clearScreen();
-		vwin->printArtFromBottom(Art::getSamurai(samurai->getColor()), Coordinate(0, ddutil::DIVIDER_LINE3), true);
+
 		switch (samMenu.getResponse())
 		{
 		case 1:
@@ -1032,26 +1033,22 @@ void Game::chooseClasses()
 		vwin->putcen(ColorString("*==================================*", ddutil::WHITE), TOP_LINE - 1);
 		vwin->putcen(ColorString(" Choose Sorceress Starting Artifact", ddutil::SORCERER_COLOR), TOP_LINE);
 		vwin->putcen(ColorString("*==================================*", ddutil::WHITE), TOP_LINE + 1);
+		vwin->printArtFromBottom(Art::getSorcerer(sorceress->getColor()), Coordinate(0, CHAR_LINE), true);
 		ClericsRobes* robes = new ClericsRobes(this);
 		SummonersOrb* orb = new SummonersOrb(this);
 		TempestsStaff* staff = new TempestsStaff(this);
-		vwin->putcen(robes->getFullInformation(), FIR_CLASS_Y + 1);
-		vwin->putcen(orb->getFullInformation(), SEC_CLASS_Y + 1);
-		vwin->putcen(staff->getFullInformation(), THI_CLASS_Y + 1);
 		std::vector<ColorString> sorOptions = {
 			ColorString("View Compendium", ddutil::COMPENDIUM_COLOR),
-			robes->getName(),
-			orb->getName(),
-			staff->getName()
+			robes->getFullInformation(),
+			orb->getFullInformation(),
+			staff->getFullInformation()
 		};
-		Menu sorMenu(vwin, sorOptions, Coordinate(0, FOU_CLASS_Y + 3), true);
+		Menu sorMenu(vwin, sorOptions, Coordinate(0, MENU_LINE), true);
 		if (sorMenu.getResponse() == 0)
 		{
 			compendium->display();
 			continue;
 		}
-		vwin->clearScreen();
-		vwin->printArtFromBottom(Art::getSorcerer(sorceress->getColor()), Coordinate(0, ddutil::DIVIDER_LINE3), true);
 		switch (sorMenu.getResponse())
 		{
 		case 1:
@@ -1081,28 +1078,24 @@ void Game::chooseClasses()
 	while (true)
 	{
 		vwin->putcen(ColorString("*===================================*", ddutil::WHITE), TOP_LINE - 1);
-		vwin->putcen(ColorString(" Choose Gunslinger Starting Artifact", ddutil::GUNSLINGER_COLOR), TOP_LINE);
+		vwin->putcen(ColorString(" Choose Gunslinger Starting Artifact ", ddutil::GUNSLINGER_COLOR), TOP_LINE);
 		vwin->putcen(ColorString("*===================================*", ddutil::WHITE), TOP_LINE + 1);
+		vwin->printArtFromBottom(Art::getGunslinger(gunslinger->getColor()), Coordinate(0, CHAR_LINE), true);
 		BrawlersBelt* belt = new BrawlersBelt(this);
 		GamblersDeck* deck = new GamblersDeck(this);
 		SharpshootersSack* sack = new SharpshootersSack(this);
-		vwin->putcen(belt->getFullInformation(), FIR_CLASS_Y + 1);
-		vwin->putcen(deck->getFullInformation(), SEC_CLASS_Y + 1);
-		vwin->putcen(sack->getFullInformation(), THI_CLASS_Y + 1);
 		std::vector<ColorString> sorOptions = {
 			ColorString("View Compendium", ddutil::COMPENDIUM_COLOR),
-			belt->getName(),
-			deck->getName(),
-			sack->getName()
+			belt->getFullInformation(),
+			deck->getFullInformation(),
+			sack->getFullInformation()
 		};
-		Menu sorMenu(vwin, sorOptions, Coordinate(0, FOU_CLASS_Y + 3), true);
+		Menu sorMenu(vwin, sorOptions, Coordinate(0, MENU_LINE), true);
 		if (sorMenu.getResponse() == 0)
 		{
 			compendium->display();
 			continue;
 		}
-		vwin->clearScreen();
-		vwin->printArtFromBottom(Art::getGunslinger(gunslinger->getColor()), Coordinate(0, ddutil::DIVIDER_LINE3), true);
 		switch (sorMenu.getResponse())
 		{
 		case 1:
@@ -1232,6 +1225,24 @@ void Game::displayStars()
 			}
 		}
 	}
+}
+
+void Game::screenTransition(int color)
+{
+	ColorChar colChar(' ', ddutil::getColor(color, color));
+	const int SEPARATION = 3;
+	for (int k = 0; k < SEPARATION; k++)
+	{
+		for (int i = k; i < ddutil::CONSOLEX; i += SEPARATION)
+		{
+			for (int j = 0; j < ddutil::CONSOLEY; j++)
+			{
+				vwin->put(colChar, Coordinate(i, j));
+			}
+		}
+		Sleep(600);
+	}
+
 }
 
 // returns true if all players are dead

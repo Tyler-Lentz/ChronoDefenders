@@ -1433,7 +1433,7 @@ Sorcerer::Sorcerer(Game* game)
 	// Starting moves
 	moves.push_back(new SorcererMoves::EnergyStrike());
 	moves.push_back(new SorcererMoves::EnergyStrike());
-	moves.push_back(new SorcererMoves::Heal());
+	moves.push_back(new SorcererMoves::EnergyStrike());
 	moves.push_back(new SorcererMoves::Heal());
 	moves.push_back(new SorcererMoves::MagicBarrier());
 	maxAura = STARTING_MAX_AURA;

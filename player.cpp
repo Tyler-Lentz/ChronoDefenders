@@ -1436,6 +1436,8 @@ Sorcerer::Sorcerer(Game* game)
 	moves.push_back(new SorcererMoves::Heal());
 	moves.push_back(new SorcererMoves::Heal());
 	moves.push_back(new SorcererMoves::MagicBarrier());
+	maxAura = STARTING_MAX_AURA;
+	aura = maxAura;
 }
 
 std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
@@ -1591,6 +1593,30 @@ Creature* Sorcerer::makeCopy()
 	return new Sorcerer(getGamePtr());
 }
 
+void Sorcerer::resetTempStatAdjustments()
+{
+	Player::resetTempStatAdjustments();
+	aura = maxAura;
+}
+
+ColorString Sorcerer::getStatLine()
+{
+	ColorString c = Player::getStatLine();
+	c += ColorString("(" + std::to_string(aura) + "/" +std::to_string(maxAura)+ " Aura) ", ddutil::AURA_COLOR);
+	return c;
+}
+
+bool Sorcerer::useAura(int amount)
+{
+	if (aura >= amount)
+	{
+		aura -= amount;
+		return true;
+	}
+	return false;
+}
+
+
 // Unlockable Players
 
 // Minions
@@ -1634,6 +1660,7 @@ Creature* IceImp::makeCopy()
 Fairy::Fairy(Game* game)
 	:PlayerMinion(game, 2, 4, 2, 5, 2, "Fairy", ddutil::LIGHTMAGENTA, Art::getFairy())
 {
+	moves.push_back(new MinionMoves::FairyDust());
 	moves.push_back(new MinionMoves::FairyDust());
 }
 

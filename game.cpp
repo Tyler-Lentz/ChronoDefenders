@@ -607,6 +607,7 @@ void Game::battle(Enemy* enemy)
 					}
 					else
 					{
+						activePlayer->addVitality(selectedMove->getCost()); // refund the cost
 						playSound(WavFile("error", ddutil::SF_LOOP, ddutil::SF_ASYNC));
 					}
 

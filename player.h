@@ -43,7 +43,7 @@ public:
 	int getExperience(); // returns how much experience the player has
 
 	void adjustVitalityGainTemp(int amount); // add "amount" to vitalityGainAdjustment
-	void resetTempStatAdjustments();
+	virtual void resetTempStatAdjustments();
 
 	int gainExperience(double amount); // returns amount of experience gained
 	bool loseExperience(int amount); // returns true if amount <= experience, and subtracts the amount. Returns false and does nothing if amount > experience
@@ -152,7 +152,7 @@ public:
 	static const int STARTING_MAX_BULLETS = 9;
 	static const int STARTING_BULLETS = 9;
 
-	ColorString getStatLine(); // overrides the basic function to append the amount of bullets in reserve
+	ColorString getStatLine() override; // overrides the basic function to append the amount of bullets in reserve
 	void setReserveBullets(int val);
 	void setMaxBullets(int val);
 private:
@@ -171,11 +171,21 @@ public:
 	void resetPicture() override;
 	Creature* makeCopy() override;
 
+	void resetTempStatAdjustments() override;
+	ColorString getStatLine() override; // displays amount of aura available
+
+	bool useAura(int amount);
+
 	static const int STARTING_VITALITY = 10;
 	static const int MAX_VITALITY = 20;
 	static const int VITALITY_GAIN = 3;
 	static const int MAX_HP = 45;
 	static const int MAX_MOVES = 5;
+	static const int STARTING_MAX_AURA = 10;
+
+private:
+	int maxAura;
+	int aura;
 };
 
 class PlayerMinion : public Player

@@ -33,6 +33,7 @@ namespace SorcererMoves
 		~SummonMove();
 
 		ColorString doAction(Creature* self, Creature* other) override;
+		const static int AURA = 3;
 	private:
 		Player* summon;
 	};
@@ -56,13 +57,15 @@ namespace SorcererMoves
 		const static int COST = 3;
 	};
 
-	class Heal : public SimpleHealMove
+	class Heal : public Move 
 	{
 	public:
 		Heal();
+		ColorString doAction(Creature* self, Creature* other) override;
 
 		const static int HEAL_AMOUNT = 5;
 		const static int COST = 3;
+		const static int AURA = 2;
 	};
 
 	// Moderate
@@ -149,13 +152,15 @@ namespace SorcererMoves
 		const static int COST = 3;
 	};
 
-	class CleansingTouch : public SimpleHealMove
+	class CleansingTouch : public Move
 	{
 	public:
 		CleansingTouch();
+		ColorString doAction(Creature* self, Creature* other) override;
 
 		const static int HEAL_AMOUNT = 7;
 		const static int COST = 3;
+		const static int AURA = 1;
 	};
 
 	class EnergySword : public SimpleAttackMove
@@ -310,6 +315,7 @@ namespace SorcererMoves
 		const static int BASE_HEAL = 10;
 		const static int BONUS_HEAL = 5;
 		const static int COST = 4;
+		const static int AURA = 1;
 	};
 
 	class EnergyAura : public Move
@@ -319,7 +325,8 @@ namespace SorcererMoves
 		ColorString doAction(Creature* self, Creature* other) override;
 
 		const static int VITALITY_GAIN = 2;
-		const static int COST = 11;
+		const static int COST = 10;
+		const static int AURA = 2;
 	};
 
 	class EtherealBlade : public SimpleAttackMove
@@ -336,7 +343,7 @@ namespace SorcererMoves
 	public:
 		SpiritCall(Game* game);
 
-		const static int COST = 18;
+		const static int COST = 15;
 	};
 
 	class Supernova : public Move
@@ -356,6 +363,7 @@ namespace SorcererMoves
 		ColorString doAction(Creature* self, Creature* other) override;
 
 		const static int COST = 10;
+		const static int AURA = 2;
 	};
 
 	class ElementalForm: public Move

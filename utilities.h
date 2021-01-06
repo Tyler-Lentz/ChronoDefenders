@@ -99,6 +99,8 @@ namespace ddutil
     const int PALADIN_COLOR = ddutil::LIGHTGRAY;
     const int GUNSLINGER_COLOR = ddutil::BROWN;
     const int SORCERER_COLOR = ddutil::LIGHTBLUE;
+    
+    const int AURA_COLOR = ddutil::LIGHTCYAN;
 
     const int BESERKER_COLOR = ddutil::SAMURAI_COLOR;
     const int NOMAD_COLOR = ddutil::SAMURAI_COLOR;

@@ -14,8 +14,8 @@ namespace MinionMoves
 	public:
 		FairyDust();
 
-		const static int HEAL_AMOUNT = 12;
-		const static int COST = 4;
+		const static int HEAL_AMOUNT = 10;
+		const static int COST = 2;
 			
 	};
 

@@ -25,7 +25,7 @@ ColorString SorcererMoves::MakeBarrierMove::doAction(Creature* self, Creature* o
 }
 
 SorcererMoves::SummonMove::SummonMove(MoveId id, Player* minion, int cost, std::string name, Strength str, WavFile theSound)
-	:Move(id, "Summons a " + minion->getColorString().getString() + " for the duration of battle", name, cost, str, false, theSound)
+	:Move(id, "Summons a " + minion->getColorString().getString() + " for one battle, and uses "+std::to_string(AURA)+" Aura", name, cost, str, false, theSound)
 {
 	summon = minion;
 }
@@ -41,6 +41,11 @@ SorcererMoves::SummonMove::~SummonMove()
 ColorString SorcererMoves::SummonMove::doAction(Creature* self, Creature* other)
 {
 	Game* gamePtr = self->getGamePtr();
+	Sorcerer* playerSelf = dynamic_cast<Sorcerer*>(self);
+	if (playerSelf != nullptr && !playerSelf->useAura(AURA))
+	{
+		return ColorString(ddutil::NOT_ENOUGH_AURA, ddutil::TEXT_COLOR);
+	}
 
 	Player* minion = dynamic_cast<Player*>(summon->makeCopy());
 
@@ -53,7 +58,6 @@ ColorString SorcererMoves::SummonMove::doAction(Creature* self, Creature* other)
 
 	gamePtr->addPlayer(minion);
 
-	Player* playerSelf = dynamic_cast<Player*>(self);
 	if (playerSelf != nullptr && playerSelf->hasArtifact(ArtifactID::SummonersOrb))
 	{
 		self->applyBlock(SummonersOrb::BLOCK);
@@ -76,8 +80,30 @@ SorcererMoves::MagicBarrier::MagicBarrier()
 {}
 
 SorcererMoves::Heal::Heal()
-	:SimpleHealMove(MoveId::SorceressHeal, HEAL_AMOUNT, true, 3, "Heal", Strength::Weak)
+	: Move(
+		MoveId::SorceressHeal,
+		"Heals " + std::to_string(HEAL_AMOUNT) + " HP, and uses " + std::to_string(AURA) + " Aura",
+		"Heal",
+		COST,
+		Strength::Weak,
+		true,
+		WavFile("heal", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
 {
+}
+
+ColorString SorcererMoves::Heal::doAction(Creature* self, Creature* other)
+{
+	Sorcerer* sorcerer = dynamic_cast<Sorcerer*>(self);
+	if (sorcerer != nullptr && !sorcerer->useAura(AURA))
+	{
+		return ColorString(ddutil::NOT_ENOUGH_AURA, ddutil::TEXT_COLOR);
+	}
+
+	int actualHealAmount = other->increaseHealth(HEAL_AMOUNT);
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + other->getColorString() + ColorString(" heals ", ddutil::TEXT_COLOR) + 
+		ColorString(std::to_string(actualHealAmount) + " health", ddutil::HEAL_COLOR);
 }
 
 // Moderate
@@ -130,8 +156,30 @@ SorcererMoves::EnergyBarrier::EnergyBarrier()
 {}
 
 SorcererMoves::CleansingTouch::CleansingTouch()
-	:SimpleHealMove(MoveId::SorceressCleansingTouch, HEAL_AMOUNT, true, COST, "Cleansing Touch", Strength::Moderate)
+	: Move(
+		MoveId::SorceressCleansingTouch,
+		"Heals " + std::to_string(HEAL_AMOUNT) +" HP, and uses " + std::to_string(AURA) + " Aura",
+		"Cleansing Touch",
+		COST,
+		Strength::Moderate,
+		true,
+		WavFile("heal", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
 {
+}
+
+ColorString SorcererMoves::CleansingTouch::doAction(Creature* self, Creature* other)
+{
+	Sorcerer* sorcerer = dynamic_cast<Sorcerer*>(self);
+	if (sorcerer != nullptr && !sorcerer->useAura(AURA))
+	{
+		return ColorString(ddutil::NOT_ENOUGH_AURA, ddutil::TEXT_COLOR);
+	}
+
+	int actualHealAmount = other->increaseHealth(HEAL_AMOUNT);
+
+	return ColorString("The ", ddutil::TEXT_COLOR) + other->getColorString() + ColorString(" heals ", ddutil::TEXT_COLOR) + 
+		ColorString(std::to_string(actualHealAmount) + " health", ddutil::HEAL_COLOR);
 }
 
 SorcererMoves::EnergySword::EnergySword()
@@ -256,13 +304,19 @@ SorcererMoves::LightningStrike::LightningStrike()
 // Mythical
 
 SorcererMoves::CleansingAura::CleansingAura()
-	:Move(MoveId::SorceressCleansingAura, "Heals "+std::to_string(BASE_HEAL)+" health, plus "+std::to_string(BONUS_HEAL)+" health per status effect",
+	:Move(MoveId::SorceressCleansingAura, "Heals "+std::to_string(BASE_HEAL)+" health, plus "+std::to_string(BONUS_HEAL)+" health per status effect, and uses "+std::to_string(AURA)+" Aura",
 		"Cleansing Aura", COST, Strength::Mythical, true, WavFile("heal", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
 
 ColorString SorcererMoves::CleansingAura::doAction(Creature* self, Creature* other)
 {
+	Sorcerer* sorcerer = dynamic_cast<Sorcerer*>(self);
+	if (sorcerer != nullptr && !sorcerer->useAura(AURA))
+	{
+		return ColorString(ddutil::NOT_ENOUGH_AURA, ddutil::TEXT_COLOR);
+	}
+
 	int healAmount = BASE_HEAL + (BONUS_HEAL * other->getNumberOfStatusTypes());
 
 	int actualHealAmount = other->increaseHealth(healAmount);
@@ -272,7 +326,7 @@ ColorString SorcererMoves::CleansingAura::doAction(Creature* self, Creature* oth
 }
 
 SorcererMoves::EnergyAura::EnergyAura()
-	:Move(MoveId::SorceressEnergyAura, "Gives 2 additional vitality per turn this battle", "Energy Aura", COST, Strength::Mythical, true, WavFile("magicspell3", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:Move(MoveId::SorceressEnergyAura, "Gives 2 additional vitality per turn this battle, and uses "+std::to_string(AURA)+" Aura", "Energy Aura", COST, Strength::Mythical, true, WavFile("magicspell3", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
 
@@ -283,6 +337,11 @@ ColorString SorcererMoves::EnergyAura::doAction(Creature* self, Creature* other)
 	{
 		return ColorString("The ", ddutil::TEXT_COLOR) + other->getColorString() +
 			ColorString(" cannot gain vitality", ddutil::TEXT_COLOR);
+	}
+	Sorcerer* sorcerer = dynamic_cast<Sorcerer*>(self);
+	if (sorcerer != nullptr && !sorcerer->useAura(AURA))
+	{
+		return ColorString(ddutil::NOT_ENOUGH_AURA, ddutil::TEXT_COLOR);
 	}
 
 	player->adjustVitalityGainTemp(VITALITY_GAIN);
@@ -339,12 +398,18 @@ ColorString SorcererMoves::Supernova::doAction(Creature* self, Creature* other)
 }
 
 SorcererMoves::CastInvulnerability::CastInvulnerability()
-	:Move(MoveId::SorceressCastInvulnerability, "Makes the target invulnerable for the turn", "Cast Invulnerability", COST, Strength::Mythical, true, WavFile("ghostinvulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:Move(MoveId::SorceressCastInvulnerability, "Makes the target invulnerable for the turn, and uses "+std::to_string(AURA)+" Aura", "Cast Invulnerability", COST, Strength::Mythical, true, WavFile("ghostinvulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }
 
 ColorString SorcererMoves::CastInvulnerability::doAction(Creature* self, Creature* other)
 {
+	Sorcerer* sorcerer = dynamic_cast<Sorcerer*>(self);
+	if (sorcerer != nullptr && !sorcerer->useAura(AURA))
+	{
+		return ColorString(ddutil::NOT_ENOUGH_AURA, ddutil::TEXT_COLOR);
+	}
+
 	other->applyStatus(new InvulnerableStatus(), 1);
 	return ColorString("The ", ddutil::TEXT_COLOR) + other->getColorString() + ColorString(" will be invulnerable this turn", ddutil::TEXT_COLOR);
 }

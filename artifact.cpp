@@ -1439,7 +1439,7 @@ MonkeysPaw::MonkeysPaw(Game* game)
 		"Monkey's Paw",
 		ColorString("Doubles Max HP and sets HP to max", ddutil::HEAL_COLOR) + 
 			ColorString(", but", ddutil::TEXT_COLOR) + 
-			ColorString(" reduces all future healing by 100%", ddutil::DAMAGE_COLOR),
+			ColorString(" reduces all future healing by 75%", ddutil::DAMAGE_COLOR),
 		ArtifactID::MonkeysPaw,
 		game
 	)
@@ -1450,7 +1450,7 @@ void MonkeysPaw::equipAction(Player* player)
 {
 	player->increaseMaxHealth(player->getMaxHealth(100));
 	player->setHealth(player->getMaxHealth(100));
-	player->increasePercentHealBoost(-100);
+	player->increasePercentHealBoost(-75);
 }
 
 Singularity::Singularity(Game* game)

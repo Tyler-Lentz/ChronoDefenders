@@ -314,7 +314,7 @@ Status* ZappedStatus::makeCopy()
 ColorString ZappedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
 	int damage = target->getNumberOfStatuses() / 2;
-	ddutil::DamageReport damRep = target->reduceHealth(damage, nullptr);
+	ddutil::DamageReport damRep = target->reduceHealth(damage, nullptr, true);
 
 	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
 		ColorString(" loses " + std::to_string(damRep.getDamageTaken()) + " health due to being ", ddutil::TEXT_COLOR) +

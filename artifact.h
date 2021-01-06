@@ -744,7 +744,7 @@ public:
 };
 
 // starting artifacts
-class BeserkersBrew : public MythicalArtifact 
+class BeserkersBrew : public ModerateArtifact 
 {
 public:
 	BeserkersBrew(Game* game);
@@ -753,7 +753,7 @@ public:
 	const static int LENGTH = 1;
 };
 
-class NomadsMat : public MythicalArtifact
+class NomadsMat : public ModerateArtifact 
 {
 public:
 	NomadsMat(Game* game);
@@ -763,7 +763,7 @@ public:
 	const static int ZEN_INC = 1;
 };
 
-class NinjasCaltrops : public MythicalArtifact
+class NinjasCaltrops : public ModerateArtifact 
 {
 public:
 	NinjasCaltrops(Game* game);
@@ -773,7 +773,7 @@ public:
 	const static int THORNS = 8;
 };
 
-class ClericsRobes : public MythicalArtifact
+class ClericsRobes : public ModerateArtifact 
 {
 public:
 	ClericsRobes(Game* game);
@@ -782,16 +782,16 @@ public:
 	const static int MAX_HP_INC = 3;
 };
 
-class SummonersOrb : public MythicalArtifact
+class SummonersOrb : public ModerateArtifact 
 {
 public:
 	SummonersOrb(Game* game);
 	void equipAction(Player* player) override {};
 
-	const static int BLOCK = 10;
+	const static int BLOCK = 12;
 };
 
-class TempestsStaff : public MythicalArtifact
+class TempestsStaff : public ModerateArtifact 
 {
 public:
 	TempestsStaff(Game* game);
@@ -800,7 +800,7 @@ public:
 	const static int VIT = 1; // gain back 1 vitality when dealing damage
 };
 
-class BrawlersBelt : public MythicalArtifact
+class BrawlersBelt : public ModerateArtifact 
 {
 public:
 	BrawlersBelt(Game* game);
@@ -808,7 +808,7 @@ public:
 	const static int VIT_INC = 1;
 };
 
-class GamblersDeck : public MythicalArtifact
+class GamblersDeck : public ModerateArtifact 
 {
 public:
 	GamblersDeck(Game* game);
@@ -816,7 +816,7 @@ public:
 	ColorString startOfBattleAction(Player* player, Enemy* enemy) override;
 };
 
-class SharpshootersSack : public MythicalArtifact
+class SharpshootersSack : public ModerateArtifact 
 {
 public:
 	SharpshootersSack(Game* game);

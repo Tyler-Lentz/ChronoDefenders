@@ -124,6 +124,7 @@ private:
 	void printCreatureBattleInfo(Creature* creature, Coordinate bottomLeft, int textLine);
 	void doStatusDecrementionAndPrintInfo(Creature* creature);
 
+	void displayStars();
 
 	
 	void removeMinionsFromParty();

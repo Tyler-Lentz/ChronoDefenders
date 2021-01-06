@@ -365,7 +365,7 @@ public:
     Status* makeCopy() override;
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override { return ColorString(); };
 
-    const static int COLOR = ddutil::BESERKER_COLOR;
+    const static int COLOR = ddutil::MAGENTA;
     const static int PERCENT_DAM_INC = 50;
 };
 

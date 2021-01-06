@@ -1472,7 +1472,7 @@ void Singularity::equipAction(Player* player)
 }
 
 BeserkersBrew::BeserkersBrew(Game* game)
-	:MythicalArtifact(
+	:ModerateArtifact(
 		"Beserker's Brew",
 		ColorString("Gives ", ddutil::TEXT_COLOR) + ColorString("Beserked ("+std::to_string(LENGTH)+")", BeserkedStatus::COLOR) +
 			ColorString(" at the start of battle", ddutil::TEXT_COLOR),
@@ -1488,7 +1488,7 @@ void BeserkersBrew::equipAction(Player* player)
 }
 
 NomadsMat::NomadsMat(Game* game)
-	:MythicalArtifact(
+	:ModerateArtifact(
 		"Nomad's Mat",
 		ColorString("Start battle in ",ddutil::TEXT_COLOR) + ColorString("Zen ("+std::to_string(LENGTH)+")", ZenStatus::COLOR) +
 			ColorString(", and ", ddutil::TEXT_COLOR) + ColorString("Zen", ZenStatus::COLOR) + ColorString(" heals "+std::to_string(ZEN_INC)+" more HP", ddutil::TEXT_COLOR),
@@ -1504,7 +1504,7 @@ void NomadsMat::equipAction(Player* player)
 }
 
 NinjasCaltrops::NinjasCaltrops(Game* game)
-	:MythicalArtifact(
+	:ModerateArtifact(
 		"Ninja's Caltrops",
 		ColorString("Gives ", ddutil::TEXT_COLOR) + ColorString("Thorned ("+std::to_string(THORNS)+")", ThornsStatus::COLOR) +
 			ColorString(" and increases dodge chance by "+std::to_string(DODGE_INC)+"%", ddutil::TEXT_COLOR),
@@ -1521,7 +1521,7 @@ void NinjasCaltrops::equipAction(Player* player)
 }
 
 ClericsRobes::ClericsRobes(Game* game)
-	:MythicalArtifact(
+	:ModerateArtifact(
 		"Cleric's Robes",
 		ColorString("Gain " +std::to_string(MAX_HP_INC) +" max HP", ddutil::HEAL_COLOR) + ColorString(" if ending a fight at full HP", ddutil::TEXT_COLOR),
 		ArtifactID::ClericsRobes,
@@ -1531,9 +1531,9 @@ ClericsRobes::ClericsRobes(Game* game)
 }
 
 SummonersOrb::SummonersOrb(Game* game)
-	:MythicalArtifact(
+	:ModerateArtifact(
 		"Summoner's Orb",
-		ColorString("When using a summon move, ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BLOCK) + " block", ddutil::BLOCK_COLOR),
+		ColorString("When using a summon move, gain ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BLOCK) + " block", ddutil::BLOCK_COLOR),
 		ArtifactID::SummonersOrb,
 		game
 	)
@@ -1541,7 +1541,7 @@ SummonersOrb::SummonersOrb(Game* game)
 }
 
 TempestsStaff::TempestsStaff(Game* game)
-	:MythicalArtifact(
+	:ModerateArtifact(
 		"Tempest's Staff",
 		ColorString("When dealing damage, gain back ", ddutil::TEXT_COLOR) + ColorString(std::to_string(VIT)+" vitality", ddutil::VITALITY_COLOR),
 		ArtifactID::TempestStaff,
@@ -1552,7 +1552,7 @@ TempestsStaff::TempestsStaff(Game* game)
 }
 
 BrawlersBelt::BrawlersBelt(Game* game)
-	:MythicalArtifact(
+	:ModerateArtifact(
 		"Brawler's Belt",
 		ColorString("If ending a turn with 0 vitality, ", ddutil::TEXT_COLOR) + ColorString("gain "+std::to_string(VIT_INC)+" extra vitality", ddutil::VITALITY_COLOR),
 		ArtifactID::BrawlersBelt,
@@ -1562,7 +1562,7 @@ BrawlersBelt::BrawlersBelt(Game* game)
 }
 
 GamblersDeck::GamblersDeck(Game* game)
-	:MythicalArtifact(
+	:ModerateArtifact(
 		"Gambler's Deck",
 		ColorString("Replace ", ddutil::TEXT_COLOR) + ColorString("Make Bullets", ddutil::MODERATE_COLOR) + 
 			ColorString(" with ",ddutil::TEXT_COLOR) + ColorString("Card Throw", ddutil::MODERATE_COLOR) + 
@@ -1589,7 +1589,7 @@ ColorString GamblersDeck::startOfBattleAction(Player* player, Enemy* enemy)
 }
 
 SharpshootersSack::SharpshootersSack(Game* game)
-	:MythicalArtifact(
+	:ModerateArtifact(
 		"Sharpshooter's Sack",
 		ColorString("Gives " + std::to_string(BULLETS)+" bullets at the start of battle", ddutil::TEXT_COLOR),
 		ArtifactID::SharpshootersSack,

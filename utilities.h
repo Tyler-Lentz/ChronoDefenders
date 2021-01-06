@@ -163,6 +163,10 @@ namespace ddutil
 
     const int DEFAULT_CON_SIZE = 16;
 
+    // sorry
+    const std::string NOT_ENOUGH_BULLETS = "Not enough bullets!";
+    const std::string NOT_ENOUGH_AURA = "Not enough Aura!";
+
     void errorMessage(std::string error, int line, std::string file);
 
     int getColor(int letterColor, int backgroundColor, int numberOfColors = 16);

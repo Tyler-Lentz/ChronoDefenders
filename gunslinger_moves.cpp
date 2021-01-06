@@ -52,8 +52,9 @@ ColorString GunslingerMoves::GunMove::doAction(Creature* self, Creature* other)
 	}
 	else
 	{
-		return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() + ColorString(" does not have enough bullets", ddutil::TEXT_COLOR);
+		return ColorString(ddutil::NOT_ENOUGH_BULLETS, ddutil::TEXT_COLOR);
 	}
+
 }
 
 

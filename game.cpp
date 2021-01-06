@@ -600,10 +600,16 @@ void Game::battle(Enemy* enemy)
 
 
 					ColorString info = selectedMove->doAction(activePlayer, target);
-					usedMoves.push_back(selectedMove);
+					if (info.getString() != ddutil::NOT_ENOUGH_BULLETS && info.getString() != ddutil::NOT_ENOUGH_AURA)
+					{
+						usedMoves.push_back(selectedMove);
+						selectedMove->playSoundEffect();
+					}
+					else
+					{
+						playSound(WavFile("error", ddutil::SF_LOOP, ddutil::SF_ASYNC));
+					}
 
-					clearBottomDivider();
-					selectedMove->playSoundEffect();
 					vwin->putcen(info, PLAYER_TEXT_LINE);
 					printCreatureBattleInfo(enemy, MONSTER_COORD, MONSTER_TEXT_LINE);
 

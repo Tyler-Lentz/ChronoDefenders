@@ -775,7 +775,7 @@ void Game::titleScreen()
 	while (!exit)
 	{
 		vwin->printArt(Art::getTitle(), Coordinate(0, 5), true);
-		vwin->put(ColorString("Version 1.4", ddutil::DARKGRAY), Coordinate(1, 1));
+		vwin->put(ColorString("Version 1.5", ddutil::DARKGRAY), Coordinate(1, 1));
 
 		vwin->putcen(profile.getColorString(), ddutil::CONSOLEY - 2);
 		

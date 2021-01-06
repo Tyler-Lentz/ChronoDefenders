@@ -647,7 +647,7 @@ ColorString ElementalStatus::applyEndTurnEffect(Creature* target, int stackAmoun
 
 ScorchedStatus::ScorchedStatus()
 	:NormalStatus(StatusID::Scorched, ColorString("Scorched", COLOR),
-		"Deals damage equal to " + std::to_string(DAMAGE_PER_BURN) +" times the number of burns the target has every turn")
+		"Deals damage equal to the status stack times the number of burns the target has")
 {
 }
 
@@ -658,8 +658,7 @@ Status* ScorchedStatus::makeCopy()
 
 ColorString ScorchedStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
-	// Deals DAMAGE_PER_BURN * number of burns the target has
-	int damage = target->getNumberOfStatuses(StatusID::Burnt) * DAMAGE_PER_BURN;
+	int damage = target->getNumberOfStatuses(StatusID::Burnt) * stackAmount;
 
 	ddutil::DamageReport dam = target->reduceHealth(damage, nullptr, true);
 

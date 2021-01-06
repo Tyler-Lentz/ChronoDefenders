@@ -984,7 +984,7 @@ void Game::chooseClasses()
 		vwin->clearScreen();
 		vwin->printArtFromBottom(Art::getSamurai(samurai->getColor()), Coordinate(0, CHAR_LINE), true);
 		vwin->putcen(ColorString("*================================*", ddutil::WHITE), TOP_LINE - 1);
-		vwin->putcen(ColorString(" Choose Samurai Starting Artifact", ddutil::SAMURAI_COLOR), TOP_LINE);
+		vwin->putcen(ColorString(" Choose Samurai Starting Artifact ", ddutil::SAMURAI_COLOR), TOP_LINE);
 		vwin->putcen(ColorString("*================================*", ddutil::WHITE), TOP_LINE + 1);
 		BeserkersBrew* brew = new BeserkersBrew(this);
 		NomadsMat* mat = new NomadsMat(this);
@@ -1031,7 +1031,7 @@ void Game::chooseClasses()
 	while (true)
 	{
 		vwin->putcen(ColorString("*==================================*", ddutil::WHITE), TOP_LINE - 1);
-		vwin->putcen(ColorString(" Choose Sorceress Starting Artifact", ddutil::SORCERER_COLOR), TOP_LINE);
+		vwin->putcen(ColorString(" Choose Sorceress Starting Artifact ", ddutil::SORCERER_COLOR), TOP_LINE);
 		vwin->putcen(ColorString("*==================================*", ddutil::WHITE), TOP_LINE + 1);
 		vwin->printArtFromBottom(Art::getSorcerer(sorceress->getColor()), Coordinate(0, CHAR_LINE), true);
 		ClericsRobes* robes = new ClericsRobes(this);

@@ -231,7 +231,7 @@ namespace SamuraiMoves
 		ColorString doAction(Creature* self, Creature* other);
 
 		const static int DAMAGE = 20;
-		const static int HEALTH_PERCENTAGE = 33;
+		const static int HEALTH_PERCENTAGE = 50;
 		const static int COST = 1;
 	};
 

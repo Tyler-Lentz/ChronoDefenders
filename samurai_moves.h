@@ -307,7 +307,7 @@ namespace SamuraiMoves
 	public:
 		Caltrops();
 
-		const static int THORNS_AMOUNT = 5;
+		const static int THORNS_AMOUNT = 8;
 		const static int COST = 1;
 	};
 

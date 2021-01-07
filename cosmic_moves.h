@@ -36,7 +36,7 @@ namespace CosmicMoves
 		WarpBarrier();
 
 		const static int BLOCK = 18;
-		const static int COST = 15;
+		const static int COST = 10;
 	};
 
 	class Disturbance : public Move
@@ -75,9 +75,9 @@ namespace CosmicMoves
 		StarDust();
 		ColorString doAction(Creature* self, Creature* other) override;
 
-		const static int COST = 20;
+		const static int COST = 15;
 		const static int VIT_PER_STAT = 2;
-		// removes all the status effects on the target, and gets 1 vitality per status stack
+		// removes all the status effects on the target, and gets 2 vitality per status stack
 	};
 
 	class EternalTomb : public SimpleStatusMove
@@ -86,7 +86,7 @@ namespace CosmicMoves
 		EternalTomb();
 		
 		static const int AMOUNT = 1; // entombed status is not dependent on count, deals 1,2,4,8,16,32,64,128
-		static const int COST = 20;
+		static const int COST = 10;
 	};
 
 	class SeeingEye : public SimpleStatusMove
@@ -94,7 +94,7 @@ namespace CosmicMoves
 	public:
 		SeeingEye();
 		static const int AMOUNT = 3;
-		static const int COST = 10;
+		static const int COST = 15;
 	};
 }
 

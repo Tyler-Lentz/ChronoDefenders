@@ -364,6 +364,7 @@ namespace SorcererMoves
 
 		const static int COST = 10;
 		const static int AURA = 2;
+		const static int HEX = 2; // hex for 2 length
 	};
 
 	class ElementalForm: public Move

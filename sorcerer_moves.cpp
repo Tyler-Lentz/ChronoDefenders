@@ -398,7 +398,15 @@ ColorString SorcererMoves::Supernova::doAction(Creature* self, Creature* other)
 }
 
 SorcererMoves::CastInvulnerability::CastInvulnerability()
-	:Move(MoveId::SorceressCastInvulnerability, "Makes the target invulnerable for the turn, and uses "+std::to_string(AURA)+" Aura", "Cast Invulnerability", COST, Strength::Mythical, true, WavFile("ghostinvulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	:Move(
+		MoveId::SorceressCastInvulnerability,
+		"Gives target Invulnerable (1), Hexed ("+std::to_string(HEX)+"), and uses "+std::to_string(AURA)+" Aura", "Cast Invulnerability",
+		COST,
+		Strength::Mythical, 
+		true,
+		WavFile("ghostinvulnerable",
+		ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
 {
 }
 
@@ -411,6 +419,7 @@ ColorString SorcererMoves::CastInvulnerability::doAction(Creature* self, Creatur
 	}
 
 	other->applyStatus(new InvulnerableStatus(), 1);
+	other->applyStatus(new HexedStatus(), HEX);
 	return ColorString("The ", ddutil::TEXT_COLOR) + other->getColorString() + ColorString(" will be invulnerable this turn", ddutil::TEXT_COLOR);
 }
 

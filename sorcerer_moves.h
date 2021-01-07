@@ -94,7 +94,7 @@ namespace SorcererMoves
 	public:
 		BlinkStrike();
 
-		const static int DAMAGE = 3;
+		const static int DAMAGE = 4;
 		const static int COST = 1;
 	};
 
@@ -103,7 +103,7 @@ namespace SorcererMoves
 	public:
 		Fireball();
 
-		const static int DAMAGE = 4;
+		const static int DAMAGE = 5;
 		const static int COST = 2;
 		const static int BURN_TIMES = 1;
 	};
@@ -113,7 +113,7 @@ namespace SorcererMoves
 	public:
 		IceOrb();
 
-		const static int DAMAGE = 4;
+		const static int DAMAGE = 5;
 		const static int COST = 2;
 		const static int FBURN_TIMES = 1;
 	};
@@ -168,7 +168,7 @@ namespace SorcererMoves
 	public:
 		EnergySword();
 
-		const static int DAMAGE = 8;
+		const static int DAMAGE = 10;
 		const static int COST = 4;
 	};
 
@@ -177,7 +177,7 @@ namespace SorcererMoves
 	public:
 		PlasmaStrike();
 
-		const static int DAMAGE = 8;
+		const static int DAMAGE = 10;
 		const static int COST = 3;
 	};
 
@@ -253,7 +253,7 @@ namespace SorcererMoves
 	public:
 		PlasmaSword();
 
-		const static int DAMAGE = 12;
+		const static int DAMAGE = 14;
 		const static int COST = 4;
 	};
 
@@ -271,7 +271,7 @@ namespace SorcererMoves
 	public:
 		StarStrike();
 
-		const static int DAMAGE = 12;
+		const static int DAMAGE = 14;
 		const static int COST = 3;
 	};
 

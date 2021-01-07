@@ -355,7 +355,7 @@ public:
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
     const static int COLOR = ddutil::RED;
-    const static int PERCENT_DAM_INC = 50;
+    const static int PERCENT_DAM_INC = 66;
 };
 
 class BeserkedStatus : public NormalStatus
@@ -366,7 +366,7 @@ public:
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override { return ColorString(); };
 
     const static int COLOR = ddutil::MAGENTA;
-    const static int PERCENT_DAM_INC = 50;
+    const static int PERCENT_DAM_INC = 33;
 };
 
 class JesterStatus : public NormalStatus

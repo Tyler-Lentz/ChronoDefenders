@@ -182,6 +182,16 @@ void Creature::removeNewestMove()
 	moves.pop_back();
 }
 
+void Creature::removeFirstMove()
+{
+	if (moves.empty())
+	{
+		return;
+	}
+	delete moves.front();
+	moves.erase(moves.begin());
+}
+
 int Creature::increaseHealth(int amount)
 {
 	int overheal = 0;

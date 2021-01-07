@@ -80,6 +80,7 @@ public:
 
 	void setHealthPercent(int percentOfMaxHp); // set health to a percentage of max health)
 	void removeNewestMove(); // removes the bottom most move, used by true final boss
+	void removeFirstMove();
 protected:
 	int health;
 	int maxHealth;

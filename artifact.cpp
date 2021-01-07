@@ -1564,7 +1564,7 @@ BrawlersBelt::BrawlersBelt(Game* game)
 GamblersDeck::GamblersDeck(Game* game)
 	:ModerateArtifact(
 		"Gambler's Deck",
-		ColorString("Replace ", ddutil::TEXT_COLOR) + ColorString("Make Bullets", ddutil::MODERATE_COLOR) + 
+		ColorString("Replace one ", ddutil::TEXT_COLOR) + ColorString("Peashooter", ddutil::WEAK_COLOR) + 
 			ColorString(" with ",ddutil::TEXT_COLOR) + ColorString("Card Throw", ddutil::MODERATE_COLOR) + 
 			ColorString(" and start battle with a random card", ddutil::TEXT_COLOR),
 		ArtifactID::GamblersDeck,
@@ -1575,7 +1575,7 @@ GamblersDeck::GamblersDeck(Game* game)
 
 void GamblersDeck::equipAction(Player* player)
 {
-	player->removeNewestMove();
+	player->removeFirstMove();
 	player->addMove(new GunslingerMoves::CardThrow());
 }
 

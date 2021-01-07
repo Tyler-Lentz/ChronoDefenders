@@ -99,7 +99,7 @@ namespace SamuraiMoves
 	public:
 		Sidestep();
 
-		const static int BLOCK_AMOUNT = 9;
+		const static int BLOCK_AMOUNT = 8;
 		const static int COST = 1;
 	};
 

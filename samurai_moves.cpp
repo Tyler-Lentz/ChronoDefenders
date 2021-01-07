@@ -381,7 +381,7 @@ SamuraiMoves::Caltrops::Caltrops()
 }
 
 SamuraiMoves::DragonForm::DragonForm()
-	:Move(MoveId::SamuraiDragonForm, "Applies a buff which increases damage by 50% for " + std::to_string(DURATION) + " turns", "Dragon Form", COST,
+	:Move(MoveId::SamuraiDragonForm, "Applies a buff which increases damage by "+std::to_string(DragonStatus::PERCENT_DAM_INC)+"% for " + std::to_string(DURATION) + " turns", "Dragon Form", COST,
 		Strength::Mythical, false, WavFile("dragonform", ddutil::SF_LOOP, ddutil::SF_ASYNC))
 {
 }

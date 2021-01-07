@@ -251,7 +251,7 @@ namespace SamuraiMoves
 		CriticalStrike();
 
 		const static int DAMAGE = 8;
-		const static int BLOCK = 8;
+		const static int BLOCK = 6;
 		const static int COST = 1;
 	};
 

@@ -335,6 +335,14 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new SamuraiMoves::HelpingHand();
 	case MoveId::SamuraiTackle:
 		return new SamuraiMoves::Tackle();
+	case MoveId::SamuraiToughenUp:
+		return new SamuraiMoves::ToughenUp();
+	case MoveId::SamuraiHoldOut:
+		return new SamuraiMoves::HoldOut();
+	case MoveId::SamuraiDecimate:
+		return new SamuraiMoves::Decimate();
+	case MoveId::SamuraiDragonsWill:
+		return new SamuraiMoves::DragonsWill();
 	default:
 		return nullptr;
 	}

@@ -366,7 +366,7 @@ namespace SamuraiMoves
 		ColorString doAction(Creature* self, Creature* other) override;
 		const static int COST = 1;
 		const static int BLOCK = 10;
-		const static int BURNS = 5;
+		const static int BURNS = 3;
 	};
 
 	// Mythical
@@ -493,6 +493,37 @@ namespace SamuraiMoves
 		const static int BLOCK = 12;
 		const static int COST = 1;
 		const static int BLEED_AMOUNT = 9;
+	};
+
+	class HoldOut : public Move
+	{
+	public:
+		HoldOut();
+		ColorString doAction(Creature* self, Creature* other);
+
+		const static int COST = 3;
+		// doubles block
+	};
+
+	class Decimate : public Move
+	{
+	public:
+		Decimate();
+		ColorString doAction(Creature* self, Creature* other);
+
+		const static int COST = 3;
+		const static int DAM_PER_STAT = 10;
+		const static int SELF_DAM_PER_STAT = 2;
+	};
+
+	class DragonsWill : public Move
+	{
+	public:
+		DragonsWill();
+		ColorString doAction(Creature* self, Creature* other);
+
+		const static int COST = 2;
+		const static int VIT_PER_BURN = 1;
 	};
 }
 

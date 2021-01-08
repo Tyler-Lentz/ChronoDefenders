@@ -527,7 +527,7 @@ ColorString SamuraiMoves::Revitalize::doAction(Creature* self, Creature* other)
 SamuraiMoves::FlameVeil::FlameVeil()
 	:Move(
 		MoveId::SamuraiFlameVeil,
-		"Blocks "+std::to_string(BLOCK)+"damage, gives self "+std::to_string(BURNS)+" burns",
+		"Blocks "+std::to_string(BLOCK)+" damage and gives self "+std::to_string(BURNS)+" burns",
 		"Flame Veil",
 		COST,
 		Strength::Powerful,
@@ -611,4 +611,79 @@ ColorString SamuraiMoves::ToughenUp::doAction(Creature* self, Creature* other)
 	SelfBlockMove tempMove(MoveId::SamuraiToughenUp, BLOCK, 0, "Toughen Up", Strength::Moderate, sound);
 	return tempMove.doAction(self, other) +
 			ColorString("and takes ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep);
+}
+
+SamuraiMoves::HoldOut::HoldOut()
+	:Move(
+		MoveId::SamuraiHoldOut,
+		"Doubles the current amount of block",
+		"Hold Out",
+		COST,
+		Strength::Mythical,
+		false,
+		WavFile("gainbigblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::HoldOut::doAction(Creature* self, Creature* other)
+{
+	int blockAmount = self->getBlock();
+	self->applyBlock(blockAmount);
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" doubles their block", ddutil::BLOCK_COLOR);
+}
+
+SamuraiMoves::Decimate::Decimate()
+	:Move(
+		MoveId::SamuraiDecimate,
+		"Deals "+std::to_string(DAM_PER_STAT) + " dmg per status stack the user has, but take "+std::to_string(SELF_DAM_PER_STAT)+" self-dmg per stack",
+		"Decimate",
+		COST,
+		Strength::Mythical,
+		true,
+		WavFile("attack6", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::Decimate::doAction(Creature* self, Creature* other)
+{
+	int numStats = self->getNumberOfStatuses();
+	int selfDam = numStats * SELF_DAM_PER_STAT;
+	int damage = numStats * DAM_PER_STAT;
+	auto selfDamRep = self->reduceHealth(selfDam, self);
+	SimpleAttackMove tempMove(MoveId::SamuraiDecimate, damage, false, 0, "Decimate", Strength::Mythical, sound);
+	return tempMove.doAction(self, other) + ColorString(" and takes ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(selfDamRep);
+}
+
+SamuraiMoves::DragonsWill::DragonsWill()
+	:Move(
+		MoveId::SamuraiDragonsWill,
+		"Gives " + std::to_string(VIT_PER_BURN) + " vitality per stack of Burnt",
+		"Dragon's Will",
+		COST,
+		Strength::Mythical,
+		false,
+		WavFile("gainpower", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::DragonsWill::doAction(Creature* self, Creature* other)
+{
+	int numBurns = self->getNumberOfStatuses(StatusID::Burnt);
+	Player* playerSelf = dynamic_cast<Player*>(self);
+	if (playerSelf != nullptr)
+	{
+		int numVit = numBurns * VIT_PER_BURN;
+		playerSelf->addVitality(numVit);
+		return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+			ColorString(" gains ", ddutil::TEXT_COLOR) + ColorString(std::to_string(numVit) + " vitality", ddutil::VITALITY_COLOR);
+	}
+	else
+	{
+		return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+			ColorString(" does not have a vitality stat", ddutil::TEXT_COLOR);
+	}
 }

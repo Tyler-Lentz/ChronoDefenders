@@ -1570,7 +1570,7 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 9, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 15, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1600,6 +1600,24 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 				break;
 			case 9:
 				newMoves.push_back(new SorcererMoves::ElementalBarrier());
+				break;
+			case 10:
+				newMoves.push_back(new SorcererMoves::UltimateShock());
+				break;
+			case 11:
+				newMoves.push_back(new SorcererMoves::XCast());
+				break;
+			case 12:
+				newMoves.push_back(new SorcererMoves::TreeOfPower());
+				break;
+			case 13:
+				newMoves.push_back(new SorcererMoves::AuraBomb());
+				break;
+			case 14:
+				newMoves.push_back(new SorcererMoves::TreeOfLife());
+				break;
+			case 15:
+				newMoves.push_back(new SorcererMoves::Resurrect());
 				break;
 			}
 		}

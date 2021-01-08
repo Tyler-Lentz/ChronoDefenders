@@ -31,25 +31,25 @@ void Compendium::display()
 			if (ddutil::keypress(VK_RIGHT))
 			{
 				lastPage++;
+				currSubPage = 0;
 				playSound(WavFile("menumove2", false, true));
 				Sleep(ddutil::BUFFER_TIME);
-				currSubPage = 0;
 				break;
 			}
 			if (ddutil::keypress(VK_LEFT))
 			{
 				lastPage--;
+				currSubPage = 0;
 				playSound(WavFile("menumove2", false, true));
 				Sleep(ddutil::BUFFER_TIME);
-				currSubPage = 0;
 				break;
 			}
 			if (ddutil::keypress(VK_SPACE))
 			{
 				exit = true;
+				currSubPage = 0;
 				playSound(WavFile("menumove2", false, true));
 				Sleep(ddutil::BUFFER_TIME);
-				currSubPage = 0;
 				break;
 			}
 			if (ddutil::keypress(VK_UP))
@@ -337,12 +337,24 @@ void Compendium::makeSamuraiList()
 
 void Compendium::makeGunslingerList()
 {
-	Picture page;
+	Picture modPage;
+	Picture powPage;
+	Picture mythPage;
 	int color = ddutil::GUNSLINGER_COLOR;
 	int size = ddutil::CONSOLEX;
-	page.push_back(ColorString(borderString, color));
-	page.push_back(ColorString(ddutil::padString("<- Gunslinger Moves ->", size), color));	
-	page.push_back(ColorString(borderString, color));
+	// set up the headers for each of the pages
+	modPage.push_back(ColorString(borderString, color));
+	modPage.push_back(ColorString(ddutil::padString("<- Gunslinger Moves ->", size), color));	
+	modPage.push_back(ColorString(borderString, color));
+	powPage = modPage;
+	mythPage = modPage;
+	modPage.push_back(ColorString("Press DOWN to view ", ddutil::TEXT_COLOR) + ColorString("Powerful", ddutil::POWERFUL_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	powPage.push_back(ColorString("Press UP to view ", ddutil::TEXT_COLOR) + ColorString("Moderate", ddutil::MODERATE_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	powPage.push_back(ColorString("Press DOWN to view ", ddutil::TEXT_COLOR) + ColorString("Mythical", ddutil::MYTHICAL_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	mythPage.push_back(ColorString("Press UP to view ", ddutil::TEXT_COLOR) + ColorString("Powerful", ddutil::POWERFUL_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	modPage.push_back(ColorString());
+	powPage.push_back(ColorString());
+	mythPage.push_back(ColorString());
 		
 	std::unique_ptr<Move> move;
 	for (int i = 0; i <= 36; i++)
@@ -461,24 +473,52 @@ void Compendium::makeGunslingerList()
 			move = std::make_unique<GunslingerMoves::JesterForm>();
 			break;
 		}
-		page.push_back(move->getFullInformation());
+		switch (move->getStrength())
+		{
+		case Strength::Moderate:
+			modPage.push_back(move->getFullInformation());
+			modPage.push_back(ColorString());
+			break;
+		case Strength::Powerful:
+			powPage.push_back(move->getFullInformation());
+			powPage.push_back(ColorString());
+			break;
+		case Strength::Mythical:
+			mythPage.push_back(move->getFullInformation());
+			mythPage.push_back(ColorString());
+			break;
+		}
 	}
 
-	std::vector<Picture> pages = { pages };
+	std::vector<Picture> pages = { modPage, powPage, mythPage };
+
 	compendium.push_back(pages);
 }
 
 void Compendium::makeSorceressList()
 {
-	Picture page;
+	Picture modPage;
+	Picture powPage;
+	Picture mythPage;
 	int color = ddutil::SORCERER_COLOR;
 	int size = ddutil::CONSOLEX;
-	page.push_back(ColorString(borderString, color));
-	page.push_back(ColorString(ddutil::padString("<- Sorceress Moves ->", size), color));	
-	page.push_back(ColorString(borderString, color));
+	// set up the headers for each of the pages
+	modPage.push_back(ColorString(borderString, color));
+	modPage.push_back(ColorString(ddutil::padString("<- Sorceress Moves ->", size), color));	
+	modPage.push_back(ColorString(borderString, color));
+	powPage = modPage;
+	mythPage = modPage;
+	modPage.push_back(ColorString("Press DOWN to view ", ddutil::TEXT_COLOR) + ColorString("Powerful", ddutil::POWERFUL_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	powPage.push_back(ColorString("Press UP to view ", ddutil::TEXT_COLOR) + ColorString("Moderate", ddutil::MODERATE_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	powPage.push_back(ColorString("Press DOWN to view ", ddutil::TEXT_COLOR) + ColorString("Mythical", ddutil::MYTHICAL_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	mythPage.push_back(ColorString("Press UP to view ", ddutil::TEXT_COLOR) + ColorString("Powerful", ddutil::POWERFUL_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	modPage.push_back(ColorString());
+	powPage.push_back(ColorString());
+	mythPage.push_back(ColorString());
+
 		
 	std::unique_ptr<Move> move;
-	for (int i = 0; i <= 35; i++)
+	for (int i = 0; i <= 41; i++)
 	{
 		switch (i)
 		{
@@ -590,11 +630,43 @@ void Compendium::makeSorceressList()
 		case 35:
 			move = std::make_unique<SorcererMoves::ElementalBarrier>();
 			break;
+		case 36:
+			move = std::make_unique<SorcererMoves::UltimateShock>();
+			break;
+		case 37:
+			move = std::make_unique<SorcererMoves::XCast>();
+			break;
+		case 38:
+			move = std::make_unique<SorcererMoves::TreeOfPower>();
+			break;
+		case 39:
+			move = std::make_unique<SorcererMoves::AuraBomb>();
+			break;
+		case 40:
+			move = std::make_unique<SorcererMoves::TreeOfLife>();
+			break;
+		case 41:
+			move = std::make_unique<SorcererMoves::Resurrect>();
+			break;
 		}
-		page.push_back(move->getFullInformation());
+		switch (move->getStrength())
+		{
+		case Strength::Moderate:
+			modPage.push_back(move->getFullInformation());
+			modPage.push_back(ColorString());
+			break;
+		case Strength::Powerful:
+			powPage.push_back(move->getFullInformation());
+			powPage.push_back(ColorString());
+			break;
+		case Strength::Mythical:
+			mythPage.push_back(move->getFullInformation());
+			mythPage.push_back(ColorString());
+			break;
+		}
 	}
 
-	std::vector<Picture> pages = { page };
+	std::vector<Picture> pages = { modPage, powPage, mythPage };
 
 	compendium.push_back(pages);
 }

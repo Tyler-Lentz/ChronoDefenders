@@ -1035,7 +1035,7 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 
 	if (str == Strength::Moderate)
 	{
-		for (int i : ddutil::uniqueRandom(1, 10, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 13, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1069,12 +1069,21 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 			case 10:
 				newMoves.push_back(new SamuraiMoves::ThrowingKnives());
 				break;
+			case 11:
+				newMoves.push_back(new SamuraiMoves::HelpingHand());
+				break;
+			case 12:
+				newMoves.push_back(new SamuraiMoves::Tackle());
+				break;
+			case 13:
+				newMoves.push_back(new SamuraiMoves::ToughenUp());
+				break;
 			}
 		}
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i : ddutil::uniqueRandom(1, 12, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 17, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1114,12 +1123,27 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 			case 12:
 				newMoves.push_back(new SamuraiMoves::ShadowStep());
 				break;
+			case 13:
+				newMoves.push_back(new SamuraiMoves::WarHorn());
+				break;
+			case 14:
+				newMoves.push_back(new SamuraiMoves::Instinct());
+				break;
+			case 15:
+				newMoves.push_back(new SamuraiMoves::Unhinge());
+				break;
+			case 16:
+				newMoves.push_back(new SamuraiMoves::Revitalize());
+				break;
+			case 17:
+				newMoves.push_back(new SamuraiMoves::FlameVeil());
+				break;
 			}
 		}
 	}
 	else if (str == Strength::Mythical)
 	{
-		for (int i : ddutil::uniqueRandom(1, 12, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 15, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1158,6 +1182,15 @@ std::vector<Move*> Samurai::getRandomMoves(Strength str)
 				break;
 			case 12:
 				newMoves.push_back(new SamuraiMoves::ShinobiTactics());
+				break;
+			case 13:
+				newMoves.push_back(new SamuraiMoves::HoldOut());
+				break;
+			case 14:
+				newMoves.push_back(new SamuraiMoves::Decimate());
+				break;
+			case 15:
+				newMoves.push_back(new SamuraiMoves::DragonsWill());;
 				break;
 			}
 		}

@@ -544,3 +544,71 @@ ColorString SamuraiMoves::FlameVeil::doAction(Creature* self, Creature* other)
 	return tempMove.doAction(self, other) + ColorString(" and gets ", ddutil::TEXT_COLOR) + 
 		ColorString("Burnt (" + std::to_string(BURNS) + ")", BurntStatus::COLOR);
 }
+
+SamuraiMoves::HelpingHand::HelpingHand()
+	:Move(
+		MoveId::SamuraiHelpingHand,
+		"If the target has less HP, gives them "+std::to_string(BLOCK)+" block",
+		"Helping Hand",
+		COST,
+		Strength::Moderate,
+		true,
+		WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::HelpingHand::doAction(Creature* self, Creature* other)
+{
+	if (other->getHealth() < self->getHealth())
+	{
+		other->applyBlock(BLOCK);
+		return ColorString("The ", ddutil::TEXT_COLOR) + other->getColorString() + ColorString(" gains ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(BLOCK) + " block", ddutil::BLOCK_COLOR);
+	}
+	else
+	{
+		return ColorString(ddutil::CANT_USE_MOVE, ddutil::TEXT_COLOR);
+	}
+}
+
+SamuraiMoves::Tackle::Tackle()
+	:Move(
+		MoveId::SamuraiTackle,
+		"Deals "+std::to_string(BASE_DAM)+" damage, plus " + std::to_string(DAM_PER_THORN) + " per stack of Thorned",
+		"Tackle",
+		COST,
+		Strength::Moderate,
+		true,
+		WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::Tackle::doAction(Creature* self, Creature* other)
+{
+	int damage = BASE_DAM + self->getNumberOfStatuses(StatusID::Thorns);
+	SimpleAttackMove tempMove(MoveId::SamuraiTackle, damage, false, 0, "Tackle", Strength::Moderate, sound);
+	return tempMove.doAction(self, other);
+}
+
+SamuraiMoves::ToughenUp::ToughenUp()
+	:Move(
+		MoveId::SamuraiToughenUp,
+		"Blocks " + std::to_string(BLOCK) + " damage, but inflicts " + std::to_string(SELF_DAM)+" self-damage",
+		"Toughen Up",
+		COST,
+		Strength::Moderate,
+		false,
+		WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::ToughenUp::doAction(Creature* self, Creature* other)
+{
+	auto damRep =  self->reduceHealth(SELF_DAM, self);
+	SelfBlockMove tempMove(MoveId::SamuraiToughenUp, BLOCK, 0, "Toughen Up", Strength::Moderate, sound);
+	return tempMove.doAction(self, other) +
+			ColorString("and takes ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep);
+}

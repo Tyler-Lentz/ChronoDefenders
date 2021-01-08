@@ -331,6 +331,10 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new SamuraiMoves::Unhinge();
 	case MoveId::SamuraiFlameVeil:
 		return new SamuraiMoves::FlameVeil();
+	case MoveId::SamuraiHelpingHand:
+		return new SamuraiMoves::HelpingHand();
+	case MoveId::SamuraiTackle:
+		return new SamuraiMoves::Tackle();
 	default:
 		return nullptr;
 	}

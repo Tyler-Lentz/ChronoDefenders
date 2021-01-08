@@ -161,6 +161,37 @@ namespace SamuraiMoves
 		const static int COST = 2;
 	};
 
+	class HelpingHand : public Move
+	{
+	public:
+		HelpingHand();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int BLOCK = 6;
+		const static int COST = 1;
+	};
+
+	class Tackle : public Move
+	{
+	public:
+		Tackle();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int BASE_DAM = 4;
+		const static int DAM_PER_THORN = 1;
+		const static int COST = 1;
+	};
+
+	class ToughenUp : public Move
+	{
+	public:
+		ToughenUp();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int COST = 2;
+		const static int BLOCK = 12;
+		const static int SELF_DAM = 4;
+	};
+
 	// Powerful
 
 	class Shuriken: public StatusAttackMove

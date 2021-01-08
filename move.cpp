@@ -323,6 +323,14 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new CosmicMoves::EternalTomb();
 	case MoveId::CosmicSeeingEye:
 		return new CosmicMoves::SeeingEye();
+	case MoveId::SamuraiWarHorn:
+		return new SamuraiMoves::WarHorn();
+	case MoveId::SamuraiInstinct:
+		return new SamuraiMoves::Instinct();
+	case MoveId::SamuraiUnhinge:
+		return new SamuraiMoves::Unhinge();
+	case MoveId::SamuraiFlameVeil:
+		return new SamuraiMoves::FlameVeil();
 	default:
 		return nullptr;
 	}
@@ -510,7 +518,7 @@ ColorString SelfDamageAttackMove::doAction(Creature* self, Creature* other)
 {
 	ColorString baseStr = SimpleAttackMove::doAction(self, other);
 
-	ddutil::DamageReport d = self->reduceHealth(selfDamage, nullptr);
+	ddutil::DamageReport d = self->reduceHealth(selfDamage, self);
 
 	baseStr += ColorString(" and takes ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(d);
 	return baseStr;

@@ -290,6 +290,54 @@ namespace SamuraiMoves
 		const static int HEXED_LENGTH = 2;
 	};
 
+	class WarHorn : public Move 
+	{
+	public:
+		WarHorn();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 3;
+		const static int LENGTH = 2;
+	};
+
+	class Instinct : public Move
+	{
+	public:
+		Instinct();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 2;
+		// blocks equal to self damage taken in the fight
+	};
+
+	class Unhinge : public Move
+	{
+	public:
+		Unhinge();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 2;
+		const static int DAMAGE = 18;
+		const static int STUN = 1;
+	};
+
+	class Revitalize : public Move
+	{
+	public:
+		Revitalize();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 0;
+		const static int VIT_GAIN = 2;
+		const static int SELF_DAMAGE = 2;
+	};
+
+	class FlameVeil : public Move
+	{
+	public:
+		FlameVeil();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 1;
+		const static int BLOCK = 10;
+		const static int BURNS = 5;
+	};
+
 	// Mythical
 
 	class DragonForm : public Move

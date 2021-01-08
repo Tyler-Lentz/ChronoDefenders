@@ -600,7 +600,9 @@ void Game::battle(Enemy* enemy)
 
 
 					ColorString info = selectedMove->doAction(activePlayer, target);
-					if (info.getString() != ddutil::NOT_ENOUGH_BULLETS && info.getString() != ddutil::NOT_ENOUGH_AURA)
+					if (info.getString() != ddutil::NOT_ENOUGH_BULLETS &&
+						info.getString() != ddutil::NOT_ENOUGH_AURA && 
+						info.getString() != ddutil::CANT_USE_MOVE)
 					{
 						usedMoves.push_back(selectedMove);
 						selectedMove->playSoundEffect();

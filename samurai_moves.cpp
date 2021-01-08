@@ -260,6 +260,10 @@ ColorString SamuraiMoves::Desperation::doAction(Creature* self, Creature* other)
 	{
 		damage = DAMAGE;
 	}
+	else
+	{
+		return ColorString(ddutil::CANT_USE_MOVE, ddutil::TEXT_COLOR);
+	}
 
 	SimpleAttackMove tempMove(MoveId::TempMoveId, damage, false, 0, "TEMP", Strength::Powerful, sound);
 	return tempMove.doAction(self, other);
@@ -425,4 +429,118 @@ ColorString SamuraiMoves::ShinobiTactics::doAction(Creature* self, Creature* oth
 		ColorString(" blocks " + std::to_string(BLOCK) + " damage ", ddutil::BLOCK_COLOR) +
 		ColorString("and applies ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BLEED_AMOUNT) + " Bleeding ", BleedingStatus::COLOR) +
 		ColorString(" to the ", ddutil::TEXT_COLOR) + other->getColorString();
+}
+
+SamuraiMoves::WarHorn::WarHorn()
+	:Move(
+		MoveId::SamuraiWarHorn,
+		"Applies Beserked for "+std::to_string(LENGTH)+" turns",
+		"War Horn",
+		COST,
+		Strength::Powerful,
+		false,
+		WavFile("warhorn", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::WarHorn::doAction(Creature* self, Creature* other)
+{
+	self->applyStatus(new BeserkedStatus(), LENGTH);
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() + ColorString(" becomes ", ddutil::TEXT_COLOR) +
+		ColorString("Beserked", BeserkedStatus::COLOR) + ColorString(" for " + std::to_string(LENGTH) + " turns", ddutil::TEXT_COLOR);
+}
+
+SamuraiMoves::Instinct::Instinct()
+	:Move(
+		MoveId::SamuraiInstinct,
+		"Blocks damage equal to the amount of self-damage inflicted this fight",
+		"Instinct",
+		COST,
+		Strength::Powerful,
+		false,
+		WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::Instinct::doAction(Creature* self, Creature* other)
+{
+	int block = self->getSelfDamageThisFight();
+	SelfBlockMove tempMove(MoveId::SamuraiInstinct, block, 0, "Instinct", Strength::Powerful, sound);
+	return tempMove.doAction(self, other);
+}
+
+SamuraiMoves::Unhinge::Unhinge()
+	:Move(
+		MoveId::SamuraiUnhinge,
+		"Deals " + std::to_string(DAMAGE) + " damage, and applies Stunned (" + std::to_string(STUN) + ") to the user",
+		"Unhinge",
+		COST,
+		Strength::Powerful,
+		true,
+		WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::Unhinge::doAction(Creature* self, Creature* other)
+{
+	self->applyStatus(new StunnedStatus(), STUN);
+	SimpleAttackMove tempMove(MoveId::SamuraiUnhinge, DAMAGE, false, 0, "Unhinge", Strength::Powerful, sound);
+	return tempMove.doAction(self, other);
+}
+
+SamuraiMoves::Revitalize::Revitalize()
+	:Move(
+		MoveId::SamuraiRevitalize,
+		"If Beserked, gain "+std::to_string(VIT_GAIN)+" vitality and take "+std::to_string(SELF_DAMAGE)+" self-damage",
+		"Revitalize",
+		COST,
+		Strength::Powerful,
+		false,
+		WavFile("gainpower", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::Revitalize::doAction(Creature* self, Creature* other)
+{
+	if (self->hasStatus(StatusID::Beserked))
+	{
+		auto damRep = self->reduceHealth(SELF_DAMAGE, self, false);
+		Player* playerSelf = dynamic_cast<Player*>(self);
+		if (playerSelf != nullptr)
+		{
+			playerSelf->addVitality(VIT_GAIN);
+		}
+		return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+			ColorString(" gains ", ddutil::TEXT_COLOR) + ColorString(std::to_string(VIT_GAIN) + " vitality ", ddutil::VITALITY_COLOR) +
+			ColorString("and takes ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep);
+	}
+	else
+	{
+		return ColorString(ddutil::CANT_USE_MOVE, ddutil::TEXT_COLOR);
+	}
+}
+
+SamuraiMoves::FlameVeil::FlameVeil()
+	:Move(
+		MoveId::SamuraiFlameVeil,
+		"Blocks "+std::to_string(BLOCK)+"damage, gives self "+std::to_string(BURNS)+" burns",
+		"Flame Veil",
+		COST,
+		Strength::Powerful,
+		false,
+		WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SamuraiMoves::FlameVeil::doAction(Creature* self, Creature* other)
+{
+	self->applyStatus(new BurntStatus(), BURNS);
+	SelfBlockMove tempMove(MoveId::SamuraiFlameVeil, BLOCK, 0, "Flame Veil", Strength::Powerful, sound);
+	return tempMove.doAction(self, other) + ColorString(" and gets ", ddutil::TEXT_COLOR) + 
+		ColorString("Burnt (" + std::to_string(BURNS) + ")", BurntStatus::COLOR);
 }

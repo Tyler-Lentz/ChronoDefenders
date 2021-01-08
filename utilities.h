@@ -168,6 +168,7 @@ namespace ddutil
     // sorry
     const std::string NOT_ENOUGH_BULLETS = "Not enough bullets!";
     const std::string NOT_ENOUGH_AURA = "Not enough Aura!";
+    const std::string CANT_USE_MOVE = "Can't use this move!";
 
     void errorMessage(std::string error, int line, std::string file);
 

@@ -81,6 +81,8 @@ public:
 	void setHealthPercent(int percentOfMaxHp); // set health to a percentage of max health)
 	void removeNewestMove(); // removes the bottom most move, used by true final boss
 	void removeFirstMove();
+
+	int getSelfDamageThisFight();
 protected:
 	int health;
 	int maxHealth;
@@ -97,7 +99,8 @@ protected:
 
 	int dodgeChance; // integer representing the percentage chance to dodge the next damage that does not go through block
 	int baseDodgeChance; // value that dodge gets reset to
-
+	
+	int selfDamageThisFight; // how much self damage this creature has inflicted in the current fight
 
 	std::map<Status*, int> currentStatuses; // list that contains all the current status afflictions this creature has for the current turn
 

@@ -1597,6 +1597,7 @@ void Sorcerer::resetTempStatAdjustments()
 {
 	Player::resetTempStatAdjustments();
 	aura = maxAura;
+	selfDamageThisFight = 0;
 }
 
 ColorString Sorcerer::getStatLine()

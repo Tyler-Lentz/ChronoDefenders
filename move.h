@@ -140,7 +140,18 @@ enum class MoveId
 	CosmicCosmicBeam,
 	CosmicStarDust,
 	CosmicEternalTomb,
-	CosmicSeeingEye
+	CosmicSeeingEye,
+	SamuraiWarHorn,
+	SamuraiInstinct,
+	SamuraiUnhinge,
+	SamuraiRevitalize,
+	SamuraiFlameVeil,
+	SamuraiHelpingHand,
+	SamuraiTackle,
+	SamuraiToughenUp,
+	SamuraiHoldOut,
+	SamuraiDecimate,
+	SamuraiDragonsWill
 };
 
 class Move

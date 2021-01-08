@@ -42,6 +42,7 @@ Creature::Creature(int maxHp, std::string theName, int theColor, Picture pic, Ga
 	game = theGame;
 	baseBlock = 0;
 	percentHealBoost = 0;
+	selfDamageThisFight = 0;
 }
 
 Creature::~Creature()
@@ -192,6 +193,11 @@ void Creature::removeFirstMove()
 	moves.erase(moves.begin());
 }
 
+int Creature::getSelfDamageThisFight()
+{
+	return selfDamageThisFight;
+}
+
 int Creature::increaseHealth(int amount)
 {
 	int overheal = 0;
@@ -244,6 +250,12 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 {
 	int startingHealth = health;
 	int startingBuffer = buffer;
+	bool selfDamage = false;
+	if (this == attacker)
+	{
+		attacker = nullptr;
+		selfDamage = true; // mark that it is self damage, but we don't want the creature 
+	}
 
 	int damageBlocked = 0;
 
@@ -354,6 +366,10 @@ ddutil::DamageReport Creature::reduceHealth(int amount, Creature* attacker, bool
 		{
 			playerAttacker->addVitality(TempestsStaff::VIT);
 		}
+	}
+	if (selfDamage)
+	{
+		selfDamageThisFight += startingHealth - health;
 	}
 	return ddutil::DamageReport(damageBlocked, startingHealth - health);
 }

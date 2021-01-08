@@ -1650,6 +1650,11 @@ bool Sorcerer::useAura(int amount)
 	return false;
 }
 
+int Sorcerer::getAura() const
+{
+	return aura;
+}
+
 
 // Unlockable Players
 

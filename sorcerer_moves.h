@@ -38,6 +38,17 @@ namespace SorcererMoves
 		Player* summon;
 	};
 
+	class AuraDamageMove : public Move
+	{
+	public:
+		AuraDamageMove(MoveId id, int damPerAura, int cost, std::string name, Strength str, WavFile theSound);
+
+		ColorString doAction(Creature* self, Creature* other);
+
+	private:
+		int damPerAura;
+	};
+
 	// Weak
 	class MagicBarrier : public MakeBarrierMove
 	{
@@ -303,7 +314,7 @@ namespace SorcererMoves
 		ChainLightning();
 		ColorString doAction(Creature* self, Creature* other) override;
 
-		const static int COST = 8;
+		const static int COST = 6;
 	};
 
 	class CleansingAura : public Move
@@ -383,6 +394,58 @@ namespace SorcererMoves
 		ElementalBarrier();
 		const static int COST = 3;
 		const static int BLOCK = 16;
+	};
+
+	class UltimateShock : public Move
+	{
+	public:
+		UltimateShock();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 4;
+	};
+
+	class XCast : public MultiAttackMove 
+	{
+	public:
+		XCast();
+		const static int COST = 4;
+		const static int DAM = 16;
+		const static int TIMES = 2;
+	};
+
+	class TreeOfPower : public Move
+	{
+	public:
+		TreeOfPower();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int DAMAGE = 50;
+		const static int COST = 5;
+		const static int MAX_HP_RED = 3;
+	};
+
+	class AuraBomb : public AuraDamageMove
+	{
+	public:
+		AuraBomb();
+		const static int COST = 3;
+		const static int DAM_PER_AURA = 3;
+	};
+
+	class TreeOfLife : public Move
+	{
+	public:
+		TreeOfLife();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 5;
+		const static int DAMAGE_HEAL = 10;
+	};
+
+	class Resurrect : public Move
+	{
+	public:
+		Resurrect();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 10;
 	};
 }
 

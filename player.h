@@ -175,6 +175,7 @@ public:
 	ColorString getStatLine() override; // displays amount of aura available
 
 	bool useAura(int amount);
+	int getAura() const;
 
 	static const int STARTING_VITALITY = 10;
 	static const int MAX_VITALITY = 20;

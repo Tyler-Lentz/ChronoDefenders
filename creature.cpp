@@ -236,6 +236,10 @@ void Creature::increaseMaxHealth(int amount)
 void Creature::decreaseMaxHealth(int amount)
 {
 	maxHealth -= amount;
+	if (maxHealth < 0)
+	{
+		maxHealth = 0;
+	}
 	if (health > maxHealth)
 	{
 		health = maxHealth;

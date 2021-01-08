@@ -62,6 +62,7 @@ public:
 
 	bool checkForPlayerDeaths(); // returns true if all the players are dead and prints info to screen
 	bool checkForEnemyDeath(Enemy* enemy); // returns true if the enemy is dead and prints info to screen
+	Player* reviveFirstDeadMinion(); // returns nullptr if no enemy to revive
 
 	void setGameWin();
 	bool getGameWin();

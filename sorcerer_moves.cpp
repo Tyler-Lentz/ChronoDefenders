@@ -67,6 +67,30 @@ ColorString SorcererMoves::SummonMove::doAction(Creature* self, Creature* other)
 		ColorString(" summons a ", ddutil::TEXT_COLOR) + minionName;
 }
 
+SorcererMoves::AuraDamageMove::AuraDamageMove(MoveId id, int damPerAura, int cost, std::string name, Strength str, WavFile theSound)
+	:Move(
+		id, 
+		"Deals "+std::to_string(damPerAura) + " damage per Aura", 
+		name, cost, str, true, theSound
+	)
+{
+	this->damPerAura = damPerAura;
+}
+
+ColorString SorcererMoves::AuraDamageMove::doAction(Creature* self, Creature* other)
+{
+	Sorcerer* sorcSelf = dynamic_cast<Sorcerer*>(self);
+	if (sorcSelf != nullptr)
+	{
+		int damage = sorcSelf->getAura() * damPerAura;
+		SimpleAttackMove tempMove(MoveId::TempMoveId, damage, false, 0, "temp", Strength::Moderate, sound);
+		return tempMove.doAction(self, other);
+	}
+	else
+	{
+		return ColorString(ddutil::CANT_USE_MOVE, ddutil::RED);
+	}
+}
 
 // Weak
 
@@ -465,4 +489,125 @@ ColorString SorcererMoves::ElementalForm::doAction(Creature* self, Creature* oth
 SorcererMoves::ElementalBarrier::ElementalBarrier()
 	:MakeBarrierMove(MoveId::SorceressElementalBarrier, BLOCK, COST, "Elemental Barrier", Strength::Mythical)
 {
+}
+
+SorcererMoves::UltimateShock::UltimateShock()
+	: Move(
+		MoveId::SorceressUltimateShock,
+		"Turn all the target's status effects into Zapped",
+		"Ultimate Shock",
+		COST,
+		Strength::Mythical,
+		true,
+		WavFile("electricattack2", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SorcererMoves::UltimateShock::doAction(Creature* self, Creature* other)
+{
+	int numZap = other->getNumberOfStatuses();
+	other->clearAllStatuses();
+	if (numZap > 0)
+	{
+		other->applyStatus(new ZappedStatus(), numZap);
+	}
+	return ColorString("The ", ddutil::TEXT_COLOR) + other->getColorString() + ColorString("'s", other->getColor()) +
+		ColorString(" statuses are replaced with ", ddutil::TEXT_COLOR) + ColorString("Zapped (" + std::to_string(numZap) + ")", ZappedStatus::COLOR);
+}
+
+SorcererMoves::XCast::XCast()
+	:MultiAttackMove(
+		MoveId::SorceressXCast,
+		DAM,
+		TIMES,
+		COST,
+		"X-Cast",
+		Strength::Mythical,
+		WavFile("dualenergyattack", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+SorcererMoves::TreeOfPower::TreeOfPower()
+	:Move(
+		MoveId::SorceressTreeOfPower,
+		"Deals "+std::to_string(DAMAGE)+" damage, but permanently reduces max HP by "+std::to_string(MAX_HP_RED),
+		"Tree of Power",
+		COST,
+		Strength::Mythical,
+		true,
+		WavFile("dualenergyattack", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SorcererMoves::TreeOfPower::doAction(Creature* self, Creature* other)
+{
+	self->decreaseMaxHealth(MAX_HP_RED);
+	SimpleAttackMove tempMove(MoveId::SorceressTreeOfPower, DAMAGE, false, 0, "Tree Of Power", Strength::Mythical, sound);
+	return tempMove.doAction(self, other) + ColorString(" and loses ", ddutil::TEXT_COLOR) +
+		ColorString(std::to_string(MAX_HP_RED) + " max HP", ddutil::DAMAGE_COLOR);
+}
+
+SorcererMoves::AuraBomb::AuraBomb()
+	:AuraDamageMove(
+		MoveId::SorceressAuraBomb,
+		DAM_PER_AURA,
+		COST,
+		"Aura Bomb",
+		Strength::Mythical,
+		WavFile("explosion", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+SorcererMoves::TreeOfLife::TreeOfLife()
+	:Move(
+		MoveId::SorceressTreeOfLife,
+		"Deals " + std::to_string(DAMAGE_HEAL) + " damage and heals the user for how much damage was dealt",
+		"Tree of Life",
+		COST,
+		Strength::Mythical,
+		true,
+		WavFile("lightningheal", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SorcererMoves::TreeOfLife::doAction(Creature* self, Creature* other)
+{
+	auto damRep = other->reduceHealth(DAMAGE_HEAL, self);
+	int heal = damRep.getDamageTaken();
+	int healAmount = self->increaseHealth(heal);
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" deals ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep) +
+		ColorString(" and", ddutil::TEXT_COLOR) + ColorString(" heals " + std::to_string(healAmount) + " HP", ddutil::HEAL_COLOR);
+}
+
+SorcererMoves::Resurrect::Resurrect()
+	:Move(
+		MoveId::SorceressResurrect,
+		"Revives a dead minion from this fight",
+		"Resurrect",
+		COST,
+		Strength::Mythical,
+		false,
+		WavFile("lightningheal", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SorcererMoves::Resurrect::doAction(Creature* self, Creature* other)
+{
+	Player* minion = self->getGamePtr()->reviveFirstDeadMinion();
+	if (minion == nullptr)
+	{
+		return ColorString(ddutil::CANT_USE_MOVE, ddutil::TEXT_COLOR);
+	}
+	else
+	{
+		return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+			ColorString(" resurrects the ", ddutil::TEXT_COLOR) + minion->getColorString();
+	}
 }

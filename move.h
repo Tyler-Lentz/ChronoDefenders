@@ -151,7 +151,18 @@ enum class MoveId
 	SamuraiToughenUp,
 	SamuraiHoldOut,
 	SamuraiDecimate,
-	SamuraiDragonsWill
+	SamuraiDragonsWill,
+	SorceressUltimateShock,
+	SorceressXCast,
+	SorceressTreeOfPower,
+	SorceressAuraBomb,
+	SorceressTreeOfLife,
+	SorceressResurrect,
+	SorceressSelfHex,
+	SorceressBindingGrasp,
+	SorceressAuraBlast,
+	SorceressBranchWhip,
+	SorceressAuraStrike
 };
 
 class Move

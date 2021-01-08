@@ -1036,9 +1036,9 @@ void Game::chooseClasses()
 		vwin->clearScreen();
 		break;	
 	}
-	vwin->clearScreen();
 	while (true)
 	{
+		vwin->clearScreen();
 		vwin->putcen(ColorString("*==================================*", ddutil::WHITE), TOP_LINE - 1);
 		vwin->putcen(ColorString(" Choose Sorceress Starting Artifact ", ddutil::SORCERER_COLOR), TOP_LINE);
 		vwin->putcen(ColorString("*==================================*", ddutil::WHITE), TOP_LINE + 1);
@@ -1083,9 +1083,9 @@ void Game::chooseClasses()
 		vwin->clearScreen();
 		break;
 	}
-	vwin->clearScreen();
 	while (true)
 	{
+		vwin->clearScreen();
 		vwin->putcen(ColorString("*===================================*", ddutil::WHITE), TOP_LINE - 1);
 		vwin->putcen(ColorString(" Choose Gunslinger Starting Artifact ", ddutil::GUNSLINGER_COLOR), TOP_LINE);
 		vwin->putcen(ColorString("*===================================*", ddutil::WHITE), TOP_LINE + 1);
@@ -1349,6 +1349,23 @@ bool Game::checkForEnemyDeath(Enemy* enemy)
 	{
 		return false;
 	}
+}
+
+Player* Game::reviveFirstDeadMinion()
+{
+	for (int i = 0; i < deadPlayers.size(); i++)
+	{
+		Player* p = deadPlayers.at(i);
+		if (p->isMinion())
+		{
+			p->setHealthPercent(100);
+			Player* minion = p;
+			deadPlayers.erase(deadPlayers.begin() + i);
+			playerParty.push_back(minion);
+			return minion;
+		}
+	}
+	return nullptr;
 }
 
 void Game::setGameWin()

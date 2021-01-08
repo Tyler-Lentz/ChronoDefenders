@@ -343,6 +343,18 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new SamuraiMoves::Decimate();
 	case MoveId::SamuraiDragonsWill:
 		return new SamuraiMoves::DragonsWill();
+	case MoveId::SorceressUltimateShock:
+		return new SorcererMoves::UltimateShock();
+	case MoveId::SorceressXCast:
+		return new SorcererMoves::XCast();
+	case MoveId::SorceressTreeOfPower:
+		return new SorcererMoves::TreeOfPower();
+	case MoveId::SorceressAuraBomb:
+		return new SorcererMoves::AuraBomb();
+	case MoveId::SorceressTreeOfLife:
+		return new SorcererMoves::TreeOfLife();
+	case MoveId::SorceressResurrect:
+		return new SorcererMoves::Resurrect();
 	default:
 		return nullptr;
 	}

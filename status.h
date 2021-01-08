@@ -306,8 +306,6 @@ public:
 };
 
 
-
-
 // Unchanging status
 class UnchangingStatus : public Status
 {

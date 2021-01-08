@@ -19,7 +19,7 @@ public:
 
 	void display(); // puts up screen where the user can see all of the information in the compendium and scroll through screens
 private:
-	std::vector<Picture> compendium;
+	std::vector<std::vector<Picture>> compendium;
 	VirtualWindow* vwin;
 	std::string borderString;
 	int lastPage; // stores the last page the player was on so the compendium returns to the page you left off on

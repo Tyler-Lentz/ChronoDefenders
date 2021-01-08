@@ -21,10 +21,11 @@ Compendium::Compendium(VirtualWindow* vwin)
 void Compendium::display()
 {
 	bool exit = false;
+	int currSubPage = 0;
 	while (!exit)
 	{
 		vwin->clearScreen();
-		vwin->printArt(compendium.at(lastPage), Coordinate(0, 0), false);
+		vwin->printArt(compendium.at(lastPage).at(currSubPage), Coordinate(0, 0), false);
 		while (true) // input loop
 		{
 			if (ddutil::keypress(VK_RIGHT))
@@ -32,6 +33,7 @@ void Compendium::display()
 				lastPage++;
 				playSound(WavFile("menumove2", false, true));
 				Sleep(ddutil::BUFFER_TIME);
+				currSubPage = 0;
 				break;
 			}
 			if (ddutil::keypress(VK_LEFT))
@@ -39,6 +41,7 @@ void Compendium::display()
 				lastPage--;
 				playSound(WavFile("menumove2", false, true));
 				Sleep(ddutil::BUFFER_TIME);
+				currSubPage = 0;
 				break;
 			}
 			if (ddutil::keypress(VK_SPACE))
@@ -46,7 +49,28 @@ void Compendium::display()
 				exit = true;
 				playSound(WavFile("menumove2", false, true));
 				Sleep(ddutil::BUFFER_TIME);
+				currSubPage = 0;
 				break;
+			}
+			if (ddutil::keypress(VK_UP))
+			{
+				if (currSubPage > 0)
+				{
+					currSubPage--;
+					playSound(WavFile("menumove2", false, true));
+					Sleep(ddutil::BUFFER_TIME);
+					break;
+				}
+			}
+			if (ddutil::keypress(VK_DOWN))
+			{
+				if (currSubPage < compendium.at(lastPage).size() - 1)
+				{
+					currSubPage++;
+					playSound(WavFile("menumove2", false, true));
+					Sleep(ddutil::BUFFER_TIME);
+					break;
+				}
 			}
 		}
 		if (lastPage < 0)
@@ -76,8 +100,10 @@ void Compendium::makeTitlePage()
 	page.push_back(ColorString());
 	page.push_back(ColorString("Controls:", ddutil::YELLOW));
 	page.push_back(ColorString("Left/Right arrows: navegate through the book", ddutil::GREEN));
+	page.push_back(ColorString("Up/Down: Navegate through subpages in a section", ddutil::RED));
 	page.push_back(ColorString("Spacebar: exit the Compendium", ddutil::RED));
-	compendium.push_back(page);
+	std::vector<Picture> pages = { page };
+	compendium.push_back(pages);
 }
 
 void Compendium::makeBattlePage()
@@ -114,20 +140,34 @@ void Compendium::makeBattlePage()
 	page.push_back(ColorString("The information about bullets is specific to the Gunslinger. Some of his moves use bullets.", ddutil::TEXT_COLOR));
 	page.push_back(ColorString());
 	page.push_back(ColorString("In addition, if a character gains a dodge stat, that will also appear in the stat line", ddutil::TEXT_COLOR));
-	compendium.push_back(page);
+	std::vector<Picture> pages = { page };
+	compendium.push_back(pages);
 }
 
 void Compendium::makeSamuraiList()
 {
-	Picture page;
+	Picture modPage;
+	Picture powPage;
+	Picture mythPage;
 	int color = ddutil::SAMURAI_COLOR;
 	int size = ddutil::CONSOLEX;
-	page.push_back(ColorString(borderString, color));
-	page.push_back(ColorString(ddutil::padString("<- Samurai Moves ->", size), color));	
-	page.push_back(ColorString(borderString, color));
+	// set up the headers for each of the pages
+	modPage.push_back(ColorString(borderString, color));
+	modPage.push_back(ColorString(ddutil::padString("<- Samurai Moves ->", size), color));	
+	modPage.push_back(ColorString(borderString, color));
+	powPage = modPage;
+	mythPage = modPage;
+	modPage.push_back(ColorString("Press DOWN to view ", ddutil::TEXT_COLOR) + ColorString("Powerful", ddutil::POWERFUL_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	powPage.push_back(ColorString("Press UP to view ", ddutil::TEXT_COLOR) + ColorString("Moderate", ddutil::MODERATE_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	powPage.push_back(ColorString("Press DOWN to view ", ddutil::TEXT_COLOR) + ColorString("Mythical", ddutil::MYTHICAL_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	mythPage.push_back(ColorString("Press UP to view ", ddutil::TEXT_COLOR) + ColorString("Powerful", ddutil::POWERFUL_COLOR) + ColorString(" moves", ddutil::TEXT_COLOR));
+	modPage.push_back(ColorString());
+	powPage.push_back(ColorString());
+	mythPage.push_back(ColorString());
+
 		
 	std::unique_ptr<Move> move;
-	for (int i = 0; i <= 35; i++)
+	for (int i = 0; i <= 46; i++)
 	{
 		switch (i)
 		{
@@ -239,11 +279,60 @@ void Compendium::makeSamuraiList()
 		case 35:
 			move = std::make_unique<SamuraiMoves::ShinobiTactics>();
 			break;
+		case 36:
+			move = std::make_unique<SamuraiMoves::WarHorn>();
+			break;
+		case 37:
+			move = std::make_unique<SamuraiMoves::Instinct>();
+			break;
+		case 38:
+			move = std::make_unique<SamuraiMoves::Unhinge>();
+			break;
+		case 39:
+			move = std::make_unique<SamuraiMoves::Revitalize>();
+			break;
+		case 40:
+			move = std::make_unique<SamuraiMoves::FlameVeil>();
+			break;
+		case 41:
+			move = std::make_unique<SamuraiMoves::HelpingHand>();
+			break;
+		case 42:
+			move = std::make_unique<SamuraiMoves::Tackle>();
+			break;
+		case 43:
+			move = std::make_unique<SamuraiMoves::ToughenUp>();
+			break;
+		case 44:
+			move = std::make_unique<SamuraiMoves::HoldOut>();
+			break;
+		case 45:
+			move = std::make_unique<SamuraiMoves::Decimate>();
+			break;
+		case 46:
+			move = std::make_unique<SamuraiMoves::DragonsWill>();
+			break;
 		}
-		page.push_back(move->getFullInformation());
+		switch (move->getStrength())
+		{
+		case Strength::Moderate:
+			modPage.push_back(move->getFullInformation());
+			modPage.push_back(ColorString());
+			break;
+		case Strength::Powerful:
+			powPage.push_back(move->getFullInformation());
+			powPage.push_back(ColorString());
+			break;
+		case Strength::Mythical:
+			mythPage.push_back(move->getFullInformation());
+			mythPage.push_back(ColorString());
+			break;
+		}
 	}
 
-	compendium.push_back(page);
+	std::vector<Picture> pages = { modPage, powPage, mythPage };
+
+	compendium.push_back(pages);
 }
 
 void Compendium::makeGunslingerList()
@@ -375,7 +464,8 @@ void Compendium::makeGunslingerList()
 		page.push_back(move->getFullInformation());
 	}
 
-	compendium.push_back(page);
+	std::vector<Picture> pages = { pages };
+	compendium.push_back(pages);
 }
 
 void Compendium::makeSorceressList()
@@ -504,7 +594,9 @@ void Compendium::makeSorceressList()
 		page.push_back(move->getFullInformation());
 	}
 
-	compendium.push_back(page);
+	std::vector<Picture> pages = { page };
+
+	compendium.push_back(pages);
 }
 
 void Compendium::makeStatusList()
@@ -569,5 +661,6 @@ void Compendium::makeStatusList()
 	status = std::make_unique<BeserkedStatus>();
 	page.push_back(status->getFullInformation());
 
-	compendium.push_back(page);
+	std::vector<Picture> pages = { page };
+	compendium.push_back(pages);
 }

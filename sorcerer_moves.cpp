@@ -611,3 +611,91 @@ ColorString SorcererMoves::Resurrect::doAction(Creature* self, Creature* other)
 			ColorString(" resurrects the ", ddutil::TEXT_COLOR) + minion->getColorString();
 	}
 }
+
+SorcererMoves::SelfHex::SelfHex()
+	:Move(
+		MoveId::SorceressSelfHex,
+		"Removes all status effects but applies Hexed (" + std::to_string(HEX_LEN) + ")",
+		"Self Hex",
+		COST,
+		Strength::Powerful,
+		false,
+		WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SorcererMoves::SelfHex::doAction(Creature* self, Creature* other)
+{
+	self->clearAllStatuses();
+	self->applyStatus(new HexedStatus(), HEX_LEN);
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" hexes", HexedStatus::COLOR)+ColorString(" herself to remove all her status effects", ddutil::TEXT_COLOR);
+}
+
+SorcererMoves::BindingGrasp::BindingGrasp()
+	:Move(
+		MoveId::SorceressTreeOfLife,
+		"Deals " + std::to_string(DAMAGE_HEAL) + " damage and heals the user for how much damage was dealt",
+		"Binding Grasp",
+		COST,
+		Strength::Powerful,
+		true,
+		WavFile("attackheal", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SorcererMoves::BindingGrasp::doAction(Creature* self, Creature* other)
+{
+	auto damRep = other->reduceHealth(DAMAGE_HEAL, self);
+	int heal = damRep.getDamageTaken();
+	int healAmount = self->increaseHealth(heal);
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" deals ", ddutil::TEXT_COLOR) + ddutil::genericDamageAlert(damRep) +
+		ColorString(" and", ddutil::TEXT_COLOR) + ColorString(" heals " + std::to_string(healAmount) + " HP", ddutil::HEAL_COLOR);
+}
+
+SorcererMoves::AuraBlast::AuraBlast()
+	:AuraDamageMove(
+		MoveId::SorceressAuraBlast,
+		DAM_PER_AURA,
+		COST,
+		"Aura Blast",
+		Strength::Powerful,
+		WavFile("energyattack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+SorcererMoves::BranchWhip::BranchWhip()
+	:Move(
+		MoveId::SorceressBranchWhip,
+		"Deals "+std::to_string(DAMAGE)+" and heals "+std::to_string(HEAL)+" HP",
+		"Branch Whip",
+		COST,
+		Strength::Moderate,
+		true,
+		WavFile("attackheal", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString SorcererMoves::BranchWhip::doAction(Creature* self, Creature* other)
+{
+	int healAmount = self->increaseHealth(HEAL);
+	SimpleAttackMove tempMove(MoveId::SorceressBranchWhip, DAMAGE, false, 0, "Branch Whip", Strength::Moderate, sound);
+	return tempMove.doAction(self, other) + ColorString(" and ", ddutil::TEXT_COLOR) + ColorString("heals " + std::to_string(HEAL) + " HP", ddutil::HEAL_COLOR);
+}
+
+SorcererMoves::AuraStrike::AuraStrike()
+	:AuraDamageMove(
+		MoveId::SorceressAuraStrike,
+		DAM_PER_AURA,
+		COST,
+		"Aura Strike",
+		Strength::Moderate,
+		WavFile("energyattack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}

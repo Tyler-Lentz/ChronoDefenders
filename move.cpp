@@ -355,6 +355,16 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new SorcererMoves::TreeOfLife();
 	case MoveId::SorceressResurrect:
 		return new SorcererMoves::Resurrect();
+	case MoveId::SorceressAuraBlast:
+		return new SorcererMoves::AuraBlast();
+	case MoveId::SorceressBindingGrasp:
+		return new SorcererMoves::BindingGrasp();
+	case MoveId::SorceressSelfHex:
+		return new SorcererMoves::SelfHex();
+	case MoveId::SorceressBranchWhip:
+		return new SorcererMoves::BranchWhip();
+	case MoveId::SorceressAuraStrike:
+		return new SorcererMoves::AuraStrike();
 	default:
 		return nullptr;
 	}

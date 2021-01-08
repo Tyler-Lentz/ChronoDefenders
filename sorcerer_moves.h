@@ -192,6 +192,26 @@ namespace SorcererMoves
 		const static int COST = 3;
 	};
 
+	class BranchWhip : public Move
+	{
+	public:
+		BranchWhip();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int DAMAGE = 4;
+		const static int HEAL = 2;
+		const static int COST = 4;
+	};
+
+	class AuraStrike : public AuraDamageMove
+	{
+	public:
+		AuraStrike();
+
+		const static int DAM_PER_AURA = 1;
+		const static int COST = 3;
+	};
+
 	// Powerful
 
 	class MirrorImage : public SelfBlockMove
@@ -304,6 +324,34 @@ namespace SorcererMoves
 
 		const static int DAM_PER_FBURN = 5;
 		const static int COST = 5;
+	};
+
+	class SelfHex : public Move
+	{
+	public:
+		SelfHex();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int COST = 4;
+		const static int HEX_LEN = 1;
+	};
+
+	class BindingGrasp : public Move
+	{
+	public:
+		BindingGrasp();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int COST = 4;
+		const static int DAMAGE_HEAL = 6;
+	};
+
+	class AuraBlast : public AuraDamageMove
+	{
+	public:
+		AuraBlast();
+		const static int COST = 3;
+		const static int DAM_PER_AURA = 2;
 	};
 
 	// Mythical

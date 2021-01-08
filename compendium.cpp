@@ -121,7 +121,7 @@ void Compendium::makeBattlePage()
 	Gunslinger temp(nullptr);
 	page.push_back(temp.getStatLine());
 	page.push_back(ColorString());	
-	page.push_back(ColorString("In brown /Ma/mis the character's name. This will vary depending on which character it is.", ddutil::GUNSLINGER_COLOR));
+	page.push_back(ColorString("In brown is the character's name. This will vary depending on which character it is.", ddutil::GUNSLINGER_COLOR));
 	page.push_back(ColorString());	
 	page.push_back(ColorString("In green is the character's healthbar, followed by the numerical value.", ddutil::GREEN));
 	page.push_back(ColorString("The color of the healthbar will vary depending on the percentage of HP remaining.", ddutil::GREEN));
@@ -518,7 +518,7 @@ void Compendium::makeSorceressList()
 
 		
 	std::unique_ptr<Move> move;
-	for (int i = 0; i <= 41; i++)
+	for (int i = 0; i <= 46; i++)
 	{
 		switch (i)
 		{
@@ -647,6 +647,21 @@ void Compendium::makeSorceressList()
 			break;
 		case 41:
 			move = std::make_unique<SorcererMoves::Resurrect>();
+			break;
+		case 42:
+			move = std::make_unique<SorcererMoves::SelfHex>();
+			break;
+		case 43:
+			move = std::make_unique<SorcererMoves::BindingGrasp>();
+			break;
+		case 44:
+			move = std::make_unique<SorcererMoves::AuraBlast>();
+			break;
+		case 45:
+			move = std::make_unique<SorcererMoves::BranchWhip>();
+			break;
+		case 46:
+			move = std::make_unique<SorcererMoves::AuraStrike>();
 			break;
 		}
 		switch (move->getStrength())

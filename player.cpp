@@ -1480,7 +1480,7 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 
 	if (str == Strength::Moderate)
 	{
-		for (int i : ddutil::uniqueRandom(1, 12, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 14, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1520,12 +1520,18 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 			case 12:
 				newMoves.push_back(new SorcererMoves::ElectricShock());
 				break;
+			case 13:
+				newMoves.push_back(new SorcererMoves::BranchWhip());
+				break;
+			case 14:
+				newMoves.push_back(new SorcererMoves::AuraStrike());	
+				break;
 			}
 		}
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i : ddutil::uniqueRandom(1, 12, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 15, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1564,6 +1570,15 @@ std::vector<Move*> Sorcerer::getRandomMoves(Strength str)
 				break;
 			case 12:
 				newMoves.push_back(new SorcererMoves::LightningStrike());
+				break;
+			case 13:
+				newMoves.push_back(new SorcererMoves::SelfHex());
+				break;
+			case 14:
+				newMoves.push_back(new SorcererMoves::BindingGrasp());
+				break;
+			case 15:
+				newMoves.push_back(new SorcererMoves::AuraBlast());
 				break;
 			}
 		}

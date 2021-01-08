@@ -247,6 +247,8 @@ Artifact* Artifact::getArtifactFromID(Game* game, ArtifactID id)
 		return new ClericsRobes(game);
 	case ArtifactID::SummonersOrb:
 		return new SummonersOrb(game);
+	case ArtifactID::TempestStaff:
+		return new TempestsStaff(game);
 	case ArtifactID::BrawlersBelt:
 		return new BrawlersBelt(game);
 	case ArtifactID::GamblersDeck:

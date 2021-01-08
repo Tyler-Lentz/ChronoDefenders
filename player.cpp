@@ -29,7 +29,7 @@ Player::Player(Game* game, PlayerId id, int svit, int maxVit, int vitGain, int m
 	minion = min;
 	vitalityGainAdjustment = 0;
 	percentXPBoost = 0;
-	movesToChooseFrom = 3;
+	movesToChooseFrom = ddutil::START_MOVES_TO_CHOOSE_FROM;
 	this->id = id;
 	shouldReceiveXP = true;
 }

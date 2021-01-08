@@ -165,6 +165,8 @@ namespace ddutil
 
     const int DEFAULT_CON_SIZE = 16;
 
+    const int START_MOVES_TO_CHOOSE_FROM = 4;
+
     // sorry
     const std::string NOT_ENOUGH_BULLETS = "Not enough bullets!";
     const std::string NOT_ENOUGH_AURA = "Not enough Aura!";

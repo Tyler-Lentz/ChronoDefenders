@@ -35,7 +35,8 @@ enum class StatusID
     Scorched,
     Entombed,
     Marked,
-    Beserked
+    Beserked,
+    TheMagician
 };
 
 class Status
@@ -267,6 +268,19 @@ public:
     Status* makeCopy() override;
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 };
+
+class TheMagicianStatus : public CardStatus
+{
+public:
+    TheMagicianStatus();
+
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    const static int BULLET_MIN = 1;
+    const static int BULLET_MAX = 3;
+};
+
 
 
 // Unique Status

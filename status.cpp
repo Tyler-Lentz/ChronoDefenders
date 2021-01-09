@@ -433,6 +433,45 @@ ColorString DiamondStatus::applyEndTurnEffect(Creature* target, int stackAmounts
 	}
 }
 
+TheMagicianStatus::TheMagicianStatus()
+	:CardStatus(
+		StatusID::TheMagician,
+		ColorString("The Magician", ddutil::LIGHTMAGENTA),
+		"Gives " + std::to_string(BULLET_MIN) + "-"+std::to_string(BULLET_MAX) + " bullets to the holder",
+		0 // unused
+	)
+{
+}
+
+Status* TheMagicianStatus::makeCopy()
+{
+	return new TheMagicianStatus();
+}
+
+ColorString TheMagicianStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	Gunslinger* gunslingerTarget = dynamic_cast<Gunslinger*>(target);
+	if (gunslingerTarget != nullptr)
+	{
+		int bulletNum = ddutil::random(BULLET_MIN, BULLET_MAX);
+		gunslingerTarget->createBullets(bulletNum);
+		std::string bulletWord = " bullet";
+		if (bulletNum > 1)
+		{
+			bulletWord += "s";
+		}
+		return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
+			ColorString(" gets " + std::to_string(bulletNum) + bulletWord + " from ", ddutil::TEXT_COLOR) +
+			getName();
+	}
+	else
+	{
+		return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() + ColorString(" cannot use ", ddutil::TEXT_COLOR) +
+			getName();
+	}
+}
+
+
 UniqueStatus::UniqueStatus(StatusID theID, ColorString name, std::string description)
 	:Status(theID, name, description, true, false, false, false)
 {
@@ -724,3 +763,5 @@ Status* BeserkedStatus::makeCopy()
 {
 	return new BeserkedStatus();
 }
+
+

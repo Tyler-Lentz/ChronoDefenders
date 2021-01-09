@@ -64,6 +64,17 @@ namespace GunslingerMoves
 		int maxDraw;
 	};
 
+	class UniqueCardDrawMove : public Move
+	{
+	public:
+		UniqueCardDrawMove(MoveId id, Status* card, int cost, Strength str, WavFile sound);
+		~UniqueCardDrawMove();
+
+		ColorString doAction(Creature* self, Creature* other) override;
+	private:
+		Status* status;
+	};
+
 	// Weak 
 	class Peashooter : public GunMove
 	{
@@ -205,6 +216,22 @@ namespace GunslingerMoves
 
 		const static int BULLET_AMOUNT = 5;
 		const static int COST = 4;
+	};
+
+	class TheMagician : public UniqueCardDrawMove 
+	{
+	public:
+		TheMagician();
+
+		const static int COST = 2;
+	};
+
+	class BowAndArrow : public SimpleStatusMove 
+	{
+	public:
+		BowAndArrow();
+		const static int COST = 1;
+		const static int BLEED = 6;
 	};
 
 	// Powerful

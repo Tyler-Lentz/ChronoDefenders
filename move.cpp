@@ -365,6 +365,10 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new SorcererMoves::BranchWhip();
 	case MoveId::SorceressAuraStrike:
 		return new SorcererMoves::AuraStrike();
+	case MoveId::GunslingerTheMagician:
+		return new GunslingerMoves::TheMagician();
+	case MoveId::GunslingerBowAndArrow:
+		return new GunslingerMoves::BowAndArrow();
 	default:
 		return nullptr;
 	}

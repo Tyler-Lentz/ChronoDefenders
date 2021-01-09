@@ -139,6 +139,33 @@ ColorString GunslingerMoves::CardDrawMove::doAction(Creature* self, Creature* ot
 		ColorString(" draws the ", ddutil::TEXT_COLOR) + cardName;
 }
 
+GunslingerMoves::UniqueCardDrawMove::UniqueCardDrawMove(MoveId id, Status* card, int cost, Strength str, WavFile sound)
+	:Move(
+		id,
+		"Draws " + card->getName().getString() + ", which "+card->getDescription(),
+		card->getName().getString(),
+		cost,
+		str,
+		false,
+		sound
+	)
+{
+	status = card;
+}
+
+GunslingerMoves::UniqueCardDrawMove::~UniqueCardDrawMove()
+{
+	delete status;
+}
+
+ColorString GunslingerMoves::UniqueCardDrawMove::doAction(Creature* self, Creature* other)
+{
+	Status* card = status->makeCopy();
+	ColorString info = ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" draws ", ddutil::TEXT_COLOR) + card->getName();
+	self->applyStatus(card);
+	return info;
+}
 
 // Weak
 
@@ -496,3 +523,30 @@ ColorString GunslingerMoves::JesterForm::doAction(Creature* self, Creature* othe
 		ColorString(" enters ", ddutil::TEXT_COLOR) + statusName +
 		ColorString(" for " + std::to_string(DURATION) + " turns", ddutil::TEXT_COLOR);
 }
+
+GunslingerMoves::TheMagician::TheMagician()
+	:UniqueCardDrawMove(
+		MoveId::GunslingerTheMagician,
+		new TheMagicianStatus(),
+		COST,
+		Strength::Moderate,
+		WavFile("drawcard", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+GunslingerMoves::BowAndArrow::BowAndArrow()
+	:SimpleStatusMove(
+		MoveId::GunslingerBowAndArrow,
+		new BleedingStatus(),
+		BLEED,
+		true,
+		COST,
+		"Bow and Arrow",
+		Strength::Moderate,
+		WavFile("attack1", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+

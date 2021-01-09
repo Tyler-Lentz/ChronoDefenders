@@ -162,7 +162,9 @@ enum class MoveId
 	SorceressBindingGrasp,
 	SorceressAuraBlast,
 	SorceressBranchWhip,
-	SorceressAuraStrike
+	SorceressAuraStrike,
+	GunslingerTheMagician,
+	GunslingerBowAndArrow
 };
 
 class Move

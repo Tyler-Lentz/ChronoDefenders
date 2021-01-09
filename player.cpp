@@ -1240,7 +1240,7 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 
 	if (str == Strength::Moderate)
 	{
-		for (int i : ddutil::uniqueRandom(1,10,MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1,12,MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1286,6 +1286,12 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 				break;
 			case 9:
 				newMoves.push_back(new GunslingerMoves::Dropkick());
+				break;
+			case 10:
+				newMoves.push_back(new GunslingerMoves::BowAndArrow());
+				break;
+			case 11:
+				newMoves.push_back(new GunslingerMoves::TheMagician());
 				break;
 			default:
 				newMoves.push_back(new GunslingerMoves::BottleStrike());

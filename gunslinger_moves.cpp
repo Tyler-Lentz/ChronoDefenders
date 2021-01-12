@@ -164,6 +164,11 @@ ColorString GunslingerMoves::UniqueCardDrawMove::doAction(Creature* self, Creatu
 	ColorString info = ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
 		ColorString(" draws ", ddutil::TEXT_COLOR) + card->getName();
 	self->applyStatus(card);
+	if (self->hasStatus(StatusID::Jester))
+	{
+		Status* dupedCard = card->makeCopy();
+		self->applyStatus(dupedCard);
+	}
 	return info;
 }
 

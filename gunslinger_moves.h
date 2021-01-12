@@ -520,7 +520,7 @@ namespace GunslingerMoves
 		JesterForm();
 		ColorString doAction(Creature* self, Creature* other) override;
 
-		const static int COST = 6;
+		const static int COST = 5;
 		const static int DURATION = 4;
 	};
 }

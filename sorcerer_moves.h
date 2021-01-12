@@ -188,7 +188,7 @@ namespace SorcererMoves
 	public:
 		PlasmaStrike();
 
-		const static int DAMAGE = 10;
+		const static int DAMAGE = 8;
 		const static int COST = 3;
 	};
 

@@ -1228,7 +1228,7 @@ Ectoplasm::Ectoplasm(Game* game)
 
 void Ectoplasm::equipAction(Player* player)
 {
-	player->increaseDodgeChance(DODGE_INC);
+	player->increaseBaseDodgeChance(DODGE_INC);
 }
 
 Meat::Meat(Game* game)

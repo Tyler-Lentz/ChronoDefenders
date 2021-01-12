@@ -671,7 +671,7 @@ SorcererMoves::AuraBlast::AuraBlast()
 SorcererMoves::BranchWhip::BranchWhip()
 	:Move(
 		MoveId::SorceressBranchWhip,
-		"Deals "+std::to_string(DAMAGE)+" and heals "+std::to_string(HEAL)+" HP",
+		"Deals "+std::to_string(DAMAGE)+" damage and heals "+std::to_string(HEAL)+" HP",
 		"Branch Whip",
 		COST,
 		Strength::Moderate,

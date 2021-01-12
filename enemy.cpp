@@ -2173,7 +2173,7 @@ EnemyTurn CaveBat::getTurn(std::vector<Creature*> players)
 
 	if (getHealth() > DIVEBOMB_THRESHOLD)
 	{
-		targets.push_back(ddutil::getLowestHealthPlayer(players));
+		targets.push_back(players[ddutil::random(0, players.size() - 1)]);
 		chosenMove = moves[0];
 		intent = ddutil::genericDamageIntent(WING_ATTACK_DAMAGE, getColorString(), "Wing Strike", targets);
 	}

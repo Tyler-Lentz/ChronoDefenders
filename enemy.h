@@ -742,7 +742,7 @@ public:
 
 	const static int DESPERATION_THRESHOLD = 20; // at less than 20% of max hp go to desperation mode
 	
-	const static int INVULN_LENGTH = 2;
+	const static int INVULN_LENGTH = 1;
 	const static int DESPERATION_BEAM_DAM = 45; // solo target
 
 	const static int DIST5_BEAM_DAM = 20;

@@ -369,6 +369,22 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new GunslingerMoves::TheMagician();
 	case MoveId::GunslingerBowAndArrow:
 		return new GunslingerMoves::BowAndArrow();
+	case MoveId::GunslingerFastFeet:
+		return new GunslingerMoves::FastFeet();
+	case MoveId::GunslignerTheHighPriestess:
+		return new GunslingerMoves::TheHighPriestess();
+	case MoveId::GunslingerJudgement:
+		return new GunslingerMoves::Judgement();
+	case MoveId::GunslingerDash:
+		return new GunslingerMoves::Dash();
+	case MoveId::GunslingerToxicToss:
+		return new GunslingerMoves::ToxicToss();
+	case MoveId::GunslingerKnifeThrow:
+		return new GunslingerMoves::KnifeThrow();
+	case MoveId::GunslingerTippedShot:
+		return new GunslingerMoves::TippedShot();
+	case MoveId::GunslingerSmokeAndMirrors:
+		return new GunslingerMoves::SmokeAndMirrors();
 	default:
 		return nullptr;
 	}

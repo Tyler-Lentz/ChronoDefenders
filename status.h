@@ -36,7 +36,12 @@ enum class StatusID
     Entombed,
     Marked,
     Beserked,
-    TheMagician
+    TheMagician,
+    TheHighPriestess,
+    Judgement,
+    TheEmpress,
+    TheEmporer,
+    TheSun
 };
 
 class Status
@@ -281,6 +286,27 @@ public:
     const static int BULLET_MAX = 3;
 };
 
+class TheHighPriestessStatus : public CardStatus
+{
+public:
+    TheHighPriestessStatus();
+
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    const static int VIT = 2;
+};
+
+class JudgementStatus : public CardStatus
+{
+public:
+    JudgementStatus();
+
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    const static int DMG_PERCENT = 5; // deals damage equal to 5% of monster's max health
+};
 
 
 // Unique Status

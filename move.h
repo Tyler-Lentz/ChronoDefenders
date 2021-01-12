@@ -164,7 +164,15 @@ enum class MoveId
 	SorceressBranchWhip,
 	SorceressAuraStrike,
 	GunslingerTheMagician,
-	GunslingerBowAndArrow
+	GunslingerBowAndArrow,
+	GunslignerTheHighPriestess,
+	GunslingerJudgement,
+	GunslingerKnifeThrow,
+	GunslingerToxicToss,
+	GunslingerTippedShot,
+	GunslingerFastFeet,
+	GunslingerDash,
+	GunslingerSmokeAndMirrors
 };
 
 class Move

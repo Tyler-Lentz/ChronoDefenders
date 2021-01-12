@@ -549,4 +549,125 @@ GunslingerMoves::BowAndArrow::BowAndArrow()
 {
 }
 
+GunslingerMoves::FastFeet::FastFeet()
+	:SelfBlockMove(
+		MoveId::GunslingerFastFeet,
+		BLOCK,
+		COST,
+		"Fast Feet",
+		Strength::Moderate,
+		WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
 
+GunslingerMoves::TheHighPriestess::TheHighPriestess()
+	:UniqueCardDrawMove(
+		MoveId::GunslignerTheHighPriestess,
+		new TheHighPriestessStatus(),
+		COST,
+		Strength::Powerful,
+		WavFile("drawcard", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+GunslingerMoves::Judgement::Judgement()
+	:UniqueCardDrawMove(
+		MoveId::GunslingerJudgement,
+		new JudgementStatus(),
+		COST,
+		Strength::Powerful,
+		WavFile("drawcard", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+GunslingerMoves::KnifeThrow::KnifeThrow()
+	:StatusAttackMove(
+		MoveId::GunslingerKnifeThrow,
+		DAMAGE,
+		new BleedingStatus(),
+		BLEED,
+		COST,
+		"Knife Throw",
+		Strength::Powerful,
+		WavFile("attack2", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+GunslingerMoves::ToxicToss::ToxicToss()
+	:SimpleStatusMove(
+		MoveId::GunslingerToxicToss,
+		new PoisonedStatus(),
+		POISON,
+		true,
+		COST,
+		"Toxic Toss",
+		Strength::Powerful,
+		WavFile("jump", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+GunslingerMoves::TippedShot::TippedShot()
+	:Move(
+		MoveId::GunslingerTippedShot,
+		"Deals "+std::to_string(DAMAGE)+ " damage and inflicts "+std::to_string(POISON)+" poison with "+std::to_string(BULLET)+" bullet",
+		"Tipped Shot",
+		COST,
+		Strength::Powerful,
+		true,
+		WavFile("shot1", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString GunslingerMoves::TippedShot::doAction(Creature* self, Creature* other)
+{
+	GunMove tempMove(MoveId::GunslingerTippedShot, DAMAGE, BULLET, 0, "Tipped Shot", Strength::Powerful, sound);
+	ColorString output = tempMove.doAction(self, other);
+	if (output.getString() == ddutil::NOT_ENOUGH_BULLETS)
+	{
+		return output;
+	}
+	else
+	{
+		other->applyStatus(new PoisonedStatus(), POISON);
+		return output + ColorString(" and inflicts ", ddutil::TEXT_COLOR) + ColorString(std::to_string(POISON) + " Poison", PoisonedStatus::COLOR);
+	}
+}
+
+GunslingerMoves::Dash::Dash()
+	:SelfBlockMove(
+		MoveId::GunslingerDash,
+		BLOCK,
+		COST,
+		"Dash",
+		Strength::Powerful,
+		WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+GunslingerMoves::SmokeAndMirrors::SmokeAndMirrors()
+	:Move(
+		MoveId::GunslingerSmokeAndMirrors,
+		"Blocks "+std::to_string(BLOCK)+" damage and deals " + std::to_string(DAM_PER_TWO_DODGE) + " damage times half your dodge chance",
+		"Smoke And Mirrors",
+		COST,
+		Strength::Powerful,
+		true,
+		WavFile("jumpstrike", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString GunslingerMoves::SmokeAndMirrors::doAction(Creature* self, Creature* other)
+{
+	self->applyBlock(BLOCK);
+	int damage = (self->getDodgeChance() / 2) * DAM_PER_TWO_DODGE;
+	SimpleAttackMove tempMove(MoveId::GunslingerSmokeAndMirrors, damage, false, 0, "Smoke and Mirrors", Strength::Powerful, sound);
+	return tempMove.doAction(self, other);
+}

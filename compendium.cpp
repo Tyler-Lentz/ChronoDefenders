@@ -357,7 +357,7 @@ void Compendium::makeGunslingerList()
 	mythPage.push_back(ColorString());
 		
 	std::unique_ptr<Move> move;
-	for (int i = 0; i <= 38; i++)
+	for (int i = 0; i <= 46; i++)
 	{
 		switch (i)
 		{
@@ -477,6 +477,30 @@ void Compendium::makeGunslingerList()
 			break;
 		case 38:
 			move = std::make_unique<GunslingerMoves::TheMagician>();
+			break;
+		case 39:
+			move = std::make_unique<GunslingerMoves::FastFeet>();
+			break;
+		case 40:
+			move = std::make_unique<GunslingerMoves::TheHighPriestess>();
+			break;
+		case 41:
+			move = std::make_unique<GunslingerMoves::Judgement>();
+			break;
+		case 42:
+			move = std::make_unique<GunslingerMoves::KnifeThrow>();
+			break;
+		case 43:
+			move = std::make_unique<GunslingerMoves::ToxicToss>();
+			break;
+		case 44:
+			move = std::make_unique<GunslingerMoves::TippedShot>();
+			break;
+		case 45:
+			move = std::make_unique<GunslingerMoves::Dash>();
+			break;
+		case 46:
+			move = std::make_unique<GunslingerMoves::SmokeAndMirrors>();
 			break;
 		}
 		switch (move->getStrength())

@@ -117,6 +117,12 @@ Status* Status::getStatusFromID(StatusID id)
 		return new MarkedStatus();
 	case StatusID::Beserked:
 		return new BeserkedStatus();
+	case StatusID::TheMagician:
+		return new TheMagicianStatus();
+	case StatusID::TheHighPriestess:
+		return new TheHighPriestessStatus();
+	case StatusID::Judgement:
+		return new JudgementStatus();
 	default:
 		return nullptr;
 	}
@@ -471,6 +477,59 @@ ColorString TheMagicianStatus::applyEndTurnEffect(Creature* target, int stackAmo
 	}
 }
 
+TheHighPriestessStatus::TheHighPriestessStatus()
+	:CardStatus(
+		StatusID::TheHighPriestess,
+		ColorString("The High Priestess", ddutil::YELLOW),
+		"Gives " +std::to_string(VIT) + " vitality to the holder",
+		0
+	)
+{
+}
+
+Status* TheHighPriestessStatus::makeCopy()
+{
+	return new TheHighPriestessStatus();
+}
+
+ColorString TheHighPriestessStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	Player* playerSelf = dynamic_cast<Player*>(target);
+	if (playerSelf != nullptr)
+	{
+		playerSelf->addVitality(VIT);
+		return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() +
+			ColorString(" gains " + std::to_string(VIT) + " vitality ", ddutil::VITALITY_COLOR) +
+			ColorString("from ", ddutil::TEXT_COLOR) + getName();
+	}
+	else
+	{
+		return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() + ColorString(" cannot gain vitality", ddutil::TEXT_COLOR);
+	}
+}
+
+JudgementStatus::JudgementStatus()
+	:CardStatus(
+		StatusID::Judgement,
+		ColorString("Judgement", ddutil::CYAN),
+		"Deals damage equal to " +std::to_string(DMG_PERCENT)+"% of the target's max HP",
+		0
+	)
+{
+}
+
+Status* JudgementStatus::makeCopy()
+{
+	return new JudgementStatus();
+}
+
+ColorString JudgementStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	int damage = target->getMaxHealth(DMG_PERCENT);
+	auto damRep = target->reduceHealth(damage, nullptr, true);
+	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() + ColorString(" takes ", ddutil::TEXT_COLOR) +
+		ddutil::genericDamageAlert(damRep) + ColorString(" from ", ddutil::TEXT_COLOR) + getName();
+}
 
 UniqueStatus::UniqueStatus(StatusID theID, ColorString name, std::string description)
 	:Status(theID, name, description, true, false, false, false)
@@ -763,5 +822,3 @@ Status* BeserkedStatus::makeCopy()
 {
 	return new BeserkedStatus();
 }
-
-

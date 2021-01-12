@@ -234,6 +234,14 @@ namespace GunslingerMoves
 		const static int BLEED = 6;
 	};
 
+	class FastFeet : public SelfBlockMove
+	{
+	public:
+		FastFeet();
+		const static int COST = 0;
+		const static int BLOCK = 4;
+	};
+
 	// Powerful
 
 	class DoubleKick : public MultiAttackMove
@@ -333,6 +341,67 @@ namespace GunslingerMoves
 		ColorString doAction(Creature* self, Creature* other) override;
 
 		const static int COST = 1;
+	};
+
+	class TheHighPriestess : public UniqueCardDrawMove
+	{
+	public:
+		TheHighPriestess();
+		const static int COST = 1;
+	};
+
+	class Judgement : public UniqueCardDrawMove
+	{
+	public:
+		Judgement();
+		const static int COST = 1;
+	};
+
+	class KnifeThrow : public StatusAttackMove
+	{
+	public:
+		KnifeThrow();
+		const static int COST = 1;
+		const static int DAMAGE = 3;
+		const static int BLEED = 8;
+	};
+
+	class ToxicToss : public SimpleStatusMove
+	{
+	public:
+		ToxicToss();
+		const static int COST = 1;
+		const static int POISON = 5;
+	};
+
+	class TippedShot : public Move
+	{
+	public:
+		TippedShot();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 0;
+		const static int BULLET = 1;
+		const static int DAMAGE = 4;
+		const static int POISON = 3;
+	};
+
+	class Dash : public SelfBlockMove
+	{
+	public:
+		Dash();
+		const static int COST = 0;
+		const static int BLOCK = 6;
+	};
+
+	class SmokeAndMirrors : public Move
+	{
+	public:
+		SmokeAndMirrors();
+		ColorString doAction(Creature* self, Creature* other) override;
+
+		const static int COST = 2;
+		const static int DAM_PER_TWO_DODGE = 1;
+		const static int BLOCK = 8;
 	};
 
 	// Mythical

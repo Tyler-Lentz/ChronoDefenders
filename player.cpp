@@ -1240,7 +1240,7 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 
 	if (str == Strength::Moderate)
 	{
-		for (int i : ddutil::uniqueRandom(1,12,MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1,13,MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1293,6 +1293,9 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 			case 11:
 				newMoves.push_back(new GunslingerMoves::TheMagician());
 				break;
+			case 12:
+				newMoves.push_back(new GunslingerMoves::FastFeet());
+				break;
 			default:
 				newMoves.push_back(new GunslingerMoves::BottleStrike());
 				break;
@@ -1301,7 +1304,7 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 	}
 	else if (str == Strength::Powerful)
 	{
-		for (int i : ddutil::uniqueRandom(1, 10, MOVES_TO_CHOOSE_FROM))
+		for (int i : ddutil::uniqueRandom(1, 17, MOVES_TO_CHOOSE_FROM))
 		{
 			switch (i)
 			{
@@ -1331,6 +1334,27 @@ std::vector<Move*> Gunslinger::getRandomMoves(Strength str)
 				break;
 			case 9:
 				newMoves.push_back(new GunslingerMoves::DoubleKick());
+				break;
+			case 10:
+				newMoves.push_back(new GunslingerMoves::TheHighPriestess());
+				break;
+			case 11:
+				newMoves.push_back(new GunslingerMoves::Judgement());
+				break;
+			case 12:
+				newMoves.push_back(new GunslingerMoves::KnifeThrow());
+				break;
+			case 13:
+				newMoves.push_back(new GunslingerMoves::ToxicToss());
+				break;
+			case 14:
+				newMoves.push_back(new GunslingerMoves::TippedShot());
+				break;
+			case 15:
+				newMoves.push_back(new GunslingerMoves::Dash());
+				break;
+			case 16:
+				newMoves.push_back(new GunslingerMoves::SmokeAndMirrors());
 				break;
 			default:
 				newMoves.push_back(new GunslingerMoves::ExplosiveShot());

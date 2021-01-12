@@ -354,7 +354,7 @@ namespace GunslingerMoves
 	{
 	public:
 		Judgement();
-		const static int COST = 1;
+		const static int COST = 2;
 	};
 
 	class KnifeThrow : public StatusAttackMove
@@ -522,6 +522,38 @@ namespace GunslingerMoves
 
 		const static int COST = 5;
 		const static int DURATION = 4;
+	};
+
+	class TheEmpress : public UniqueCardDrawMove
+	{
+	public:
+		TheEmpress();
+
+		const static int COST = 2;
+	};
+
+	class TheEmperor : public UniqueCardDrawMove
+	{
+	public:
+		TheEmperor();
+		const static int COST = 2;
+	};
+
+	class TheSun : public UniqueCardDrawMove
+	{
+	public:
+		TheSun();
+		const static int COST = 1;
+	};
+
+	class CrossSlash : public Move
+	{
+	public:
+		CrossSlash();
+		ColorString doAction(Creature* self, Creature* other) override;
+		const static int COST = 1;
+		const static int DAMAGE = 10;
+		const static int DAMAGE_PER_BLEED = 1;
 	};
 }
 

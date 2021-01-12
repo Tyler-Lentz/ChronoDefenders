@@ -123,6 +123,12 @@ Status* Status::getStatusFromID(StatusID id)
 		return new TheHighPriestessStatus();
 	case StatusID::Judgement:
 		return new JudgementStatus();
+	case StatusID::TheEmporer:
+		return new TheEmperorStatus();
+	case StatusID::TheEmpress:
+		return new TheEmpressStatus();
+	case StatusID::TheSun:
+		return new TheSunStatus();
 	default:
 		return nullptr;
 	}
@@ -821,4 +827,69 @@ BeserkedStatus::BeserkedStatus()
 Status* BeserkedStatus::makeCopy()
 {
 	return new BeserkedStatus();
+}
+
+TheEmpressStatus::TheEmpressStatus()
+	:CardStatus(
+		StatusID::TheEmpress,
+		ColorString("The Empress", FrostBurntStatus::COLOR),
+		"Applies " +std::to_string(FBURN_AMOUNT)+" Frostburnt",
+		0
+	)
+{
+}
+
+Status* TheEmpressStatus::makeCopy()
+{
+	return new TheEmpressStatus();
+}
+
+ColorString TheEmpressStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	target->applyStatus(new FrostBurntStatus(), FBURN_AMOUNT);
+	return getName() + ColorString(" applies ", ddutil::TEXT_COLOR) + ColorString("Frostburnt (" + std::to_string(FBURN_AMOUNT) + ") ", FrostBurntStatus::COLOR) +
+		ColorString("to The ", ddutil::TEXT_COLOR) + target->getColorString();
+}
+
+TheEmperorStatus::TheEmperorStatus()
+	:CardStatus(
+		StatusID::TheEmporer,
+		ColorString("The Emperor", BurntStatus::COLOR),
+		"Applies " +std::to_string(BURN_AMOUNT)+" Burnt",
+		0
+	)
+{
+}
+
+Status* TheEmperorStatus::makeCopy()
+{
+	return new TheEmperorStatus();
+}
+
+ColorString TheEmperorStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	target->applyStatus(new BurntStatus(), BURN_AMOUNT);
+	return getName() + ColorString(" applies ", ddutil::TEXT_COLOR) + ColorString("Burnt (" + std::to_string(BURN_AMOUNT) + ") ", BurntStatus::COLOR) +
+		ColorString("to The ", ddutil::TEXT_COLOR) + target->getColorString();
+}
+
+TheSunStatus::TheSunStatus()
+	:CardStatus(
+		StatusID::TheSun,
+		ColorString("The Sun", ScorchedStatus::COLOR),
+		"Applies " +std::to_string(SCORCHED_AMOUNT)+" Scorched",
+		0
+	)
+{
+}
+
+Status* TheSunStatus::makeCopy()
+{
+	return new TheSunStatus();
+}
+
+ColorString TheSunStatus::applyEndTurnEffect(Creature* target, int stackAmount)
+{
+	target->applyStatus(new ScorchedStatus(), SCORCHED_AMOUNT);
+	return getName() + ColorString(" Scorches ", ScorchedStatus::COLOR) + target->getColorString();
 }

@@ -172,7 +172,11 @@ enum class MoveId
 	GunslingerTippedShot,
 	GunslingerFastFeet,
 	GunslingerDash,
-	GunslingerSmokeAndMirrors
+	GunslingerSmokeAndMirrors,
+	GunslingerTheEmperor,
+	GunslingerTheEmpress,
+	GunslingerTheSun,
+	GunslingerCrossSlash
 };
 
 class Move

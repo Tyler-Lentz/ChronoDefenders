@@ -308,6 +308,39 @@ public:
     const static int DMG_PERCENT = 5; // deals damage equal to 5% of monster's max health
 };
 
+class TheEmpressStatus : public CardStatus
+{
+public:
+    TheEmpressStatus();
+
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    const static int FBURN_AMOUNT = 10;
+};
+
+class TheEmperorStatus: public CardStatus
+{
+public:
+    TheEmperorStatus();
+
+    Status* makeCopy() override;
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    const static int BURN_AMOUNT = 10;
+};
+
+class TheSunStatus : public CardStatus
+{
+public:
+    TheSunStatus();
+
+    Status* makeCopy() override;
+    
+    ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
+
+    const static int SCORCHED_AMOUNT = 1;
+};
 
 // Unique Status
 

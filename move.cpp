@@ -385,6 +385,14 @@ Move* Move::getMoveFromId(MoveId id, Game* game)
 		return new GunslingerMoves::TippedShot();
 	case MoveId::GunslingerSmokeAndMirrors:
 		return new GunslingerMoves::SmokeAndMirrors();
+	case MoveId::GunslingerCrossSlash:
+		return new GunslingerMoves::CrossSlash();
+	case MoveId::GunslingerTheEmpress:
+		return new GunslingerMoves::TheEmpress();
+	case MoveId::GunslingerTheEmperor:
+		return new GunslingerMoves::TheEmperor();
+	case MoveId::GunslingerTheSun:
+		return new GunslingerMoves::TheSun();
 	default:
 		return nullptr;
 	}

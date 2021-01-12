@@ -676,3 +676,57 @@ ColorString GunslingerMoves::SmokeAndMirrors::doAction(Creature* self, Creature*
 	SimpleAttackMove tempMove(MoveId::GunslingerSmokeAndMirrors, damage, false, 0, "Smoke and Mirrors", Strength::Powerful, sound);
 	return tempMove.doAction(self, other);
 }
+
+GunslingerMoves::TheEmpress::TheEmpress()
+	:UniqueCardDrawMove(
+		MoveId::GunslingerTheEmpress,
+		new TheEmpressStatus(),
+		COST,
+		Strength::Mythical,
+		WavFile("freeze", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+GunslingerMoves::TheEmperor::TheEmperor()
+	:UniqueCardDrawMove(
+		MoveId::GunslingerTheEmperor,
+		new TheEmperorStatus(),
+		COST,
+		Strength::Mythical,
+		WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+GunslingerMoves::TheSun::TheSun()
+	:UniqueCardDrawMove(
+		MoveId::GunslingerTheSun,
+		new TheSunStatus(),
+		COST,
+		Strength::Mythical,
+		WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+GunslingerMoves::CrossSlash::CrossSlash()
+	:Move(
+		MoveId::GunslingerCrossSlash,
+		"Deals " + std::to_string(DAMAGE) + " damage, plus " + std::to_string(DAMAGE_PER_BLEED) + " damage per Bleeding",
+		"Cross Slash",
+		COST,
+		Strength::Mythical,
+		true,
+		WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+}
+
+ColorString GunslingerMoves::CrossSlash::doAction(Creature* self, Creature* other)
+{
+	int damage = DAMAGE + (other->getNumberOfStatuses(StatusID::Bleeding) * DAMAGE_PER_BLEED);
+
+	SimpleAttackMove tempMove(MoveId::GunslingerCrossSlash, damage, false, 0, "Cross Slash", Strength::Mythical, sound);
+	return tempMove.doAction(self, other);
+}

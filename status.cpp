@@ -227,10 +227,6 @@ ColorString ZenStatus::applyEndTurnEffect(Creature* target, int stackAmount)
 {
 	int startHealAmount = HP_GAIN;
 	Player* player = dynamic_cast<Player*>(target);
-	if (player != nullptr && player->hasArtifact(ArtifactID::NomadsMat))
-	{
-		startHealAmount += NomadsMat::ZEN_INC;
-	}
 	int actualHealAmount = target->increaseHealth(startHealAmount);
 
 	return ColorString("The ", ddutil::TEXT_COLOR) + target->getColorString() + ColorString(" heals ", ddutil::TEXT_COLOR) +

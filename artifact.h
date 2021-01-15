@@ -750,7 +750,7 @@ public:
 	BeserkersBrew(Game* game);
 	void equipAction(Player* player) override;
 
-	const static int LENGTH = 1;
+	const static int LENGTH = 2;
 };
 
 class NomadsMat : public ModerateArtifact 
@@ -760,7 +760,6 @@ public:
 	void equipAction(Player* player) override;
 
 	const static int LENGTH = 1;
-	const static int ZEN_INC = 1;
 };
 
 class NinjasCaltrops : public ModerateArtifact 

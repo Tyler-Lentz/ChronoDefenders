@@ -1492,8 +1492,7 @@ void BeserkersBrew::equipAction(Player* player)
 NomadsMat::NomadsMat(Game* game)
 	:ModerateArtifact(
 		"Nomad's Mat",
-		ColorString("Start battle in ",ddutil::TEXT_COLOR) + ColorString("Zen ("+std::to_string(LENGTH)+")", ZenStatus::COLOR) +
-			ColorString(", and ", ddutil::TEXT_COLOR) + ColorString("Zen", ZenStatus::COLOR) + ColorString(" heals "+std::to_string(ZEN_INC)+" more HP", ddutil::TEXT_COLOR),
+		ColorString("Start battle in ",ddutil::TEXT_COLOR) + ColorString("Zen ("+std::to_string(LENGTH)+")", ZenStatus::COLOR),
 		ArtifactID::NomadsMat,
 		game
 	)

@@ -64,7 +64,7 @@ void Compendium::display()
 			}
 			if (ddutil::keypress(VK_DOWN))
 			{
-				if (currSubPage < compendium.at(lastPage).size() - 1)
+				if (currSubPage < static_cast<int>(compendium.at(lastPage).size()) - 1)
 				{
 					currSubPage++;
 					playSound(WavFile("menumove2", false, true));

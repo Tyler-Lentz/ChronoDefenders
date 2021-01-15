@@ -1329,7 +1329,7 @@ bool Game::checkForEnemyDeath(Enemy* enemy)
 			unsigned int expGain = enemy->getMaxHealth(100) / playerParty.size();
 			if (currentDistortion >= 4)
 			{
-				expGain -= expGain * (ddutil::DIST4_PERC_ENEMY_HP_INC / 100.0);
+				expGain -= static_cast<int>(expGain * (ddutil::DIST4_PERC_ENEMY_HP_INC / 100.0));
 			}
 			playersGetExperience(expGain);
 		}
@@ -1353,7 +1353,7 @@ bool Game::checkForEnemyDeath(Enemy* enemy)
 
 Player* Game::reviveFirstDeadMinion()
 {
-	for (int i = 0; i < deadPlayers.size(); i++)
+	for (unsigned i = 0; i < deadPlayers.size(); i++)
 	{
 		Player* p = deadPlayers.at(i);
 		if (p->isMinion())
@@ -1393,7 +1393,7 @@ bool Game::shouldSkipChapter()
 void Game::endingScene()
 {
 	Coordinate coord(0, 5);
-	score *= 1 + (currentDistortion / 10.0);
+	score = static_cast<int>(score * 1 + (currentDistortion / 10.0));
 	if (currentDistortion == 5)
 	{
 		int line = 30;
@@ -1565,9 +1565,9 @@ void Game::setDistortionModifers()
 	}
 	if (currentDistortion >= 2)
 	{
-		greenMoveCost *= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
-		blueMoveCost*= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
-		redMoveCost *= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
+		greenMoveCost = static_cast<int>(greenMoveCost * (1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0)));
+		blueMoveCost = static_cast<int>(blueMoveCost * (1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0)));
+		redMoveCost = static_cast<int>(redMoveCost * (1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0)));
 	}
 	if (currentDistortion >= 4)
 	{
@@ -1684,7 +1684,7 @@ Player* Game::selectPlayer(int startingLine, bool allowSkip)
 
 	Menu menu(vwin, options, Coordinate(0, startingLine), true);
 	
-	if (menu.getResponse() >= playerParty.size() || menu.getResponse() < 0)
+	if (menu.getResponse() >= static_cast<int>(playerParty.size()) || menu.getResponse() < 0)
 	{
 		return nullptr;
 	}

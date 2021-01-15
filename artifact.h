@@ -788,6 +788,7 @@ public:
 	void equipAction(Player* player) override {};
 
 	const static int BLOCK = 12;
+	const static int HEAL = 6;
 };
 
 class TempestsStaff : public ModerateArtifact 

@@ -108,9 +108,9 @@ void Savefile::loadIntoGame(Game* game)
 	game->currentDistortion = distortion;
 	if (game->currentDistortion >= 2)
 	{
-		game->greenMoveCost *= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
-		game->blueMoveCost*= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
-		game->redMoveCost *= 1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0);
+		game->greenMoveCost = static_cast<int>(game->greenMoveCost * (1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0)));
+		game->blueMoveCost = static_cast<int>(game->blueMoveCost * (1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0)));
+		game->redMoveCost = static_cast<int>(game->redMoveCost * (1 + (ddutil::DIST2_MOVEXP_PERCENT / 100.0)));
 	}
 	for (Zone* z : game->gameWorld)
 	{

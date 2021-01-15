@@ -1534,7 +1534,8 @@ ClericsRobes::ClericsRobes(Game* game)
 SummonersOrb::SummonersOrb(Game* game)
 	:ModerateArtifact(
 		"Summoner's Orb",
-		ColorString("When using a summon move, gain ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BLOCK) + " block", ddutil::BLOCK_COLOR),
+		ColorString("When using a summon move, gain ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BLOCK) + " block", ddutil::BLOCK_COLOR) +
+			ColorString(" and heal "+std::to_string(HEAL) + " HP", ddutil::HEAL_COLOR),
 		ArtifactID::SummonersOrb,
 		game
 	)

@@ -977,7 +977,7 @@ bool Player::isCosmic()
 
 void Player::addMove(Move* move)
 {
-	if (moves.size() < movesetLimit)
+	if (static_cast<int>(moves.size()) < movesetLimit)
 	{
 		moves.push_back(move);
 	}
@@ -1005,7 +1005,7 @@ void Player::doMiscDamageEffects(int damage)
 	{
 		return;
 	}
-	for (int i = 0; i < artifacts.size(); i++)
+	for (unsigned i = 0; i < artifacts.size(); i++)
 	{
 		if (artifacts.at(i)->getID() == ArtifactID::WaxWings)
 		{

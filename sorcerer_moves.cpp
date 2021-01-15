@@ -61,6 +61,7 @@ ColorString SorcererMoves::SummonMove::doAction(Creature* self, Creature* other)
 	if (playerSelf != nullptr && playerSelf->hasArtifact(ArtifactID::SummonersOrb))
 	{
 		self->applyBlock(SummonersOrb::BLOCK);
+		self->increaseHealth(SummonersOrb::HEAL);
 	}
 
 	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +

@@ -63,7 +63,11 @@ enum RoomId
 	TruePatriarchEnemy,
 	RevivalAltar,
 	TheWandererEnemy,
-	TheMuncherEnemy
+	TheMuncherEnemy,
+	TheArchitectEnemy,
+	TheHarbingerEnemy,
+	TheSalvagerEnemy,
+	TheBetrayerEnemy
 };
 
 class Room

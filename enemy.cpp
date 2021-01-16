@@ -1308,6 +1308,117 @@ int TheCollector::getRoomId()
 	return RoomId::TheCollectorEnemy;
 }
 
+TheArchitect::TheArchitect(Game* game)
+	:BossEnemy(
+		game,
+		HEALTH,
+		"Architect",
+		Art::ARCHITECT_COLOR,
+		Art::getTheArchitect(),
+		std::vector<ColorString> {ColorString("You will not destroy all that I have worked so hard to construct!", Art::ARCHITECT_COLOR)}
+	)
+{
+	turnCounter = 0;
+	halfHealth = false;
+	moves.push_back(new EnemyMoves::AddScorchToAttacks(SCORCH_PER_ATTACK));
+	moves.push_back(new StatusAttackMove(
+		MoveId::EnemyMoveId, FLAMETHROWER_DAMAGE, new BurntStatus(), FLAMETHROWER_BURN, 0, "", Strength::Moderate, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	);
+	moves.push_back(new MultiAttackMove(MoveId::EnemyMoveId, DOUBLE_TAP_DAMAGE, DOUBLE_TAP_TIMES, 0, "", Strength::Moderate, WavFile("dualattack", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::CreateShield(INCREASE_SHIELD, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	// half health moves
+	moves.push_back(new SimpleStatusMove(
+		MoveId::EnemyMoveId, new EntombedStatus(), ENTOMBED_AMOUNT, true, 0, "", Strength::Mythical, WavFile("lightning", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	));
+	moves.push_back(new EnemyMoves::Heal(HEAL));
+}
+
+EnemyTurn TheArchitect::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	if (!halfHealth && getHealth() < HP_THRESHOLD)
+	{
+		halfHealth = true;
+		turnCounter = 0;
+	}
+
+	if (halfHealth)
+	{
+		switch (turnCounter)
+		{
+		case 0:
+			chosenMove = moves[4];
+			targets = players;
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" is ", ddutil::TEXT_COLOR) +
+				ColorString("Entombing", EntombedStatus::COLOR) + ColorString(" everybody!", ddutil::TEXT_COLOR);
+			break;
+		case 1:
+			chosenMove = moves[5];
+			targets.push_back(this);
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" will heal itself for ", ddutil::TEXT_COLOR) +
+				ColorString(std::to_string(HEAL) + " HP", ddutil::HEAL_COLOR);
+			break;
+		}
+
+		turnCounter = 1; // stay on the heal move
+	}
+	else
+	{
+		switch (turnCounter)
+		{
+		case 0:
+			chosenMove = moves[0];
+			targets.push_back(this);
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" is enveloping itself in flames!", ddutil::TEXT_COLOR);
+			break;
+		case 1:
+			chosenMove = moves[1];
+			targets = players;
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" targets everyone with a ", ddutil::TEXT_COLOR) +
+				ColorString("Flame Blast", BurntStatus::COLOR) + ColorString(", dealing " + std::to_string(FLAMETHROWER_DAMAGE) + " damage", ddutil::DAMAGE_COLOR) +
+				ColorString(" and ", ddutil::TEXT_COLOR) + ColorString("applying " + std::to_string(FLAMETHROWER_BURN) + " Burnt", BurntStatus::COLOR);
+			break;
+		case 2:
+			chosenMove = moves[2];
+			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to tap the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+				ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(DOUBLE_TAP_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) + 
+				ColorString(std::to_string(DOUBLE_TAP_TIMES) + " times", ddutil::TEXT_COLOR);
+			break;
+		case 3:
+			chosenMove = moves[3];
+			targets.push_back(this);
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" is creating a shield!", ddutil::BLOCK_COLOR);
+			break;
+		case 4:
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" is recharging...", ddutil::TEXT_COLOR);
+			break;
+		}
+		
+		turnCounter++;
+		if (turnCounter > 4)
+		{
+			turnCounter = 1;
+		}
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* TheArchitect::makeCopy()
+{
+	return new TheArchitect(game);
+}
+
+int TheArchitect::getRoomId()
+{
+	return RoomId::TheArchitectEnemy;
+}
+
 AbyssBeast::AbyssBeast(Game* game)
 	:HardEnemy(game, HEALTH, "Abyssal Beast", Art::ABYSS_BEAST_COLOR, Art::getAbyssBeast())
 {

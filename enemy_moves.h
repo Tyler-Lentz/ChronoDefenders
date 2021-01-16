@@ -139,6 +139,15 @@ namespace EnemyMoves
 		int amount;
 	};
 
+	class AddScorchToAttacks : public Move
+	{
+	public:
+		AddScorchToAttacks(int amount);
+		ColorString doAction(Creature* self, Creature* other) override;
+	private:
+		int amount;
+	};
+
 	class TakeVitalityGain : public Move
 	{
 	public:

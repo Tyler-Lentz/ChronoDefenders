@@ -588,7 +588,13 @@ Enemy* AbyssEnvironment::generateEnemy(ddutil::EnemyType type)
 
 	if (type == ddutil::EnemyType::Boss)
 	{
-		return new TheCollector(game);
+		switch (ddutil::random(1, 2))
+		{
+		case 1:
+			return new TheCollector(game);
+		case 2:
+			return new TheArchitect(game);
+		}
 	}
 	else if (type == ddutil::EnemyType::Strong)
 	{
@@ -1423,6 +1429,9 @@ ZoneMap::ZoneMap(Game* game, Savechunk coordinates, Savechunk rooms, int numRows
 			break;
 		case RoomId::TheWandererEnemy:
 			room = new EnemyRoom(game, new TheWanderer(game));
+			break;
+		case RoomId::TheArchitectEnemy:
+			room = new EnemyRoom(game, new TheArchitect(game));
 			break;
 		default:
 			throw std::exception("Invalid Room ID in save file");

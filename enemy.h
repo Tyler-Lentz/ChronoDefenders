@@ -745,6 +745,35 @@ private:
 	int turnCounter;
 };
 
+class TheArchitect : public BossEnemy
+{
+public:
+	TheArchitect(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+
+	Creature* makeCopy() override;
+	int getRoomId() override;
+
+	const static int HEALTH = 375;
+	const static int SCORCH_PER_ATTACK = 1;
+
+	const static int FLAMETHROWER_DAMAGE = 12;
+	const static int FLAMETHROWER_BURN = 6;
+
+	const static int DOUBLE_TAP_DAMAGE = 8;
+	const static int DOUBLE_TAP_TIMES = 2; 
+
+	const static int INCREASE_SHIELD = 8;
+
+	// Things after below threshold of HP
+	const static int HP_THRESHOLD = HEALTH / 2;
+	const static int ENTOMBED_AMOUNT = 1; // Places entombed on everyone
+	const static int HEAL = 30;
+private:
+	int turnCounter;
+	bool halfHealth;
+};
+
 class TheProtector : public Enemy
 {
 public:

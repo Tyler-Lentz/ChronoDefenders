@@ -261,3 +261,22 @@ ColorString EnemyMoves::AddBleedToAttacks::doAction(Creature* self, Creature* ot
 		ColorString(std::to_string(amount) + " Bleeding ", BleedingStatus::COLOR) +
 		ColorString("per attack", ddutil::TEXT_COLOR);
 }
+
+EnemyMoves::AddScorchToAttacks::AddScorchToAttacks(int amount)
+	:Move(
+		MoveId::EnemyMoveId,
+		"", "", 0, Strength::Powerful, false, WavFile("burn", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+	this->amount = amount;
+}
+
+ColorString EnemyMoves::AddScorchToAttacks::doAction(Creature* self, Creature* other)
+{
+	self->addAttackStatus(new ScorchedStatus(), amount);
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" will now apply ", ddutil::TEXT_COLOR) +
+		ColorString(std::to_string(amount) + " Scorched ", ScorchedStatus::COLOR) +
+		ColorString("per attack", ddutil::TEXT_COLOR);
+}
+

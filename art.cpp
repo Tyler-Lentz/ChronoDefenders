@@ -1735,6 +1735,172 @@ Picture Art::getBug()
 	return bug;
 }
 
+Picture Art::getTheWanderer()
+{
+	Picture wanderer;
+	int color = WANDERER_COLOR;
+	wanderer.push_back(ColorString(R"(                               _..-=~=-._        )", color));
+	wanderer.push_back(ColorString(R"(                          _.-~'          ~.      )", color));
+	wanderer.push_back(ColorString(R"(              __..---~~~~~                 ~.    )", color));
+	wanderer.push_back(ColorString(R"(         _.-~~                      _.._     ~.  )", color));
+	wanderer.push_back(ColorString(R"(     _ -~_                         /    \      ; )", color));
+	wanderer.push_back(ColorString(R"(    (                             {      |      :)", color));
+	wanderer.push_back(ColorString(R"(    / \/                          |      |      :)", color));
+	wanderer.push_back(ColorString(R"(   /  /\ /}         (  )          |      |     .-)", color));
+	wanderer.push_back(ColorString(R"(  /     //-=-~-_-_  |  |          \      ;    .' )", color));
+	wanderer.push_back(ColorString(R"( /     //     | =._-|  }/ / / /_.==\     ; _.'   )", color));
+	wanderer.push_back(ColorString(R"(( oo  //|     = )  ~| /.__..-='|    \    :'      )", color));
+	wanderer.push_back(ColorString(R"( ====||      / /    + )    \   |_.-~`\   :       )", color));
+	wanderer.push_back(ColorString(R"(            / /    / /      \  |     ([ ])       )", color));
+	wanderer.push_back(ColorString(R"(           /_/    / /       (  ]     `/ \'       )", color));
+	wanderer.push_back(ColorString(R"(          (((|   /_/      __/_/__    -| |--      )", color));
+	wanderer.push_back(ColorString(R"(                (((|      -----     __|_|__      )", color));
+	wanderer.push_back(ColorString(R"(                 '''                 -----       )", color));
+	return wanderer;
+}
+
+Picture Art::getTheMuncher()
+{
+	Picture muncher;
+	int color = MUNCHER_COLOR;
+	muncher.push_back(ColorString(R"(                     .--.  .--.              )", color));
+	muncher.push_back(ColorString(R"(                    /    \/    \             )", color));
+	muncher.push_back(ColorString(R"(                   | .-.  .-.   \            )", color));
+	muncher.push_back(ColorString(R"(                   |/_  |/_  |   \           )", color));
+	muncher.push_back(ColorString(R"(                   ||. \|| .\|    `----.     )", color));
+	muncher.push_back(ColorString(R"(                   |\ _/ \ _/    --,    \_   )", color));
+	muncher.push_back(ColorString(R"( .--"""""-.       /              (` \     `-.)", color));
+	muncher.push_back(ColorString(R"(/          \_____/                           )", color));
+	muncher.push_back(ColorString(R"(\  () ()                         /`\         )", color));
+	muncher.push_back(ColorString(R"(|                         .___.-'   |        )", color));
+	muncher.push_back(ColorString(R"(\                        /` \|      /        )", color));
+	muncher.push_back(ColorString(R"( `-.___             ___.' .-.`.---.|         )", color));
+	muncher.push_back(ColorString(R"(    \| ``-..___,.-'`\| / /   /     |         )", color));
+	muncher.push_back(ColorString(R"(     `      \|      ,`/ /   /   ,  /         )", color));
+	muncher.push_back(ColorString(R"(             `      |\ /   /    |\/          )", color));
+	muncher.push_back(ColorString(R"(              ,   .'`-;   '     \/           )", color));
+	muncher.push_back(ColorString(R"(         ,    |\-'  .'   ,   .-'`            )", color));
+	muncher.push_back(ColorString(R"(       .-|\--;`` .-'     |\.'                )", color));
+	muncher.push_back(ColorString(R"(      ( `"'-.|\ (___,.--'`'                  )", color));
+	muncher.push_back(ColorString(R"(       `-.    `"`          _.--'             )", color));
+	muncher.push_back(ColorString(R"(          `.          _.-'`-.                )", color));
+	muncher.push_back(ColorString(R"(            `''---''``       `.              )", color));
+	return muncher;
+}
+
+Picture Art::getTheArchitect()
+{
+	Picture architect;
+	int color = ARCHITECT_COLOR;
+	architect.push_back(ColorString(R"(  .:'                                  `:.  )", color));
+	architect.push_back(ColorString(R"( ::'                                    `:: )", color));
+	architect.push_back(ColorString(R"(:: :.                                  .: ::)", color));
+	architect.push_back(ColorString(R"( `:. `:.             .             .:'  .:' )", color));
+	architect.push_back(ColorString(R"(  `::. `::           !           ::' .::'   )", color));
+	architect.push_back(ColorString(R"(      `::.`::.    .' ! `.    .::'.::'       )", color));
+	architect.push_back(ColorString(R"(        `:.  `::::'':!:``::::'   ::'        )", color));
+	architect.push_back(ColorString(R"(        :'*:::.  .:' ! `:.  .:::*`:         )", color));
+	architect.push_back(ColorString(R"(       :: HHH::.   ` ! '   .::HHH ::        )", color));
+	architect.push_back(ColorString(R"(      ::: `H TH::.  `!'  .::HT H' :::       )", color));
+	architect.push_back(ColorString(R"(      ::..  `THHH:`:   :':HHHT'  ..::       )", color));
+	architect.push_back(ColorString(R"(      `::      `T: `. .' :T'      ::'       )", color));
+	architect.push_back(ColorString(R"(        `:. .   :         :   . .:'         )", color));
+	architect.push_back(ColorString(R"(          `::'               `::'           )", color));
+	architect.push_back(ColorString(R"(            :'  .`.  .  .'.  `:             )", color));
+	architect.push_back(ColorString(R"(            :' ::.       .:: `:             )", color));
+	architect.push_back(ColorString(R"(            :' `:::     :::' `:             )", color));
+	architect.push_back(ColorString(R"(             `.  ``     ''  .'              )", color));
+	architect.push_back(ColorString(R"(              :`...........':               )", color));
+	architect.push_back(ColorString(R"(              ` :`.     .': '               )", color));
+	architect.push_back(ColorString(R"(               `:  `"""'  :'                )", color));
+	architect.push_back(ColorString(R"(                "         "                 )", color));
+	return architect;
+}
+
+Picture Art::getTheHarbinger()
+{
+	Picture harbinger;
+	int color = HARBINGER_COLOR;
+	harbinger.push_back(ColorString(R"(             _                                           )", color));
+	harbinger.push_back(ColorString(R"(            `_))  __,  _.-"""--.                         )", color));
+	harbinger.push_back(ColorString(R"( __        .'   Y`_ /;'  ,;;-'`                          )", color));
+	harbinger.push_back(ColorString(R"(/ \\-.,_   |e    ( //  ,'`(                       ,      )", color));
+	harbinger.push_back(ColorString(R"(| ||  _ '-/_    .-'| `.;;<                        )\     )", color));
+	harbinger.push_back(ColorString(R"(\_//_/ \/|-\_/ (   | ;',,/             _.-""""""-' /     )", color));
+	harbinger.push_back(ColorString(R"(     \`\ \.-/   `\/  .;;/            .'       ,_.'`'.    )", color));
+	harbinger.push_back(ColorString(R"(      \ \ \/   /  |  ';;|          .'    _..-.  `\   '.  )", color));
+	harbinger.push_back(ColorString(R"(       \ \ `  /   |`\`;.`\        /    .'     `\  |.   \ )", color));
+	harbinger.push_back(ColorString(R"(        '-\_.'    ; /| ';|   _   / '  /    .--. )/  \   ;)", color));
+	harbinger.push_back(ColorString(R"(          /   ,  / (_/ ;.'  / './   .--,  /  _ `\    ;  ;)", color));
+	harbinger.push_back(ColorString(R"(         |  ,;'  \  (_(     \(\ \ /`  _ \ \_( ) |    |  |)", color));
+	harbinger.push_back(ColorString(R"(         |        |            | Y  /` )/    /  /    |  |)", color));
+	harbinger.push_back(ColorString(R"(         \        (_           | ;  |      .'  /     |  |)", color));
+	harbinger.push_back(ColorString(R"(      /( _)      ,.-'         / ,   ;     /  /`      ;  ;)", color));
+	harbinger.push_back(ColorString(R"(      \     /`|  \`._      _.' ,   /     ;  |        ;  ;)", color));
+	harbinger.push_back(ColorString(R"(       '---;   `"-;  '----'  ,    /      |  \       /  / )", color));
+	harbinger.push_back(ColorString(R"(            \             ,     .'       \   '----'`  /  )", color));
+	harbinger.push_back(ColorString(R"(             '.    ,   ,      .'          '.        .'   )", color));
+	harbinger.push_back(ColorString(R"(               '-._________.-'             `""""""`      )", color));
+	return harbinger;
+}
+
+Picture Art::getTheSalvager()
+{
+	Picture salvager;
+	int color = SALVAGER_COLOR;
+	salvager.push_back(ColorString(R"(                                                     ,|  )", color));
+	salvager.push_back(ColorString(R"(                                                   -~.|  )", color));
+	salvager.push_back(ColorString(R"(                                                _-~  /   )", color));
+	salvager.push_back(ColorString(R"(                                             _-~    /_-~|)", color));
+	salvager.push_back(ColorString(R"(                                         _ -~     _-~ ,/')", color));
+	salvager.push_back(ColorString(R"(                                   __--~~__--\ _-~  _/,  )", color));
+	salvager.push_back(ColorString(R"(                             __--~~  --~~  __/~  _-~ /   )", color));
+	salvager.push_back(ColorString(R"(                            /        __--~~  \-~~ _-~    )", color));
+	salvager.push_back(ColorString(R"(                           /     --~~   __--~' _-~ ~|    )", color));
+	salvager.push_back(ColorString(R"(                          /     ___---~~  ~~\~~__--~     )", color));
+	salvager.push_back(ColorString(R"(        _.---.           /           __--~~~'~~/         )", color));
+	salvager.push_back(ColorString(R"(     .-"      "=\ __    /      ~~~~~__\__---~~_.         )", color));
+	salvager.push_back(ColorString(R"(    (_ .-b=-   =:Y  ~~~/      ---~~~/__-----=~           )", color));
+	salvager.push_back(ColorString(R"(   /  __      =:;l    /      ----~~/        `::\         )", color));
+	salvager.push_back(ColorString(R"(  / o~  "c    =~:l    (      ---~~/     __  `:::|        )", color));
+	salvager.push_back(ColorString(R"( (  .--~"~-._=~;/'___  `----~~~~'     ,'  `\  `:|        )", color));
+	salvager.push_back(ColorString(R"(  \(       ( ~~ ,'  ,`\              (      `\ /         )", color));
+	salvager.push_back(ColorString(R"(.=z.       `>.-~   /   )          ___.\_     `Y.         )", color));
+	salvager.push_back(ColorString(R"(   \`------}    .-"  _/"~~~----~~~ __./'        )        )", color));
+	salvager.push_back(ColorString(R"( .==)_.<---}_   __.-~          ,-~~         ,-~'         )", color));
+	salvager.push_back(ColorString(R"(       \\    "~"              :      __.--"~             )", color));
+	salvager.push_back(ColorString(R"(        ))                     `((((~~                   )", color));
+	
+	return salvager;
+}
+
+Picture Art::getTheBetrayer()
+{
+	Picture betrayer;
+	int color = BETRAYER_COLOR;
+	betrayer.push_back(ColorString(R"(       .-""-.                   .-""-.       )", color));
+	betrayer.push_back(ColorString(R"(     .'_.-.  |                 |  .-._'.     )", color));
+	betrayer.push_back(ColorString(R"(    /    _/ /                   \ \_    \    )", color));
+	betrayer.push_back(ColorString(R"(   /.--.' | |      ,;;;;;,      | | '.--.\   )", color));
+	betrayer.push_back(ColorString(R"(  /   .-`-| |    ;//;/;/;\\;    | |-`-.   \  )", color));
+	betrayer.push_back(ColorString(R"( ;.--':   | |   /;/;/;//\\;\\   | |   :'--.; )", color));
+	betrayer.push_back(ColorString(R"(|    _\.'-| |  ((;(/;/; \;\);)  | |-'./_    |)", color));
+	betrayer.push_back(ColorString(R"(;_.-'/:   | |  );))       (;((  | |   :\'-._;)", color));
+	betrayer.push_back(ColorString(R"(|   | _:-'\  \((((    \    );))/  /'-:_ |   |)", color));
+	betrayer.push_back(ColorString(R"(;  .:` '._ \  );))\   "   /((((  / _.' `:.  ;)", color));
+	betrayer.push_back(ColorString(R"(|-` '-.;_ `-\(;(;((\  =  /););))/-` _;.-' `-|)", color));
+	betrayer.push_back(ColorString(R"(; / .'\ |`'\ );));)/`---`\((;(((./`'| /'. \ ;)", color));
+	betrayer.push_back(ColorString(R"(| .' / `'.\-((((((\       /))));) \.'` \ '. |)", color));
+	betrayer.push_back(ColorString(R"(;/  /\_/-`-/ ););)|   ,   |;(;(( \` -\_/\  \;)", color));
+	betrayer.push_back(ColorString(R"(|.' .| `;/   (;(|'==/|\=='|);)   \;` |. '.|  )", color));
+	betrayer.push_back(ColorString(R"(|  / \.'/      / _.` | `._ \      \'./ \  |  )", color));
+	betrayer.push_back(ColorString(R"( \| ; |;    _,.-` \_/Y\_/ `-.,_    ;| ; |/   )", color));
+	betrayer.push_back(ColorString(R"(  \ | ;|   `       | | |       `   |. | /    )", color));
+	betrayer.push_back(ColorString(R"(    `\ ||           | | |           || /`    )", color));
+	betrayer.push_back(ColorString(R"(      `:_\         _\/ \/_         /_:'      )", color));
+	return betrayer;
+}
+
 Picture Art::getGiantSnail()
 {
 	Picture giantSnail;

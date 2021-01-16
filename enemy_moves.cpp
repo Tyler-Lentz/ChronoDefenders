@@ -243,3 +243,21 @@ ColorString EnemyMoves::StealMove::doAction(Creature* self, Creature* other)
 		ColorString(" steals The ", ddutil::TEXT_COLOR) + other->getColorString() +
 		ColorString("'s newest move!", ddutil::TEXT_COLOR);
 }
+
+EnemyMoves::AddBleedToAttacks::AddBleedToAttacks(int amount)
+	:Move(
+		MoveId::EnemyMoveId, 
+		"", "", 0, Strength::Powerful, false, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+	this->amount = amount;
+}
+
+ColorString EnemyMoves::AddBleedToAttacks::doAction(Creature* self, Creature* other)
+{
+	self->addAttackStatus(new BleedingStatus(), amount);
+	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
+		ColorString(" will now apply ", ddutil::TEXT_COLOR) +
+		ColorString(std::to_string(amount) + " Bleeding ", BleedingStatus::COLOR) +
+		ColorString("per attack", ddutil::TEXT_COLOR);
+}

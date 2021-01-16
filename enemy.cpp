@@ -681,6 +681,210 @@ int TheMessenger::getRoomId()
 	return RoomId::TheMessengerEnemy;
 }
 
+TheWanderer::TheWanderer(Game* game)
+	:BossEnemy(
+		game,
+		HEALTH,
+		"Wanderer",
+		Art::WANDERER_COLOR,
+		Art::getTheWanderer(),
+		std::vector<ColorString> {
+			ColorString("I MAY NOT BE ABLE TO SEE YOU, BUT I SURE CAN SMELL YOU!!", Art::WANDERER_COLOR)
+		}
+	)
+{
+	turnCounter = 0;
+	moves.push_back(new StatusAttackMove(
+		MoveId::EnemyMoveId, START_STRANGLE_DAMAGE, new StrangledStatus(), START_STRANGLE_LENGTH, 0, "Strangle", Strength::Powerful, WavFile("attack6", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	));
+	moves.push_back(new EnemyMoves::Block(BIG_BLOCK, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::HealStrike(LIFESTEAL_AOE_DAMAGE, LIFESTEAL_AOE_DAMAGE, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::StrikeAndBlock(BLOCK_STRIKE_DAMAGE, BLOCK_STRIKE_BLOCK, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new SimpleStatusMove(
+		MoveId::EnemyMoveId, new StrangledStatus(), LATE_STRANGLE_LENGTH, true, 0, "Strangle", Strength::Moderate, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn TheWanderer::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+
+	chosenMove = moves[turnCounter];
+	switch (turnCounter)
+	{
+	case 0: // initial stun, never comes back to this 
+		targets.push_back(ddutil::getHighestHealthPlayer(players));
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" will ", ddutil::TEXT_COLOR) + ColorString("Strangle", StrangledStatus::COLOR) +
+			ColorString(" the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() + ColorString(" for ", ddutil::TEXT_COLOR) + 
+			ColorString(std::to_string(START_STRANGLE_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	case 1: // big block
+		targets.push_back(this);
+		intent = ddutil::genericBlockIntent(BIG_BLOCK, getColorString());
+		break;
+	case 2: // lifesteal AOE
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to", ddutil::TEXT_COLOR) +
+			ColorString(" suck " + std::to_string(LIFESTEAL_AOE_DAMAGE) + " HP ", ddutil::DAMAGE_COLOR) +
+			ColorString(" from everybody", ddutil::TEXT_COLOR);
+		break;
+	case 3: // Strike and block
+		targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to attack The ", ddutil::TEXT_COLOR) +
+			targets.front()->getColorString() + ColorString(" for " + std::to_string(BLOCK_STRIKE_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) +
+			ColorString("and ", ddutil::TEXT_COLOR) + ColorString("block " + std::to_string(BLOCK_STRIKE_BLOCK) + " damage", ddutil::BLOCK_COLOR);
+		break;
+	case 4: // Strangle a person
+		targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to ", ddutil::TEXT_COLOR) +
+			ColorString("Strangle ", StrangledStatus::COLOR) + ColorString(" The", ddutil::TEXT_COLOR) +
+			targets.front()->getColorString();
+		break;
+	}
+
+	turnCounter++;
+	if (turnCounter > 4)
+	{
+		turnCounter = 1;// dont repeat 0
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* TheWanderer::makeCopy()
+{
+	return new TheWanderer(game);
+}
+
+int TheWanderer::getRoomId()
+{
+	return RoomId::TheWandererEnemy;
+}
+
+TheMuncher::TheMuncher(Game* game)
+	:BossEnemy(
+		game,
+		HEALTH,
+		"Muncher",
+		Art::MUNCHER_COLOR,
+		Art::getTheMuncher(),
+		std::vector<ColorString> { ColorString("You'll make a fine dinner tonight--if I don't eat you now!", Art::MUNCHER_COLOR)}
+	)
+{
+	turnCounter = 0;
+	rampage = false;
+	moves.push_back(new EnemyMoves::AddBleedToAttacks(BLEED_AMOUNT));
+	moves.push_back(new MultiAttackMove(MoveId::EnemyMoveId, BITE_DAMAGE, BITE_TIMES, 0, "", Strength::Powerful, WavFile("dualattack", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::Strike(MULTI_ATTACK_DAMAGE, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::Heal(HEAL));
+	moves.push_back(new EnemyMoves::AddBleedToAttacks(BLEED_INC));
+	moves.push_back(new EnemyMoves::StrikeAndBlock(MULTI_BLOCK_STRIKE_DAMAGE, MULTI_BLOCK_STRIKE_BLOCK, WavFile("attackblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn TheMuncher::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	if (!rampage && getHealth() < RAMPAGE_HEALTH)
+	{
+		rampage = true;
+		turnCounter = 0;
+	}
+
+	if(rampage)
+	{
+		if (turnCounter > 2)
+		{
+			turnCounter = 0;
+		}
+
+		switch (turnCounter)
+		{
+		case 0:
+			chosenMove = moves[4];
+			targets.push_back(this);
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" is sharpening its teeth", ddutil::TEXT_COLOR);
+			break;
+		case 1:
+			chosenMove = moves[1];
+			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to Bite the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+				ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BITE_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) + 
+				ColorString(std::to_string(BITE_TIMES) + " times", ddutil::TEXT_COLOR);
+			break;
+		case 2:
+			chosenMove = moves[5];
+			targets = players;
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to attack everybody for ", ddutil::TEXT_COLOR) +
+				ColorString(std::to_string(MULTI_BLOCK_STRIKE_DAMAGE) + " damage", ddutil::DAMAGE_COLOR) +
+				ColorString(" and ", ddutil::TEXT_COLOR) +
+				ColorString("block " + std::to_string(MULTI_BLOCK_STRIKE_BLOCK*players.size()) + " damage", ddutil::BLOCK_COLOR);
+			break;
+		}
+	}
+	else
+	{
+
+		if (turnCounter > 3)
+		{
+			turnCounter = 1;
+		}
+
+		switch (turnCounter)
+		{
+		case 0:
+			chosenMove = moves[0];
+			targets.push_back(this);
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" is sharpening its teeth", ddutil::TEXT_COLOR);
+			break;
+		case 1:
+			chosenMove = moves[1];
+			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to Bite the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+				ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(BITE_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) + 
+				ColorString(std::to_string(BITE_TIMES) + " times", ddutil::TEXT_COLOR);
+			break;
+		case 2:
+			chosenMove = moves[2];
+			targets = players;
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to attack everybody for ", ddutil::TEXT_COLOR) +
+				ColorString(std::to_string(MULTI_ATTACK_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+			break;
+		case 3:
+			chosenMove = moves[3];
+			targets.push_back(this);
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to ", ddutil::TEXT_COLOR) +
+				ColorString("heal " + std::to_string(HEAL) + " HP", ddutil::HEAL_COLOR);
+			break;
+		}
+	}
+
+	turnCounter++;
+
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* TheMuncher::makeCopy()
+{
+	return new TheMuncher(game);
+}
+
+int TheMuncher::getRoomId()
+{
+	return RoomId::TheMuncherEnemy;
+}
+
 
 MysteriousKnight::MysteriousKnight(Game* game)
 	:IntenseEnemy(game, HEALTH, "Mysterious Knight", Art::MYSTERIOUS_KNIGHT_COLOR, Art::getMysteriousKnight(),

@@ -170,6 +170,24 @@ public:
 
 	static Picture getBug();
 	const static int BUG_COLOR = ddutil::BROWN;
+
+	static Picture getTheWanderer();
+	const static int WANDERER_COLOR = ddutil::BROWN;
+
+	static Picture getTheMuncher();
+	const static int MUNCHER_COLOR = ddutil::GREEN;
+
+	static Picture getTheArchitect();
+	const static int ARCHITECT_COLOR = ddutil::DARKGRAY;
+
+	static Picture getTheHarbinger();
+	const static int HARBINGER_COLOR = ddutil::RED;
+
+	static Picture getTheSalvager();
+	const static int SALVAGER_COLOR = ddutil::BROWN;
+
+	static Picture getTheBetrayer();
+	const static int BETRAYER_COLOR = ddutil::DARKGRAY;
 };
 
 

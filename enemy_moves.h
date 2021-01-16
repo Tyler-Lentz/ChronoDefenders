@@ -130,6 +130,15 @@ namespace EnemyMoves
 		int thornAmount;
 	};
 
+	class AddBleedToAttacks : public Move
+	{
+	public:
+		AddBleedToAttacks(int amount);
+		ColorString doAction(Creature* self, Creature* other) override;
+	private:
+		int amount;
+	};
+
 	class TakeVitalityGain : public Move
 	{
 	public:

@@ -663,6 +663,65 @@ private:
 	int turnCounter;
 };
 
+class TheWanderer : public BossEnemy
+{
+public:
+	TheWanderer(Game* game);
+
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+
+	Creature* makeCopy() override;
+	int getRoomId() override;
+
+	const static int HEALTH = 235;
+	const static int START_STRANGLE_DAMAGE = 20; // solo target move to start the fight
+	const static int START_STRANGLE_LENGTH = 3; // solo target move to start the fight
+
+	const static int BIG_BLOCK = 30; // 
+
+	const static int LIFESTEAL_AOE_DAMAGE = 13; // multitarget lifesteal
+
+	const static int BLOCK_STRIKE_DAMAGE = 15;
+	const static int BLOCK_STRIKE_BLOCK = 20;
+
+	const static int LATE_STRANGLE_LENGTH = 2;
+
+private:
+	int turnCounter;
+};
+
+class TheMuncher : public BossEnemy
+{
+public:
+	TheMuncher(Game* game);
+
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+
+	Creature* makeCopy() override;
+	int getRoomId() override;
+	
+	const static int HEALTH = 250;
+	const static int BLEED_AMOUNT = 2; // Apply bleed to all of its attacks
+
+	const static int BITE_DAMAGE = 8; // Dual attack
+	const static int BITE_TIMES = 2;
+
+	const static int MULTI_ATTACK_DAMAGE = 9; // Multi attack
+
+	const static int HEAL = 30;
+
+	const static int RAMPAGE_HEALTH = 100; // Once below this health, change attack pattern
+	const static int BLEED_INC = 4;
+	// still do the bite attack
+
+	const static int MULTI_BLOCK_STRIKE_DAMAGE = 9; // Multi attack
+	const static int MULTI_BLOCK_STRIKE_BLOCK = 10;
+
+private:
+	int turnCounter;
+	bool rampage;
+};
+
 class TheCollector : public BossEnemy
 {
 public:

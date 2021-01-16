@@ -1496,8 +1496,9 @@ Savechunk Gunslinger::getUniqueSaveChunkInfo()
 	chunk.add(reserveBullets);
 	chunk.add(maxBullets);
 	return chunk;
-}
 
+
+}
 
 // Sorcerer
 

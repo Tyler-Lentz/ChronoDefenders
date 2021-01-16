@@ -61,7 +61,9 @@ enum RoomId
 	TheCollectorEnemy,
 	TheProtectorEnemy,
 	TruePatriarchEnemy,
-	RevivalAltar
+	RevivalAltar,
+	TheWandererEnemy,
+	TheMuncherEnemy
 };
 
 class Room

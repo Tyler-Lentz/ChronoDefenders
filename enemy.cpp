@@ -2085,7 +2085,7 @@ void Chapter3Boss::deathScene()
 	vwin->clearScreen();
 
 	int bottomLine = ddutil::CENTER_TEXT_LINE;
-	vwin->putcenSlowScroll(ColorString("The Protector fades away....", ddutil::TEXT_COLOR), bottomLine);
+	vwin->putcenSlowScroll(ColorString("The ", ddutil::TEXT_COLOR)+ getColorString() + ColorString(" fades away....", ddutil::TEXT_COLOR), bottomLine);
 	Menu::oneOptionMenu(vwin, ColorString("...", ddutil::TEXT_COLOR), Coordinate(0, bottomLine + 1), true);
 	vwin->clearLine(bottomLine); vwin->clearLine(bottomLine + 1);
 
@@ -2112,7 +2112,7 @@ void Chapter3Boss::deathScene()
 	vwin->clearScreen();
 	vwin->printArtFromBottom(Art::getPalace(), coord, true);
 
-	vwin->putcenSlowScroll(ColorString("Lies the most magnificent ",ddutil::TEXT_COLOR)+ColorString("Palace",ddutil::YELLOW)+ColorString(" you have ever seen", ddutil::TEXT_COLOR), bottomLine, true);
+	vwin->putcenSlowScroll(ColorString("Lies the Patriarch's Eternal Palace...", ddutil::TEXT_COLOR), bottomLine, true);
 	Menu::oneOptionMenu(vwin, ColorString("...", ddutil::TEXT_COLOR), Coordinate(0, bottomLine + 1), true);
 	vwin->clearLine(bottomLine); vwin->clearLine(bottomLine + 1);
 
@@ -2121,6 +2121,132 @@ void Chapter3Boss::deathScene()
 	vwin->clearScreen();
 }
 
+TheBetrayer::TheBetrayer(Game* game)
+	:Chapter3Boss(
+		game,
+		HEALTH,
+		"Betrayer", // make sure to change below too if this changes
+		Art::BETRAYER_COLOR,
+		Art::getTheBetrayer(Art::BETRAYER_NORM_COLOR),
+		std::vector<ColorString> {
+			ColorString("\"I t  i s n ' t  t o o  l a t e  t o  s w i t c h  s i d e s . . .\"", Art::BETRAYER_COLOR),
+			ColorString("The ", ddutil::TEXT_COLOR) + ColorString("Betrayer", Art::BETRAYER_COLOR) + ColorString(" will apply ", ddutil::TEXT_COLOR) +
+				ColorString("Judgement", JudgementStatus::COLOR) + ColorString(" on every attack.", ddutil::TEXT_COLOR)
+		}
+	)
+{
+	turnCounter = 0;
+	strength = 0;
+	absorbingStrength = false;
+	addAttackStatus(new JudgementStatus(), JUDGEMENT_PER_ATTACK);
+
+	moves.push_back(new EnemyMoves::Strike(BASE_ABSORB_DAMAGE, WavFile("attack6", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+
+	moves.push_back(new EnemyMoves::HealStrike(LIFE_STEAL_AMOUNT, LIFE_STEAL_AMOUNT, WavFile("attackheal", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::TakeVitalityGain(VITGAIN_STEAL));
+	moves.push_back(new EnemyMoves::Heal(HEAL));
+	moves.push_back(new MultiAttackMove(
+		MoveId::EnemyMoveId, SLICE_DAMAGE, SLICE_TIMES, 0, "", Strength::Mythical, WavFile("dualenergyattack", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	);
+}
+
+EnemyTurn TheBetrayer::getTurn(std::vector<Creature*> players)
+{
+	ColorString intent;
+	std::vector<Creature*> targets;
+	Move* chosenMove = moves[turnCounter];
+
+	switch (turnCounter)
+	{
+	case 0:
+		absorbingStrength = true;
+		changePicture(Art::getTheBetrayer(Art::BETRAYER_STRGAIN_COLOR));
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" will gain ", ddutil::TEXT_COLOR) +
+			ColorString("strength", ddutil::DAMAGE_COLOR) + ColorString(" for every HP lost this turn!", ddutil::TEXT_COLOR);
+		break;
+	case 1:
+	{
+		absorbingStrength = false;
+		changePicture(Art::getTheBetrayer(Art::BETRAYER_NORM_COLOR));
+		auto scalingAttack = dynamic_cast<EnemyMoves::Strike*>(moves[0]);
+		if (scalingAttack != nullptr)
+		{
+			scalingAttack->increaseStrength(strength);
+		}
+		strength = 0;
+		chosenMove = moves[0];
+		targets.push_back(ddutil::getHighestHealthPlayer(players));
+		intent = ddutil::genericDamageIntent(scalingAttack->getStrength(), getColorString(), "Eviscerate", targets);
+	}
+		break;
+	case 2:
+		int random = ddutil::random(1, 4);
+		if (random == 1) // heal strike
+		{
+			chosenMove = moves[1];
+			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to", ddutil::TEXT_COLOR) +
+				ColorString(" steal " + std::to_string(LIFE_STEAL_AMOUNT) + " HP ", ddutil::DAMAGE_COLOR) +
+				ColorString(" from The ", ddutil::TEXT_COLOR) + targets.front()->getColorString();
+		}
+		else if (random == 2) // vitality steal
+		{
+			chosenMove = moves[2];
+			targets = players;
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" is stealing everybody's", ddutil::TEXT_COLOR) +
+				ColorString(" Vitality Gain", ddutil::VITALITY_COLOR);
+		}
+		else if (random == 3 && getHealth() < getMaxHealth(HEAL_PERCENT)) // heal
+		{
+			chosenMove = moves[3];
+			targets.push_back(this);
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" will heal " + std::to_string(HEAL) + " HP", ddutil::HEAL_COLOR);
+		}
+		else // multi attack
+		{
+			chosenMove = moves[4];
+			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to Slice the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+				ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(SLICE_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) + 
+				ColorString(std::to_string(SLICE_TIMES) + " times", ddutil::TEXT_COLOR);
+		}
+		break;
+	}
+
+	turnCounter++;
+	if (turnCounter > 2)
+	{
+		turnCounter = 0;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+ColorString TheBetrayer::getStatLine()
+{
+	return Enemy::getStatLine() + ColorString("STR: " + std::to_string(strength), ddutil::DAMAGE_COLOR);
+}
+
+Creature* TheBetrayer::makeCopy()
+{
+	return new TheBetrayer(game);
+}
+
+int TheBetrayer::getRoomId()
+{
+	return RoomId::TheBetrayerEnemy;
+}
+
+void TheBetrayer::doMiscDamageEffects(int damage)
+{
+	if (absorbingStrength)
+	{
+		strength += damage;
+	}
+}
 TheProtector::TheProtector(Game* game)
 	:Chapter3Boss(
 		game, HEALTH, "Protector", Art::PROTECTOR_COLOR, Art::getTheProtector(),
@@ -3124,129 +3250,3 @@ int CorruptedDisciple::getRoomId()
 	return RoomId::CorruptedDiscipleEnemy;
 }
 
-TheBetrayer::TheBetrayer(Game* game)
-	:Chapter3Boss(
-		game,
-		HEALTH,
-		"Betrayer",
-		Art::BETRAYER_COLOR,
-		Art::getTheBetrayer(Art::BETRAYER_NORM_COLOR),
-		std::vector<ColorString> {
-			ColorString("\"I t  i s n ' t  t o o  l a t e  t o  s w i t c h  s i d e s . . .\"", Art::BETRAYER_COLOR),
-			ColorString("The ", ddutil::TEXT_COLOR) + ColorString(name, Art::BETRAYER_COLOR) + ColorString(" will apply ", ddutil::TEXT_COLOR) +
-				ColorString("Judgement", JudgementStatus::COLOR) + ColorString(" on every attack.", ddutil::TEXT_COLOR)
-		}
-	)
-{
-	turnCounter = 0;
-	strength = 0;
-	absorbingStrength = false;
-	addAttackStatus(new JudgementStatus(), JUDGEMENT_PER_ATTACK);
-
-	moves.push_back(new EnemyMoves::Strike(BASE_ABSORB_DAMAGE, WavFile("attack6", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-
-	moves.push_back(new EnemyMoves::HealStrike(LIFE_STEAL_AMOUNT, LIFE_STEAL_AMOUNT, WavFile("attackheal", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
-	moves.push_back(new EnemyMoves::TakeVitalityGain(VITGAIN_STEAL));
-	moves.push_back(new EnemyMoves::Heal(HEAL));
-	moves.push_back(new MultiAttackMove(
-		MoveId::EnemyMoveId, SLICE_DAMAGE, SLICE_TIMES, 0, "", Strength::Mythical, WavFile("dualenergyattack", ddutil::SF_LOOP, ddutil::SF_ASYNC))
-	);
-}
-
-EnemyTurn TheBetrayer::getTurn(std::vector<Creature*> players)
-{
-	ColorString intent;
-	std::vector<Creature*> targets;
-	Move* chosenMove = moves[turnCounter];
-
-	switch (turnCounter)
-	{
-	case 0:
-		absorbingStrength = true;
-		changePicture(Art::getTheBetrayer(Art::BETRAYER_STRGAIN_COLOR));
-		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" will gain ", ddutil::TEXT_COLOR) +
-			ColorString("strength", ddutil::DAMAGE_COLOR) + ColorString(" for every HP lost this turn!", ddutil::TEXT_COLOR);
-		break;
-	case 1:
-	{
-		absorbingStrength = false;
-		changePicture(Art::getTheBetrayer(Art::BETRAYER_NORM_COLOR));
-		auto scalingAttack = dynamic_cast<EnemyMoves::Strike*>(moves[0]);
-		if (scalingAttack != nullptr)
-		{
-			scalingAttack->increaseStrength(strength);
-		}
-		strength = 0;
-		chosenMove = moves[0];
-		targets.push_back(ddutil::getHighestHealthPlayer(players));
-		intent = ddutil::genericDamageIntent(scalingAttack->getStrength(), getColorString(), "Eviscerate", targets);
-	}
-		break;
-	case 2:
-		int random = ddutil::random(1, 4);
-		if (random == 1) // heal strike
-		{
-			chosenMove = moves[1];
-			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
-			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to", ddutil::TEXT_COLOR) +
-				ColorString(" steal " + std::to_string(LIFE_STEAL_AMOUNT) + " HP ", ddutil::DAMAGE_COLOR) +
-				ColorString(" from The ", ddutil::TEXT_COLOR) + targets.front()->getColorString();
-		}
-		else if (random == 2) // vitality steal
-		{
-			chosenMove = moves[2];
-			targets = players;
-			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-				ColorString(" is stealing everybody's", ddutil::TEXT_COLOR) +
-				ColorString(" Vitality Gain", ddutil::VITALITY_COLOR);
-		}
-		else if (random == 3 && getHealth() < getMaxHealth(HEAL_PERCENT)) // heal
-		{
-			chosenMove = moves[3];
-			targets.push_back(this);
-			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-				ColorString(" will heal " + std::to_string(HEAL) + " HP", ddutil::HEAL_COLOR);
-		}
-		else // multi attack
-		{
-			chosenMove = moves[4];
-			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
-			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-				ColorString(" intends to Slice the ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
-				ColorString(" for ", ddutil::TEXT_COLOR) + ColorString(std::to_string(SLICE_DAMAGE) + " damage ", ddutil::DAMAGE_COLOR) + 
-				ColorString(std::to_string(SLICE_TIMES) + " times", ddutil::TEXT_COLOR);
-		}
-		break;
-	}
-
-	turnCounter++;
-	if (turnCounter > 2)
-	{
-		turnCounter = 0;
-	}
-
-	return EnemyTurn(intent, targets, chosenMove);
-}
-
-ColorString TheBetrayer::getStatLine()
-{
-	return Enemy::getStatLine() + ColorString("STR: " + std::to_string(strength), ddutil::DAMAGE_COLOR);
-}
-
-Creature* TheBetrayer::makeCopy()
-{
-	return new TheBetrayer(game);
-}
-
-int TheBetrayer::getRoomId()
-{
-	return RoomId::TheBetrayerEnemy;
-}
-
-void TheBetrayer::doMiscDamageEffects(int damage)
-{
-	if (absorbingStrength)
-	{
-		strength += damage;
-	}
-}

@@ -1231,8 +1231,8 @@ TheCollector::TheCollector(Game* game)
 	:BossEnemy(
 		game, HEALTH, "Destructor", Art::COLLECTOR_COLOR, Art::getCollector(),
 		std::vector<ColorString> {
-			ColorString("Resistance is futile", Art::COLLECTOR_COLOR),
-			ColorString("",ddutil::TEXT_COLOR) + ddutil::PATRIARCH_STRING + ColorString(" will destroy this world!", Art::COLLECTOR_COLOR)
+			ColorString("\"Resistance is futile", Art::COLLECTOR_COLOR),
+			ColorString("",ddutil::TEXT_COLOR) + ddutil::PATRIARCH_STRING + ColorString(" will destroy this world!\"", Art::COLLECTOR_COLOR)
 		}
 	)
 {
@@ -1316,7 +1316,7 @@ TheArchitect::TheArchitect(Game* game)
 		"Architect",
 		Art::ARCHITECT_COLOR,
 		Art::getTheArchitect(),
-		std::vector<ColorString> {ColorString("You will not destroy all that I have worked so hard to construct!", Art::ARCHITECT_COLOR)}
+		std::vector<ColorString> {ColorString("\"You will not destroy all that I have worked so hard to construct!\"", Art::ARCHITECT_COLOR)}
 	)
 {
 	turnCounter = 0;
@@ -1985,7 +1985,10 @@ TheProtector::TheProtector(Game* game)
 	:Enemy(
 		game, HEALTH, "Protector", Art::PROTECTOR_COLOR, Art::getTheProtector(), Mp3File("bossbattle"), 
 		std::vector<ColorString> {
-			ColorString("\"You will never reach ", Art::PROTECTOR_COLOR) + ddutil::PATRIARCH_STRING + ColorString("!\"", Art::PROTECTOR_COLOR)
+			ColorString("\"CAN'T\"", Art::PROTECTOR_COLOR),
+			ColorString("\"LET\"", Art::PROTECTOR_COLOR),
+			ColorString("\"REACH\"", Art::PROTECTOR_COLOR),
+			ColorString("\"MASTER\"", Art::PROTECTOR_COLOR),
 		},
 		ddutil::MAP_BOSS
 	)

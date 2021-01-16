@@ -1420,6 +1420,83 @@ int TheArchitect::getRoomId()
 	return RoomId::TheArchitectEnemy;
 }
 
+TheHarbinger::TheHarbinger(Game* game)
+	:BossEnemy(
+		game,
+		HEALTH,
+		"Harbinger",
+		Art::HARBINGER_COLOR,
+		Art::getTheHarbinger(),
+		std::vector<ColorString> {ColorString("\"Your doom approaches...\"", Art::HARBINGER_COLOR)}
+	)
+{
+	turnCounter = 0;
+	moves.push_back(new SimpleStatusMove(
+		MoveId::EnemyMoveId, new StormStatus(), STORM_LENGTH, true, 0, "", Strength::Mythical, WavFile("blackhole", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	));
+	moves.push_back(new StatusAttackMove(
+		MoveId::EnemyMoveId, LIGHTNING_DAMAGE, new ZappedStatus(), LIGHTNING_ZAPPED, 0, "", Strength::Mythical, WavFile("lightning", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	));
+	moves.push_back(new StatusAttackMove(
+		MoveId::EnemyMoveId, MULTI_STRIKE_DAMAGE, new ZappedStatus(), MULTI_STRIKE_ZAPPED, 0, "", Strength::Mythical, WavFile("electricattack2", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	));
+	moves.push_back(new SimpleStatusMove(
+		MoveId::EnemyMoveId, new BeserkedStatus(), BESERK_LENGTH, false, 0, "", Strength::Moderate, WavFile("warhorn", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	));
+}
+
+EnemyTurn TheHarbinger::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	chosenMove = moves[turnCounter];
+	switch (turnCounter)
+	{
+	case 0:
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" is creating a ", ddutil::TEXT_COLOR) +
+			ColorString("Storm!", StormStatus::COLOR);
+		break;
+	case 1:
+		targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+		intent = ddutil::genericDamageIntent(LIGHTNING_DAMAGE, getColorString(), "Smite", targets) + ColorString(", applying ", ddutil::TEXT_COLOR) +
+			ColorString("Zapped (" +std::to_string(LIGHTNING_ZAPPED) + ")", ZappedStatus::COLOR);
+		break;
+	case 2:
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to ", ddutil::TEXT_COLOR) +
+			ColorString("Zap", ZappedStatus::COLOR) + ColorString(" everybody for ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(MULTI_STRIKE_DAMAGE) + " damage ", ddutil::TEXT_COLOR) + ColorString("and ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(MULTI_STRIKE_ZAPPED) + " Zapped", ZappedStatus::COLOR);
+		break;
+	case 3:
+		targets.push_back(this);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" is going ", ddutil::TEXT_COLOR) +
+			ColorString("Beserk!", BeserkedStatus::COLOR);
+		break;
+	}
+
+	turnCounter++;
+	if (turnCounter > 3)
+	{
+		turnCounter = 0;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* TheHarbinger::makeCopy()
+{
+	return new TheHarbinger(game);
+}
+
+int TheHarbinger::getRoomId()
+{
+	return RoomId::TheHarbingerEnemy;
+}
+
 AbyssBeast::AbyssBeast(Game* game)
 	:HardEnemy(game, HEALTH, "Abyssal Beast", Art::ABYSS_BEAST_COLOR, Art::getAbyssBeast())
 {

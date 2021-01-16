@@ -181,7 +181,7 @@ public:
 	const static int ARCHITECT_COLOR = ddutil::DARKGRAY;
 
 	static Picture getTheHarbinger();
-	const static int HARBINGER_COLOR = ddutil::RED;
+	const static int HARBINGER_COLOR = ddutil::LIGHTRED;
 
 	static Picture getTheSalvager();
 	const static int SALVAGER_COLOR = ddutil::BROWN;

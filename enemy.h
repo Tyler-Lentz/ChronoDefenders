@@ -754,7 +754,7 @@ public:
 	Creature* makeCopy() override;
 	int getRoomId() override;
 
-	const static int HEALTH = 375;
+	const static int HEALTH = 390;
 	const static int SCORCH_PER_ATTACK = 1;
 
 	const static int FLAMETHROWER_DAMAGE = 12;
@@ -774,6 +774,31 @@ private:
 	bool halfHealth;
 };
 
+
+class TheHarbinger : public BossEnemy
+{
+public:
+	TheHarbinger(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+
+	Creature* makeCopy() override;
+	int getRoomId() override;
+
+	const static int HEALTH = 430;
+	const static int STORM_LENGTH = 4;
+	
+	const static int LIGHTNING_DAMAGE = 24;
+	const static int LIGHTNING_ZAPPED = 6;
+
+	const static int MULTI_STRIKE_DAMAGE = 12;
+	const static int MULTI_STRIKE_ZAPPED = 3;
+
+	const static int BESERK_LENGTH = 4;
+
+private:
+	int turnCounter;
+};
+
 class TheProtector : public Enemy
 {
 public:
@@ -790,7 +815,7 @@ public:
 	const static int ICE_BEAM_DAM = 22; // multitarget ice blast
 	const static int BURN_LENGTH = 4;
 
-	const static int HEX_DAMAGE = 15; // single target hex the player
+	const static int HEX_DAMAGE = 20; // single target hex the player
 	const static int HEX_LENGTH = 3;
 
 	const static int SHIELD_INCREASE = 12;

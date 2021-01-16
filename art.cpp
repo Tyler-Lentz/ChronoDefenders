@@ -1874,7 +1874,7 @@ Picture Art::getTheSalvager()
 	return salvager;
 }
 
-Picture Art::getTheBetrayer()
+Picture Art::getTheBetrayer(int eyeColor)
 {
 	Picture betrayer;
 	int color = BETRAYER_COLOR;
@@ -1885,7 +1885,7 @@ Picture Art::getTheBetrayer()
 	betrayer.push_back(ColorString(R"(  /   .-`-| |    ;//;/;/;\\;    | |-`-.   \  )", color));
 	betrayer.push_back(ColorString(R"( ;.--':   | |   /;/;/;//\\;\\   | |   :'--.; )", color));
 	betrayer.push_back(ColorString(R"(|    _\.'-| |  ((;(/;/; \;\);)  | |-'./_    |)", color));
-	betrayer.push_back(ColorString(R"(;_.-'/:   | |  );))       (;((  | |   :\'-._;)", color));
+	betrayer.push_back(ColorString(R"(;_.-'/:   | |  );)) )",color)+ColorString("*",eyeColor)+ColorString("   ",color)+ColorString("*",eyeColor)+ColorString(R"( (;((  | |   :\'-._;)", color));
 	betrayer.push_back(ColorString(R"(|   | _:-'\  \((((    \    );))/  /'-:_ |   |)", color));
 	betrayer.push_back(ColorString(R"(;  .:` '._ \  );))\   "   /((((  / _.' `:.  ;)", color));
 	betrayer.push_back(ColorString(R"(|-` '-.;_ `-\(;(;((\  =  /););))/-` _;.-' `-|)", color));
@@ -1898,6 +1898,9 @@ Picture Art::getTheBetrayer()
 	betrayer.push_back(ColorString(R"(  \ | ;|   `       | | |       `   |. | /    )", color));
 	betrayer.push_back(ColorString(R"(    `\ ||           | | |           || /`    )", color));
 	betrayer.push_back(ColorString(R"(      `:_\         _\/ \/_         /_:'      )", color));
+	betrayer.push_back(ColorString(R"(                                             )", color));
+	betrayer.push_back(ColorString(R"(                                             )", color));
+	betrayer.push_back(ColorString(R"(                                             )", color));
 	return betrayer;
 }
 

@@ -799,7 +799,14 @@ private:
 	int turnCounter;
 };
 
-class TheProtector : public Enemy
+class Chapter3Boss : public BossEnemy
+{
+public:
+	Chapter3Boss(Game* game, int maxHp, std::string name, int color, Picture pic, std::vector<ColorString> intro);
+	void deathScene() override;
+};
+
+class TheProtector : public Chapter3Boss 
 {
 public:
 	TheProtector(Game* game);
@@ -810,7 +817,6 @@ public:
 	int getRoomId() override;
 
 	const static int HEALTH = 700;
-	void deathScene() override;
 
 	const static int ICE_BEAM_DAM = 22; // multitarget ice blast
 	const static int BURN_LENGTH = 4;
@@ -832,6 +838,46 @@ public:
 private:
 	int turnCounter;
 	int shieldCounter; // keeps track of how many times he has increased his shield
+};
+
+class TheBetrayer : public Chapter3Boss
+{
+public:
+	TheBetrayer(Game* game);
+
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+
+	ColorString getStatLine() override;
+	Creature* makeCopy() override;
+	int getRoomId() override;
+	void doMiscDamageEffects(int damage) override;
+
+	const static int HEALTH = 666;
+	const static int JUDGEMENT_PER_ATTACK = 1;
+	const static int BASE_ABSORB_DAMAGE = 1;
+
+	// The random ones it can do
+	const static int LIFE_STEAL_AMOUNT = 28;
+	
+	const static int VITGAIN_STEAL = -1;
+
+	const static int HEAL_PERCENT = 66; // percent of max hp when it will start healing
+	const static int HEAL = 66;
+
+	const static int SLICE_DAMAGE = 14;
+	const static int SLICE_TIMES = 2;
+
+	// random 
+	// absorb
+	// return
+	// random
+	// absorb
+	// return
+	// random
+private:
+	int turnCounter;
+	int strength;
+	bool absorbingStrength;
 };
 
 class TruePatriarch : public Enemy

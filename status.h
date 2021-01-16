@@ -306,6 +306,7 @@ public:
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
     const static int DMG_PERCENT = 5; // deals damage equal to 5% of monster's max health
+    const static int COLOR = ddutil::CYAN;
 };
 
 class TheEmpressStatus : public CardStatus

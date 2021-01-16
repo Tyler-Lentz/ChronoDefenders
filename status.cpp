@@ -513,7 +513,7 @@ ColorString TheHighPriestessStatus::applyEndTurnEffect(Creature* target, int sta
 JudgementStatus::JudgementStatus()
 	:CardStatus(
 		StatusID::Judgement,
-		ColorString("Judgement", ddutil::CYAN),
+		ColorString("Judgement", COLOR),
 		"Deals damage equal to " +std::to_string(DMG_PERCENT)+"% of the target's max HP",
 		0
 	)

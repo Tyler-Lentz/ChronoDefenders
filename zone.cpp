@@ -769,7 +769,13 @@ Enemy* VoidEnvironment::generateEnemy(ddutil::EnemyType type)
 
 	if (type == ddutil::EnemyType::Boss)
 	{
-		return new TheProtector(game);
+		switch (ddutil::random(1, 2))
+		{
+		case 1:
+			return new TheProtector(game);
+		case 2:
+			return new TheBetrayer(game);
+		}
 	}
 	else if (type == ddutil::EnemyType::Strong)
 	{
@@ -1437,6 +1443,9 @@ ZoneMap::ZoneMap(Game* game, Savechunk coordinates, Savechunk rooms, int numRows
 			break;
 		case RoomId::TheHarbingerEnemy:
 			room = new EnemyRoom(game, new TheHarbinger(game));
+			break;
+		case RoomId::TheBetrayerEnemy:
+			room = new EnemyRoom(game, new TheBetrayer(game));
 			break;
 		default:
 			throw std::exception("Invalid Room ID in save file");

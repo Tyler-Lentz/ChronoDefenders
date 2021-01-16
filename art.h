@@ -186,8 +186,10 @@ public:
 	static Picture getTheSalvager();
 	const static int SALVAGER_COLOR = ddutil::BROWN;
 
-	static Picture getTheBetrayer();
+	static Picture getTheBetrayer(int eyeColor);
 	const static int BETRAYER_COLOR = ddutil::DARKGRAY;
+	const static int BETRAYER_STRGAIN_COLOR = ddutil::DAMAGE_COLOR;
+	const static int BETRAYER_NORM_COLOR = ddutil::BLACK;
 };
 
 

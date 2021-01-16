@@ -138,6 +138,7 @@ namespace ddutil
     const int RED_CARD_COLOR = ddutil::LIGHTRED;
 
     const int PLAYER_HEALTHBAR_LENGTH = 20;
+    const int BOSS_HEALTHBAR_LENGTH = 60;
 
     const int CONSOLEX = 100;
     const int CONSOLEY = 40;
@@ -216,8 +217,6 @@ namespace ddutil
     ColorString genericDamageIntent(int damage, ColorString monsterName, std::string attackName, std::vector<Creature*> targets);
     ColorString genericBlockIntent(int amount, ColorString monsterName);
 
-    // get a color coded health bar
-    ColorString getHealthBar(int hp, int maxHp, int length);
 
     // used to tell what type of enemy to be generated in zone.cpp
     enum class EnemyType

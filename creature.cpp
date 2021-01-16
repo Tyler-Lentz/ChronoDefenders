@@ -43,6 +43,7 @@ Creature::Creature(int maxHp, std::string theName, int theColor, Picture pic, Ga
 	baseBlock = 0;
 	percentHealBoost = 0;
 	selfDamageThisFight = 0;
+	healthbarLength = ddutil::PLAYER_HEALTHBAR_LENGTH;
 }
 
 Creature::~Creature()
@@ -84,7 +85,7 @@ ColorString Creature::getStatLine()
 {
 	ColorString divideChar = ColorString(" ", ddutil::WHITE);
 	ColorString name = getColorString();
-	ColorString healthBar = ddutil::getHealthBar(getHealth(), getMaxHealth(100), ddutil::PLAYER_HEALTHBAR_LENGTH);
+	ColorString healthBar = getHealthBar(getHealth(), getMaxHealth(100), healthbarLength);
 	ColorString healthNum = ColorString(" " + std::to_string(getHealth()) + "/" + std::to_string(getMaxHealth(100)), ddutil::WHITE);
 	ColorString blockNum = ColorString("(" + std::to_string(buffer) + ")", ddutil::BLOCK_COLOR);
 
@@ -95,6 +96,37 @@ ColorString Creature::getStatLine()
 	}
 	return divideChar + name + divideChar + healthBar + healthNum + 
 		divideChar + blockNum + divideChar + dodgeNum + divideChar;
+}
+
+ColorString Creature::getHealthBar(int hp, int maxHp, int length)
+{
+	char empty = '-';
+	char full = '=';
+
+	int color = ddutil::GREEN; // assume green, check to see if this needs to be changed
+
+	if (hp < static_cast<int>(0.33 * maxHp))
+	{
+		color = ddutil::RED;
+	}
+	else if (hp < static_cast<int>(0.67 * maxHp))
+	{
+		color = ddutil::YELLOW;
+	}
+
+	double percentageOfHp = static_cast<double>(hp) / maxHp;
+
+	// how many characters of 'length' will represent health (=)
+	int numberOfFullSpaces = static_cast<int>(percentageOfHp * length);
+
+	// how many characters of 'length' will represent no health (-)
+	int numberOfEmptySpaces = length - numberOfFullSpaces;
+
+	// add the appropriate amount of characters to the bar
+	std::string barFull(numberOfFullSpaces, full);
+	std::string barEmpty(numberOfEmptySpaces, empty);
+
+	return ColorString(barFull + barEmpty, color);
 }
 
 ColorString Creature::getStatusString()

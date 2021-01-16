@@ -59,6 +59,8 @@ public:
 	ColorString getColorString();
 
 	virtual ColorString getStatLine();
+    // get a color coded health bar
+    ColorString getHealthBar(int hp, int maxHp, int length);
 
 	ColorString getStatusString();
 
@@ -109,6 +111,7 @@ protected:
 	virtual void doMiscDamageEffects(int damage) {}; // if a sub class has something special when taking damage, then override this
 
 	Game* game;
+	int healthbarLength;
 };
 
 #endif

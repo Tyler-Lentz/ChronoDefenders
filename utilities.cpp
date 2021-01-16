@@ -93,37 +93,6 @@ namespace ddutil
             + ddutil::genericBlockAlert(amount);
     }
 
-    ColorString getHealthBar(int hp, int maxHp, int length)
-    {
-        char empty = '-';
-        char full = '=';
-
-        int color = ddutil::GREEN; // assume green, check to see if this needs to be changed
-
-        if (hp < static_cast<int>(0.33 * maxHp))
-        {
-            color = ddutil::RED;
-        }
-        else if (hp < static_cast<int>(0.67 * maxHp))
-        {
-            color = ddutil::YELLOW;
-        }
-
-        double percentageOfHp = static_cast<double>(hp) / maxHp;
-
-        // how many characters of 'length' will represent health (=)
-        int numberOfFullSpaces = static_cast<int>(percentageOfHp * length);
-
-        // how many characters of 'length' will represent no health (-)
-        int numberOfEmptySpaces = length - numberOfFullSpaces;
-
-        // add the appropriate amount of characters to the bar
-        std::string barFull(numberOfFullSpaces, full);
-        std::string barEmpty(numberOfEmptySpaces, empty);
-
-        return ColorString(barFull + barEmpty, color);
-    }
-
 	std::string cardNumToString(int num)
 	{
         switch (num)

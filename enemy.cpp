@@ -541,6 +541,7 @@ int GiantHead::getRoomId()
 BossEnemy::BossEnemy(Game* game, int maxHp, std::string name, int color, Picture pic, std::vector<ColorString> intro)
 	: Enemy(game, maxHp, name, color, pic, Mp3File("bossbattle"), intro, ddutil::MAP_BOSS)
 {
+	healthbarLength = ddutil::BOSS_HEALTHBAR_LENGTH;
 }
 
 void BossEnemy::deathScene()
@@ -1989,6 +1990,7 @@ TheProtector::TheProtector(Game* game)
 		ddutil::MAP_BOSS
 	)
 {
+	healthbarLength = ddutil::BOSS_HEALTHBAR_LENGTH;
 	turnCounter = 0;
 	shieldCounter = 0;
 	moves.push_back(new StatusAttackMove(MoveId::EnemyMoveId, ICE_BEAM_DAM, new FrostBurntStatus(), BURN_LENGTH, 0, "", Strength::Mythical, WavFile("freeze", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
@@ -2162,6 +2164,7 @@ TruePatriarch::TruePatriarch(Game* game)
 		ddutil::MAP_BOSS
 	)
 {
+	healthbarLength = ddutil::BOSS_HEALTHBAR_LENGTH;
 	turnCounter = 0;
 	desperation = false;
 	moves.push_back(new EnemyMoves::TakeVitalityGain(VIT_CHANGE));

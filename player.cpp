@@ -32,6 +32,7 @@ Player::Player(Game* game, PlayerId id, int svit, int maxVit, int vitGain, int m
 	movesToChooseFrom = ddutil::START_MOVES_TO_CHOOSE_FROM;
 	this->id = id;
 	shouldReceiveXP = true;
+	healthbarLength = ddutil::PLAYER_HEALTHBAR_LENGTH;
 }
 
 Player::~Player()

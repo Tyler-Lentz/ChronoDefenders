@@ -924,6 +924,26 @@ private:
 	int turnCounter;
 };
 
+class DemonicDisciple : public Enemy 
+{
+public:
+	DemonicDisciple(Game* game);
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+	Creature* makeCopy() override;
+	int getRoomId() override;
+
+	const static int HEALTH = 66;
+	const static int INVULN_LENGTH = 4; // starting status
+	const static int HEXED_LENGTH = 2; // turn 1, hex all but one
+	const static int BLAST_DAMAGE = 20; // turn 2 blast the person who isn't hexed
+	const static int MULTI_STRIKE_DAMAGE = 18; // turn 3
+	const static int VIT_STEAL = 6; // turn 4
+	const static int END_BLAST_DAMAGE = 40; // start blasting after invulnerable is up
+private:
+	Creature* unHexedPlayer;
+	int turnCounter;
+};
+
 class TruePatriarch : public Enemy
 {
 public:
@@ -934,10 +954,14 @@ public:
 	void deathScene() override;
 	void distortionUpdate(int dist) override;
 
+	void doMiscDamageEffects(int damage) override;
+	ColorString getStatLine() override;
+
+	const static int TURN_DMG_CAP = 200;
 	const static int HEALTH = 800;
 
 	const static int VIT_CHANGE = -1;
-	const static int BEAM_DAMAGE = 20; // multitarget beam
+	const static int BEAM_DAMAGE = 25; // multitarget beam
 	const static int BIG_BLOCK = 66;
 	
 	const static int BLOCK_BREAK_DAMAGE = 18;
@@ -959,5 +983,6 @@ public:
 private:
 	int turnCounter;
 	bool desperation;
+	int damageCap;
 };
 #endif

@@ -874,7 +874,7 @@ ZoneMap PalaceEnvironment::generateRooms()
 {
 	int numPaths = 1;
 	int numRows = 1;
-	int numCols = 2;
+	int numCols = 4;
 	ZoneMap map(numPaths, numRows, numCols);
 
 	int middleCol = numCols / 2;
@@ -886,11 +886,18 @@ ZoneMap PalaceEnvironment::generateRooms()
 		{
 			map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Boss));
 		}
-		else if (col == numCols - 2) // second to last room is always camp fire
+		else if (col == numCols - 2) // second to last is always demonic disciple fight
+		{
+			map[row][col] = new EnemyRoom(game, new DemonicDisciple(game));
+		}
+		else if (col == numCols - 3) // third to last is always revival altar
+		{
+			map[row][col] = new RevivalAltarEvent(game);
+		}
+		else
 		{
 			map[row][col] = new FireRoom(game);
 		}
-		
 	}
 
 	return map;

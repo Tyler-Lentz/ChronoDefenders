@@ -1904,6 +1904,35 @@ Picture Art::getTheBetrayer(int eyeColor)
 	return betrayer;
 }
 
+Picture Art::getDemonicDisciple()
+{
+	Picture cultist;
+	int color = DEMONIC_DISCIPLE_COLOR;
+	cultist.push_back(ColorString(R"(              _,-'|    )", color));
+	cultist.push_back(ColorString(R"(           ,-'._  |    )", color));
+	cultist.push_back(ColorString(R"( .||,      |####\ |    )", color));
+	cultist.push_back(ColorString(R"(\.`',/     \####| |    )", color));
+	cultist.push_back(ColorString(R"(=\/\/=      |###| |    )", color));
+	cultist.push_back(ColorString(R"(/ || \    ,-'\#/,'`.   )", color));
+	cultist.push_back(ColorString(R"(  ||     ,'   `,,. `.  )", color));
+	cultist.push_back(ColorString(R"(  ,|____,' , ,;' \| |  )", color));
+	cultist.push_back(ColorString(R"( (3|\    _/|/'   _| |  )", color));
+	cultist.push_back(ColorString(R"(  ||/,-''  | >-'' _,\\ )", color));
+	cultist.push_back(ColorString(R"(  ||'      ==\ ,-'  ,' )", color));
+	cultist.push_back(ColorString(R"(  ||       |  V \ ,|   )", color));
+	cultist.push_back(ColorString(R"(  ||       |    |` |   )", color));
+	cultist.push_back(ColorString(R"(  ||       |    |   \  )", color));
+	cultist.push_back(ColorString(R"(  ||       |    \    \ )", color));
+	cultist.push_back(ColorString(R"(  ||       |     |    \)", color));
+	cultist.push_back(ColorString(R"(  ||       |      \_,-')", color));
+	cultist.push_back(ColorString(R"(  ||       |___,,--")_\)", color));
+	cultist.push_back(ColorString(R"(  ||         |_|   ccc/)", color));
+	cultist.push_back(ColorString(R"(  ||        ccc/       )", color));
+	cultist.push_back(ColorString(R"(  ||                   )", color));
+	cultist.push_back(ColorString(R"(                     )", color));
+	return cultist;
+}
+
 Picture Art::getGiantSnail()
 {
 	Picture giantSnail;

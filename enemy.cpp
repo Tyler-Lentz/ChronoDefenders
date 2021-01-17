@@ -2592,6 +2592,7 @@ TruePatriarch::TruePatriarch(Game* game)
 {
 	healthbarLength = ddutil::BOSS_HEALTHBAR_LENGTH;
 	turnCounter = 0;
+	damageCap = TURN_DMG_CAP;
 	desperation = false;
 	moves.push_back(new EnemyMoves::TakeVitalityGain(VIT_CHANGE));
 	moves.push_back(new EnemyMoves::Strike(BEAM_DAMAGE, WavFile("magicattack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
@@ -2613,7 +2614,8 @@ EnemyTurn TruePatriarch::getTurn(std::vector<Creature*> players)
 	ColorString intent;
 	std::vector<Creature*> targets;
 
-
+	// reset the damage cap
+	damageCap = TURN_DMG_CAP;
 
 	if (getHealth() <= getMaxHealth(DESPERATION_THRESHOLD) && !desperation)
 	{
@@ -2796,6 +2798,21 @@ void TruePatriarch::distortionUpdate(int dist)
 			ColorString("Why don't you stay and find out?", color)
 		};
 	}
+}
+
+void TruePatriarch::doMiscDamageEffects(int damage)
+{
+	damageCap -= damage;
+	if (damageCap < 0)
+	{
+		health -= damageCap; // increase health by how much the damage cap is below zero
+		damageCap = 0;
+	}
+}
+
+ColorString TruePatriarch::getStatLine()
+{
+	return Enemy::getStatLine() + ColorString("CAP: " + std::to_string(damageCap), ddutil::DAMAGE_COLOR);
 }
 
 VampireBat::VampireBat(Game* game)
@@ -3466,4 +3483,122 @@ Creature* CorruptedDisciple::makeCopy()
 int CorruptedDisciple::getRoomId()
 {
 	return RoomId::CorruptedDiscipleEnemy;
+}
+
+DemonicDisciple::DemonicDisciple(Game* game)
+	:Enemy(
+		game,
+		HEALTH,
+		"Demonic Disciple",
+		Art::DEMONIC_DISCIPLE_COLOR,
+		Art::getDemonicDisciple(),
+		Mp3File("penultimatebattle"),
+		std::vector<ColorString> {
+			ColorString("...", Art::DEMONIC_DISCIPLE_COLOR),
+		},
+		ddutil::MAP_NENEMY
+	)
+{
+	currentStatuses.emplace(new InvulnerableStatus(), INVULN_LENGTH);
+	turnCounter = 0;
+	unHexedPlayer = nullptr;
+	moves.push_back(new SimpleStatusMove(
+		MoveId::EnemyMoveId, new HexedStatus(), HEXED_LENGTH, true, 0, "", Strength::Cosmic, WavFile("vulnerable", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	);
+	moves.push_back(new EnemyMoves::Strike(BLAST_DAMAGE, WavFile("explosion", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::Strike(MULTI_STRIKE_DAMAGE, WavFile("attack6", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+	moves.push_back(new EnemyMoves::TakeVitality(VIT_STEAL));
+	moves.push_back(new EnemyMoves::Strike(END_BLAST_DAMAGE, WavFile("magicattack3", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+EnemyTurn DemonicDisciple::getTurn(std::vector<Creature*> players)
+{
+	std::vector<Creature*> targets;
+	ColorString intent;
+	Move* chosenMove = nullptr;
+
+	chosenMove = moves[turnCounter];
+	switch (turnCounter)
+	{
+	case 0:
+	{
+		// iterate through the players in a random order
+		int timesThrough = 0;
+		for (int i : ddutil::uniqueRandom(0, players.size() - 1, players.size()))
+		{
+			if (timesThrough == 0)
+			{
+				unHexedPlayer = players.at(i);
+			}
+			else
+			{
+				targets.push_back(players.at(i));
+			}
+			timesThrough++;
+		}
+		if (!targets.empty()) // normal case
+		{
+			// targets contain player to hex, unhexed player will be stored for next turn
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" will ", ddutil::TEXT_COLOR) +
+				ColorString("Hex", HexedStatus::COLOR);
+			for (int i = 0; i < targets.size(); i++)
+			{
+				Creature* p = targets.at(i);
+				intent += ColorString(" The ", ddutil::TEXT_COLOR) + p->getColorString();
+				if (i != targets.size() - 1) // not last player
+				{
+					intent += ColorString(" and", ddutil::TEXT_COLOR);
+				}
+			}
+			break;
+		}
+		// else = edge case
+		chosenMove = moves[1]; // update chosen move to fit with the switch case down below
+		// if the targets were empty, then fall through to the next switch case so that the solo player
+		// gets attacked instead of hexed because it wouldn't be fair to hex the just one person
+	}
+		
+	case 1:
+		if (unHexedPlayer->getHealth() <= 0) // dead because the player killed them??
+		{
+			unHexedPlayer = players.front(); // just set the target to the front player in the alive player list
+			// now they technically aren't an unhexed player, but whatever
+		}
+		targets.push_back(unHexedPlayer);
+		intent = ddutil::genericDamageIntent(BLAST_DAMAGE, getColorString(), "Blast", targets);
+		break;
+	case 2:
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" will Strike everybody for ", ddutil::TEXT_COLOR) +
+			ColorString(std::to_string(MULTI_STRIKE_DAMAGE) + " damage", ddutil::DAMAGE_COLOR);
+		break;
+	case 3:
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" is reducing everybody's ", ddutil::TEXT_COLOR) +
+			ColorString("Vitality", ddutil::VITALITY_COLOR) +
+			ColorString(" by " + std::to_string(VIT_STEAL), ddutil::TEXT_COLOR);
+		break;
+	case 4:
+		targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+		intent = ddutil::genericDamageIntent(END_BLAST_DAMAGE, getColorString(), "Blast", targets);
+		break;
+	}
+	turnCounter++;
+	if (turnCounter > 4)
+	{
+		turnCounter = 4;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+Creature* DemonicDisciple::makeCopy()
+{
+	return new DemonicDisciple(game);
+}
+
+int DemonicDisciple::getRoomId()
+{
+	return RoomId::DemonicDiscipleEnemy;
 }

@@ -67,7 +67,8 @@ enum RoomId
 	TheArchitectEnemy,
 	TheHarbingerEnemy,
 	TheSalvagerEnemy,
-	TheBetrayerEnemy
+	TheBetrayerEnemy,
+	DemonicDiscipleEnemy
 };
 
 class Room

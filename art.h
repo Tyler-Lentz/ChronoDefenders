@@ -190,6 +190,9 @@ public:
 	const static int BETRAYER_COLOR = ddutil::DARKGRAY;
 	const static int BETRAYER_STRGAIN_COLOR = ddutil::DAMAGE_COLOR;
 	const static int BETRAYER_NORM_COLOR = ddutil::BLACK;
+
+	static Picture getDemonicDisciple();
+	const static int DEMONIC_DISCIPLE_COLOR = ddutil::RED;
 };
 
 

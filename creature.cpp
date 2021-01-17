@@ -93,9 +93,10 @@ ColorString Creature::getStatLine()
 	if (dodgeChance > 0)
 	{
 		dodgeNum += ColorString("(" + std::to_string(dodgeChance) + "% DODGE)", ddutil::TEXT_COLOR);
+		dodgeNum += divideChar;
 	}
-	return divideChar + name + divideChar + healthBar + healthNum + 
-		divideChar + blockNum + divideChar + dodgeNum + divideChar;
+	return divideChar + name + divideChar + healthBar + healthNum +
+		divideChar + blockNum + divideChar + dodgeNum;
 }
 
 ColorString Creature::getHealthBar(int hp, int maxHp, int length)

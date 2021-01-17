@@ -3,6 +3,7 @@
 #include "creature.h"
 #include "game.h"
 #include "player.h"
+#include "enemy.h"
 
 #include <string>
 
@@ -280,3 +281,32 @@ ColorString EnemyMoves::AddScorchToAttacks::doAction(Creature* self, Creature* o
 		ColorString("per attack", ddutil::TEXT_COLOR);
 }
 
+EnemyMoves::Snatch::Snatch(TheSalvager* salvager)
+	:Move(
+		MoveId::EnemyMoveId,
+		"", "", 0, Strength::Powerful, true,
+		WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+	this->salvager = salvager;
+}
+
+ColorString EnemyMoves::Snatch::doAction(Creature* self, Creature* other)
+{
+	return this->salvager->snatch(other);
+}
+
+EnemyMoves::Throw::Throw(TheSalvager* salvager)
+	:Move(
+		MoveId::EnemyMoveId,
+		"", "", 0, Strength::Powerful, true,
+		WavFile("jumpstrike", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+	)
+{
+	this->salvager = salvager;
+}
+
+ColorString EnemyMoves::Throw::doAction(Creature* self, Creature* other)
+{
+	return salvager->throwPlayer(other);
+}

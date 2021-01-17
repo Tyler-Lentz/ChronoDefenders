@@ -368,7 +368,7 @@ ZoneMap CatacombsEnvironment::generateRooms()
 		}
 		else // first two rooms
 		{
-			map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Normal));	
+			map[row][col] = new EnemyRoom(game, generateEnemy(ddutil::EnemyType::Normal));
 		}
 	}
 
@@ -769,12 +769,14 @@ Enemy* VoidEnvironment::generateEnemy(ddutil::EnemyType type)
 
 	if (type == ddutil::EnemyType::Boss)
 	{
-		switch (ddutil::random(1, 2))
+		switch (ddutil::random(1, 3))
 		{
 		case 1:
 			return new TheProtector(game);
 		case 2:
 			return new TheBetrayer(game);
+		case 3:
+			return new TheSalvager(game);
 		}
 	}
 	else if (type == ddutil::EnemyType::Strong)
@@ -1446,6 +1448,9 @@ ZoneMap::ZoneMap(Game* game, Savechunk coordinates, Savechunk rooms, int numRows
 			break;
 		case RoomId::TheBetrayerEnemy:
 			room = new EnemyRoom(game, new TheBetrayer(game));
+			break;
+		case RoomId::TheSalvagerEnemy:
+			room = new EnemyRoom(game, new TheSalvager(game));
 			break;
 		default:
 			throw std::exception("Invalid Room ID in save file");

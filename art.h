@@ -184,7 +184,7 @@ public:
 	const static int HARBINGER_COLOR = ddutil::LIGHTRED;
 
 	static Picture getTheSalvager();
-	const static int SALVAGER_COLOR = ddutil::BROWN;
+	const static int SALVAGER_COLOR = ddutil::LIGHTMAGENTA;
 
 	static Picture getTheBetrayer(int eyeColor);
 	const static int BETRAYER_COLOR = ddutil::DARKGRAY;

@@ -5,6 +5,7 @@
 #include "colorstring.h"
 
 class Creature;
+class TheSalvager;
 
 namespace EnemyMoves
 {
@@ -171,6 +172,25 @@ namespace EnemyMoves
 		ColorString doAction(Creature* self, Creature* other) override;
 	private:
 		int amount;
+	};
+
+	// specific to the salvager
+	class Snatch : public Move
+	{
+	public:
+		Snatch(TheSalvager* salvager);
+		ColorString doAction(Creature* self, Creature* other) override;
+	private:
+		TheSalvager* salvager;
+	};
+
+	class Throw : public Move
+	{
+	public:
+		Throw(TheSalvager* salvager);
+		ColorString doAction(Creature* self, Creature* other) override;
+	private:
+		TheSalvager* salvager;
 	};
 }
 

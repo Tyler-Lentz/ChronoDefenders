@@ -2352,6 +2352,224 @@ EnemyTurn TheProtector::getTurn(std::vector<Creature*> players)
 	return EnemyTurn(intent, targets, chosenMove);
 }
 
+TheSalvager::TheSalvager(Game* game)
+	:Chapter3Boss(
+		game,
+		HEALTH,
+		"Salvager",
+		Art::SALVAGER_COLOR,
+		Art::getTheSalvager(),
+		std::vector<ColorString> {ColorString("*The Salvager unleashes a monstrous roar*", Art::SALVAGER_COLOR)}
+	)
+{
+	turnCounter = 0;
+	snatchedPlayer = nullptr;
+	moves.push_back(new EnemyMoves::Snatch(this));
+	moves.push_back(new EnemyMoves::AddBleedToAttacks(BLEED_INC));
+	moves.push_back(new EnemyMoves::Throw(this));
+	moves.push_back(new SimpleStatusMove(
+		MoveId::EnemyMoveId, new StrangledStatus(), STRANGLE_LENGTH, true, 0, "", Strength::Moderate, WavFile("attack4", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	);
+	moves.push_back(new StatusAttackMove(
+		MoveId::EnemyMoveId, VULNERABLE_STRIKE_DAMAGE, new VulnerableStatus(), VULNERABLE_STRIKE_LENGTH, 0, "", Strength::Moderate, WavFile("attack6", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	);
+	moves.push_back(new EnemyMoves::HealStrike(
+		LIFESTEAL_STRIKE_DAMAGE, LIFESTEAL_STRIKE_DAMAGE, WavFile("attackheal", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	);
+	moves.push_back(new BlockBreakingMove(
+		MoveId::EnemyMoveId, BLOCK_BREAK_DAMAGE, BLOCK_BREAK_MOD, 0, "", Strength::Moderate, WavFile("attack5", ddutil::SF_LOOP, ddutil::SF_ASYNC))
+	);
+	moves.push_back(new EnemyMoves::TakeVitality(VIT_STEAL));
+	moves.push_back(new EnemyMoves::Block(BIG_BLOCK, WavFile("gainblock", ddutil::SF_LOOP, ddutil::SF_ASYNC)));
+}
+
+TheSalvager::~TheSalvager()
+{
+	if (snatchedPlayer != nullptr)
+	{
+		delete snatchedPlayer;
+	}
+}
+
+EnemyTurn TheSalvager::getTurn(std::vector<Creature*> players)
+{
+	Move* chosenMove = nullptr;
+	ColorString intent;
+	std::vector<Creature*> targets;
+
+	switch (turnCounter)
+	{
+	case 0:
+		if (players.size() > 1) // snatch a player
+		{
+			chosenMove = moves[0];
+			targets.push_back(ddutil::getHighestHealthPlayer(players));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to snatch The ", ddutil::TEXT_COLOR) +
+				targets.front()->getColorString() + ColorString(" to damage later!", ddutil::TEXT_COLOR);
+		}
+		else // strangle the one player
+		{
+			chosenMove = moves[3];
+			targets.push_back(players.at(0));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to ", ddutil::TEXT_COLOR) + ColorString("Strangle", StrangledStatus::COLOR) +
+				ColorString(" The ", ddutil::TEXT_COLOR) + targets.front()->getColorString();
+		}
+		break;
+	case 1: // always add bleed to its attacks
+		chosenMove = moves[1];
+		targets.push_back(this);
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" is sharpening its talons...", ddutil::TEXT_COLOR);
+		break;
+	case 2:
+		if (snatchedPlayer != nullptr) // throw the snatched player
+		{
+			chosenMove = moves[2];
+			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" will throw The ", ddutil::TEXT_COLOR) + snatchedPlayer->getColorString() +
+				ColorString(" at The ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+				ColorString(", dealing " + std::to_string(THROW_DAMAGE) + " dmg", ddutil::DAMAGE_COLOR) +
+				ColorString(" and ", ddutil::TEXT_COLOR) + ColorString("Stunning", StunnedStatus::COLOR) +
+				ColorString(" each", ddutil::TEXT_COLOR);
+		}
+		else // vulnerable strike the remaining player
+		{
+			chosenMove = moves[4];
+			targets.push_back(players.at(0));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" will Strike The ", ddutil::TEXT_COLOR) + targets.front()->getColorString() +
+				ColorString(" for " + std::to_string(VULNERABLE_STRIKE_DAMAGE) + " damage", ddutil::DAMAGE_COLOR) +
+				ColorString(" and " + std::to_string(VULNERABLE_STRIKE_LENGTH) + " Vulnerable", VulnerableStatus::COLOR);
+		}
+		break;
+	case 3: // roll an attack
+		if (ddutil::random(1, 2) == 1) // Lifesteal strike
+		{
+			chosenMove = moves[5];
+			targets = players;
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to", ddutil::TEXT_COLOR) +
+				ColorString(" suck " + std::to_string(LIFESTEAL_STRIKE_DAMAGE) + " HP ", ddutil::DAMAGE_COLOR) +
+				ColorString("from everybody", ddutil::TEXT_COLOR);
+		}
+		else
+		{
+			chosenMove = moves[6];
+			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" intends to Strike The ", ddutil::TEXT_COLOR) +
+				targets.front()->getColorString() +
+				ColorString(" for ", ddutil::TEXT_COLOR) +
+				ColorString(std::to_string(BLOCK_BREAK_DAMAGE) + " damage", ddutil::DAMAGE_COLOR) +
+				ColorString(" (x"+std::to_string(BLOCK_BREAK_MOD)+" if hits block)", ddutil::DAMAGE_COLOR);
+		}
+		break;
+	case 4: // roll vitality steal versus big block
+		if (ddutil::random(1, 2) == 1)
+		{
+			chosenMove = moves[7]; // steal vitality
+			targets = players;
+			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+				ColorString(" is reducing everybody's ", ddutil::TEXT_COLOR) +
+				ColorString("Vitality", ddutil::VITALITY_COLOR) +
+				ColorString(" by " + std::to_string(VIT_STEAL), ddutil::TEXT_COLOR);
+		}
+		else
+		{
+			chosenMove = moves[8]; // beeg block
+			targets.push_back(this);
+			intent = ddutil::genericBlockIntent(BIG_BLOCK, getColorString());
+		}
+		break;
+	}
+	turnCounter++;
+	if (turnCounter > 4)
+	{
+		turnCounter = 0;
+	}
+
+	return EnemyTurn(intent, targets, chosenMove);
+}
+
+ColorString TheSalvager::getStatLine()
+{
+	if (snatchedPlayer == nullptr)
+	{
+		return Enemy::getStatLine();
+	}
+	else
+	{
+		return Enemy::getStatLine() + ColorString("(", ddutil::TEXT_COLOR) + snatchedPlayer->getColorString() +
+			ColorString(")", ddutil::TEXT_COLOR);
+	}
+}
+
+Creature* TheSalvager::makeCopy()
+{
+	return new TheSalvager(game);
+}
+
+int TheSalvager::getRoomId()
+{
+	return RoomId::TheSalvagerEnemy;
+}
+
+void TheSalvager::deathScene()
+{
+	if (snatchedPlayer != nullptr)
+	{
+		game->addPlayer(snatchedPlayer);
+		snatchedPlayer = nullptr;
+	}
+	Chapter3Boss::deathScene();
+}
+
+ColorString TheSalvager::snatch(Creature* creature)
+{
+	Player* player = dynamic_cast<Player*>(creature);
+	if (player == nullptr)
+	{
+		return ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" cannot snatch The ", ddutil::TEXT_COLOR) +
+			creature->getColorString();
+	}
+
+	game->removePlayer(player);
+	snatchedPlayer = player;
+	return ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" snatches The ", ddutil::TEXT_COLOR) +
+		player->getColorString();
+}
+
+ColorString TheSalvager::throwPlayer(Creature* targetToHit)
+{
+	ColorString targetName("Ground", ddutil::TEXT_COLOR); // in the case where the target has died since it was selected
+	if (targetToHit != nullptr) // if everything is normal, do things like you would expect
+	{
+		targetToHit->reduceHealth(THROW_DAMAGE, this, false);
+		targetToHit->applyStatus(new StunnedStatus(), THROW_STUN);
+		targetName = targetToHit->getColorString();// override the nothing name because we actually were able to throw at somebody
+	} // else, we just don't reduce health of another person, essentially the snatched player gets thrown at nothing
+
+	// the snatched player will always be non nullptr
+	snatchedPlayer->reduceHealth(THROW_DAMAGE, this, false);
+	snatchedPlayer->applyStatus(new StunnedStatus(), THROW_STUN);
+	if (snatchedPlayer->getHealth() <= 0)
+	{
+		snatchedPlayer->setHealth(1); // so that the thrown player can't die from being thrown, to be more fair
+	}
+
+	ColorString output = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+		ColorString(" throws The ", ddutil::TEXT_COLOR) + snatchedPlayer->getColorString() +
+		ColorString(" at The ", ddutil::TEXT_COLOR) + targetName + ColorString(", dealing " + std::to_string(THROW_DAMAGE) + " damage", ddutil::DAMAGE_COLOR) +
+		ColorString(" and applying ", ddutil::TEXT_COLOR) + ColorString("Stunned", StunnedStatus::COLOR);
+
+	game->addPlayer(snatchedPlayer);
+	snatchedPlayer = nullptr;
+
+	return output;
+}
+
 Creature* TheProtector::makeCopy()
 {
 	return new TheProtector(game);
@@ -3249,4 +3467,3 @@ int CorruptedDisciple::getRoomId()
 {
 	return RoomId::CorruptedDiscipleEnemy;
 }
-

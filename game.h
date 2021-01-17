@@ -40,6 +40,7 @@ public:
 	std::vector<Player*> getPlayerParty();
 	std::vector<Player*> getDeadPlayers();
 	Player* revivePlayer(int index); // pass through the index of the dead player in the dead player list
+	void removePlayer(Player* player);
 	Enemy* getCurrentEnemy();
 
 	VirtualWindow* getVWin();

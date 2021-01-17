@@ -748,6 +748,11 @@ Player* Game::revivePlayer(int index)
 	return player;
 }
 
+void Game::removePlayer(Player* player)
+{
+	playerParty.erase(std::remove(playerParty.begin(), playerParty.end(), player), playerParty.end());
+}
+
 Enemy* Game::getCurrentEnemy()
 {
 	return currentEnemy;

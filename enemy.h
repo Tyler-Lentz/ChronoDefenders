@@ -857,7 +857,7 @@ public:
 	const static int BASE_ABSORB_DAMAGE = 1;
 
 	// The random ones it can do
-	const static int LIFE_STEAL_AMOUNT = 28;
+	const static int LIFE_STEAL_AMOUNT = 26;
 	
 	const static int VITGAIN_STEAL = -1;
 
@@ -878,6 +878,50 @@ private:
 	int turnCounter;
 	int strength;
 	bool absorbingStrength;
+};
+
+class TheSalvager : public Chapter3Boss
+{
+public:
+	TheSalvager(Game* game);
+	~TheSalvager();
+
+	EnemyTurn getTurn(std::vector<Creature*> players) override;
+
+	ColorString getStatLine() override;
+	Creature* makeCopy() override;
+	int getRoomId() override;
+
+	void deathScene() override;
+
+	ColorString snatch(Creature* player);
+	ColorString throwPlayer(Creature* targetToHit);
+
+	const static int HEALTH = 720;
+
+	// Snatch a player, then throw it at another player stunning both of them
+	const static int THROW_DAMAGE = 25;
+	const static int THROW_STUN = 2;
+
+	// buff itself while the one person is snatched still
+	const static int BLEED_INC = 2;
+
+	// the two moves he does instead of snatching throwing if only one player
+	const static int STRANGLE_LENGTH = 2;
+	const static int VULNERABLE_STRIKE_DAMAGE = 12;
+	const static int VULNERABLE_STRIKE_LENGTH = 6;
+
+	// one of these two always
+	const static int LIFESTEAL_STRIKE_DAMAGE = 18; // multistrike
+	const static int BLOCK_BREAK_DAMAGE = 9;
+	const static int BLOCK_BREAK_MOD = 3;
+
+	// one of these two always
+	const static int VIT_STEAL = 6;
+	const static int BIG_BLOCK = 60;
+private:
+	Player* snatchedPlayer;
+	int turnCounter;
 };
 
 class TruePatriarch : public Enemy

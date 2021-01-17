@@ -1459,6 +1459,9 @@ ZoneMap::ZoneMap(Game* game, Savechunk coordinates, Savechunk rooms, int numRows
 		case RoomId::TheSalvagerEnemy:
 			room = new EnemyRoom(game, new TheSalvager(game));
 			break;
+		case RoomId::DemonicDiscipleEnemy:
+			room = new EnemyRoom(game, new DemonicDisciple(game));
+			break;
 		default:
 			throw std::exception("Invalid Room ID in save file");
 			break;

@@ -741,7 +741,7 @@ EnemyTurn TheWanderer::getTurn(std::vector<Creature*> players)
 	case 4: // Strangle a person
 		targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
 		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to ", ddutil::TEXT_COLOR) +
-			ColorString("Strangle ", StrangledStatus::COLOR) + ColorString(" The", ddutil::TEXT_COLOR) +
+			ColorString("Strangle ", StrangledStatus::COLOR) + ColorString("The ", ddutil::TEXT_COLOR) +
 			targets.front()->getColorString();
 		break;
 	}

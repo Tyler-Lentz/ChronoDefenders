@@ -15,6 +15,7 @@ namespace EnemyMoves
 		Strike(int theDamage, WavFile theSound);
 		ColorString doAction(Creature* self, Creature* other) override;
 		void increaseStrength(int amount);
+		void resetStrength(int amount);
 		int getStrength();
 	private:
 		int strength; // how much damage it deals

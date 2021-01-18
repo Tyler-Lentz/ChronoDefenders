@@ -2129,13 +2129,13 @@ TheBetrayer::TheBetrayer(Game* game)
 		Art::BETRAYER_COLOR,
 		Art::getTheBetrayer(Art::BETRAYER_NORM_COLOR),
 		std::vector<ColorString> {
-			ColorString("\"I t  i s n ' t  t o o  l a t e  t o  s w i t c h  s i d e s . . .\"", Art::BETRAYER_COLOR),
+			ColorString("\"I will turn your strength against you...\"", Art::BETRAYER_COLOR),
 			ColorString("The ", ddutil::TEXT_COLOR) + ColorString("Betrayer", Art::BETRAYER_COLOR) + ColorString(" will apply ", ddutil::TEXT_COLOR) +
 				ColorString("Judgement", JudgementStatus::COLOR) + ColorString(" on every attack.", ddutil::TEXT_COLOR)
 		}
 	)
 {
-	turnCounter = 0;
+	turnCounter = -1;
 	strength = 0;
 	absorbingStrength = false;
 	addAttackStatus(new JudgementStatus(), JUDGEMENT_PER_ATTACK);
@@ -2154,10 +2154,17 @@ EnemyTurn TheBetrayer::getTurn(std::vector<Creature*> players)
 {
 	ColorString intent;
 	std::vector<Creature*> targets;
-	Move* chosenMove = moves[turnCounter];
+	Move* chosenMove = nullptr;
 
 	switch (turnCounter)
 	{
+	case -1:
+		chosenMove = moves[2];
+		targets = players;
+		intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
+			ColorString(" is stealing everybody's", ddutil::TEXT_COLOR) +
+			ColorString(" Vitality Gain", ddutil::VITALITY_COLOR);
+		break;
 	case 0:
 		absorbingStrength = true;
 		changePicture(Art::getTheBetrayer(Art::BETRAYER_STRGAIN_COLOR));
@@ -2167,8 +2174,8 @@ EnemyTurn TheBetrayer::getTurn(std::vector<Creature*> players)
 	case 1:
 	{
 		absorbingStrength = false;
-		changePicture(Art::getTheBetrayer(Art::BETRAYER_NORM_COLOR));
 		auto scalingAttack = dynamic_cast<EnemyMoves::Strike*>(moves[0]);
+		scalingAttack->resetStrength(BASE_ABSORB_DAMAGE);
 		if (scalingAttack != nullptr)
 		{
 			scalingAttack->increaseStrength(strength);
@@ -2180,24 +2187,17 @@ EnemyTurn TheBetrayer::getTurn(std::vector<Creature*> players)
 	}
 		break;
 	case 2:
-		int random = ddutil::random(1, 4);
+		changePicture(Art::getTheBetrayer(Art::BETRAYER_NORM_COLOR));
+		int random = ddutil::random(1, 2);
 		if (random == 1) // heal strike
 		{
 			chosenMove = moves[1];
-			targets.push_back(players.at(ddutil::random(0, players.size() - 1)));
+			targets = players;
 			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" intends to", ddutil::TEXT_COLOR) +
 				ColorString(" steal " + std::to_string(LIFE_STEAL_AMOUNT) + " HP ", ddutil::DAMAGE_COLOR) +
-				ColorString(" from The ", ddutil::TEXT_COLOR) + targets.front()->getColorString();
+				ColorString(" from everybody", ddutil::TEXT_COLOR);
 		}
-		else if (random == 2) // vitality steal
-		{
-			chosenMove = moves[2];
-			targets = players;
-			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() +
-				ColorString(" is stealing everybody's", ddutil::TEXT_COLOR) +
-				ColorString(" Vitality Gain", ddutil::VITALITY_COLOR);
-		}
-		else if (random == 3 && getHealth() < getMaxHealth(HEAL_PERCENT)) // heal
+		else if (random == 2 && getHealth() < getMaxHealth(HEAL_PERCENT)) // heal
 		{
 			chosenMove = moves[3];
 			targets.push_back(this);

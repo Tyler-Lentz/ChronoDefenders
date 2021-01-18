@@ -27,6 +27,11 @@ void EnemyMoves::Strike::increaseStrength(int amount)
 	strength += amount;
 }
 
+void EnemyMoves::Strike::resetStrength(int amount)
+{
+	strength = amount;
+}
+
 int EnemyMoves::Strike::getStrength()
 {
 	return strength;
@@ -240,9 +245,15 @@ EnemyMoves::StealMove::StealMove()
 ColorString EnemyMoves::StealMove::doAction(Creature* self, Creature* other)
 {
 	other->removeNewestMove();
+	Player* p = dynamic_cast<Player*>(other);
+	if (p != nullptr)
+	{
+		p->stealVitality(1);
+	}
 	return ColorString("The ", ddutil::TEXT_COLOR) + self->getColorString() +
 		ColorString(" steals The ", ddutil::TEXT_COLOR) + other->getColorString() +
-		ColorString("'s newest move!", ddutil::TEXT_COLOR);
+		ColorString("'s newest move and reduces ", ddutil::TEXT_COLOR) +
+		ColorString("Vitality Gain", ddutil::VITALITY_COLOR) + ColorString(" by 1!", ddutil::TEXT_COLOR);
 }
 
 EnemyMoves::AddBleedToAttacks::AddBleedToAttacks(int amount)

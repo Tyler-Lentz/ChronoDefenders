@@ -854,10 +854,10 @@ public:
 
 	const static int HEALTH = 666;
 	const static int JUDGEMENT_PER_ATTACK = 1;
-	const static int BASE_ABSORB_DAMAGE = 1;
+	const static int BASE_ABSORB_DAMAGE = 10;
 
 	// The random ones it can do
-	const static int LIFE_STEAL_AMOUNT = 26;
+	const static int LIFE_STEAL_AMOUNT = 22;
 	
 	const static int VITGAIN_STEAL = -1;
 
@@ -972,14 +972,14 @@ public:
 	const static int INVULN_LENGTH = 1;
 	const static int DESPERATION_BEAM_DAM = 45; // solo target
 
-	const static int DIST5_BEAM_DAM = 20;
+	const static int DIST5_BEAM_DAM = 25;
 	const static int DIST5_BEAM_SCALE = 5; // scaling beam attack
 
 	const static int HEX_LENGTH = 3;
 	const static int HEX_DAMAGE = 20;
 
 	const static int DIST5BLOCK = 100;
-	const static int DIST5THRUBLOCK = 9;
+	const static int DIST5THRUBLOCK = 12;
 private:
 	int turnCounter;
 	bool desperation;

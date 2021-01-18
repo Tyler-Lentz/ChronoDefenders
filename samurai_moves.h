@@ -512,7 +512,7 @@ namespace SamuraiMoves
 		ColorString doAction(Creature* self, Creature* other);
 
 		const static int COST = 3;
-		const static int DAM_PER_STAT = 10;
+		const static int DAM_PER_STAT = 5;
 		const static int SELF_DAM_PER_STAT = 2;
 	};
 

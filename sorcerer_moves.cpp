@@ -538,7 +538,7 @@ SorcererMoves::TreeOfPower::TreeOfPower()
 		COST,
 		Strength::Mythical,
 		true,
-		WavFile("dualenergyattack", ddutil::SF_LOOP, ddutil::SF_ASYNC)
+		WavFile("attack6", ddutil::SF_LOOP, ddutil::SF_ASYNC)
 	)
 {
 }

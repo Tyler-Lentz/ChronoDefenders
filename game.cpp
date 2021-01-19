@@ -1556,6 +1556,8 @@ void Game::viewMenu()
 			break;
 		}
 	}	
+	clearCenterScreen();
+	clearBottomDivider();
 }
 
 void Game::viewCompendium()
@@ -1711,6 +1713,7 @@ void Game::playersGetExperience(int amount)
 
 Player* Game::selectPlayer(std::vector<ColorString> info, int startingLine, bool allowSkip)
 {
+	int originalLine = startingLine;
 	for (ColorString cs : info)
 	{
 		vwin->putcenSlowScroll(cs, startingLine++);
@@ -1736,6 +1739,12 @@ Player* Game::selectPlayer(std::vector<ColorString> info, int startingLine, bool
 		if (menuResponse == VK_MENU)
 		{
 			viewMenu();
+			clearCenterScreen();
+			int redrawLine = originalLine;
+			for (ColorString cs : info)
+			{
+				vwin->putcen(cs, redrawLine++);
+			}
 		}
 		else
 		{

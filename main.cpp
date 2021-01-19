@@ -9,7 +9,7 @@
 #include <Windows.h>
 
 int main()
-{
+{	
 	VirtualWindow* vwin = new VirtualWindow(ddutil::CONSOLEX, ddutil::CONSOLEY);
 	vwin->getConsole().setTitle();
 

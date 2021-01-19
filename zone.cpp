@@ -942,7 +942,6 @@ Zone::Zone(Game* theGame, Savechunk data)
 	currentCol = std::stoi(data.at(0));
 	currentRow = std::stoi(data.at(1));
 	zoneNumber = std::stoi(data.at(2));
-	setScaleOrigin();
 	setEnvironment();
 
 	if (data.at(3) != "ZONE MAP START")
@@ -973,6 +972,7 @@ Zone::Zone(Game* theGame, Savechunk data)
 		roomChunk.add(data.at(i));
 	}
 	map = ZoneMap(game, coordChunk, roomChunk, numRows, numCols);
+	setScaleOrigin();
 }
 
 // col
@@ -1137,6 +1137,7 @@ Room* Zone::chooseRoom()
 
 void Zone::displayMap(bool choose)
 {
+	game->clearCenterScreen();
 	VirtualWindow* vwin = game->getVWin();
 
 	vwin->putcen(getZoneString(), origin.y - 2);
@@ -1146,7 +1147,7 @@ void Zone::displayMap(bool choose)
 	}
 	else
 	{
-		vwin->putcen(ColorString("Press Enter to return", ddutil::TEXT_COLOR), origin.y - 1);
+		vwin->putcen(ColorString("Press Space to return", ddutil::TEXT_COLOR), origin.y - 1);
 	}
 
 	for (Coordinate c : map.getRoomCoords())

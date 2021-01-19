@@ -380,15 +380,13 @@ void Game::battle(Enemy* enemy)
 			otherInputs.push_back(VK_MENU);
 			otherInputs.push_back(VK_SHIFT);
 			otherInputs.push_back(VK_BACK);
-			otherInputs.push_back(0x43);// "c" character
 			const int END_TURN_LINE = ddutil::DIVIDER_LINE4;
 			ColorString inputInfo;
 			if (queuedMoves.empty())
 			{
 				inputInfo = ColorString("Space: End Turn  ", ddutil::TEXT_COLOR) +
 					ColorString("Enter: Select Move  ", ddutil::RED) +
-					ColorString("Alt: Artifacts  ", ddutil::ARTIFACT_COLOR) +
-					ColorString("C: Compendium  ", ddutil::COMPENDIUM_COLOR) +
+					ColorString("Alt: Menu  ", ddutil::ARTIFACT_COLOR) +
 					ColorString("Shift: Queue move", ddutil::LIGHTGREEN);
 			}
 			else
@@ -458,10 +456,7 @@ void Game::battle(Enemy* enemy)
 			}
 				break;
 			case VK_MENU:
-				playerParty[activePlayerIndex]->displayArtifacts();
-				break;
-			case 0x43:
-				this->viewCompendium();
+				viewMenu();
 				break;
 			case VK_SHIFT:
 			{
@@ -1524,6 +1519,45 @@ int Game::getScore()
 	return score;
 }
 
+void Game::viewMenu()
+{
+	std::vector<ColorString> options = {
+		ColorString("Exit", ddutil::TEXT_COLOR),
+		ColorString("View Compendium", ddutil::COMPENDIUM_COLOR),
+		ColorString("View Map", gameWorld[currentZoneIndex]->getZoneString().getColors().front()),
+	};
+	for (Player* p : playerParty)
+	{
+		options.push_back(p->getColorString() + ColorString(" Artifacts", ddutil::ARTIFACT_COLOR));
+	}
+
+	bool exit = false;
+	while (!exit)
+	{
+		clearCenterScreen();
+		clearBottomDivider();
+		displayInfo();
+		Menu menu(vwin, options, Coordinate(0, ddutil::EVENT_PICTURE_LINE), true);
+		int menuResponse = menu.getResponse();
+		switch (menuResponse)
+		{
+		case 0:
+			exit = true;
+			break;
+		case 1:
+			viewCompendium();
+			break;
+		case 2:
+			gameWorld[currentZoneIndex]->displayMap(false);
+			break;
+		default: // corresponds to an index in the player party
+			int index = menuResponse - 3;
+			playerParty.at(index)->displayArtifacts();
+			break;
+		}
+	}	
+}
+
 void Game::viewCompendium()
 {
 	compendium->display();
@@ -1675,8 +1709,13 @@ void Game::playersGetExperience(int amount)
 	Menu::oneOptionMenu(vwin, ColorString("Continue", ddutil::TEXT_COLOR), Coordinate(0, ddutil::CENTER_TEXT_LINE + 1), true);
 }
 
-Player* Game::selectPlayer(int startingLine, bool allowSkip)
+Player* Game::selectPlayer(std::vector<ColorString> info, int startingLine, bool allowSkip)
 {
+	for (ColorString cs : info)
+	{
+		vwin->putcenSlowScroll(cs, startingLine++);
+	}
+
 	std::vector<ColorString> options;
 	for (Player* p : playerParty)
 	{
@@ -1686,25 +1725,40 @@ Player* Game::selectPlayer(int startingLine, bool allowSkip)
 	{
 		options.push_back(ColorString("Skip", ddutil::TEXT_COLOR));
 	}
+	std::vector<int> otherOptions = { VK_MENU };
 
-	Menu menu(vwin, options, Coordinate(0, startingLine), true);
-	
-	if (menu.getResponse() >= static_cast<int>(playerParty.size()) || menu.getResponse() < 0)
+	while (true)
 	{
-		return nullptr;
-	}
-	else
-	{
-		return playerParty[menu.getResponse()];
+		Menu menu(vwin, options, otherOptions, Coordinate(0, startingLine), true);
+		int menuPosition = menu.getOtherInputResponse();
+		int menuResponse = menu.getResponse();
+
+		if (menuResponse == VK_MENU)
+		{
+			viewMenu();
+		}
+		else
+		{
+			if (menu.getResponse() >= static_cast<int>(playerParty.size()) || menu.getResponse() < 0)
+			{
+				return nullptr;
+			}
+			else
+			{
+				return playerParty[menu.getResponse()];
+			}
+		}
+		
 	}
 }
 
 void Game::artifactSelectionMenu(int line, Artifact* artifact)
 {
-	vwin->putcen(ColorString("Who should receive the ", ddutil::TEXT_COLOR) +
-		artifact->getName() + ColorString("?", ddutil::TEXT_COLOR), line++);
-	vwin->putcen(artifact->getFullInformation(), line++);
-	Player* player = selectPlayer(line, true);
+	std::vector<ColorString> info = {
+		ColorString("Who should receive the ", ddutil::TEXT_COLOR) + artifact->getName() + ColorString("? (Alt: Menu)", ddutil::TEXT_COLOR),
+			artifact->getFullInformation()
+	};
+	Player* player = selectPlayer(info, line, true);
 	if (player == nullptr)
 	{
 		delete artifact;

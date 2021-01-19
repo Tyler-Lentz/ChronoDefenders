@@ -931,6 +931,8 @@ Zone::Zone(Game* theGame, int num)
 	map = environment->generateRooms();
 	currentCol = -1;
 	currentRow = -1;
+	
+	setScaleOrigin();
 }
 
 // should receive a savechunk without the ZONE START and ZONE END markers
@@ -940,6 +942,7 @@ Zone::Zone(Game* theGame, Savechunk data)
 	currentCol = std::stoi(data.at(0));
 	currentRow = std::stoi(data.at(1));
 	zoneNumber = std::stoi(data.at(2));
+	setScaleOrigin();
 	setEnvironment();
 
 	if (data.at(3) != "ZONE MAP START")
@@ -1026,54 +1029,8 @@ bool Zone::hasMoreRooms()
 
 Room* Zone::chooseRoom()
 {
-	int scale = 3;
-	Coordinate origin(((ddutil::CONSOLEX - (map[0].size() * scale)) / 2), 3);
-
 	VirtualWindow* vwin = game->getVWin();
-
-	// displaying the map
-	vwin->putcen(getZoneString(), origin.y - 2);
-	vwin->putcen(ColorString("Use the arrow keys to select a Room", ddutil::TEXT_COLOR), origin.y - 1);
-
-	for (Coordinate c : map.getRoomCoords())
-	{
-		vwin->put(map[c.y][c.x]->getMapChar(), origin + Coordinate(c.x * scale, c.y * scale));
-		bool directlyRight = ddutil::hasCoords(Coordinate(c.x + 1, c.y), map.getRoomCoords());
-		bool downRight = ddutil::hasCoords(Coordinate(c.x + 1, c.y + 1), map.getRoomCoords());
-		bool upRight = ddutil::hasCoords(Coordinate(c.x + 1, c.y - 1), map.getRoomCoords());
-		
-		int zoneColor = getZoneString()[0].color;
-
-		if (directlyRight) // room directly to right
-		{
-			for (int i = 1; i < scale; i++)
-			{
-				vwin->put(ColorChar('-', zoneColor), origin + Coordinate(c.x * scale + i, c.y * scale));
-			}
-		}
-		if (downRight) // room is down and right
-		{
-			for (int i = 1; i < scale; i++)
-			{
-				vwin->put(ColorChar('\\', zoneColor), origin + Coordinate(c.x * scale + i, c.y * scale + i));
-			}
-		}
-		if (upRight) // room is up and right
-		{
-			for (int i = 1; i < scale; i++)
-			{
-				vwin->put(ColorChar('/', zoneColor), origin + Coordinate(c.x * scale + i, c.y * scale - i));
-			}	
-		}
-	}
-	ColorString controls1 = ColorString("E -> Normal Enemy; S -> Strong Enemy; B -> Boss Enemy; ", ddutil::CYAN);
-	ColorString controls2 = ColorString("~ -> Campfire; ", ddutil::FIRE_COLOR);
-	ColorString controls3 = ColorString("? -> Random Event", ddutil::EVENT_COLOR);
-	ColorString specificControls = ColorString("+ -> Revival Altar; ", ddutil::REVIVE_COLOR);
-	vwin->putcen(specificControls, ddutil::DIVIDER_LINE3 - 2);
-
-	game->getVWin()->putcen(controls1 + controls2 + controls3, ddutil::DIVIDER_LINE3 - 1);
-	game->displayInfo();
+	displayMap(true);
 
 	currentCol++;
 
@@ -1178,6 +1135,66 @@ Room* Zone::chooseRoom()
 	return map[finalCoord.y][finalCoord.x];
 }
 
+void Zone::displayMap(bool choose)
+{
+	VirtualWindow* vwin = game->getVWin();
+
+	vwin->putcen(getZoneString(), origin.y - 2);
+	if (choose)
+	{
+		vwin->putcen(ColorString("Use the arrow keys to select a Room", ddutil::TEXT_COLOR), origin.y - 1);
+	}
+	else
+	{
+		vwin->putcen(ColorString("Press Enter to return", ddutil::TEXT_COLOR), origin.y - 1);
+	}
+
+	for (Coordinate c : map.getRoomCoords())
+	{
+		vwin->put(map[c.y][c.x]->getMapChar(), origin + Coordinate(c.x * scale, c.y * scale));
+		bool directlyRight = ddutil::hasCoords(Coordinate(c.x + 1, c.y), map.getRoomCoords());
+		bool downRight = ddutil::hasCoords(Coordinate(c.x + 1, c.y + 1), map.getRoomCoords());
+		bool upRight = ddutil::hasCoords(Coordinate(c.x + 1, c.y - 1), map.getRoomCoords());
+		
+		int zoneColor = getZoneString()[0].color;
+
+		if (directlyRight) // room directly to right
+		{
+			for (int i = 1; i < scale; i++)
+			{
+				vwin->put(ColorChar('-', zoneColor), origin + Coordinate(c.x * scale + i, c.y * scale));
+			}
+		}
+		if (downRight) // room is down and right
+		{
+			for (int i = 1; i < scale; i++)
+			{
+				vwin->put(ColorChar('\\', zoneColor), origin + Coordinate(c.x * scale + i, c.y * scale + i));
+			}
+		}
+		if (upRight) // room is up and right
+		{
+			for (int i = 1; i < scale; i++)
+			{
+				vwin->put(ColorChar('/', zoneColor), origin + Coordinate(c.x * scale + i, c.y * scale - i));
+			}	
+		}
+	}
+	ColorString controls1 = ColorString("E -> Normal Enemy; S -> Strong Enemy; B -> Boss Enemy; ", ddutil::CYAN);
+	ColorString controls2 = ColorString("~ -> Campfire; ", ddutil::FIRE_COLOR);
+	ColorString controls3 = ColorString("? -> Random Event", ddutil::EVENT_COLOR);
+	ColorString specificControls = ColorString("+ -> Revival Altar; ", ddutil::REVIVE_COLOR);
+	vwin->putcen(specificControls, ddutil::DIVIDER_LINE3 - 2);
+
+	game->getVWin()->putcen(controls1 + controls2 + controls3, ddutil::DIVIDER_LINE3 - 1);
+	game->displayInfo();
+
+	if (!choose) // displaying this from a menu so wait for input to leave
+	{
+		ddutil::waitForKeyPress(VK_SPACE);
+	}
+}
+
 Savechunk Zone::makeSaveChunk()
 {
 	Savechunk chunk;
@@ -1208,6 +1225,12 @@ void Zone::setEnvironment()
 	{
 		environment = new PalaceEnvironment(game);
 	}
+}
+
+void Zone::setScaleOrigin()
+{
+	scale = 3;
+	origin = Coordinate(((ddutil::CONSOLEX - (map[0].size() * scale)) / 2), 3);
 }
 
 // makes the 2d vector the right size and adds coordinates to rooms which should be filled in by the environment generation function

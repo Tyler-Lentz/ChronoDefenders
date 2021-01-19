@@ -315,7 +315,7 @@ void Player::tradeExperience()
 				ColorString("(" + std::to_string(game->getRedMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
 				ColorString("Cosmic Strength", ddutil::COSMIC_COLOR)
 			);
-			options.push_back(ColorString("View Compendium", ddutil::COMPENDIUM_COLOR));
+			options.push_back(ColorString("View Menu", ddutil::TEXT_COLOR));
 			options.push_back(ColorString("Save Experience", ddutil::BROWN));
 
 			Menu moveTypeMenu(vwin, options, menuCoord, false);
@@ -340,8 +340,8 @@ void Player::tradeExperience()
 				game->clearBottomDivider();
 				return; // just leave because theres nothing else to do here, no need to navigate out of the loop
 			case 1:
-			default:// view compendium
-				game->viewCompendium();
+			default:// view menu 
+				game->viewMenu();
 				break;
 			}
 		}
@@ -359,7 +359,7 @@ void Player::tradeExperience()
 				ColorString("(" + std::to_string(game->getRedMoveCost()) + " XP) ", ddutil::EXPERIENCE_COLOR) +
 				ColorString("Mythical Strength", ddutil::MYTHICAL_COLOR)
 			);
-			options.push_back(ColorString("View Compendium", ddutil::COMPENDIUM_COLOR));
+			options.push_back(ColorString("View Menu", ddutil::TEXT_COLOR));
 			options.push_back(ColorString("Save Experience", ddutil::BROWN));
 			Menu moveTypeMenu(vwin, options, menuCoord, false);
 			menuCoord.y--;
@@ -407,8 +407,8 @@ void Player::tradeExperience()
 				game->clearBottomDivider();
 				return; // just leave because theres nothing else to do here, no need to navigate out of the loop
 			case 3:
-			default:// view compendium
-				game->viewCompendium();
+			default:// view menu 
+				game->viewMenu();
 				break;
 			}
 		}
@@ -451,7 +451,7 @@ void Player::tradeExperience()
 		// prepare the colorstrings to represent the possible moves that the player can add to their moveset
 		std::vector<ColorString> moveSelectionOptions;
 		moveSelectionOptions.push_back(ColorString("Skip (still lose XP)", ddutil::BROWN));
-		moveSelectionOptions.push_back(ColorString("View Compendium", ddutil::COMPENDIUM_COLOR));
+		moveSelectionOptions.push_back(ColorString("View Menu", ddutil::TEXT_COLOR));
 		for (Move* m : randomMoves)
 		{
 			moveSelectionOptions.push_back(m->getFullInformation());
@@ -519,9 +519,9 @@ void Player::tradeExperience()
 		{
 			exit = true;
 		}
-		else if (userInput == 1) // the user wants to view the compendium
+		else if (userInput == 1) // the user wants to view the menu
 		{
-			game->viewCompendium();
+			game->viewMenu();
 		}
 	}
 

@@ -3541,7 +3541,7 @@ EnemyTurn DemonicDisciple::getTurn(std::vector<Creature*> players)
 			// targets contain player to hex, unhexed player will be stored for next turn
 			intent = ColorString("The ", ddutil::TEXT_COLOR) + getColorString() + ColorString(" will ", ddutil::TEXT_COLOR) +
 				ColorString("Hex", HexedStatus::COLOR);
-			for (int i = 0; i < targets.size(); i++)
+			for (unsigned i = 0; i < targets.size(); i++)
 			{
 				Creature* p = targets.at(i);
 				intent += ColorString(" The ", ddutil::TEXT_COLOR) + p->getColorString();

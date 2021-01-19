@@ -142,6 +142,7 @@ public:
 
 	bool hasMoreRooms();
 	Room* chooseRoom();
+	void displayMap(bool choose);
 
 	Savechunk makeSaveChunk();
 private:
@@ -156,6 +157,11 @@ private:
 	int zoneNumber;
 
 	Game* game;
+
+	// values for displaying the map
+	int scale;
+	Coordinate origin;
+	void setScaleOrigin();
 };
 
 

@@ -52,7 +52,7 @@ public:
 
 	void playersGetExperience(int amount);
 
-	Player* selectPlayer(int startingLine, bool allowSkip);
+	Player* selectPlayer(std::vector<ColorString> info, int startingLine, bool allowSkip);
 
 	void artifactSelectionMenu(int startingLine, Artifact* theArtifact);
 
@@ -74,6 +74,7 @@ public:
 	void changeScore(int amount);
 	int getScore();
 
+	void viewMenu(); // menu which lets the player see the compendium, player moves, artifacts
 	void viewCompendium();
 
 	int getGreenMoveCost();

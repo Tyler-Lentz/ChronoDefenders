@@ -538,6 +538,65 @@ void Player::tradeExperience()
 	
 }
 
+void Player::displayStatsMenu()
+{	
+	VirtualWindow* vwin = game->getVWin();
+	bool exit = false;
+	game->clearCenterScreen();
+	game->clearBottomDivider();
+	while (!exit)
+	{
+		
+		vwin->printArtFromBottom(getPicture(), Coordinate(2, ddutil::DIVIDER_LINE3-2), false);
+		int titleLine = 2;
+		vwin->putcen(ColorString("The ", color) + getColorString(), titleLine);
+		vwin->putcen(ColorString("SPACE: return   RIGHT: view artifacts", ddutil::TEXT_COLOR), titleLine+1);
+		int statLine = ddutil::DIVIDER_LINE3 + 1;
+		vwin->putcen(getStatLine(), statLine);
+		int movesLine = statLine + 2;
+		for (Move* m : moves)
+		{
+			vwin->putcen(m->getFullInformation(), movesLine++);
+		}
+		int longStatsColumn = ddutil::CONSOLEX / 2;
+		int longStatsLine = 8;
+		vwin->put(ColorString("HP: " + std::to_string(getHealth()), ddutil::HEAL_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("MAX HP: " + std::to_string(getMaxHealth(100)), ddutil::HEAL_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("HEAL %: " + std::to_string(getPercentHealBoost()), ddutil::HEAL_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("", ddutil::BLOCK_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("BASE BLOCK: " + std::to_string(getBaseBlock()), ddutil::BLOCK_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("DODGE %: " + std::to_string(getDodgeChance()), ddutil::TEXT_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("", ddutil::BLOCK_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("START VIT: " + std::to_string(getStartingVitality()), ddutil::VITALITY_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("VIT GAIN: " + std::to_string(getVitalityGain()), ddutil::VITALITY_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("MAX VIT: " + std::to_string(getMaxVitality()), ddutil::VITALITY_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("", ddutil::BLOCK_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("EXP: " + std::to_string(getExperience()), ddutil::EXPERIENCE_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("EXP %: " + std::to_string(percentXPBoost), ddutil::EXPERIENCE_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("MOVE LIMIT: " + std::to_string(movesetLimit), ddutil::TEXT_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		vwin->put(ColorString("MOVE SELECT: " + std::to_string(movesToChooseFrom), ddutil::TEXT_COLOR), Coordinate(longStatsColumn, longStatsLine++));
+		while (true)
+		{
+			if (ddutil::keypress(VK_SPACE))
+			{
+				exit = true;
+				break;
+			}
+			else if (ddutil::keypress(VK_RIGHT))
+			{	
+				playSound(WavFile("menuselect", false, true));
+				game->clearCenterScreen();
+				game->clearBottomDivider();
+				displayArtifacts();
+				break;
+			}
+		}
+		playSound(WavFile("menuselect", false, true));
+		game->clearCenterScreen();
+		game->clearBottomDivider();
+	}
+}
+
 void Player::displayArtifacts()
 {
 	VirtualWindow* vwin = game->getVWin();
@@ -555,12 +614,13 @@ void Player::displayArtifacts()
 		ColorString("Artifacts", ddutil::ARTIFACT_COLOR),
 		titleLine
 	);
-	int artifactLine = titleLine + 2;
+	vwin->putcen(ColorString("LEFT: view stats", ddutil::TEXT_COLOR), titleLine+1);
+	int artifactLine = titleLine + 3;
 	for (auto a : artifacts)
 	{
 		vwin->putcen(a->getFullInformation(), artifactLine++);
 	}
-	Menu::oneOptionMenu(vwin, ColorString("Return", ddutil::TEXT_COLOR), Coordinate(0, ddutil::BOTTOM_TEXT_LINE), true);
+	ddutil::waitForKeyPress(VK_LEFT);
 	game->clearCenterScreen();
 	game->clearBottomDivider();
 }

@@ -134,25 +134,43 @@ void NormalEnemy::deathScene()
 	Enemy::deathScene();
 	game->displayInfo();
 	game->changeScore(ddutil::NORM_ENEMY_SCORE);
-	game->getVWin()->putcen(ColorString("The ", ddutil::ARTIFACT_COLOR) + getColorString() + 
-		ColorString(" drops some artifacts. Choose one:", ddutil::ARTIFACT_COLOR), ddutil::EVENT_PICTURE_LINE-2);
 
 	std::vector<Artifact*> choices = Artifact::getRandomCommonArtifacts(game);
 	std::vector<ColorString> menuOptions;
 	menuOptions.push_back(ColorString("Skip", ddutil::TEXT_COLOR));
+	menuOptions.push_back(ColorString("View Menu", ddutil::TEXT_COLOR));
 	for (Artifact* a : choices)
 	{
 		menuOptions.push_back(a->getFullInformation());
 	}
-	Menu menu(game->getVWin(), menuOptions, Coordinate(0, ddutil::EVENT_PICTURE_LINE), true);
-	if (menu.getResponse() != 0)
+	while (true)
 	{
-		int index = menu.getResponse() - 1;
-		Artifact* chosen = choices.at(index);
-		choices.erase(choices.begin() + index);
 		game->clearCenterScreen();
-		game->artifactSelectionMenu(ddutil::EVENT_PICTURE_LINE, chosen);
+		game->clearBottomDivider();
+		game->displayInfo();
+		game->getVWin()->putcenSlowScroll(ColorString("The ", ddutil::ARTIFACT_COLOR) + getColorString() + 
+			ColorString(" drops some artifacts. Choose one:", ddutil::ARTIFACT_COLOR), ddutil::EVENT_PICTURE_LINE-2);
+
+		Menu menu(game->getVWin(), menuOptions, Coordinate(0, ddutil::EVENT_PICTURE_LINE), true);
+		if (menu.getResponse() == 0)
+		{
+			break;
+		}
+		else if (menu.getResponse() == 1)
+		{
+			game->viewMenu();
+		}
+		else // selected an artifact
+		{
+			int index = menu.getResponse() - 2;
+			Artifact* chosen = choices.at(index);
+			choices.erase(choices.begin() + index);
+			game->clearCenterScreen();
+			game->artifactSelectionMenu(ddutil::EVENT_PICTURE_LINE, chosen);
+			break;
+		}
 	}
+
 	// delete the artifacts which are left, which will be all 3 if skipped, or just the 2 that weren't picked
 	for (Artifact* a : choices)
 	{
@@ -1645,25 +1663,43 @@ void IntenseEnemy::deathScene()
 	Enemy::deathScene();
 	game->displayInfo();
 	game->changeScore(ddutil::NORM_ENEMY_SCORE);
-	game->getVWin()->putcen(ColorString("The ", ddutil::ARTIFACT_COLOR) + getColorString() + 
-		ColorString(" drops some artifacts. Choose one:", ddutil::ARTIFACT_COLOR), ddutil::EVENT_PICTURE_LINE-2);
 
 	std::vector<Artifact*> choices = Artifact::getRandomCommonArtifacts(game);
 	std::vector<ColorString> menuOptions;
 	menuOptions.push_back(ColorString("Skip", ddutil::TEXT_COLOR));
+	menuOptions.push_back(ColorString("View Menu", ddutil::TEXT_COLOR));
 	for (Artifact* a : choices)
 	{
 		menuOptions.push_back(a->getFullInformation());
 	}
-	Menu menu(game->getVWin(), menuOptions, Coordinate(0, ddutil::EVENT_PICTURE_LINE), true);
-	if (menu.getResponse() != 0)
+	while (true)
 	{
-		int index = menu.getResponse() - 1;
-		Artifact* chosen = choices.at(index);
-		choices.erase(choices.begin() + index);
 		game->clearCenterScreen();
-		game->artifactSelectionMenu(ddutil::EVENT_PICTURE_LINE, chosen);
+		game->clearBottomDivider();
+		game->displayInfo();
+		game->getVWin()->putcenSlowScroll(ColorString("The ", ddutil::ARTIFACT_COLOR) + getColorString() + 
+			ColorString(" drops some artifacts. Choose one:", ddutil::ARTIFACT_COLOR), ddutil::EVENT_PICTURE_LINE-2);
+
+		Menu menu(game->getVWin(), menuOptions, Coordinate(0, ddutil::EVENT_PICTURE_LINE), true);
+		if (menu.getResponse() == 0)
+		{
+			break;
+		}
+		else if (menu.getResponse() == 1)
+		{
+			game->viewMenu();
+		}
+		else // selected an artifact
+		{
+			int index = menu.getResponse() - 2;
+			Artifact* chosen = choices.at(index);
+			choices.erase(choices.begin() + index);
+			game->clearCenterScreen();
+			game->artifactSelectionMenu(ddutil::EVENT_PICTURE_LINE, chosen);
+			break;
+		}
 	}
+
 	// delete the artifacts which are left, which will be all 3 if skipped, or just the 2 that weren't picked
 	for (Artifact* a : choices)
 	{

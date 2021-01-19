@@ -82,6 +82,7 @@ public:
 
 	ColorChar getMapChar();
 	void setCharEmpty(); // // set the map char to a blank character so the room isnt drawn anymore on the map
+	void setCharIn(); // set the map char to an X to specify the player is in there right now
 	void setChar(ColorChar cchar);
 
 protected:

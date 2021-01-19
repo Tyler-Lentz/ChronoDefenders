@@ -231,6 +231,16 @@ int Creature::getSelfDamageThisFight()
 	return selfDamageThisFight;
 }
 
+int Creature::getBaseBlock()
+{
+	return baseBlock;
+}
+
+int Creature::getPercentHealBoost()
+{
+	return percentHealBoost;
+}
+
 int Creature::increaseHealth(int amount)
 {
 	int overheal = 0;

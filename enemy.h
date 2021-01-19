@@ -656,7 +656,7 @@ public:
 	const static int VULNERABLE_LENGTH = 3;
 	const static int BURN_LENGTH = 3;
 	const static int BURN_DAMAGE = 12;
-	const static int SINGLE_TARGET_DAMAGE = 14;
+	const static int SINGLE_TARGET_DAMAGE = 15;
 	const static int INVULNERABLE_LENGTH = 3;
 
 private:

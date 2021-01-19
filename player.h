@@ -29,6 +29,7 @@ public:
 	virtual std::vector<Move*> getRandomMoves(Strength str) = 0; // get random moves to choose from to add to moveset
 	void tradeExperience();
 
+	void displayStatsMenu(); // all the stats and cool stuff
 	void displayArtifacts(); // prints out all the player's artifacts in the top of the screen
 
 	void setVitality(int amount);

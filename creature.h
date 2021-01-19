@@ -85,6 +85,8 @@ public:
 	void removeFirstMove();
 
 	int getSelfDamageThisFight();
+	int getBaseBlock();
+	int getPercentHealBoost();
 protected:
 	int health;
 	int maxHealth;

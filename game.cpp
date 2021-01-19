@@ -119,6 +119,7 @@ ddutil::GameStatus Game::run()
 		while (activeZone->hasMoreRooms())
 		{
 			Room* currentRoom = activeZone->chooseRoom();
+			currentRoom->setCharIn();
 
 			displayInfo();
 			drawPlayerParty();
@@ -777,7 +778,7 @@ void Game::titleScreen()
 	while (!exit)
 	{
 		vwin->printArt(Art::getTitle(), Coordinate(0, 5), true);
-		vwin->put(ColorString("Version 1.7b", ddutil::DARKGRAY), Coordinate(1, 1));
+		vwin->put(ColorString("Version 1.8", ddutil::DARKGRAY), Coordinate(1, 1));
 
 		vwin->putcen(profile.getColorString(), ddutil::CONSOLEY - 2);
 		
@@ -1528,7 +1529,7 @@ void Game::viewMenu()
 	};
 	for (Player* p : playerParty)
 	{
-		options.push_back(p->getColorString() + ColorString(" Artifacts", ddutil::ARTIFACT_COLOR));
+		options.push_back(p->getColorString() + ColorString(" Stats", ddutil::ARTIFACT_COLOR));
 	}
 
 	bool exit = false;
@@ -1552,7 +1553,7 @@ void Game::viewMenu()
 			break;
 		default: // corresponds to an index in the player party
 			int index = menuResponse - 3;
-			playerParty.at(index)->displayArtifacts();
+			playerParty.at(index)->displayStatsMenu();
 			break;
 		}
 	}	
@@ -1740,6 +1741,8 @@ Player* Game::selectPlayer(std::vector<ColorString> info, int startingLine, bool
 		{
 			viewMenu();
 			clearCenterScreen();
+			clearBottomDivider();
+			displayInfo();
 			int redrawLine = originalLine;
 			for (ColorString cs : info)
 			{

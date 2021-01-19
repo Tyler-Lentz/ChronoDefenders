@@ -124,37 +124,51 @@ void ZoneEnvironment::chooseBossArtifact()
 	choices[0]->playFindSound();
 
 	// generate a menu so the player can choose between the two options
-	std::vector<ColorString> menuOptions = { ColorString("Skip", ddutil::TEXT_COLOR) };
+	std::vector<ColorString> menuOptions = { ColorString("Skip", ddutil::TEXT_COLOR), ColorString("View Menu", ddutil::TEXT_COLOR) };
 	for (BossArtifact* a : choices)
 	{
 		menuOptions.push_back(a->getFullInformation());
 	}
 	int line = ddutil::DIVIDER_LINE3 / 2;
-	game->getVWin()->putcen(ColorString("Choose Reward:", ddutil::ARTIFACT_COLOR), line - 1);
-	game->displayInfo();
 
-	Menu menu(game->getVWin(), menuOptions, Coordinate(0, line), true);
-	if (menu.getResponse() != 0) // corresponds to one greater than index of the boss artifact the player chose
+	while (true)
 	{
-		BossArtifact* chosenArtifact = choices[menu.getResponse() - 1];
-
-		// remove the chosen artifact from choices so that it isnt deleted down further
-		auto it = choices.begin();
-		while (it != choices.end())
-		{
-			if ((*it) == chosenArtifact)
-			{
-				it = choices.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
-
+		game->clearBottomDivider();
 		game->clearCenterScreen();
-		game->artifactSelectionMenu(line - 1, chosenArtifact);
+		game->getVWin()->putcenSlowScroll(ColorString("Choose Reward:", ddutil::ARTIFACT_COLOR), line - 1);
 		game->displayInfo();
+		Menu menu(game->getVWin(), menuOptions, Coordinate(0, line), true);
+		if (menu.getResponse() == 0)
+		{
+			break;
+		}
+		else if (menu.getResponse() == 1)
+		{
+			game->viewMenu();
+		}
+		else // corresponds to two greater than index of the boss artifact the player chose
+		{
+			BossArtifact* chosenArtifact = choices[menu.getResponse() - 2];
+
+			// remove the chosen artifact from choices so that it isnt deleted down further
+			auto it = choices.begin();
+			while (it != choices.end())
+			{
+				if ((*it) == chosenArtifact)
+				{
+					it = choices.erase(it);
+				}
+				else
+				{
+					++it;
+				}
+			}
+
+			game->clearCenterScreen();
+			game->artifactSelectionMenu(line - 1, chosenArtifact);
+			game->displayInfo();
+			break;
+		}
 	}
 
 	for (unsigned int i = 0; i < choices.size(); i++)
@@ -1193,6 +1207,7 @@ void Zone::displayMap(bool choose)
 	if (!choose) // displaying this from a menu so wait for input to leave
 	{
 		ddutil::waitForKeyPress(VK_SPACE);
+		playSound(WavFile("menuselect", false, true));
 	}
 }
 

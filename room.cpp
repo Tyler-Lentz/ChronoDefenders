@@ -404,6 +404,11 @@ void Room::setCharEmpty()
 	mapChar = ColorChar('*', ddutil::LIGHTGRAY);
 }
 
+void Room::setCharIn()
+{
+	mapChar = ColorChar('X', ddutil::LIGHTGRAY);
+}
+
 void Room::setChar(ColorChar cchar)
 {
 	mapChar = cchar;

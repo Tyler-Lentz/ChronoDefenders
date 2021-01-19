@@ -120,7 +120,7 @@ namespace GunslingerMoves
 		BottleStrike();
 
 		const static int VULN_LENGTH = 1;
-		const static int COST = 1;
+		const static int COST = 2;
 	};
 
 	class Backflip : public SelfBlockMove
@@ -291,7 +291,7 @@ namespace GunslingerMoves
 
 		const static int DAMAGE = 7;
 		const static int VULN_LENGTH = 1;
-		const static int COST = 1;
+		const static int COST = 2;
 	};
 
 	class PumpShotgun : public GunMove
@@ -424,7 +424,7 @@ namespace GunslingerMoves
 
 		const static int DAMAGE = 9;
 		const static int VULN_LENGTH = 2;
-		const static int COST = 1;
+		const static int COST = 2;
 	};
 
 	class ConjureBullets : public MakeBulletMove

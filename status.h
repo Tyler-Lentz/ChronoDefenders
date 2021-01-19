@@ -166,7 +166,7 @@ public:
     ColorString applyEndTurnEffect(Creature* target, int stackAmount) override;
 
     const static int COLOR = ddutil::LIGHTRED;
-    const static int PERCENT_DAM_INC = 50;
+    const static int PERCENT_DAM_INC = 33;
 };
 
 class PoisonedStatus : public NormalStatus
